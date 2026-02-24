@@ -16,6 +16,8 @@
 
 # production
 /build
+/.netlify
+/.svelte-kit
 
 # misc
 .DS_Store
