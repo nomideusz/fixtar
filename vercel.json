@@ -1,0 +1,10 @@
+{
+	"buildCommand": "NODE_OPTIONS='--experimental-global-webcrypto' pnpm run build",
+	"devCommand": "pnpm run dev",
+	"installCommand": "pnpm install",
+	"framework": "sveltekit",
+	"outputDirectory": ".svelte-kit/output",
+	"env": {
+		"VERCEL_FORCE_NO_BUILD_CACHE": "1"
+	}
+}

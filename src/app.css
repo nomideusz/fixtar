@@ -1,0 +1,311 @@
+/* ==========================================================================
+   FixTar Design System — Global Styles
+   Tailwind CSS v4 (CSS-first configuration)
+   ========================================================================== */
+
+@import "tailwindcss";
+
+/* ==========================================================================
+   1. DESIGN TOKENS — @theme block
+   These generate Tailwind utility classes automatically.
+   e.g. --color-brand-600 → bg-brand-600, text-brand-600, border-brand-600
+   ========================================================================== */
+
+@theme {
+  --color-brand-50:  #fff7ed;
+  --color-brand-100: #ffedd5;
+  --color-brand-200: #fed7aa;
+  --color-brand-300: #fdba74;
+  --color-brand-400: #fb923c;
+  --color-brand-500: #f97316;
+  --color-brand-600: #ea580c;
+  --color-brand-700: #c2410c;
+  --color-brand-800: #9a3412;
+  --color-brand-900: #7c2d12;
+  --color-brand-950: #431407;
+
+  --color-accent-50:  #f0fdfa;
+  --color-accent-100: #ccfbf1;
+  --color-accent-200: #99f6e4;
+  --color-accent-300: #5eead4;
+  --color-accent-400: #2dd4bf;
+  --color-accent-500: #14b8a6;
+  --color-accent-600: #0d9488;
+  --color-accent-700: #0f766e;
+  --color-accent-800: #115e59;
+  --color-accent-900: #134e4a;
+  --color-accent-950: #042f2e;
+
+  --color-neutral-50:  #f8fafc;
+  --color-neutral-100: #f1f5f9;
+  --color-neutral-200: #e2e8f0;
+  --color-neutral-300: #cbd5e1;
+  --color-neutral-400: #94a3b8;
+  --color-neutral-500: #64748b;
+  --color-neutral-600: #475569;
+  --color-neutral-700: #334155;
+  --color-neutral-800: #1e293b;
+  --color-neutral-900: #0f172a;
+  --color-neutral-950: #020617;
+
+  --color-success: #16a34a;
+  --color-success-light: #dcfce7;
+  --color-warning: #f59e0b;
+  --color-warning-light: #fef3c7;
+  --color-danger: #dc2626;
+  --color-danger-light: #fee2e2;
+  --color-info: #2563eb;
+  --color-info-light: #dbeafe;
+
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', monospace;
+
+  --radius-xs:   0.25rem;
+  --radius-sm:   0.375rem;
+  --radius-md:   0.5rem;
+  --radius-lg:   0.75rem;
+  --radius-xl:   1rem;
+  --radius-2xl:  1.5rem;
+  --radius-3xl:  2rem;
+  --radius-full: 9999px;
+}
+
+/* ==========================================================================
+   2. SEMANTIC TOKENS — CSS Custom Properties
+   These map design intent to palette values. Use in component CSS.
+   Enables future dark mode and theme switching by changing :root vars.
+   ========================================================================== */
+
+:root {
+  /* -- Surface / Background -- */
+  --ft-surface:           #ffffff;
+  --ft-surface-secondary: var(--color-neutral-50);
+  --ft-surface-tertiary:  var(--color-neutral-100);
+  --ft-surface-elevated:  #ffffff;
+  --ft-surface-overlay:   rgba(0, 0, 0, 0.5);
+
+  /* -- Text -- */
+  --ft-text:              var(--color-neutral-900);
+  --ft-text-secondary:    var(--color-neutral-600);
+  --ft-text-muted:        var(--color-neutral-400);
+  --ft-text-inverse:      #ffffff;
+  --ft-text-brand:        var(--color-brand-600);
+
+  /* -- Border -- */
+  --ft-border:            var(--color-neutral-200);
+  --ft-border-hover:      var(--color-neutral-300);
+  --ft-border-focus:      var(--color-brand-500);
+
+  /* -- Interactive / Primary action -- */
+  --ft-primary:           var(--color-brand-600);
+  --ft-primary-hover:     var(--color-brand-700);
+  --ft-primary-active:    var(--color-brand-800);
+  --ft-primary-light:     var(--color-brand-100);
+  --ft-primary-ring:      var(--color-brand-500);
+
+  /* -- Interactive / Secondary action -- */
+  --ft-secondary:         var(--color-accent-600);
+  --ft-secondary-hover:   var(--color-accent-700);
+  --ft-secondary-light:   var(--color-accent-100);
+
+  /* -- Focus ring -- */
+  --ft-focus-ring:        var(--color-brand-500);
+  --ft-focus-offset:      2px;
+
+  /* -- Footer -- */
+  --ft-footer-bg:         var(--color-neutral-900);
+  --ft-footer-text:       var(--color-neutral-300);
+}
+
+/* Future dark mode (uncomment & customize when ready)
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ft-surface:           var(--color-neutral-900);
+    --ft-surface-secondary: var(--color-neutral-800);
+    --ft-surface-tertiary:  var(--color-neutral-700);
+    --ft-surface-elevated:  var(--color-neutral-800);
+    --ft-text:              var(--color-neutral-50);
+    --ft-text-secondary:    var(--color-neutral-300);
+    --ft-text-muted:        var(--color-neutral-500);
+    --ft-border:            var(--color-neutral-700);
+    --ft-border-hover:      var(--color-neutral-600);
+  }
+}
+*/
+
+/* ==========================================================================
+   3. BASE STYLES
+   ========================================================================== */
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    color: var(--ft-text);
+    background-color: var(--ft-surface);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Accessible focus ring using brand color */
+  :focus-visible {
+    outline: 2px solid var(--ft-focus-ring);
+    outline-offset: var(--ft-focus-offset);
+  }
+
+  /* Remove default focus for mouse users */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* Headings inherit font-heading */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+}
+
+/* ==========================================================================
+   4. COMPONENT CLASSES
+   Use semantic tokens so they adapt to theme changes.
+   ========================================================================== */
+
+@layer components {
+  /* Primary button */
+  .btn-primary {
+    padding: 0.75rem 1.5rem;
+    background-color: var(--ft-primary);
+    color: var(--ft-text-inverse);
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    transition: background-color 0.2s, box-shadow 0.2s;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-primary:hover {
+    background-color: var(--ft-primary-hover);
+  }
+  .btn-primary:active {
+    background-color: var(--ft-primary-active);
+  }
+  .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Secondary button */
+  .btn-secondary {
+    padding: 0.75rem 1.5rem;
+    background-color: var(--ft-surface-tertiary);
+    color: var(--ft-text);
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    transition: background-color 0.2s;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-secondary:hover {
+    background-color: var(--color-neutral-200);
+  }
+  .btn-secondary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Outline button */
+  .btn-outline {
+    padding: 0.75rem 1.5rem;
+    background-color: transparent;
+    color: var(--ft-primary);
+    border: 2px solid var(--ft-primary);
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .btn-outline:hover {
+    background-color: var(--ft-primary);
+    color: var(--ft-text-inverse);
+  }
+  .btn-outline:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Card */
+  .card {
+    background-color: var(--ft-surface);
+    border-radius: var(--radius-xl);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    transition: box-shadow 0.2s;
+  }
+  .card:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Form input */
+  .input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--ft-border);
+    border-radius: var(--radius-lg);
+    background-color: var(--ft-surface);
+    color: var(--ft-text);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .input:hover {
+    border-color: var(--ft-border-hover);
+  }
+  .input:focus {
+    border-color: var(--ft-border-focus);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--ft-primary) 20%, transparent);
+  }
+}
+
+/* ==========================================================================
+   5. UTILITY CLASSES
+   ========================================================================== */
+
+@layer utilities {
+  /* Hide scrollbar but keep functionality */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* ==========================================================================
+   6. CUSTOM ANIMATIONS
+   These are used by the Notifications component and other animated elements.
+   ========================================================================== */
+
+@layer utilities {
+  /* Notification progress bar animation */
+  .animate-notification-progress {
+    animation: notification-progress linear forwards;
+  }
+  
+  /* Floating particle animation for success notifications */
+  .animate-float-particle {
+    animation: float-particle ease-in-out infinite;
+  }
+}
+
+@keyframes notification-progress {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0%); }
+}
+
+@keyframes float-particle {
+  0%, 100% { 
+    transform: translateY(0px) scale(1); 
+    opacity: 0.4; 
+  }
+  50% { 
+    transform: translateY(-10px) scale(1.2); 
+    opacity: 0.8; 
+  }
+}

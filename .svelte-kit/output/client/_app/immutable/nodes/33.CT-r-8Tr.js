@@ -1,0 +1,1 @@
+import{q as a,d as o,R as n}from"../chunks/euVeJPvK.js";const r=async()=>({meta:{title:"My Wishlist | FixTar",description:"View and manage your favorite products"}}),s=Object.freeze(Object.defineProperty({__proto__:null,load:r},Symbol.toStringTag,{value:"Module"}));function p(e){n();var t=a("józef");o(e,t)}export{p as component,s as universal};
