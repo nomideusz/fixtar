@@ -2,6 +2,8 @@
 export type TranslationKey =
 	| 'yourCart'
 	| 'remove'
+	| 'clearCart'
+	| 'closeCartDrawer'
 	| 'cartEmpty'
 	| 'browseProducts'
 	| 'decreaseQuantity'
@@ -18,6 +20,8 @@ export const translations: Record<string, TranslationMap> = {
 	en: {
 		yourCart: 'Your Cart',
 		remove: 'Remove',
+		clearCart: 'Clear cart',
+		closeCartDrawer: 'Close cart drawer',
 		cartEmpty: 'Your cart is empty',
 		browseProducts: 'Browse Products',
 		decreaseQuantity: 'Decrease quantity',
@@ -30,6 +34,8 @@ export const translations: Record<string, TranslationMap> = {
 	pl: {
 		yourCart: 'Twój koszyk',
 		remove: 'Usuń',
+		clearCart: 'Wyczyść koszyk',
+		closeCartDrawer: 'Zamknij szufladę koszyka',
 		cartEmpty: 'Twój koszyk jest pusty',
 		browseProducts: 'Przeglądaj produkty',
 		decreaseQuantity: 'Zmniejsz ilość',

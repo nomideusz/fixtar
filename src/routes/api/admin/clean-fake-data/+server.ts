@@ -32,28 +32,29 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
     console.log('[CLEAN] Starting fake data cleanup...');
 
-    // Clean fake categories (xmlId 1-10 are test data, real XML has IDs > 10)
+    // Clean fake categories (externalId 1-10 are test data)
     const allCategories = await pb.collection('categories').getList(1, 200, {
-      filter: 'metadata.source = "xml_sync"'
+      filter: 'metadata.source = "import_sync"'
     });
 
     console.log(`[CLEAN] Found ${allCategories.items.length} synced categories to review`);
 
     const fakeCategories = allCategories.items.filter(category => {
-      const xmlId = parseInt(category.metadata?.xmlId || '0', 10);
-      return xmlId > 0 && xmlId <= 10; // Fake categories have xmlId 1-10
+      const importId = parseInt(category.metadata?.externalId || '0', 10);
+      return importId > 0 && importId <= 10; // Fake categories have IDs 1-10
     });
 
     console.log(`[CLEAN] Found ${fakeCategories.length} fake categories to remove`);
 
     for (const category of fakeCategories) {
-      console.log(`[CLEAN] Removing fake category: ${category.name} (xmlId: ${category.metadata.xmlId})`);
+      const importId = category.metadata?.externalId || 'unknown';
+      console.log(`[CLEAN] Removing fake category: ${category.name} (importId: ${importId})`);
       await pb.collection('categories').delete(category.id);
     }
 
     // Clean products that reference fake categories or have fake SKUs
     const fakeProducts = await pb.collection('products').getList(1, 200, {
-      filter: 'metadata.source = "xml_sync"'
+      filter: 'metadata.source = "import_sync"'
     });
 
     console.log(`[CLEAN] Found ${fakeProducts.items.length} synced products to review`);

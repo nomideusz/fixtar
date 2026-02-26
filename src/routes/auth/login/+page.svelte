@@ -6,7 +6,7 @@
 	import Card from '$lib/components/ui/Card.svelte';
 	import { userStore, notifications } from '$lib/stores';
 	import type { ActionData } from './$types';
-	import FixTarLogo from '$lib/img/logo-FixTar.png';
+	import FixTarLogo from '$lib/img/logo-FixTar.webp';
 	
 	// Get form data from server
 	const { data, form } = $props<{ data?: any; form?: ActionData }>();

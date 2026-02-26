@@ -21,7 +21,7 @@
 </script>
 
 {#if visible}
-	<div class="announcement-banner bg-brand-600 text-white">
+	<div class="announcement-banner">
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 			<div class="flex items-center justify-between py-3">
 				<div class="flex items-center space-x-4">
@@ -31,7 +31,7 @@
 							href={actionUrl}
 							variant="ghost"
 							size="sm"
-							class="text-white border-white hover:bg-white hover:text-brand-600"
+							class="announcement-action"
 						>
 							{actionText}
 						</Button>
@@ -41,7 +41,7 @@
 				{#if dismissible}
 					<button 
 						onclick={dismiss}
-						class="text-white hover:text-brand-100 transition-colors"
+						class="announcement-dismiss"
 						aria-label="Dismiss announcement"
 					>
 						<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -58,6 +58,27 @@
 	.announcement-banner {
 		position: relative;
 		z-index: 40;
+		background-color: var(--ft-primary);
+		color: var(--ft-text-inverse);
+	}
+
+	:global(.announcement-action) {
+		color: var(--ft-text-inverse);
+		border: 1px solid color-mix(in srgb, var(--ft-text-inverse) 60%, transparent);
+	}
+
+	:global(.announcement-action:hover) {
+		background-color: var(--ft-surface);
+		color: var(--ft-primary);
+	}
+
+	.announcement-dismiss {
+		color: color-mix(in srgb, var(--ft-text-inverse) 90%, transparent);
+		transition: color 0.2s;
+	}
+
+	.announcement-dismiss:hover {
+		color: var(--ft-text-inverse);
 	}
 </style>
 

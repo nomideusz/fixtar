@@ -1,15 +1,29 @@
 
 <script lang="ts">
 	import { notifications } from '$lib/stores/notifications.svelte';
-	import { fade, fly, scale } from 'svelte/transition';
-	import { onMount } from 'svelte';
+	import { fly } from 'svelte/transition';
+	import { SvelteMap } from 'svelte/reactivity';
 	import type { Notification } from '$lib/stores/notifications.svelte';
 	
 	const typeClasses: Record<string, string> = {
-		success: 'from-success/90 to-success/70 text-white border-success/30',
-		error: 'from-danger/90 to-danger/70 text-white border-danger/30',
-		info: 'from-info/90 to-brand-700/90 text-white border-info/30',
-		warning: 'from-warning/90 to-brand-600/90 text-white border-warning/30'
+		success: 'bg-success text-white border-success/40',
+		error: 'bg-danger text-white border-danger/40',
+		info: 'bg-info text-white border-info/40',
+		warning: 'bg-warning text-neutral-900 border-warning/60'
+	};
+
+	const messageClasses: Record<string, string> = {
+		success: 'text-white/90',
+		error: 'text-white/90',
+		info: 'text-white/90',
+		warning: 'text-neutral-900/90'
+	};
+
+	const closeButtonClasses: Record<string, string> = {
+		success: 'bg-white/10 hover:bg-white/20 text-white/70 hover:text-white',
+		error: 'bg-white/10 hover:bg-white/20 text-white/70 hover:text-white',
+		info: 'bg-white/10 hover:bg-white/20 text-white/70 hover:text-white',
+		warning: 'bg-black/5 hover:bg-black/10 text-neutral-700 hover:text-neutral-900'
 	};
 	
 	const iconPaths: Record<string, string> = {
@@ -20,7 +34,7 @@
 	};
 	
 	// Auto-dismiss timer
-	let timers = new Map<string, NodeJS.Timeout>();
+	let timers = new SvelteMap<string, NodeJS.Timeout>();
 
 	$effect(() => {
 		notifications.items.forEach(notification => {
@@ -56,23 +70,18 @@
 <div class="fixed top-6 right-6 z-9999 space-y-3 max-w-sm">
 	{#each notifications.items as notification, index (notification.id)}
 		<div
-			class="group relative overflow-hidden rounded-2xl backdrop-blur-xl border shadow-2xl transform bg-linear-to-r {typeClasses[notification.type] || typeClasses.info}"
+			class="group relative overflow-hidden rounded-2xl border shadow-xl transform {typeClasses[notification.type] || typeClasses.info}"
 			transition:fly={{ x: 400, duration: 400, delay: index * 100 }}
 			onmouseenter={() => pauseTimer(notification.id)}
 			onmouseleave={() => resumeTimer(notification)}
 			role="alert"
 			aria-live="polite"
 		>
-			<!-- Background effects -->
-			<div class="absolute inset-0 bg-white/10 backdrop-blur-sm"></div>
-			<div class="absolute inset-0 bg-linear-to-br from-white/20 via-transparent to-transparent"></div>
-			
 			<!-- Content -->
 			<div class="relative flex items-start p-4 gap-3">
-				<!-- Icon with glow effect -->
+				<!-- Icon -->
 				<div class="relative shrink-0">
-					<div class="absolute inset-0 bg-white/30 rounded-full blur-md"></div>
-					<div class="relative w-8 h-8 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+					<div class="relative w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
 						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
 							<path stroke-linecap="round" stroke-linejoin="round" d={iconPaths[notification.type] || iconPaths.info} />
 						</svg>
@@ -81,7 +90,7 @@
 				
 				<!-- Message -->
 				<div class="flex-1 min-w-0">
-					<p class="text-sm text-white/90 leading-relaxed">
+					<p class="text-sm leading-relaxed {messageClasses[notification.type] || messageClasses.info}">
 						{notification.message}
 					</p>
 				</div>
@@ -89,10 +98,10 @@
 				<!-- Close button -->
 				<button
 					onclick={() => notifications.remove(notification.id)}
-					class="shrink-0 p-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-colors duration-200 group"
+					class="shrink-0 p-1.5 rounded-lg transition-colors duration-200 {closeButtonClasses[notification.type] || closeButtonClasses.info}"
 					aria-label="Zamknij powiadomienie"
 				>
-					<svg class="w-4 h-4 text-white/70 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<svg class="w-4 h-4 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
 					</svg>
 				</button>
@@ -108,22 +117,6 @@
 				</div>
 			{/if}
 			
-			<!-- Floating particles for success notifications -->
-			{#if notification.type === 'success'}
-				<div class="absolute inset-0 overflow-hidden pointer-events-none">
-					{#each Array(6) as _, i}
-						<div 
-							class="absolute w-1 h-1 bg-white/40 rounded-full animate-float-particle"
-							style="
-								left: {20 + Math.random() * 60}%; 
-								top: {20 + Math.random() * 60}%; 
-								animation-delay: {Math.random() * 2}s;
-								animation-duration: {2 + Math.random() * 2}s;
-							"
-						></div>
-					{/each}
-				</div>
-			{/if}
 		</div>
 	{/each}
 </div>

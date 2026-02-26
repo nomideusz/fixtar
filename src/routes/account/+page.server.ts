@@ -146,9 +146,9 @@ export const load = (async ({ locals, fetch }) => {
 					console.log(`Using field "${userFieldName}" for user reference in carts`);
 					
 					// Use the discovered field name
-					cart = await pb.collection('carts').getFirstListItem(
+					cart = (await pb.collection('carts').getFirstListItem(
 						`${userFieldName} = "${user.id}" && status = "active"`
-					).catch(() => null);
+					).catch(() => null)) as unknown as Cart | null;
 				}
 			} catch (e) {
 				console.error("Error getting sample cart:", e);

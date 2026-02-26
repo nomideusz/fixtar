@@ -1,5 +1,5 @@
 <script lang="ts">
-	import FixTarLogoWhite from '$lib/img/logo-FixTar-white.png';
+	import FixTarLogoWhite from '$lib/img/logo-FixTar-white.webp';
 
 	const year = new Date().getFullYear();
 
@@ -25,7 +25,7 @@
 	}
 </script>
 
-<footer class="relative bg-neutral-900 text-white overflow-hidden">
+<footer class="footer-shell relative overflow-hidden">
 	<div class="absolute inset-0 bg-linear-to-br from-brand-900/20 via-transparent to-accent-900/20"></div>
 
 	<div class="relative max-w-screen-2xl mx-auto px-6 py-20 sm:px-8 lg:px-12">
@@ -38,9 +38,8 @@
 				</p>
 				<div class="flex gap-3">
 					{#each socials as social (social)}
-						<a href="https://{social}.com/FixTar" class="social-icon group" aria-label={social} target="_blank" rel="noopener noreferrer">
-							<div class="absolute inset-0 bg-linear-to-r from-accent-600 to-brand-600 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-							<svg class="w-5 h-5 relative z-10 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24">
+						<a href="https://{social}.com/FixTar" class="social-icon" aria-label={social} target="_blank" rel="noopener noreferrer">
+							<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
 								<path d={socialPaths[social]} />
 							</svg>
 						</a>
@@ -49,12 +48,12 @@
 			</div>
 
 			<div class="lg:col-span-2">
-				<div class="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20">
+				<div class="bg-white/10 p-8 border border-white/15">
 					<h3 class="text-2xl font-bold mb-4">Newsletter</h3>
 					<p class="text-neutral-300 mb-6">Bądź na bieżąco z najnowszymi ofertami i promocjami</p>
 					<form class="flex gap-3">
-						<input type="email" placeholder="Twój adres email" class="flex-1 px-5 py-3 rounded-2xl bg-white/10 text-white placeholder-neutral-400 border border-white/20 focus:outline-none focus:border-white/40 transition-colors" required />
-						<button type="submit" class="px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-2xl shadow-lg transition-all duration-300">Zapisz</button>
+						<input type="email" placeholder="Twój adres email" class="flex-1 px-5 py-3 bg-white/10 text-white placeholder-neutral-400 border border-white/20 focus:outline-none focus:border-white/40 transition-colors" required />
+						<button type="submit" class="px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold shadow-lg transition-colors duration-200">Zapisz</button>
 					</form>
 				</div>
 			</div>
@@ -85,3 +84,28 @@
 		</div>
 	</div>
 </footer>
+<style>
+	.footer-shell {
+		background-color: var(--ft-footer-bg);
+		color: var(--ft-text-inverse);
+	}
+
+	.footer-link {
+		color: var(--ft-footer-text);
+		transition: color 0.2s;
+	}
+
+	.footer-link:hover {
+		color: var(--ft-text-inverse);
+	}
+
+	.social-icon {
+		padding: 0.75rem;
+		color: var(--ft-footer-text);
+		transition: color 0.2s;
+		cursor: pointer;
+	}
+	.social-icon:hover {
+		color: var(--ft-text-inverse);
+	}
+</style>

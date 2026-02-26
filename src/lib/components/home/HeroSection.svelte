@@ -3,148 +3,406 @@
 	import type { Product } from '$lib/stores/products.svelte';
 
 	interface Props {
-		/** First featured product to showcase on the right side */
 		featuredProduct?: Product;
-		scrollY?: number;
 	}
 
-	let { featuredProduct, scrollY = 0 }: Props = $props();
+	let { featuredProduct }: Props = $props();
 
-	const stats = [
-		{ value: '5000+', label: 'Zadowolonych Klientów' },
-		{ value: '1200+', label: 'Produktów w Ofercie' },
-		{ value: '99%', label: 'Pozytywnych Opinii' }
-	] as const;
+	const brands = ['Stihl', 'Makita', 'Bosch', 'DeWalt', 'Milwaukee'] as const;
 </script>
 
-<section class="relative min-h-screen flex items-center overflow-hidden">
-	<!-- Background -->
-	<div class="absolute inset-0 bg-linear-to-br from-neutral-900 via-neutral-800 to-neutral-900">
-		<div class="absolute inset-0 bg-black/20"></div>
-	</div>
+<section class="hero">
+	<!-- Angled brand accent strip -->
+	<div class="hero-accent"></div>
 
-	<!-- Decorative orbs -->
-	<div class="absolute inset-0 overflow-hidden pointer-events-none">
-		<div class="absolute top-1/4 -left-20 w-96 h-96 bg-brand-500/20 rounded-full blur-3xl animate-float"></div>
-		<div class="absolute bottom-1/4 -right-20 w-96 h-96 bg-accent-500/20 rounded-full blur-3xl animate-float-delayed"></div>
-	</div>
-
-	<!-- Content -->
-	<div class="relative z-10 max-w-screen-2xl mx-auto px-6 py-32 sm:px-8 lg:px-12 w-full" style="transform: translateY({scrollY * 0.3}px)">
-		<div class="grid lg:grid-cols-2 gap-12 items-center">
-			<!-- Left -->
-			<div class="text-center lg:text-left">
-				<div class="inline-flex items-center px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white mb-8">
-					<span class="relative flex h-3 w-3 mr-3">
-						<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
-						<span class="relative inline-flex rounded-full h-3 w-3 bg-brand-500"></span>
-					</span>
-					<span class="text-sm font-medium">Profesjonalne narzędzia najlepszych marek</span>
-				</div>
-
-				<h1 class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold mb-8">
-					<span class="text-white">Narzędzia</span><br />
-					<span class="text-brand-400">Naty</span><br />
-					<span class="text-white">i Seby</span>
-				</h1>
-
-				<p class="text-xl sm:text-2xl text-neutral-200 mb-12 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-					Pilarki, wiertarki, szlifierki i więcej. Stihl, Makita, Bosch, DeWalt — najwyższa jakość w konkurencyjnych cenach.
-				</p>
-
-				<div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-					<Button href="/products" class="shadow-2xl">Przeglądaj Produkty</Button>
-					<Button href="/contact" variant="glass">
-						<span class="flex items-center">
-							Skontaktuj się z nami
-							<svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-							</svg>
-						</span>
-					</Button>
-				</div>
-
-				<div class="grid grid-cols-3 gap-8 mt-16">
-					{#each stats as stat (stat.label)}
-						<div class="text-center lg:text-left">
-							<p class="text-3xl font-bold text-white">{stat.value}</p>
-							<p class="text-sm text-neutral-300 mt-1">{stat.label}</p>
-						</div>
-					{/each}
-				</div>
+	<div class="hero-inner">
+		<!-- Left: Bold copy -->
+		<div class="hero-copy">
+			<!-- Brand bar -->
+			<div class="brand-bar">
+				{#each brands as brand, i (brand)}
+					{#if i > 0}<span class="brand-dot">·</span>{/if}
+					<span class="brand-name">{brand}</span>
+				{/each}
 			</div>
 
-			<!-- Right: featured product showcase -->
-			<div class="hidden lg:block">
+			<h1 class="hero-title">
+				<span class="hero-title-line">Narzędzia</span>
+				<span class="hero-title-accent">Naty i Seby</span>
+			</h1>
+
+			<p class="hero-subtitle">
+				Pilarki, wiertarki, szlifierki. Najwyższa jakość w&nbsp;konkurencyjnych cenach.
+			</p>
+
+			<div class="hero-actions">
+				<Button href="/products" size="lg">Przeglądaj Produkty</Button>
+				<Button href="/contact" variant="outline" size="lg">Kontakt</Button>
+			</div>
+
+			<!-- Stats row -->
+			<div class="hero-stats">
+				<div class="hero-stat">
+					<span class="stat-value">5000+</span>
+					<span class="stat-label">Klientów</span>
+				</div>
+				<div class="stat-divider"></div>
+				<div class="hero-stat">
+					<span class="stat-value">1200+</span>
+					<span class="stat-label">Produktów</span>
+				</div>
+				<div class="stat-divider"></div>
+				<div class="hero-stat">
+					<span class="stat-value">99%</span>
+					<span class="stat-label">Opinii ★</span>
+				</div>
+			</div>
+		</div>
+
+		<!-- Right: Product showcase with bold staging -->
+		<div class="hero-product">
+			<div class="product-stage">
+				<!-- Large brand-colored backdrop shape -->
+				<div class="product-backdrop"></div>
+
 				{#if featuredProduct}
-					<div class="bg-neutral-900/50 backdrop-blur-md rounded-3xl border border-white/10 p-8 shadow-2xl animate-float-subtle">
-						<div class="flex flex-col h-full">
-							<div class="mb-4 flex justify-between items-start">
-								<span class="px-4 py-2 bg-brand-500/80 text-white text-sm font-bold rounded-full">⭐ Polecany</span>
-								{#if featuredProduct.compareAtPrice && featuredProduct.compareAtPrice > featuredProduct.price}
-									<span class="px-4 py-2 bg-danger/80 text-white text-sm font-bold rounded-full">
-										-{Math.round(((featuredProduct.compareAtPrice - featuredProduct.price) / featuredProduct.compareAtPrice) * 100)}%
-									</span>
-								{/if}
-							</div>
+					<div class="product-card">
+						{#if featuredProduct.mainImage}
+							<img
+								src={featuredProduct.mainImage}
+								alt={featuredProduct.name}
+								class="product-img"
+							/>
+						{:else}
+							<!-- Fallback to generated image -->
+							<img
+								src="/img/hero-chainsaw.png"
+								alt="Profesjonalna pilarka"
+								class="product-img"
+							/>
+						{/if}
 
-							<div class="bg-linear-to-br from-neutral-800 to-neutral-900 rounded-2xl p-8 mb-6 flex items-center justify-center min-h-64">
-								{#if featuredProduct.mainImage}
-									<img src={featuredProduct.mainImage} alt={featuredProduct.name} class="max-w-full max-h-64 object-contain hover:scale-105 transition-transform duration-500" />
-								{:else}
-									<svg class="w-32 h-32 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-									</svg>
-								{/if}
-							</div>
-
-							<h3 class="text-xl font-bold text-white mb-2 line-clamp-2">{featuredProduct.name}</h3>
-							<div class="flex items-center gap-3 mb-4">
-								<p class="text-3xl font-bold text-brand-400">{featuredProduct.price.toFixed(2)} zł</p>
+						<div class="product-meta">
+							<span class="product-badge">Polecany</span>
+							<h2 class="product-name">{featuredProduct.name}</h2>
+							<div class="product-price-row">
+								<span class="product-price">{featuredProduct.price.toFixed(2)} zł</span>
 								{#if featuredProduct.compareAtPrice && featuredProduct.compareAtPrice > featuredProduct.price}
-									<p class="text-xl text-neutral-400 line-through">{featuredProduct.compareAtPrice.toFixed(2)} zł</p>
+									<span class="product-old">{featuredProduct.compareAtPrice.toFixed(2)} zł</span>
 								{/if}
 							</div>
-							<a href="/products/{featuredProduct.slug || featuredProduct.id}" class="inline-flex items-center justify-center w-full px-6 py-3 bg-white text-neutral-900 hover:bg-neutral-100 font-bold rounded-2xl shadow-lg transition-all duration-300">
-								Zobacz Produkt
-								<svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+							<a href="/products/{featuredProduct.slug || featuredProduct.id}" class="product-cta">
+								Zobacz Produkt →
 							</a>
 						</div>
 					</div>
 				{:else}
-					<!-- Fallback -->
-					<div class="bg-neutral-900/50 backdrop-blur-md rounded-3xl border border-white/10 p-8 shadow-2xl flex items-center justify-center min-h-96 animate-float-subtle">
-						<div class="text-center">
-							<div class="w-32 h-32 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6">
-								<svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085" />
-								</svg>
-							</div>
-							<h3 class="text-2xl font-bold text-white mb-4">Profesjonalne Narzędzia</h3>
-							<a href="/products" class="inline-flex items-center justify-center px-6 py-3 bg-white text-neutral-900 hover:bg-neutral-100 font-bold rounded-2xl shadow-lg transition-all duration-300">Przeglądaj Produkty</a>
+					<div class="product-card product-card-empty">
+						<img
+							src="/img/hero-chainsaw.png"
+							alt="Profesjonalne narzędzia"
+							class="product-img"
+						/>
+						<div class="product-meta">
+							<h2 class="product-name">Profesjonalne Narzędzia</h2>
+							<a href="/products" class="product-cta">
+								Przeglądaj Produkty →
+							</a>
 						</div>
 					</div>
 				{/if}
 			</div>
 		</div>
 	</div>
-
-	<!-- Scroll indicator -->
-	<div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-		<div class="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
-			<div class="w-1 h-3 bg-white rounded-full mt-2 animate-scroll"></div>
-		</div>
-	</div>
 </section>
 
 <style>
-	@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-	@keyframes float-delayed { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-30px); } }
-	@keyframes float-subtle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-	@keyframes scroll { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(10px); opacity: 0; } }
+	/* ── Hero container ── */
+	.hero {
+		position: relative;
+		/* Account for fixed navbar height */
+		min-height: calc(100vh - 5rem);
+		display: flex;
+		align-items: stretch;
+		background-color: #0c1117;
+		overflow: hidden;
+	}
 
-	.animate-float { animation: float 6s ease-in-out infinite; }
-	.animate-float-delayed { animation: float-delayed 8s ease-in-out infinite; }
-	.animate-float-subtle { animation: float-subtle 4s ease-in-out infinite; }
-	.animate-scroll { animation: scroll 1.5s ease-in-out infinite; }
+	/* ── Angled accent strip — the signature element ── */
+	.hero-accent {
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 55%;
+		height: 100%;
+		background: linear-gradient(135deg, var(--ft-primary, #378A92) 0%, #2a6f76 100%);
+		clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
+		z-index: 1;
+	}
+
+	@media (max-width: 1023px) {
+		.hero-accent {
+			width: 100%;
+			height: 45%;
+			bottom: 0;
+			top: auto;
+			clip-path: polygon(0 20%, 100% 0, 100% 100%, 0% 100%);
+		}
+	}
+
+	/* ── Grid ── */
+	.hero-inner {
+		position: relative;
+		z-index: 2;
+		display: grid;
+		grid-template-columns: 1fr;
+		width: 100%;
+		max-width: 1536px;
+		margin: 0 auto;
+		padding: 0 1.5rem;
+	}
+
+	@media (min-width: 640px) {
+		.hero-inner { padding: 0 2rem; }
+	}
+
+	@media (min-width: 1024px) {
+		.hero-inner {
+			grid-template-columns: 1fr 1fr;
+			padding: 0 3rem;
+		}
+	}
+
+	/* ── Left copy ── */
+	.hero-copy {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		padding: 6rem 0 3rem;
+		color: white;
+	}
+
+	@media (min-width: 1024px) {
+		.hero-copy {
+			padding: 5rem 4rem 5rem 0;
+		}
+	}
+
+	/* ── Brand trust bar ── */
+	.brand-bar {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		margin-bottom: 2rem;
+		flex-wrap: wrap;
+	}
+
+	.brand-name {
+		font-size: 0.7rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.15em;
+		color: var(--ft-primary, #378A92);
+	}
+
+	.brand-dot {
+		color: rgba(255, 255, 255, 0.2);
+		font-size: 1.25rem;
+	}
+
+	/* ── Title — BIG, distinctive ── */
+	.hero-title {
+		margin-bottom: 1.5rem;
+		line-height: 0.95;
+	}
+
+	.hero-title-line {
+		display: block;
+		font-size: clamp(3rem, 7vw, 5.5rem);
+		font-weight: 900;
+		letter-spacing: -0.03em;
+		color: white;
+	}
+
+	.hero-title-accent {
+		display: block;
+		font-size: clamp(3rem, 7vw, 5.5rem);
+		font-weight: 900;
+		letter-spacing: -0.03em;
+		color: var(--ft-primary, #378A92);
+		/* Slight offset — gives energy */
+		margin-left: 0.15em;
+	}
+
+	/* ── Subtitle ── */
+	.hero-subtitle {
+		font-size: 1.125rem;
+		line-height: 1.7;
+		color: rgba(255, 255, 255, 0.5);
+		max-width: 26rem;
+		margin-bottom: 2.5rem;
+	}
+
+	/* ── Actions ── */
+	.hero-actions {
+		display: flex;
+		gap: 1rem;
+		flex-wrap: wrap;
+		margin-bottom: 3rem;
+	}
+
+	/* ── Stats ── */
+	.hero-stats {
+		display: flex;
+		align-items: center;
+		gap: 1.5rem;
+	}
+
+	.hero-stat {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.stat-value {
+		font-size: 1.5rem;
+		font-weight: 800;
+		font-variant-numeric: tabular-nums;
+	}
+
+	.stat-label {
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: rgba(255, 255, 255, 0.4);
+		margin-top: 0.125rem;
+	}
+
+	.stat-divider {
+		width: 1px;
+		height: 2rem;
+		background-color: rgba(255, 255, 255, 0.15);
+	}
+
+	/* ── Right: Product ── */
+	.hero-product {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 3rem 0;
+	}
+
+	@media (min-width: 1024px) {
+		.hero-product {
+			padding: 3rem 0 3rem 2rem;
+		}
+	}
+
+	.product-stage {
+		position: relative;
+		width: 100%;
+		max-width: 28rem;
+	}
+
+	/* Large circle backdrop behind the product */
+	.product-backdrop {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 80%;
+		aspect-ratio: 1;
+		border-radius: 50%;
+		background: rgba(255, 255, 255, 0.08);
+		z-index: 0;
+	}
+
+	.product-card {
+		position: relative;
+		z-index: 1;
+		background-color: white;
+		border: 1px solid var(--ft-border, #e2e8f0);
+		overflow: hidden;
+	}
+
+	.product-card-empty {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.product-img {
+		width: 100%;
+		height: 16rem;
+		object-fit: contain;
+		background-color: #f8fafc;
+		padding: 1.5rem;
+	}
+
+	@media (min-width: 1024px) {
+		.product-img {
+			height: 20rem;
+		}
+	}
+
+	.product-meta {
+		padding: 1.5rem;
+		background-color: white;
+	}
+
+	.product-badge {
+		display: inline-block;
+		font-size: 0.65rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		background-color: var(--ft-primary, #378A92);
+		color: white;
+		padding: 0.2rem 0.6rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.product-name {
+		font-size: 1rem;
+		font-weight: 700;
+		color: var(--ft-text-primary, #0f172a);
+		line-height: 1.3;
+		margin-bottom: 0.5rem;
+	}
+
+	.product-price-row {
+		display: flex;
+		align-items: baseline;
+		gap: 0.5rem;
+		margin-bottom: 1rem;
+	}
+
+	.product-price {
+		font-size: 1.5rem;
+		font-weight: 800;
+		color: var(--ft-primary, #378A92);
+		font-variant-numeric: tabular-nums;
+	}
+
+	.product-old {
+		font-size: 0.875rem;
+		color: var(--ft-text-muted, #94a3b8);
+		text-decoration: line-through;
+		font-variant-numeric: tabular-nums;
+	}
+
+	.product-cta {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.375rem;
+		font-size: 0.8rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--ft-primary, #378A92);
+		transition: gap 0.2s;
+		cursor: pointer;
+	}
+
+	.product-cta:hover {
+		gap: 0.625rem;
+	}
 </style>

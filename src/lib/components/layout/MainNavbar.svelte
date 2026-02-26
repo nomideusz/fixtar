@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { cart, userStore } from '$lib/stores';
-	import FixTarLogo from '$lib/img/logo-FixTar.png';
+	import FixTarLogo from '$lib/img/logo-FixTar.webp';
 
 	const {
 		mobileMenuOpen,

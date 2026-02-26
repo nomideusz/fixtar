@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { cart, userStore } from '$lib/stores';
 	import Button from '$lib/components/ui/Button.svelte';
-	import FixTarLogo from '$lib/img/logo-FixTar.png';
+	import FixTarLogo from '$lib/img/logo-FixTar.webp';
 
 	interface Props {
 		onCartOpen?: () => void;
@@ -25,7 +25,9 @@
 	async function handleLogout() {
 		userMenuOpen = false;
 		userStore.logout();
-		try { await fetch('/auth/logout', { method: 'POST', credentials: 'include' }); } catch {}
+		try { await fetch('/auth/logout', { method: 'POST', credentials: 'include' }); } catch {
+			// Logout request failed, but user is already logged out locally
+		}
 		window.location.href = '/';
 	}
 </script>
@@ -42,7 +44,7 @@
 {/if}
 
 <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 {scrolled ? 'py-3' : 'py-5'}">
-	<div class="absolute inset-0 bg-white/95 backdrop-blur-md {scrolled ? 'shadow-xl' : 'shadow-lg'} transition-all duration-300"></div>
+	<div class="absolute inset-0 nav-shell backdrop-blur-md {scrolled ? 'shadow-xl' : 'shadow-lg'} transition-all duration-300"></div>
 
 	<div class="relative max-w-screen-2xl mx-auto px-6 sm:px-8 lg:px-12">
 		<div class="flex justify-between items-center">
@@ -91,8 +93,8 @@
 						</button>
 
 						{#if userMenuOpen}
-							<div class="absolute right-0 mt-3 w-64 bg-white rounded-2xl shadow-xl overflow-hidden border border-neutral-100 animate-drop-in">
-								<div class="p-5 bg-neutral-50 border-b border-neutral-100">
+							<div class="absolute right-0 mt-3 w-64 menu-panel shadow-xl overflow-hidden animate-drop-in">
+								<div class="p-5 menu-panel-header border-b">
 									<p class="text-sm text-neutral-600">Zalogowany jako</p>
 									<p class="font-semibold text-neutral-900 truncate">{userStore.current.email}</p>
 								</div>
@@ -107,7 +109,7 @@
 											Panel Administratora
 										</a>
 									{/if}
-									<div class="border-t border-neutral-100 my-2"></div>
+									<div class="menu-separator my-2"></div>
 									<button onclick={handleLogout} class="dropdown-item text-danger hover:text-danger-dark hover:bg-danger/5 w-full">
 										<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-8m0 0l-4-8m4 8H3" /></svg>
 										Wyloguj
@@ -135,14 +137,14 @@
 	<!-- Mobile menu -->
 	{#if mobileMenuOpen}
 		<div class="lg:hidden absolute top-full left-0 right-0 mt-2 mx-4">
-			<div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-neutral-100 p-6 space-y-2">
+			<div class="mobile-panel shadow-xl overflow-hidden p-6 space-y-2">
 				<a href="/search" class="mobile-link"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>Szukaj</a>
 				<a href="/products" class="mobile-link">Produkty</a>
 				<a href="/about" class="mobile-link">O Nas</a>
 				<a href="/contact" class="mobile-link">Kontakt</a>
 
 				{#if userStore.current}
-					<div class="border-t border-neutral-200 pt-4 mt-4 space-y-2">
+					<div class="menu-separator pt-4 mt-4 space-y-2">
 						<a href="/account" class="mobile-link">Moje Konto</a>
 						{#if userStore.current.isAdmin}
 							<a href="/admin" class="mobile-link">Panel Administratora</a>
@@ -150,7 +152,7 @@
 						<button onclick={handleLogout} class="mobile-link text-danger hover:text-danger hover:bg-danger-light w-full">Wyloguj</button>
 					</div>
 				{:else}
-					<div class="border-t border-neutral-200 pt-4 mt-4">
+					<div class="menu-separator pt-4 mt-4">
 						<Button href="/auth/login" fullWidth>Zaloguj</Button>
 					</div>
 				{/if}
@@ -160,6 +162,26 @@
 </nav>
 
 <style>
+	.nav-shell {
+		background-color: color-mix(in srgb, var(--ft-surface) 95%, transparent);
+		border-bottom: 1px solid color-mix(in srgb, var(--ft-border) 65%, transparent);
+	}
+
+	.menu-panel,
+	.mobile-panel {
+		background-color: var(--ft-surface-elevated);
+		border: 1px solid var(--ft-border);
+	}
+
+	.menu-panel-header {
+		background-color: var(--ft-surface-secondary);
+		border-color: var(--ft-border);
+	}
+
+	.menu-separator {
+		border-top: 1px solid var(--ft-border);
+	}
+
 	.nav-link {
 		padding: 0.5rem 1rem;
 		color: var(--ft-text-secondary);

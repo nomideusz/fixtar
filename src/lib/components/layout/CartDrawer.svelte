@@ -38,7 +38,6 @@
     // Props
     const {
         toggleCart = () => {},
-        currentLanguage = 'en',
         t = (key: TranslationKey) => key
     } = $props();
 
@@ -140,17 +139,21 @@
         cart.updateQuantity(productId, quantity);
     }
 
-    function handleButtonClick(e: MouseEvent) {
+    function handleButtonClick() {
         toggleCart();
     }
 
-    function handleBackdropClick(e: MouseEvent) {
+    function handleBackdropClick() {
         toggleCart();
     }
 
     function getItemTotal(item: CartItem): string {
         const price = parseFloat(item.product.price.toString());
         return (price * item.quantity).toFixed(2);
+    }
+
+    function getProductHref(item: CartItem): string {
+        return `/products/${encodeURIComponent(item.product.id)}`;
     }
 </script>
 
@@ -187,16 +190,16 @@
             <div class="cart-drawer__actions">
                 <button
                     onclick={clearCart}
-                    class="cart-drawer__icon-btn text-neutral-300 hover:text-danger"
-                    title={t('remove')}
-                    aria-label={t('remove')}
+                    class="cart-drawer__icon-btn cart-drawer__icon-btn--clear"
+                    title={t('clearCart')}
+                    aria-label={t('clearCart')}
                 >
                     🗑️
                 </button>
                 <button
                     onclick={handleButtonClick}
-                    class="cart-drawer__icon-btn text-neutral-300 hover:text-white"
-                    aria-label="Close cart drawer"
+                    class="cart-drawer__icon-btn cart-drawer__icon-btn--close"
+                    aria-label={t('closeCartDrawer')}
                 >
                     ✕
                 </button>
@@ -206,7 +209,7 @@
         <div class="cart-drawer__body">
             {#if !Array.isArray(currentItems) || currentItems.length === 0}
                 <div class="cart-drawer__empty">
-                    <p class="text-neutral-400">{t('cartEmpty')}</p>
+                    <p class="cart-drawer__empty-text">{t('cartEmpty')}</p>
                     <Button
                         variant="primary"
                         class="cart-drawer__empty-button"
@@ -218,13 +221,26 @@
                     {#each currentItems as item (item.product.id)}
                         <div class="cart-item">
                             <div class="cart-item__content">
-                                <img
-                                    src={item.product.image}
-                                    alt={item.product.name}
-                                    class="cart-item__image"
-                                />
+                                <a
+                                    href={getProductHref(item)}
+                                    class="cart-item__image-link"
+                                    onclick={handleButtonClick}
+                                    aria-label={item.product.name}
+                                >
+                                    <img
+                                        src={item.product.image}
+                                        alt={item.product.name}
+                                        class="cart-item__image"
+                                    />
+                                </a>
                                 <div class="cart-item__details">
-                                    <p class="cart-item__name">{item.product.name}</p>
+                                    <a
+                                        href={getProductHref(item)}
+                                        class="cart-item__name-link"
+                                        onclick={handleButtonClick}
+                                    >
+                                        <p class="cart-item__name">{item.product.name}</p>
+                                    </a>
                                     <p class="cart-item__price">
                                         ${parseFloat(item.product.price.toString()).toFixed(2)} × {item.quantity} = ${getItemTotal(item)}
                                     </p>
@@ -245,7 +261,7 @@
                             </div>
                             <button
                                 onclick={() => removeItem(item.product.id)}
-                                class="cart-drawer__icon-btn text-neutral-400 hover:text-danger"
+                                class="cart-drawer__icon-btn cart-drawer__icon-btn--remove"
                                 aria-label={t('remove')}
                             >
                                 ✕
@@ -255,21 +271,20 @@
                 </div>
                 <div class="cart-drawer__footer">
                     <div class="cart-drawer__summary">
-                        <span class="text-neutral-400">{t('subtotal')}</span>
+                        <span class="cart-drawer__summary-label">{t('subtotal')}</span>
                         <span class="cart-drawer__summary-price">
                             ${cartTotal.toFixed(2)}
                         </span>
                     </div>
                     <p class="cart-drawer__shipping-note">{t('shippingNote')}</p>
                     <Button
-                        variant="gradient"
+                        variant="primary"
                         fullWidth
                         class="cart-drawer__checkout-btn"
                     >{t('proceedToCheckout')}</Button>
                     <Button
                         variant="outline"
                         fullWidth
-                        class="cart-drawer__continue-btn"
                         onclick={handleButtonClick}
                     >{t('continueShopping')}</Button>
                 </div>
@@ -279,14 +294,6 @@
 {/if}
 
 <style>
-    /* ==========================================================================
-       CartDrawer — uses FixTar Design System tokens
-       Layer 1: --color-brand-*, --color-accent-*, --color-neutral-* (palette)
-       Layer 2: --ft-* (semantic tokens)
-       Layer 3: --radius-* (radii from @theme)
-       ========================================================================== */
-
-    /* Backdrop overlay */
     .cart-backdrop {
         position: fixed;
         inset: 0;
@@ -295,7 +302,6 @@
         backdrop-filter: blur(4px);
     }
 
-    /* Drawer panel */
     .cart-drawer {
         position: fixed;
         top: 0;
@@ -303,90 +309,77 @@
         z-index: 151;
         display: flex;
         height: 100%;
-        width: 100%;
-        max-width: 100%;
+        width: min(100%, 36rem);
         flex-direction: column;
-        background-color: var(--color-neutral-800);
-        backdrop-filter: blur(12px);
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-        border-left: 1px solid var(--color-neutral-700);
+        background-color: var(--ft-surface-elevated);
+        box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.22);
+        border-left: 1px solid var(--ft-border);
     }
 
-    @media (min-width: 768px) {
+    @media (min-width: 1280px) {
         .cart-drawer {
-            width: 400px;
+            width: min(100%, 38rem);
         }
     }
 
-    /* Header */
     .cart-drawer__header {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        background: linear-gradient(to right, var(--color-brand-700), var(--color-brand-800));
-        padding: 1rem;
-        color: var(--ft-text-inverse);
-        margin-top: 3.5rem;
-        border-bottom: 1px solid color-mix(in srgb, var(--color-brand-600) 30%, transparent);
-    }
-
-    @media (min-width: 375px) {
-        .cart-drawer__header { margin-top: 4rem; }
-    }
-    @media (min-width: 640px) {
-        .cart-drawer__header { margin-top: 5rem; }
-    }
-    @media (min-width: 768px) {
-        .cart-drawer__header { margin-top: 6rem; }
+        background-color: var(--ft-surface-secondary);
+        padding: 1rem 1.25rem;
+        color: var(--ft-text);
+        border-bottom: 1px solid var(--ft-border);
     }
 
     .cart-drawer__title {
         font-family: var(--font-heading);
-        font-size: 1.25rem;
+        font-size: 1.125rem;
         font-weight: 600;
+        line-height: 1.3;
     }
 
     .cart-drawer__actions {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.375rem;
     }
 
-    /* Shared icon-button style for header + remove */
     .cart-drawer__icon-btn {
         background: none;
         border: none;
         cursor: pointer;
-        padding: 0.375rem;
-        border-radius: var(--radius-sm);
-        font-size: 1rem;
+        padding: 0.45rem;
+        border-radius: var(--radius-md);
+        font-size: 0.95rem;
         line-height: 1;
         transition: color 0.2s, background-color 0.2s;
-    }
-    .cart-drawer__icon-btn:hover {
-        background-color: color-mix(in srgb, var(--ft-text-inverse) 10%, transparent);
+        color: var(--ft-text-secondary);
     }
 
-    /* Body */
+    .cart-drawer__icon-btn:hover {
+        background-color: var(--ft-surface-tertiary);
+        transform: translateY(-1px);
+    }
+
+    .cart-drawer__icon-btn--close:hover {
+        color: var(--ft-text);
+    }
+
+    .cart-drawer__icon-btn--clear:hover,
+    .cart-drawer__icon-btn--remove:hover {
+        color: var(--ft-danger);
+        background-color: color-mix(in srgb, var(--ft-danger) 12%, transparent);
+    }
+
     .cart-drawer__body {
         display: flex;
-        height: calc(100% - 64px - 3.5rem);
+        flex: 1;
+        min-height: 0;
         flex-direction: column;
-        background-color: var(--color-neutral-800);
-        padding: 1rem;
+        padding: 1rem 1.25rem;
     }
 
-    @media (min-width: 375px) {
-        .cart-drawer__body { height: calc(100% - 64px - 4rem); }
-    }
-    @media (min-width: 640px) {
-        .cart-drawer__body { height: calc(100% - 64px - 5rem); }
-    }
-    @media (min-width: 768px) {
-        .cart-drawer__body { height: calc(100% - 64px - 6rem); }
-    }
-
-    /* Empty state */
     .cart-drawer__empty {
         display: flex;
         height: 100%;
@@ -400,71 +393,112 @@
         margin-top: 0.5rem;
     }
 
-    /* Items list */
     .cart-drawer__items {
         flex: 1;
         overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
     }
 
-    /* Single cart item */
     .cart-item {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        border-bottom: 1px solid var(--color-neutral-700);
-        padding: 0.5rem 0.5rem 1rem;
-        transition: background-color 0.2s;
-    }
-
-    .cart-item:hover {
-        background-color: color-mix(in srgb, var(--ft-primary) 8%, transparent);
+        border: 1px solid var(--ft-border);
+        background-color: var(--ft-surface);
+        padding: 0.875rem;
+        border-radius: var(--radius-md);
     }
 
     .cart-item__content {
         display: flex;
         align-items: center;
+        min-width: 0;
     }
 
     .cart-item__image {
-        height: 4rem;
-        width: 4rem;
+        height: 6rem;
+        width: 6rem;
         border-radius: var(--radius-md);
         object-fit: cover;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        border: 1px solid var(--ft-border);
+    }
+
+    .cart-item__image-link {
+        display: inline-flex;
+        border-radius: var(--radius-md);
+    }
+
+    .cart-item__image-link:focus-visible,
+    .cart-item__name-link:focus-visible {
+        outline: 2px solid var(--ft-primary);
+        outline-offset: 2px;
     }
 
     .cart-item__details {
-        margin-left: 0.75rem;
+        margin-left: 0.875rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.375rem;
+        min-width: 0;
     }
 
     .cart-item__name {
-        font-weight: 500;
-        color: var(--ft-text-inverse);
+        font-weight: 600;
+        font-size: 1rem;
+        line-height: 1.35;
+        color: var(--ft-text);
+    }
+
+    .cart-item__name-link {
+        text-decoration: none;
+    }
+
+    .cart-item__name-link:hover .cart-item__name {
+        color: var(--ft-primary);
     }
 
     .cart-item__price {
-        color: var(--color-brand-400);
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--ft-primary);
     }
 
-    /* Quantity stepper */
     .cart-item__quantity {
-        margin-top: 0.25rem;
+        margin-top: 0.375rem;
         display: flex;
         align-items: center;
+        border: 1px solid var(--ft-border);
+        border-radius: var(--radius-sm);
+        overflow: hidden;
+        width: fit-content;
     }
 
     .cart-item__quantity-btn {
-        padding: 0.125rem 0.5rem;
-        background-color: var(--ft-primary);
-        transition: background-color 0.2s;
+        min-width: 2rem;
+        min-height: 2rem;
+        padding: 0 0.5rem;
+        background-color: var(--ft-surface-secondary);
+        transition: background-color 0.2s, color 0.2s;
         border: none;
         cursor: pointer;
-        color: var(--ft-text-inverse);
+        color: var(--ft-text);
         font-weight: 600;
+        font-size: 0.95rem;
+        line-height: 1;
+        box-shadow: inset 0 0 0 1px transparent;
     }
 
     .cart-item__quantity-btn:hover {
-        background-color: var(--ft-primary-hover);
+        background-color: var(--ft-primary-light);
+        color: var(--ft-primary);
+        box-shadow: inset 0 0 0 1px var(--ft-primary);
+    }
+
+    :global(.cart-drawer__checkout-btn:hover),
+    :global(.cart-drawer__footer .btn-outline:hover) {
+        transform: translateY(-1px);
     }
 
     .cart-item__quantity-btn--minus {
@@ -478,34 +512,50 @@
     }
 
     .cart-item__quantity-display {
-        background-color: var(--ft-primary-active);
-        padding: 0.125rem 0.5rem;
-        color: var(--ft-text-inverse);
+        background-color: var(--ft-surface);
+        min-height: 2rem;
+        padding: 0.2rem 0.5rem;
+        color: var(--ft-text);
         min-width: 2rem;
         text-align: center;
+        font-size: 0.875rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-left: 1px solid var(--ft-border);
+        border-right: 1px solid var(--ft-border);
     }
 
-    /* Footer */
     .cart-drawer__footer {
         margin-top: 1rem;
-        border-top: 1px solid var(--color-neutral-700);
+        border-top: 1px solid var(--ft-border);
         padding-top: 1rem;
     }
 
+    .cart-drawer__summary-label,
+    .cart-drawer__empty-text {
+        color: var(--ft-text-secondary);
+        font-size: 0.875rem;
+    }
+
     .cart-drawer__summary {
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.375rem;
         display: flex;
         justify-content: space-between;
     }
 
     .cart-drawer__summary-price {
         font-weight: 600;
-        color: var(--ft-text-inverse);
+        color: var(--ft-text);
+        font-size: 1.125rem;
+        line-height: 1.2;
     }
 
     .cart-drawer__shipping-note {
-        margin-bottom: 1rem;
+        margin-bottom: 0.875rem;
         font-size: 0.875rem;
+        line-height: 1.4;
         color: var(--ft-text-muted);
     }
 

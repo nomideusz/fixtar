@@ -167,14 +167,14 @@
 					</a>
 				{/if}
 				
-				<a href="/admin/xml-sync" class="flex items-center justify-between p-3 rounded-lg hover:bg-neutral-50 transition-colors">
+				<a href="/admin/baselinker" class="flex items-center justify-between p-3 rounded-lg hover:bg-neutral-50 transition-colors">
 					<div class="flex items-center">
 						<svg class="w-5 h-5 text-neutral-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
 						</svg>
 						<div>
-							<span class="font-medium">Sync XML Products</span>
-							<p class="text-sm text-neutral-500">Import from Qoltec API</p>
+							<span class="font-medium">BaseLinker Integration</span>
+							<p class="text-sm text-neutral-500">Sync products and manage orders</p>
 						</div>
 					</div>
 					<svg class="w-5 h-5 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -231,7 +231,7 @@
 			<h2 class="text-xl font-semibold mb-4">Quick Actions</h2>
 			<div class="flex flex-wrap gap-4">
 				<Button href="/admin/products">Manage Products</Button>
-				<Button href="/admin/xml-sync" variant="secondary">Sync Products</Button>
+				<Button href="/admin/baselinker" variant="secondary">BaseLinker</Button>
 				{#if data.stats.draftProducts > 0}
 					<Button href="/admin/products?status=draft" variant="ghost">
 						Review Drafts ({data.stats.draftProducts})

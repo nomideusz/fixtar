@@ -5,11 +5,7 @@
 	import { elasticOut } from 'svelte/easing';
 	import { enhance } from '$app/forms';
 
-	import Button from '$lib/components/ui/Button.svelte';
-	import Card from '$lib/components/ui/Card.svelte';
-
 	const { data } = $props<{ data: PageData }>();
-	const user = $derived(data.data?.user || null);
 
 	// Extract data
 	const favorites = $derived(data.favorites || []);
@@ -59,8 +55,8 @@
 
 	<div class="page-container" in:fade={{ duration: 300 }}>
 		<div class="page-header" in:fly={{ y: -20, duration: 400, delay: 200 }}>
-			<h1 class="page-title t-text-brand-primary-light">My Favorites</h1>
-			<p class="t-text-tertiary">Products you've saved for later</p>
+			<h1 class="page-title">My Favorites</h1>
+			<p class="text-neutral-500">Products you've saved for later</p>
 		</div>
 		
 		<div class="favorites-container">
@@ -68,8 +64,8 @@
 				<div class="card empty-state-card" in:fly={{ y: 20, duration: 500, delay: 400 }}>
 					<div class="cyber-grid"></div>
 					<div class="empty-state">
-						<p class="t-text-tertiary">You don't have any favorites yet.</p>
-						<a href="/products" class="btn t-btn-primary">
+						<p class="text-neutral-500">You don't have any favorites yet.</p>
+						<a href="/products" class="btn btn-primary">
 							Browse Products
 						</a>
 					</div>
@@ -135,14 +131,14 @@
 												<div class="button-group">
 													<a 
 														href="/products/{product.slug || product.id}" 
-														class="btn t-btn-secondary view-button"
+														class="btn btn-secondary view-button"
 													>
 														View Details
 													</a>
 													
 													<button 
 														type="submit"
-														class="btn t-btn-outline remove-button"
+														class="btn btn-outline remove-button"
 														disabled={removing[product.id]}
 													>
 														{#if removing[product.id]}
@@ -175,20 +171,20 @@
 	.page-container {
 		max-width: 1200px;
 		margin: 0 auto;
-		padding: var(--space-md);
+		padding: 1rem;
 	}
 	
 	/* Page header */
 	.page-header {
-		margin-bottom: var(--space-xl);
+		margin-bottom: 2rem;
 		text-align: center;
 	}
 	
 	.page-title {
-		font-size: var(--font-size-3xl, 2rem);
-		font-weight: var(--font-weight-bold);
-		margin-bottom: var(--space-xs);
-		background: linear-gradient(to right, var(--color-danger-light, #fca5a5), white);
+		font-size: 2rem;
+		font-weight: 700;
+		margin-bottom: 0.25rem;
+		background: linear-gradient(to right, var(--color-brand-500), var(--color-accent-500));
 		-webkit-background-clip: text;
 		background-clip: text;
 		color: transparent;
@@ -207,7 +203,7 @@
 		background-color: var(--ft-surface-overlay, rgba(17, 24, 39, 0.9));
 		border: 1px solid color-mix(in srgb, var(--color-danger-dark) 30%, transparent);
 		backdrop-filter: blur(12px);
-		padding: var(--space-lg, 1.5rem);
+		padding: 1.5rem;
 	}
 	
 	.empty-state {
@@ -215,8 +211,8 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		padding: var(--space-xl);
-		gap: var(--space-md);
+		padding: 2rem;
+		gap: 1rem;
 	}
 	
 	/* Button */
@@ -225,8 +221,8 @@
 		align-items: center;
 		justify-content: center;
 		border-radius: var(--radius-md, 0.375rem);
-		padding: var(--space-sm, 0.5rem) var(--space-md, 1rem);
-		font-weight: var(--font-weight-medium);
+		padding: 0.5rem 1rem;
+		font-weight: 500;
 		transition: all 0.2s ease;
 		text-decoration: none;
 		cursor: pointer;
@@ -236,7 +232,7 @@
 	.products-grid {
 		display: grid;
 		grid-template-columns: repeat(1, 1fr);
-		gap: var(--space-md);
+		gap: 1rem;
 	}
 	
 	@media (min-width: 640px) {
@@ -260,7 +256,7 @@
 		border: 1px solid color-mix(in srgb, var(--color-danger-dark) 20%, transparent);
 		backdrop-filter: blur(12px);
 		transition: transform 0.3s, box-shadow 0.3s;
-		padding: var(--space-md);
+		padding: 1rem;
 	}
 	
 	.product-card:hover {
@@ -270,20 +266,20 @@
 	
 	.product-badge-container {
 		position: absolute;
-		top: var(--space-sm);
-		right: var(--space-sm);
+		top: 0.5rem;
+		right: 0.5rem;
 		z-index: 10;
 		display: flex;
 		flex-direction: column;
-		gap: var(--space-xs);
+		gap: 0.25rem;
 	}
 	
 	.product-badge {
 		display: inline-flex;
 		align-items: center;
 		padding: 0.25rem 0.75rem;
-		font-size: var(--font-size-xs);
-		font-weight: var(--font-weight-medium);
+		font-size: 0.75rem;
+		font-weight: 500;
 		border-radius: 9999px;
 	}
 	
@@ -319,17 +315,17 @@
 	}
 	
 	.product-details {
-		padding: var(--space-md) 0 0;
+		padding: 1rem 0 0;
 	}
 	
 	.product-name {
-		font-size: var(--font-size-lg, 1.125rem);
-		font-weight: var(--font-weight-medium);
-		margin-bottom: var(--space-xs);
+		font-size: 1.125rem;
+		font-weight: 500;
+		margin-bottom: 0.25rem;
 	}
 	
 	.product-name a {
-		color: var(--color-white);
+		color: var(--ft-text);
 		text-decoration: none;
 		transition: color 0.2s;
 	}
@@ -341,29 +337,29 @@
 	.product-price {
 		display: flex;
 		align-items: center;
-		gap: var(--space-xs);
-		margin-bottom: var(--space-sm);
+		gap: 0.25rem;
+		margin-bottom: 0.5rem;
 	}
 	
 	.current-price {
-		font-weight: var(--font-weight-semibold);
-		color: var(--ft-danger, #f87171);
+		font-weight: 600;
+		color: var(--ft-danger);
 	}
 	
 	.compare-price {
-		font-size: var(--font-size-sm);
+		font-size: 0.875rem;
 		color: var(--ft-text-secondary);
 		text-decoration: line-through;
 	}
 	
 	.product-actions {
-		margin-top: var(--space-md);
+		margin-top: 1rem;
 	}
 	
 	.button-group {
 		display: flex;
 		flex-direction: column;
-		gap: var(--space-sm);
+		gap: 0.5rem;
 	}
 	
 	@media (min-width: 640px) {
@@ -381,7 +377,7 @@
 	.remove-button {
 		flex: 1;
 		border: 1px solid color-mix(in srgb, var(--color-danger-dark) 50%, transparent);
-		color: var(--ft-danger, #f87171);
+		color: var(--ft-danger);
 		background-color: transparent;
 	}
 	

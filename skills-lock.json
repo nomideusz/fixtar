@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "ecommerce-platform-specialist": {
+      "source": "qodex-ai/ai-agent-skills",
+      "sourceType": "github",
+      "computedHash": "be7f5388c9cba9b16f446c4ea84e542dcb6de39e9be32612e4afd3059233e277"
+    }
+  }
+}

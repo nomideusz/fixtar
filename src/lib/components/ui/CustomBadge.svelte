@@ -51,7 +51,7 @@
 		secondary: 'bg-transparent border border-accent-600 text-accent-600',
 		success: 'bg-transparent border border-success text-success',
 		danger: 'bg-transparent border border-danger text-danger',
-		warning: 'bg-transparent border border-warning text-warning',
+		warning: 'bg-warning-light/40 border border-warning text-neutral-900',
 		info: 'bg-transparent border border-info text-info'
 	};
 

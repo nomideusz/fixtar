@@ -246,19 +246,19 @@
 			<div class="mt-2 flex items-center gap-4 text-sm text-neutral-500">
 				<span>• Change product statuses and visibility</span>
 				<span>• Search and filter all products</span>
-				<a href="/admin/xml-products" class="text-brand-600 hover:text-brand-800 font-medium">
-					→ Manage XML Product Pricing
+				<a href="/admin/baselinker" class="text-brand-600 hover:text-brand-800 font-medium">
+					→ Open BaseLinker Integration
 				</a>
 			</div>
 		</div>
 		<div class="flex gap-4">
-			<Button href="/admin/xml-products" variant="secondary">
+			<Button href="/admin/baselinker" variant="secondary">
 				<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"/>
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
 				</svg>
-				XML Pricing
+				BaseLinker
 			</Button>
-			<Button href="/admin/xml-sync" variant="secondary">Sync Products</Button>
+			<Button href="/admin/baselinker" variant="secondary">Sync Products</Button>
 		</div>
 	</div>
 	

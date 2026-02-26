@@ -3,5 +3,5 @@
  * Export all services from this file
  */
 
-// Export the XML integration service
-export * from './xmlIntegration'; 
+// Export BaseLinker integration service
+export * from './baselinker'; 

@@ -71,7 +71,7 @@
 	const productUrl = $derived(`/products/${productLink}`);
 </script>
 
-<div class="group relative bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 border border-neutral-100">
+<div class="group relative bg-white shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-200 border border-neutral-200">
 	<!-- Product Link -->
 	<a href={productUrl} class="block cursor-pointer">
 		<div class="relative aspect-w-1 aspect-h-1 w-full overflow-hidden bg-neutral-50">
@@ -79,7 +79,7 @@
 				<img 
 					src={mainImageUrl} 
 					alt={product.name}
-					class="h-64 w-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+					class="h-64 w-full object-cover object-center transition-opacity duration-300"
 					loading="lazy"
 					onerror={(e) => {
 						console.warn('Image failed to load:', mainImageUrl);
@@ -117,13 +117,13 @@
 			<!-- Professional Badges -->
 			<div class="absolute top-3 left-3 flex flex-col gap-2">
 				{#if product.featured}
-					<span class="bg-brand-600 text-white text-xs font-semibold px-2.5 py-1 rounded-md shadow-sm">Polecany</span>
+					<span class="bg-brand-600 text-white text-xs font-semibold px-2.5 py-1 shadow-sm">Polecany</span>
 				{/if}
 				{#if hasDiscount}
-					<span class="bg-danger text-white text-xs font-semibold px-2.5 py-1 rounded-md shadow-sm">-{discountPercent}%</span>
+					<span class="bg-danger text-white text-xs font-semibold px-2.5 py-1 shadow-sm">-{discountPercent}%</span>
 				{/if}
 				{#if !inStock}
-					<span class="bg-neutral-600 text-white text-xs font-semibold px-2.5 py-1 rounded-md shadow-sm">Wyprzedane</span>
+					<span class="bg-neutral-600 text-white text-xs font-semibold px-2.5 py-1 shadow-sm">Wyprzedane</span>
 				{/if}
 			</div>
 		</div>
@@ -142,7 +142,7 @@
 		{#if product.expand?.categories && product.expand.categories.length > 0}
 			<div class="mt-3 flex flex-wrap gap-1">
 				{#each product.expand.categories.slice(0, 2) as category (category)}
-					<span class="text-xs bg-neutral-100 text-neutral-700 px-2 py-0.5 rounded">
+					<span class="text-xs bg-neutral-100 text-neutral-700 px-2 py-0.5">
 						{category.name}
 					</span>
 				{/each}
@@ -174,7 +174,7 @@
 			<button
 				onclick={addToCart}
 				disabled={!inStock}
-				class="flex-1 px-4 py-2 bg-brand-600 hover:bg-brand-700 disabled:bg-neutral-300 text-white text-sm font-medium rounded-lg transition-colors duration-200 disabled:cursor-not-allowed"
+				class="flex-1 px-4 py-2 bg-brand-600 hover:bg-brand-700 disabled:bg-neutral-300 text-white text-sm font-medium transition-colors duration-200 disabled:cursor-not-allowed"
 			>
 				{inStock ? 'Dodaj do Koszyka' : 'Wyprzedane'}
 			</button>
@@ -182,7 +182,7 @@
 				<button
 					onclick={() => onQuickView?.(product)}
 					aria-label="Szybki podgląd"
-					class="px-3 py-2 border border-neutral-300 hover:border-neutral-400 bg-white text-neutral-700 hover:text-neutral-900 rounded-lg transition-colors duration-200"
+					class="px-3 py-2 border border-neutral-300 hover:border-neutral-400 bg-white text-neutral-700 hover:text-neutral-900 transition-colors duration-200"
 				>
 					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />

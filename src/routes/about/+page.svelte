@@ -1,11 +1,7 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import Hero from '$lib/components/ui/Hero.svelte';
 	import Card from '$lib/components/ui/Card.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
-
-	// Simple state for animations
-	let isAnimated = $state(false);
 
 	// Team members data
 	const teamMembers = [
@@ -82,13 +78,6 @@
 		{ value: '1200+', label: 'Produktów w ofercie' },
 		{ value: '99%', label: 'Pozytywnych opinii' }
 	];
-
-	// Animation triggers
-	onMount(() => {
-		setTimeout(() => {
-			isAnimated = true;
-		}, 100);
-	});
 </script>
 
 <svelte:head>
@@ -143,7 +132,7 @@
 								{ title: 'Gwarancja Jakości', desc: 'Każdy produkt jest starannie testowany i wybrany' },
 								{ title: 'Wsparcie Techniczne', desc: 'Ciągłe wsparcie długo po dokonaniu zakupu' },
 								{ title: 'Szybka Dostawa', desc: 'Realizacja zamówień w 24 godziny' }
-							] as item}
+							] as item (item.title)}
 								<div class="flex items-start group">
 									<div class="shrink-0 mt-1">
 										<div class="w-6 h-6 bg-linear-to-r from-brand-500 to-accent-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-200">

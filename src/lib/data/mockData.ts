@@ -5,25 +5,25 @@ export const mockCategories: Category[] = [
 	{
 		id: 'chainsaws',
 		name: 'Pilarki łańcuchowe',
-		image: 'https://images.unsplash.com/photo-1601001816339-74036f8d1e23?q=80&w=500&h=400&fit=crop',
+		image: '/img/hero-chainsaw.png',
 		count: 18
 	},
 	{
 		id: 'drills',
 		name: 'Wiertarki i wkrętarki',
-		image: 'https://images.unsplash.com/photo-1504148455328-c376907d081c?q=80&w=500&h=400&fit=crop',
+		image: 'https://images.unsplash.com/photo-1572981779307-38b8cabb2407?q=80&w=500&h=400&fit=crop',
 		count: 32
 	},
 	{
 		id: 'grinders',
 		name: 'Szlifierki',
-		image: 'https://images.unsplash.com/photo-1572981779307-38b8cabb2407?q=80&w=500&h=400&fit=crop',
+		image: 'https://images.unsplash.com/photo-1590479773265-7464e5d48118?q=80&w=500&h=400&fit=crop',
 		count: 22
 	},
 	{
 		id: 'saws',
 		name: 'Piły i pilarki',
-		image: 'https://images.unsplash.com/photo-1620230874645-0d85420003f2?q=80&w=500&h=400&fit=crop',
+		image: 'https://images.unsplash.com/photo-1504148455328-c376907d081c?q=80&w=500&h=400&fit=crop',
 		count: 26
 	},
 	{
@@ -41,7 +41,7 @@ export const mockCategories: Category[] = [
 	{
 		id: 'compressors',
 		name: 'Kompresory',
-		image: 'https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?q=80&w=500&h=400&fit=crop',
+		image: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=500&h=400&fit=crop',
 		count: 12
 	},
 	{
@@ -53,13 +53,14 @@ export const mockCategories: Category[] = [
 ];
 
 // Mock Products - Power Tools & Equipment
+// Each product uses a unique, relevant image
 export const mockProducts: Product[] = [
 	// Best Sellers
 	{
 		id: 'best-1',
 		name: 'Stihl MS 261 C-M Pilarka łańcuchowa',
 		price: 3299.0,
-		image: 'https://images.unsplash.com/photo-1504148455328-c376907d081c?q=80&w=500&h=400&fit=crop',
+		image: '/img/hero-chainsaw.png',
 		category: 'chainsaws',
 		description:
 			'Profesjonalna pilarka łańcuchowa Stihl z technologią M-Tronic. Idealna do prac leśnych i profesjonalnej wycinki drewna. Silnik 2-MIX o mocy 3,0 kW.'
@@ -68,7 +69,7 @@ export const mockProducts: Product[] = [
 		id: 'best-2',
 		name: 'Makita DHP486Z Wiertarko-wkrętarka 18V',
 		price: 899.0,
-		image: 'https://images.unsplash.com/photo-1504148455328-c376907d081c?q=80&w=500&h=400&fit=crop',
+		image: 'https://images.unsplash.com/photo-1572981779307-38b8cabb2407?q=80&w=500&h=400&fit=crop',
 		category: 'drills',
 		description:
 			'Bezszczotkowa wiertarko-wkrętarka udarowa 18V LXT. Moment obrotowy 130 Nm, 2 biegi, oświetlenie LED.'
@@ -77,7 +78,7 @@ export const mockProducts: Product[] = [
 		id: 'best-3',
 		name: 'Bosch GWS 18V-15 SC Szlifierka kątowa',
 		price: 1599.0,
-		image: 'https://images.unsplash.com/photo-1572981779307-38b8cabb2407?q=80&w=500&h=400&fit=crop',
+		image: 'https://images.unsplash.com/photo-1590479773265-7464e5d48118?q=80&w=500&h=400&fit=crop',
 		category: 'grinders',
 		description:
 			'Akumulatorowa szlifierka kątowa 18V z technologią BITURBO. Tarcza 125mm, bezszczotkowy silnik, system KickBack Control.'
@@ -86,7 +87,7 @@ export const mockProducts: Product[] = [
 		id: 'best-4',
 		name: 'Husqvarna 135 Mark II Pilarka',
 		price: 1699.0,
-		image: 'https://images.unsplash.com/photo-1620230874645-0d85420003f2?q=80&w=500&h=400&fit=crop',
+		image: 'https://images.unsplash.com/photo-1504148455328-c376907d081c?q=80&w=500&h=400&fit=crop',
 		category: 'chainsaws',
 		description:
 			'Lekka i wydajna pilarka łańcuchowa do użytku domowego. Silnik X-Torq, automatyczny oiler, waga zaledwie 4,7 kg.'
@@ -97,7 +98,7 @@ export const mockProducts: Product[] = [
 		id: 'new-1',
 		name: 'Milwaukee M18 FUEL Piła tarczowa',
 		price: 2199.0,
-		image: 'https://images.unsplash.com/photo-1620230874645-0d85420003f2?q=80&w=500&h=400&fit=crop',
+		image: 'https://images.unsplash.com/photo-1513467535987-fd81bc7d62f8?q=80&w=500&h=400&fit=crop',
 		category: 'saws',
 		description:
 			'Profesjonalna piła tarczowa 18V z silnikiem POWERSTATE. Tarcza 190mm, głębokość cięcia 66mm.'
@@ -106,7 +107,7 @@ export const mockProducts: Product[] = [
 		id: 'new-2',
 		name: 'DeWalt DCG405N Szlifierka kątowa 18V',
 		price: 749.0,
-		image: 'https://images.unsplash.com/photo-1572981779307-38b8cabb2407?q=80&w=500&h=400&fit=crop',
+		image: 'https://images.unsplash.com/photo-1590479773265-7464e5d48118?q=80&w=500&h=400&fit=crop',
 		category: 'grinders',
 		description:
 			'Kompaktowa szlifierka kątowa z bezszczotkowym silnikiem. Tarcza 125mm, E-Clutch, Perform & Protect.'
@@ -135,7 +136,7 @@ export const mockProducts: Product[] = [
 		id: 'trend-1',
 		name: 'Karcher K 5 Premium Full Control Plus',
 		price: 1699.0,
-		image: 'https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?q=80&w=500&h=400&fit=crop',
+		image: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?q=80&w=500&h=400&fit=crop',
 		category: 'garden-tools',
 		description:
 			'Myjka ciśnieniowa z chłodzonym wodą silnikiem indukcyjnym. Ciśnienie 145 bar, przepływ 500 l/h.'
@@ -171,7 +172,7 @@ export const mockProducts: Product[] = [
 		id: 'trend-5',
 		name: 'Einhell TE-AC 36/6/8 Li OF Kompresor',
 		price: 1299.0,
-		image: 'https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?q=80&w=500&h=400&fit=crop',
+		image: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=500&h=400&fit=crop',
 		category: 'compressors',
 		description:
 			'Akumulatorowy kompresor bezolejowy 36V. Zbiornik 6L, ciśnienie max 8 bar, cichy i wydajny.'
@@ -190,8 +191,7 @@ export const heroProducts = [
 		title: 'Stihl MS 261 C-M',
 		subtitle:
 			'Profesjonalna pilarka łańcuchowa z technologią M-Tronic. Niezawodna moc dla wymagających zadań leśnych i budowlanych.',
-		image:
-			'https://images.unsplash.com/photo-1504148455328-c376907d081c?q=80&w=1171&auto=format&fit=crop',
+		image: '/img/hero-chainsaw.png',
 		badge: 'BESTSELLER',
 		badgeColor: 'green',
 		price: 3299.0,
@@ -202,8 +202,7 @@ export const heroProducts = [
 		id: 2,
 		title: 'Makita DHP486Z 18V',
 		subtitle: 'Bezszczotkowa wiertarko-wkrętarka udarowa. Moment obrotowy 130 Nm, niezawodna w każdych warunkach.',
-		image:
-			'https://images.unsplash.com/photo-1504148455328-c376907d081c?q=80&w=1171&auto=format&fit=crop',
+		image: 'https://images.unsplash.com/photo-1572981779307-38b8cabb2407?q=80&w=1171&auto=format&fit=crop',
 		badge: 'NOWOŚĆ',
 		badgeColor: 'blue',
 		price: 899.0,
@@ -214,8 +213,7 @@ export const heroProducts = [
 		id: 3,
 		title: 'Bosch BITURBO Szlifierka',
 		subtitle: 'Akumulatorowa szlifierka kątowa 18V z bezszczotkowym silnikiem i systemem KickBack Control.',
-		image:
-			'https://images.unsplash.com/photo-1572981779307-38b8cabb2407?q=80&w=1165&auto=format&fit=crop',
+		image: 'https://images.unsplash.com/photo-1590479773265-7464e5d48118?q=80&w=1165&auto=format&fit=crop',
 		badge: 'POLECANY',
 		badgeColor: 'purple',
 		price: 1599.0,
@@ -226,8 +224,7 @@ export const heroProducts = [
 		id: 4,
 		title: 'Milwaukee M18 FUEL',
 		subtitle: 'Profesjonalna piła tarczowa z silnikiem POWERSTATE. Moc i precyzja dla wymagających.',
-		image:
-			'https://images.unsplash.com/photo-1620230874645-0d85420003f2?q=80&w=200&auto=format&fit=crop',
+		image: 'https://images.unsplash.com/photo-1513467535987-fd81bc7d62f8?q=80&w=500&auto=format&fit=crop',
 		badge: 'POPULARNY',
 		badgeColor: 'orange',
 		price: 2199.0,

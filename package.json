@@ -13,6 +13,8 @@
 		"test:unit": "vitest",
 		"test": "npm run test:unit -- --run && npm run test:e2e",
 		"test:e2e": "playwright test",
+		"ai:codemap": "node scripts/generate-ai-codemap.js",
+		"ai:codemap:check": "node scripts/generate-ai-codemap.js --check",
 		"db:setup": "tsx scripts/db/setup-database.ts",
 		"db:products": "tsx scripts/db/create-products.ts",
 		"db:categories": "tsx scripts/db/create-categories.ts"

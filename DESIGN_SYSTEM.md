@@ -81,6 +81,7 @@ The design system is built on **three layers**:
 | `--color-warning` | `#f59e0b` | `text-warning` |
 | `--color-warning-light` | `#fef3c7` | `bg-warning-light` |
 | `--color-danger` | `#dc2626` | `text-danger` |
+| `--color-danger-dark` | `#7f1d1d` | Deep danger accents |
 | `--color-danger-light` | `#fee2e2` | `bg-danger-light` |
 | `--color-info` | `#2563eb` | `text-info` |
 | `--color-info-light` | `#dbeafe` | `bg-info-light` |
@@ -136,6 +137,15 @@ Use these in component CSS via `var(--ft-*)`. They reference the palette tokens 
 | `--ft-secondary` | `accent-600` | Secondary actions |
 | `--ft-secondary-hover` | `accent-700` | Hover |
 | `--ft-secondary-light` | `accent-100` | Light accent bg |
+
+### Status (Semantic)
+
+| Property | Default | Description |
+|----------|---------|-------------|
+| `--ft-success` | `success` | Success UI text/accents |
+| `--ft-warning` | `warning` | Warning UI text/accents |
+| `--ft-danger` | `danger` | Error/destructive UI text/accents |
+| `--ft-info` | `info` | Informational UI text/accents |
 
 ---
 
@@ -218,16 +228,15 @@ Components already migrated to brand tokens:
 - [x] `Hero.svelte` — backgrounds, shadow effects
 - [x] `ProductCard.svelte` — badges, hover, CTA button
 - [x] `app.css` — all component classes use semantic tokens
+- [x] `account/favorites/+page.svelte` — route-level styles aligned to current token conventions
 
 Components still using some old Tailwind defaults (safe to migrate later):
 
-- [ ] `+layout.svelte` — navbar, footer, cart drawer (largest file, ~758 lines)
-- [ ] `Notifications.svelte` — toast colors
-- [ ] `Breadcrumbs.svelte` — references undefined `--color-primary` vars
-- [ ] `CustomBadge.svelte` — references `bg-primary`, `bg-success`
-- [ ] `LoadingSpinner.svelte` — spinner color
-- [ ] `AnnouncementBanner.svelte` — banner background
-- [ ] Route pages — scattered `blue-*` / `gray-*` classes
+- [x] `+layout.svelte` — navbar, footer, active cart drawer aligned to semantic token surfaces
+- [x] `Notifications.svelte` — toast colors aligned to semantic status palette
+- [x] `CustomBadge.svelte` — legacy warning outline style normalized
+- [x] `LoadingSpinner.svelte` — spinner and overlay colors aligned to semantic tokens
+- [x] `AnnouncementBanner.svelte` — banner/action colors aligned to semantic tokens
 
 ### Adding dark mode (future)
 
@@ -248,6 +257,24 @@ The `:root` block in `app.css` already has a commented dark-mode section. To ena
 | `tailwind.config.js` | Content paths only (Tailwind v4 uses CSS-first config) |
 | `src/lib/components/ui/` | Reusable UI components (consume tokens) |
 | `src/lib/components/layout/` | Layout components (navbar, footer, etc.) |
-| `src/lib/img/` | Brand logos (`logo-FixTar.png`, `logo-FixTar-white.png`) |
+| `src/lib/img/` | Brand logos (`logo-FixTar.webp`, `logo-FixTar-white.webp`) |
 | `static/` | Favicons, robots.txt |
 | `DESIGN_SYSTEM.md` | This document |
+
+---
+
+## 7. Rebranding Readiness (Feb 2026)
+
+### Current assessment
+
+- **Single source of truth:** `src/app.css` (`@theme` + `:root` semantic tokens) ✅
+- **Tailwind config duplication:** none (`tailwind.config.js` does not redefine palette tokens) ✅
+- **Logo asset consistency:** switched to `.webp` brand logos ✅
+
+### Remaining blockers before calling it fully consistent
+
+- No blocking inconsistencies identified in active shared layout/components.
+
+### Verdict
+
+- **Ready for rebranding**. Active layout and shared UI components now follow the same semantic token architecture.

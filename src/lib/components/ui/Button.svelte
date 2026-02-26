@@ -27,7 +27,7 @@
 		...restProps
 	}: Props = $props();
 	
-	const baseClasses = 'relative inline-flex items-center justify-center font-medium rounded-2xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer overflow-hidden group transform hover:scale-105 active:scale-95';
+	const baseClasses = 'relative inline-flex items-center justify-center font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer';
 	
 	const variantClasses = {
 		primary: 'bg-brand-600 text-white hover:bg-brand-700 focus:ring-brand-500 shadow-lg hover:shadow-xl',
@@ -52,11 +52,7 @@
 
 {#if isAnchor}
 	<a class={classes} {...restProps as HTMLAnchorAttributes}>
-		<!-- Shine effect overlay -->
-		<div class="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-		
-		<!-- Content -->
-		<span class="relative z-10 flex items-center gap-2">
+		<span class="flex items-center gap-2">
 			{#if loading}
 				<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
 					<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -68,11 +64,7 @@
 	</a>
 {:else}
 	<button class={classes} disabled={loading} {...restProps as HTMLButtonAttributes}>
-		<!-- Shine effect overlay -->
-		<div class="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-		
-		<!-- Content -->
-		<span class="relative z-10 flex items-center gap-2">
+		<span class="flex items-center gap-2">
 			{#if loading}
 				<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
 					<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

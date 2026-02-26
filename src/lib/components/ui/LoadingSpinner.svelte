@@ -21,14 +21,6 @@
 		}
 	});
 
-	const colorClasses = $derived.by(() => {
-		switch (color) {
-			case 'white': return 'text-white';
-			case 'muted': return 'text-neutral-400';
-			default: return 'text-brand-600';
-		}
-	});
-
 	const textSizeClasses = $derived.by(() => {
 		switch (size) {
 			case 'sm': return 'text-xs';
@@ -36,21 +28,35 @@
 			default: return 'text-sm';
 		}
 	});
+
+	const spinnerColorStyles = $derived.by(() => {
+		switch (color) {
+			case 'white':
+				return '--spinner-color: var(--ft-text-inverse);';
+			case 'muted':
+				return '--spinner-color: var(--ft-text-muted);';
+			default:
+				return '--spinner-color: var(--ft-primary);';
+		}
+	});
 </script>
 
 {#if visible}
 	{#if variant === 'overlay'}
 		<!-- Full screen overlay version -->
-		<div class="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm">
+		<div
+			class="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm"
+			style="background-color: color-mix(in srgb, var(--ft-surface) 82%, transparent);"
+		>
 			<div class="flex flex-col items-center">
 				<div class="relative">
 					<!-- Outer ring -->
-					<div class="w-12 h-12 border-4 border-neutral-200 rounded-full"></div>
+					<div class="w-12 h-12 border-4 rounded-full" style="border-color: var(--ft-border);"></div>
 					<!-- Spinning ring -->
-					<div class="absolute inset-0 w-12 h-12 border-4 border-brand-600 rounded-full border-t-transparent animate-spin"></div>
+					<div class="absolute inset-0 w-12 h-12 border-4 rounded-full border-t-transparent animate-spin" style="{spinnerColorStyles} border-color: var(--spinner-color); border-top-color: transparent;"></div>
 				</div>
 				{#if message}
-					<p class="mt-4 text-neutral-700 font-medium">{message}</p>
+					<p class="mt-4 font-medium" style="color: var(--ft-text-secondary);">{message}</p>
 				{/if}
 			</div>
 		</div>
@@ -59,31 +65,16 @@
 		<div class="flex items-center justify-center">
 			<div class="relative">
 				<!-- Outer ring -->
-				<div class="{sizeClasses} border-2 border-neutral-200 rounded-full"></div>
+				<div class="{sizeClasses} border-2 rounded-full" style="border-color: var(--ft-border);"></div>
 				<!-- Spinning ring -->
-				<div class="absolute inset-0 {sizeClasses} border-2 {colorClasses} rounded-full border-t-transparent animate-spin"></div>
+				<div class="absolute inset-0 {sizeClasses} border-2 rounded-full border-t-transparent animate-spin" style="{spinnerColorStyles} border-color: var(--spinner-color); border-top-color: transparent;"></div>
 			</div>
 			{#if message}
-				<span class="ml-2 {textSizeClasses} {colorClasses} font-medium">{message}</span>
+				<span class="ml-2 {textSizeClasses} font-medium" style="{spinnerColorStyles} color: var(--spinner-color);">{message}</span>
 			{/if}
 		</div>
 	{/if}
 {/if}
-
-<style>
-	@keyframes spin {
-		0% {
-			transform: rotate(0deg);
-		}
-		100% {
-			transform: rotate(360deg);
-		}
-	}
-
-	.animate-spin {
-		animation: spin 1s linear infinite;
-	}
-</style>
 
 
 

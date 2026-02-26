@@ -1,25 +1,16 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { page } from '$app/stores';
 	import ProductCard from '$lib/components/ui/ProductCard.svelte';
-	import Card from '$lib/components/ui/Card.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
-	import type { Product, Category } from '$lib/stores/products.svelte';
+	import type { Product } from '$lib/stores/products.svelte';
 	import LoadingSpinner from '$lib/components/ui/LoadingSpinner.svelte';
 	import Hero from '$lib/components/ui/Hero.svelte';
-	import { navigating } from '$app/stores';
+	import { navigating } from '$app/state';
 
 	interface Props {
 		data: {
-			query: string;
-			category: string;
-			minPrice: number;
-			maxPrice: number;
-			sortBy: string;
-			categories: Category[];
 			products: Product[];
-			totalResults: number;
 			error?: string;
 			searchQuery: string;
 		};
@@ -27,60 +18,13 @@
 
 	let { data }: Props = $props();
 
-	// Local state for filters - ensure proper fallbacks for undefined values
-	let searchQuery = $state('');
-	let selectedCategory = $state('');
-	let minPrice = $state(0);
-	let maxPrice = $state(10000);
-	let sortBy = $state('name');
+	let searchQuery = $derived(data.searchQuery || '');
 
-	// Sync local state when data prop changes (e.g. on navigation)
-	$effect(() => {
-		searchQuery = data.searchQuery || '';
-		selectedCategory = data.category || '';
-		minPrice = data.minPrice || 0;
-		maxPrice = data.maxPrice || 10000;
-		sortBy = data.sortBy || 'name';
-	});
-
-	// Update URL and reload data
-	function updateSearch() {
-		const params = new URLSearchParams();
-		
-		if (searchQuery && searchQuery.trim()) params.set('q', searchQuery.trim());
-		if (selectedCategory) params.set('category', selectedCategory);
-		if (minPrice > 0) params.set('minPrice', minPrice.toString());
-		if (maxPrice < 10000) params.set('maxPrice', maxPrice.toString());
-		if (sortBy !== 'name') params.set('sort', sortBy);
-
-		const url = `/search${params.toString() ? '?' + params.toString() : ''}`;
-		goto(url);
-	}
-
-	// Clear all filters
-	function clearFilters() {
-		searchQuery = '';
-		selectedCategory = '';
-		minPrice = 0;
-		maxPrice = 10000;
-		sortBy = 'name';
-		updateSearch();
-	}
-
-	// Handle search form submission
 	function handleSearchSubmit(e: Event) {
 		e.preventDefault();
 		if (searchQuery && searchQuery.trim()) {
 			goto(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
 		}
-	}
-
-	// Handle price range changes
-	function handlePriceChange() {
-		// Debounce price changes
-		setTimeout(() => {
-			updateSearch();
-		}, 500);
 	}
 
 	function clearSearch() {
@@ -135,10 +79,10 @@
 			<div class="mt-4 flex justify-center">
 				<Button 
 					type="submit" 
-					disabled={!searchQuery || !searchQuery.trim() || !!$navigating}
+					disabled={!searchQuery || !searchQuery.trim() || !!navigating.to}
 					class="px-8 py-3 text-base font-semibold shadow-md"
 				>
-					{#if $navigating}
+					{#if navigating.to}
 						<LoadingSpinner visible={true} />
 						<span class="ml-2">Szukam...</span>
 					{:else}

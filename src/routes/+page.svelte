@@ -4,7 +4,6 @@
 	import FeaturedProducts from '$lib/components/home/FeaturedProducts.svelte';
 	import FeaturesSection from '$lib/components/home/FeaturesSection.svelte';
 	import NewsletterSection from '$lib/components/home/NewsletterSection.svelte';
-	import { onMount } from 'svelte';
 
 	interface Props {
 		data: {
@@ -15,13 +14,6 @@
 	}
 
 	let { data }: Props = $props();
-	let scrollY = $state(0);
-
-	onMount(() => {
-		const onScroll = () => { scrollY = window.scrollY; };
-		window.addEventListener('scroll', onScroll, { passive: true });
-		return () => window.removeEventListener('scroll', onScroll);
-	});
 </script>
 
 <svelte:head>
@@ -29,10 +21,7 @@
 	<meta name="description" content="Sklep z profesjonalnymi narzędziami - pilarki, wiertarki, szlifierki, spawarki. Stihl, Makita, Bosch, DeWalt, Milwaukee." />
 </svelte:head>
 
-<HeroSection featuredProduct={data.featuredProducts[0]} {scrollY} />
+<HeroSection featuredProduct={data.featuredProducts[0]} />
 <FeaturedProducts products={data.featuredProducts} error={data.error} />
 <FeaturesSection />
 <NewsletterSection /> 
-
-
-
