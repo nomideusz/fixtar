@@ -88,11 +88,12 @@
 			roundedClasses[rounded],
 			glowClass,
 			customClass
-		].filter(Boolean).join(' ');
+		]
+			.filter(Boolean)
+			.join(' ');
 	});
 </script>
 
 <span class={badgeClasses}>
 	{#if children}{@render children()}{/if}
 </span>
-

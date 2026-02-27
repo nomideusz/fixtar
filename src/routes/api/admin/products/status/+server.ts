@@ -20,7 +20,12 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		}
 
 		// TODO: Update product status rows in Turso DB (previously used PocketBase collection)
-		console.warn('[TODO] api/admin/products/status: update products in DB', productIds, '->', status);
+		console.warn(
+			'[TODO] api/admin/products/status: update products in DB',
+			productIds,
+			'->',
+			status
+		);
 
 		return json({
 			success: true,

@@ -12,16 +12,14 @@ export interface CartItem {
 function createCart() {
 	const persisted = new PersistedState<CartItem[]>('cart', [], {
 		storage: 'local',
-		syncTabs: true,
+		syncTabs: true
 	});
 
 	const total = $derived(
 		persisted.current.reduce((sum, item) => sum + item.price * item.quantity, 0)
 	);
 
-	const count = $derived(
-		persisted.current.reduce((sum, item) => sum + item.quantity, 0)
-	);
+	const count = $derived(persisted.current.reduce((sum, item) => sum + item.quantity, 0));
 
 	return {
 		get items() {
@@ -61,7 +59,7 @@ function createCart() {
 
 		clear() {
 			persisted.current = [];
-		},
+		}
 	};
 }
 

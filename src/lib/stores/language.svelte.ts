@@ -32,7 +32,7 @@ function createLanguageStore() {
 		},
 		toggle() {
 			persisted.current = persisted.current === 'en' ? 'pl' : 'en';
-		},
+		}
 	};
 }
 

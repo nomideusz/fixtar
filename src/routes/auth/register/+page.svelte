@@ -6,9 +6,9 @@
 	import Card from '$lib/components/ui/Card.svelte';
 	import { notifications } from '$lib/stores';
 	import FixTarLogo from '$lib/img/logo-FixTar.webp';
-	
+
 	const { form } = $props<{ form?: any }>();
-	
+
 	let formData = $state({
 		email: '',
 		password: '',
@@ -18,50 +18,50 @@
 		acceptTerms: false,
 		acceptMarketing: false
 	});
-	
+
 	let loading = $state(false);
 	let errors = $state<Record<string, string>>({});
 	let passwordStrength = $state(0);
-	
+
 	// Calculate password strength
 	$effect(() => {
 		let strength = 0;
 		const password = formData.password;
-		
+
 		if (password.length >= 8) strength++;
 		if (/[A-Z]/.test(password)) strength++;
 		if (/[a-z]/.test(password)) strength++;
 		if (/[0-9]/.test(password)) strength++;
 		if (/[^A-Za-z0-9]/.test(password)) strength++;
-		
+
 		passwordStrength = strength;
 	});
-	
+
 	function validateForm() {
 		errors = {};
-		
+
 		if (!formData.firstName.trim()) errors.firstName = 'Imię jest wymagane';
 		if (!formData.lastName.trim()) errors.lastName = 'Nazwisko jest wymagane';
-		
+
 		if (!formData.email || !formData.email.includes('@')) {
 			errors.email = 'Podaj prawidłowy adres email';
 		}
-		
+
 		if (!formData.password || formData.password.length < 8) {
 			errors.password = 'Hasło musi mieć co najmniej 8 znaków';
 		}
-		
+
 		if (formData.password !== formData.confirmPassword) {
 			errors.confirmPassword = 'Hasła nie są identyczne';
 		}
-		
+
 		if (!formData.acceptTerms) {
 			errors.acceptTerms = 'Musisz zaakceptować regulamin i politykę prywatności';
 		}
-		
+
 		return Object.keys(errors).length === 0;
 	}
-	
+
 	// Handle server form errors
 	$effect(() => {
 		if (form?.message) {
@@ -70,28 +70,40 @@
 			errors.general = '';
 		}
 	});
-	
+
 	function getPasswordStrengthText() {
 		switch (passwordStrength) {
 			case 0:
-			case 1: return 'Bardzo słabe';
-			case 2: return 'Słabe';
-			case 3: return 'Średnie';
-			case 4: return 'Silne';
-			case 5: return 'Bardzo silne';
-			default: return '';
+			case 1:
+				return 'Bardzo słabe';
+			case 2:
+				return 'Słabe';
+			case 3:
+				return 'Średnie';
+			case 4:
+				return 'Silne';
+			case 5:
+				return 'Bardzo silne';
+			default:
+				return '';
 		}
 	}
-	
+
 	function getPasswordStrengthColor() {
 		switch (passwordStrength) {
 			case 0:
-			case 1: return 'bg-danger';
-			case 2: return 'bg-brand-500';
-			case 3: return 'bg-warning';
-			case 4: return 'bg-success';
-			case 5: return 'bg-success';
-			default: return 'bg-neutral-300';
+			case 1:
+				return 'bg-danger';
+			case 2:
+				return 'bg-brand-500';
+			case 3:
+				return 'bg-warning';
+			case 4:
+				return 'bg-success';
+			case 5:
+				return 'bg-success';
+			default:
+				return 'bg-white/15';
 		}
 	}
 </script>
@@ -101,178 +113,195 @@
 	<meta name="description" content="Utwórz konto w sklepie FixTar" />
 </svelte:head>
 
-<div class="bg-neutral-50 min-h-screen py-12">
-	<div class="max-w-md mx-auto px-6">
+<div class="min-h-screen py-12">
+	<div class="mx-auto max-w-md px-6">
 		<!-- Simplified Logo Section -->
-		<div class="text-center mb-8">
-			<img 
-				src={FixTarLogo} 
-				alt="FixTar" 
-				class="h-12 w-auto mx-auto mb-4"
-			/>
-			<h1 class="text-2xl font-bold text-neutral-900 mb-2">Rejestracja</h1>
-			<p class="text-neutral-600">Utwórz nowe konto</p>
+		<div class="mb-8 text-center">
+			<img src={FixTarLogo} alt="FixTar" class="mx-auto mb-4 h-12 w-auto" />
+			<h1 class="mb-2 text-2xl font-bold text-white">Rejestracja</h1>
+			<p class="text-neutral-400">Utwórz nowe konto</p>
 		</div>
-		
+
 		<!-- Register Card -->
 		<Card class="p-6">
-			<form 
-				method="POST" 
+			<form
+				method="POST"
 				use:enhance={({ formData: submitFormData, cancel }) => {
 					if (!validateForm()) {
 						cancel();
 						return;
 					}
 					loading = true;
-					
+
 					// Add form data to the FormData object
 					submitFormData.append('firstName', formData.firstName);
 					submitFormData.append('lastName', formData.lastName);
-					
+
 					return async ({ result, update }) => {
 						loading = false;
-					if (result.type === 'redirect' || result.type === 'success') {
-						notifications.success('Witaj w FixTar! Twoje konto zostało utworzone.');
-						goto(result.type === 'redirect' ? result.location : '/auth/login');
-					} else if (result.type === 'failure') {
-						const message = typeof result.data?.message === 'string' 
-							? result.data.message 
-							: 'Rejestracja nie powiodła się. Spróbuj ponownie.';
-						errors.general = message;
-						notifications.error('Błąd rejestracji. Sprawdź dane i spróbuj ponownie.');
-						await update();
-					}
+						if (result.type === 'redirect' || result.type === 'success') {
+							notifications.success('Witaj w FixTar! Twoje konto zostało utworzone.');
+							goto(result.type === 'redirect' ? result.location : '/auth/login');
+						} else if (result.type === 'failure') {
+							const message =
+								typeof result.data?.message === 'string'
+									? result.data.message
+									: 'Rejestracja nie powiodła się. Spróbuj ponownie.';
+							errors.general = message;
+							notifications.error('Błąd rejestracji. Sprawdź dane i spróbuj ponownie.');
+							await update();
+						}
 					};
 				}}
 				class="space-y-4"
 			>
 				{#if errors.general}
-					<div class="bg-danger/5 border border-danger-light text-danger-dark px-4 py-3 rounded-lg text-sm">
+					<div
+						class="bg-danger/5 border-danger-light text-danger-dark rounded-lg border px-4 py-3 text-sm"
+					>
 						{errors.general}
 					</div>
 				{/if}
-				
+
 				<div class="grid grid-cols-2 gap-3">
 					<Input
 						name="firstName"
 						label="Imię"
 						value={formData.firstName}
-						oninput={(e) => formData.firstName = e.currentTarget.value}
+						oninput={(e) => (formData.firstName = e.currentTarget.value)}
 						error={errors.firstName}
 						required
 						autocomplete="given-name"
 						placeholder="Jan"
 					/>
-					
+
 					<Input
 						name="lastName"
 						label="Nazwisko"
 						value={formData.lastName}
-						oninput={(e) => formData.lastName = e.currentTarget.value}
+						oninput={(e) => (formData.lastName = e.currentTarget.value)}
 						error={errors.lastName}
 						required
 						autocomplete="family-name"
 						placeholder="Kowalski"
 					/>
 				</div>
-				
+
 				<Input
 					type="email"
 					name="email"
 					label="Email"
 					value={formData.email}
-					oninput={(e) => formData.email = e.currentTarget.value}
+					oninput={(e) => (formData.email = e.currentTarget.value)}
 					error={errors.email}
 					required
 					autocomplete="email"
 					placeholder="jan.kowalski@example.com"
 				/>
-				
+
 				<div>
 					<Input
 						type="password"
 						name="password"
 						label="Hasło"
 						value={formData.password}
-						oninput={(e) => formData.password = e.currentTarget.value}
+						oninput={(e) => (formData.password = e.currentTarget.value)}
 						error={errors.password}
 						required
 						autocomplete="new-password"
 						placeholder="Minimum 8 znaków"
 					/>
-					
+
 					{#if formData.password}
 						<div class="mt-2">
-							<div class="flex items-center justify-between mb-1">
-								<span class="text-xs text-neutral-600">Siła hasła</span>
+							<div class="mb-1 flex items-center justify-between">
+								<span class="text-xs text-neutral-400">Siła hasła</span>
 								<span class="text-xs text-neutral-500">{getPasswordStrengthText()}</span>
 							</div>
-							<div class="w-full bg-neutral-200 rounded-full h-1">
-								<div class="h-1 rounded-full transition-all duration-300 {getPasswordStrengthColor()}" 
-									 style="width: {(passwordStrength / 5) * 100}%"></div>
+							<div class="h-1 w-full rounded-full bg-white/10">
+								<div
+									class="h-1 rounded-full transition-all duration-300 {getPasswordStrengthColor()}"
+									style="width: {(passwordStrength / 5) * 100}%"
+								></div>
 							</div>
 						</div>
 					{/if}
 				</div>
-				
+
 				<Input
 					type="password"
 					name="confirmPassword"
 					label="Potwierdź hasło"
 					value={formData.confirmPassword}
-					oninput={(e) => formData.confirmPassword = e.currentTarget.value}
+					oninput={(e) => (formData.confirmPassword = e.currentTarget.value)}
 					error={errors.confirmPassword}
 					required
 					autocomplete="new-password"
 					placeholder="Powtórz hasło"
 				/>
-				
+
 				<div class="space-y-3">
 					<div>
-						<label class="flex items-start cursor-pointer text-sm">
-							<input 
-								type="checkbox" 
+						<label class="flex cursor-pointer items-start text-sm">
+							<input
+								type="checkbox"
 								name="acceptTerms"
 								bind:checked={formData.acceptTerms}
-							class="mt-1 rounded border-neutral-300 text-brand-600 focus:ring-brand-500 h-4 w-4"
-						/>
-						<span class="ml-2 text-neutral-700">
-							Akceptuję 
-							<a href="/regulamin" class="text-brand-600 hover:text-brand-700 underline" target="_blank">Regulamin</a>
-							{' '}i{' '}
-							<a href="/polityka-prywatnosci" class="text-brand-600 hover:text-brand-700 underline" target="_blank">Politykę Prywatności</a>
+								class="text-brand-600 focus:ring-brand-500 mt-1 h-4 w-4 rounded border-white/15"
+							/>
+							<span class="ml-2 text-neutral-300">
+								Akceptuję
+								<a
+									href="/regulamin"
+									class="text-brand-600 hover:text-brand-700 underline"
+									target="_blank">Regulamin</a
+								>
+								i
+								<a
+									href="/polityka-prywatnosci"
+									class="text-brand-600 hover:text-brand-700 underline"
+									target="_blank">Politykę Prywatności</a
+								>
 							</span>
 						</label>
 						{#if errors.acceptTerms}
-							<p class="mt-1 text-sm text-danger">{errors.acceptTerms}</p>
+							<p class="text-danger mt-1 text-sm">{errors.acceptTerms}</p>
 						{/if}
 					</div>
-					
+
 					<div>
-						<label class="flex items-start cursor-pointer text-sm">
-							<input 
-								type="checkbox" 
+						<label class="flex cursor-pointer items-start text-sm">
+							<input
+								type="checkbox"
 								name="acceptMarketing"
 								bind:checked={formData.acceptMarketing}
-							class="mt-1 rounded border-neutral-300 text-brand-600 focus:ring-brand-500 h-4 w-4"
-						/>
-						<span class="ml-2 text-neutral-700">
-							Wyrażam zgodę na otrzymywanie informacji handlowych <span class="text-neutral-500">(opcjonalnie)</span>
+								class="text-brand-600 focus:ring-brand-500 mt-1 h-4 w-4 rounded border-white/15"
+							/>
+							<span class="ml-2 text-neutral-300">
+								Wyrażam zgodę na otrzymywanie informacji handlowych <span class="text-neutral-500"
+									>(opcjonalnie)</span
+								>
 							</span>
 						</label>
 					</div>
 				</div>
-				
-				<Button 
-					type="submit" 
-					fullWidth
-					disabled={loading}
-					class="mt-6"
-				>
+
+				<Button type="submit" fullWidth disabled={loading} class="mt-6">
 					{#if loading}
-						<svg class="animate-spin -ml-1 mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24">
-							<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-							<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+						<svg class="mr-2 -ml-1 h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+							<circle
+								class="opacity-25"
+								cx="12"
+								cy="12"
+								r="10"
+								stroke="currentColor"
+								stroke-width="4"
+							></circle>
+							<path
+								class="opacity-75"
+								fill="currentColor"
+								d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+							></path>
 						</svg>
 						Tworzenie konta...
 					{:else}
@@ -280,43 +309,59 @@
 					{/if}
 				</Button>
 			</form>
-			
+
 			<!-- Social Login -->
 			<div class="mt-6">
 				<div class="relative">
 					<div class="absolute inset-0 flex items-center">
-					<div class="w-full border-t border-neutral-300"></div>
-				</div>
-				<div class="relative flex justify-center text-sm">
-					<span class="px-2 bg-white text-neutral-500">lub</span>
+						<div class="w-full border-t border-white/15"></div>
+					</div>
+					<div class="relative flex justify-center text-sm">
+						<span class="bg-white/5 px-2 text-neutral-500">lub</span>
 					</div>
 				</div>
-				
+
 				<div class="mt-4 space-y-2">
 					<button type="button" class="social-login-button">
-						<svg class="w-4 h-4" viewBox="0 0 24 24">
-							<path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-							<path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-							<path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-							<path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+						<svg class="h-4 w-4" viewBox="0 0 24 24">
+							<path
+								fill="#4285F4"
+								d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+							/>
+							<path
+								fill="#34A853"
+								d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+							/>
+							<path
+								fill="#FBBC05"
+								d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+							/>
+							<path
+								fill="#EA4335"
+								d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+							/>
 						</svg>
 						<span class="ml-2">Google</span>
 					</button>
-					
+
 					<button type="button" class="social-login-button">
-						<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-							<path fill-rule="evenodd" d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z" clip-rule="evenodd"/>
+						<svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+							<path
+								fill-rule="evenodd"
+								d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z"
+								clip-rule="evenodd"
+							/>
 						</svg>
 						<span class="ml-2">GitHub</span>
 					</button>
 				</div>
 			</div>
 		</Card>
-		
+
 		<!-- Login Link -->
 		<div class="mt-6 text-center">
-			<p class="text-sm text-neutral-600">
-				Masz już konto? 
+			<p class="text-sm text-neutral-400">
+				Masz już konto?
 				<a href="/auth/login" class="text-brand-600 hover:text-brand-700 font-medium">
 					Zaloguj się
 				</a>
@@ -340,10 +385,9 @@
 		transition: all 0.2s;
 		cursor: pointer;
 	}
-	
+
 	.social-login-button:hover {
 		border-color: rgb(156 163 175);
 		background-color: rgb(249 250 251);
 	}
 </style>
-

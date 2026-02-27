@@ -44,7 +44,7 @@
 			});
 
 			const response = await fetch(`/api/admin/customers?${params}`, { headers });
-			
+
 			if (!response.ok) {
 				throw new Error('Failed to fetch customers');
 			}
@@ -84,46 +84,49 @@
 	<meta name="description" content="Manage customers" />
 </svelte:head>
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="mx-auto max-w-screen-2xl px-6 py-8 sm:px-8 lg:px-12">
 	<div class="mb-8">
 		<h1 class="text-3xl font-bold text-neutral-900">Customers</h1>
 		<p class="mt-2 text-neutral-600">Manage your customer base</p>
 		{#if error}
-			<div class="mt-4 p-4 bg-danger/5 border border-danger/10 rounded-md">
+			<div class="bg-danger/5 border-danger/10 mt-4 rounded-md border p-4">
 				<p class="text-danger">Error: {error}</p>
-				<Button onclick={fetchCustomers} variant="secondary" class="mt-2">
-					Retry
-				</Button>
+				<Button onclick={fetchCustomers} variant="secondary" class="mt-2">Retry</Button>
 			</div>
 		{/if}
 	</div>
 
 	<!-- Search and Controls -->
 	<Card class="mb-6">
-		<div class="flex flex-col sm:flex-row gap-4 items-center justify-between">
-			<div class="flex-1 max-w-md">
+		<div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
+			<div class="max-w-md flex-1">
 				<label for="search" class="sr-only">Search customers</label>
 				<div class="relative">
 					<input
 						id="search"
 						type="text"
-						class="w-full px-4 py-2 border border-neutral-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-500 focus:border-brand-500"
+						class="focus:ring-brand-500 focus:border-brand-500 w-full rounded-md border border-neutral-300 px-4 py-2 shadow-sm focus:outline-none"
 						placeholder="Search customers by name or email..."
 						bind:value={searchTerm}
 						onkeydown={(e) => e.key === 'Enter' && handleSearch()}
 					/>
 					<button
-						class="absolute inset-y-0 right-0 px-3 flex items-center text-neutral-400 hover:text-neutral-600"
+						class="absolute inset-y-0 right-0 flex items-center px-3 text-neutral-400 hover:text-neutral-600"
 						onclick={handleSearch}
 						aria-label="Search"
 					>
-						<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+						<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+							/>
 						</svg>
 					</button>
 				</div>
 			</div>
-			
+
 			<div class="flex items-center gap-2">
 				<Button onclick={fetchCustomers} variant="secondary">
 					{#if loading}
@@ -140,13 +143,23 @@
 	<!-- Customers Table -->
 	<Card>
 		{#if loading && customers.length === 0}
-			<div class="flex justify-center items-center py-12">
+			<div class="flex items-center justify-center py-12">
 				<LoadingSpinner visible={true} />
 			</div>
 		{:else if customers.length === 0}
-			<div class="text-center py-12">
-				<svg class="mx-auto h-12 w-12 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+			<div class="py-12 text-center">
+				<svg
+					class="mx-auto h-12 w-12 text-neutral-400"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+					/>
 				</svg>
 				<h3 class="mt-2 text-sm font-medium text-neutral-900">No customers found</h3>
 				<p class="mt-1 text-sm text-neutral-500">
@@ -158,35 +171,51 @@
 				<table class="min-w-full divide-y divide-neutral-200">
 					<thead class="bg-neutral-50">
 						<tr>
-							<th class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
+							<th
+								class="px-6 py-3 text-left text-xs font-medium tracking-wider text-neutral-500 uppercase"
+							>
 								Customer
 							</th>
-							<th class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
+							<th
+								class="px-6 py-3 text-left text-xs font-medium tracking-wider text-neutral-500 uppercase"
+							>
 								Email
 							</th>
-							<th class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
+							<th
+								class="px-6 py-3 text-left text-xs font-medium tracking-wider text-neutral-500 uppercase"
+							>
 								Registration Date
 							</th>
-							<th class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
+							<th
+								class="px-6 py-3 text-left text-xs font-medium tracking-wider text-neutral-500 uppercase"
+							>
 								Status
 							</th>
-							<th class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
+							<th
+								class="px-6 py-3 text-left text-xs font-medium tracking-wider text-neutral-500 uppercase"
+							>
 								Orders
 							</th>
-							<th class="px-6 py-3 text-right text-xs font-medium text-neutral-500 uppercase tracking-wider">
+							<th
+								class="px-6 py-3 text-right text-xs font-medium tracking-wider text-neutral-500 uppercase"
+							>
 								Actions
 							</th>
 						</tr>
 					</thead>
-					<tbody class="bg-white divide-y divide-neutral-200">
+					<tbody class="divide-y divide-neutral-200 bg-white">
 						{#each customers as customer (customer.id)}
 							<tr class="hover:bg-neutral-50">
 								<td class="px-6 py-4 whitespace-nowrap">
 									<div class="flex items-center">
-										<div class="shrink-0 h-10 w-10">
-											<div class="h-10 w-10 rounded-full bg-brand-100 flex items-center justify-center">
-												<span class="text-sm font-medium text-brand-600">
-													{customer.name ? customer.name.charAt(0).toUpperCase() : customer.email.charAt(0).toUpperCase()}
+										<div class="h-10 w-10 shrink-0">
+											<div
+												class="bg-brand-100 flex h-10 w-10 items-center justify-center rounded-full"
+											>
+												<span class="text-brand-600 text-sm font-medium">
+													{customer.name
+														? customer.name.charAt(0).toUpperCase()
+														: customer.email.charAt(0).toUpperCase()}
 												</span>
 											</div>
 										</div>
@@ -203,28 +232,26 @@
 								<td class="px-6 py-4 whitespace-nowrap">
 									<div class="text-sm text-neutral-900">{customer.email}</div>
 									{#if customer.emailVisibility === false}
-										<div class="text-xs text-brand-500">Email hidden</div>
+										<div class="text-brand-500 text-xs">Email hidden</div>
 									{/if}
 								</td>
-								<td class="px-6 py-4 whitespace-nowrap text-sm text-neutral-500">
+								<td class="px-6 py-4 text-sm whitespace-nowrap text-neutral-500">
 									{formatDate(customer.created)}
 								</td>
 								<td class="px-6 py-4 whitespace-nowrap">
-									<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {
-										customer.verified ? 'bg-success/10 text-success-dark' : 'bg-warning/10 text-warning-dark'
-									}">
+									<span
+										class="inline-flex rounded-full px-2 text-xs leading-5 font-semibold {customer.verified
+											? 'bg-success/10 text-success-dark'
+											: 'bg-warning/10 text-warning-dark'}"
+									>
 										{customer.verified ? 'Verified' : 'Unverified'}
 									</span>
 								</td>
-								<td class="px-6 py-4 whitespace-nowrap text-sm text-neutral-500">
+								<td class="px-6 py-4 text-sm whitespace-nowrap text-neutral-500">
 									{customer.orderCount || 0} orders
 								</td>
-								<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-									<Button 
-										href="/admin/customers/{customer.id}" 
-										variant="ghost" 
-										size="sm"
-									>
+								<td class="px-6 py-4 text-right text-sm font-medium whitespace-nowrap">
+									<Button href="/admin/customers/{customer.id}" variant="ghost" size="sm">
 										View Details
 									</Button>
 								</td>
@@ -236,69 +263,75 @@
 
 			<!-- Pagination -->
 			{#if totalPages > 1}
-				<div class="bg-white px-4 py-3 border-t border-neutral-200 sm:px-6">
+				<div class="border-t border-neutral-200 bg-white px-4 py-3 sm:px-6">
 					<div class="flex items-center justify-between">
-						<div class="flex-1 flex justify-between sm:hidden">
+						<div class="flex flex-1 justify-between sm:hidden">
 							<button
-								class="relative inline-flex items-center px-4 py-2 border border-neutral-300 text-sm font-medium rounded-md text-neutral-700 bg-white hover:bg-neutral-50 disabled:opacity-50 disabled:cursor-not-allowed"
+								class="relative inline-flex items-center rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-50"
 								onclick={() => goToPage(currentPage - 1)}
 								disabled={!hasPrevPage}
 							>
 								Previous
 							</button>
 							<button
-								class="ml-3 relative inline-flex items-center px-4 py-2 border border-neutral-300 text-sm font-medium rounded-md text-neutral-700 bg-white hover:bg-neutral-50 disabled:opacity-50 disabled:cursor-not-allowed"
+								class="relative ml-3 inline-flex items-center rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-50"
 								onclick={() => goToPage(currentPage + 1)}
 								disabled={!hasNextPage}
 							>
 								Next
 							</button>
 						</div>
-						<div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+						<div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
 							<div>
 								<p class="text-sm text-neutral-700">
 									Showing <span class="font-medium">{(currentPage - 1) * pageSize + 1}</span>
-									to <span class="font-medium">{Math.min(currentPage * pageSize, totalCustomers)}</span>
+									to
+									<span class="font-medium">{Math.min(currentPage * pageSize, totalCustomers)}</span
+									>
 									of <span class="font-medium">{totalCustomers}</span> results
 								</p>
 							</div>
 							<div>
-								<nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
+								<nav class="relative z-0 inline-flex -space-x-px rounded-md shadow-sm">
 									<button
-										class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-neutral-300 bg-white text-sm font-medium text-neutral-500 hover:bg-neutral-50 disabled:opacity-50 disabled:cursor-not-allowed"
+										class="relative inline-flex items-center rounded-l-md border border-neutral-300 bg-white px-2 py-2 text-sm font-medium text-neutral-500 hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-50"
 										onclick={() => goToPage(currentPage - 1)}
 										disabled={!hasPrevPage}
 										aria-label="Previous page"
 									>
 										<svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-											<path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+											<path
+												fill-rule="evenodd"
+												d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+												clip-rule="evenodd"
+											/>
 										</svg>
 									</button>
-									
-									{#each Array(Math.min(5, totalPages)) as _, i}
-										{@const pageNum = i + Math.max(1, currentPage - 2)}
-										{#if pageNum <= totalPages}
-											<button
-												class="relative inline-flex items-center px-4 py-2 border text-sm font-medium {
-													pageNum === currentPage
-														? 'z-10 bg-brand-50 border-brand-500 text-brand-600'
-														: 'bg-white border-neutral-300 text-neutral-500 hover:bg-neutral-50'
-												}"
-												onclick={() => goToPage(pageNum)}
-											>
-												{pageNum}
-											</button>
-										{/if}
+
+									{#each Array.from({ length: Math.min(5, totalPages) }, (_, i) => i + Math.max(1, currentPage - 2)).filter((p) => p <= totalPages) as pageNum (pageNum)}
+										<button
+											class="relative inline-flex items-center border px-4 py-2 text-sm font-medium {pageNum ===
+											currentPage
+												? 'bg-brand-50 border-brand-500 text-brand-600 z-10'
+												: 'border-neutral-300 bg-white text-neutral-500 hover:bg-neutral-50'}"
+											onclick={() => goToPage(pageNum)}
+										>
+											{pageNum}
+										</button>
 									{/each}
-									
+
 									<button
-										class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-neutral-300 bg-white text-sm font-medium text-neutral-500 hover:bg-neutral-50 disabled:opacity-50 disabled:cursor-not-allowed"
+										class="relative inline-flex items-center rounded-r-md border border-neutral-300 bg-white px-2 py-2 text-sm font-medium text-neutral-500 hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-50"
 										onclick={() => goToPage(currentPage + 1)}
 										disabled={!hasNextPage}
 										aria-label="Next page"
 									>
 										<svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-											<path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+											<path
+												fill-rule="evenodd"
+												d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+												clip-rule="evenodd"
+											/>
 										</svg>
 									</button>
 								</nav>
@@ -309,5 +342,4 @@
 			{/if}
 		{/if}
 	</Card>
-</div> 
-
+</div>

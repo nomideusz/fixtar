@@ -1,6 +1,7 @@
 # AI Decisions Log (ADR-lite)
 
 ## ADR-001: BaseLinker as canonical integration
+
 - Date: 2026-02-26
 - Status: Accepted
 - Decision: Keep BaseLinker as primary integration path.
@@ -9,6 +10,7 @@
 - Impact: New integration work should target BaseLinker code paths and docs only.
 
 ## ADR-002: Design-system-first component updates
+
 - Date: 2026-02-26
 - Status: Accepted
 - Decision: Align shared UI/layout components to semantic tokens (`--ft-*`).
@@ -17,6 +19,7 @@
 - Impact: New UI work should reference token primitives before introducing new classes.
 
 ## ADR-003: CartDrawer as active drawer implementation
+
 - Date: 2026-02-26
 - Status: Accepted
 - Decision: Use `CartDrawer` as runtime cart UI.
@@ -25,6 +28,7 @@
 - Impact: All cart-drawer UX improvements go to `src/lib/components/layout/CartDrawer.svelte`.
 
 ## ADR-004: Layout-level i18n passthrough fixed to real translations
+
 - Date: 2026-02-26
 - Status: Accepted
 - Decision: Resolve layout translator from `languageStore` + `translations` map.
@@ -32,6 +36,7 @@
 - Impact: Shared components receiving `t` now display active-language labels.
 
 ## ADR-005: Dual font system — Chakra Petch + Barlow
+
 - Date: 2026-02-26
 - Status: Accepted
 - Decision: Replace single Rajdhani font with Chakra Petch (headings) + Barlow (body).
@@ -40,6 +45,7 @@
 - Impact: `--font-heading` = Chakra Petch, `--font-sans` = Barlow. Max heading weight is 700 (no font-black).
 
 ## ADR-006: Dark industrial navbar
+
 - Date: 2026-02-26
 - Status: Accepted
 - Decision: Navbar uses solid dark background (#0c1117) with teal accent line, white logo.
@@ -48,6 +54,7 @@
 - Impact: Navbar imports `logo-FixTar-white.webp`; dropdowns and mobile menu use dark theme.
 
 ## ADR-007: Typography tokens in design system
+
 - Date: 2026-02-26
 - Status: Accepted
 - Decision: Add type scale, line-height, and letter-spacing tokens to `:root` in `app.css`.

@@ -23,12 +23,18 @@ export const POST: RequestHandler = async ({ request }) => {
 		});
 
 		if (session?.user) {
-			return json({ isValid: true, user: { id: session.user.id, email: session.user.email, name: session.user.name } });
+			return json({
+				isValid: true,
+				user: { id: session.user.id, email: session.user.email, name: session.user.name }
+			});
 		}
 
 		return json({ isValid: false, error: 'Invalid token' }, { status: 401 });
 	} catch (error) {
 		console.error('[API] Token validation error:', error);
-		return json({ isValid: false, error: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 });
+		return json(
+			{ isValid: false, error: error instanceof Error ? error.message : 'Unknown error' },
+			{ status: 500 }
+		);
 	}
 };

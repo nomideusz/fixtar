@@ -6,7 +6,10 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 	// Check admin access
 	if (!dev) {
 		if (!locals.user) {
-			return json({ success: false, message: 'Unauthorized. Admin access required.' }, { status: 403 });
+			return json(
+				{ success: false, message: 'Unauthorized. Admin access required.' },
+				{ status: 403 }
+			);
 		}
 		// TODO: Verify admin role once Better Auth roles are configured
 	} else {
@@ -18,10 +21,13 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		const confirmClean = requestData.confirm === true;
 
 		if (!confirmClean) {
-			return json({
-				success: false,
-				message: 'You must confirm the cleanup by sending { "confirm": true }'
-			}, { status: 400 });
+			return json(
+				{
+					success: false,
+					message: 'You must confirm the cleanup by sending { "confirm": true }'
+				},
+				{ status: 400 }
+			);
 		}
 
 		// TODO: Implement fake data cleanup against Turso DB (previously used PocketBase collections)

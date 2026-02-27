@@ -2,9 +2,9 @@ name: AI Codemap Check
 
 on:
   pull_request:
-    branches: ["**"]
+    branches: ['**']
   push:
-    branches: ["main", "master"]
+    branches: ['main', 'master']
 
 jobs:
   codemap-check:

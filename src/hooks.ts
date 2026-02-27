@@ -40,9 +40,9 @@ export const hasSessionClient = (): boolean => {
 	if (typeof document === 'undefined') return false;
 
 	try {
-		return document.cookie.split(';').some((c) =>
-			c.trim().startsWith('better-auth.session_token=')
-		);
+		return document.cookie
+			.split(';')
+			.some((c) => c.trim().startsWith('better-auth.session_token='));
 	} catch (e) {
 		return false;
 	}

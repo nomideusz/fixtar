@@ -8,7 +8,7 @@ Ensure your `.env` file contains:
 
 ```env
 POCKETBASE_URL="https://your-pocketbase-instance.com"
-PB_ADMIN_EMAIL="admin@example.com"  
+PB_ADMIN_EMAIL="admin@example.com"
 PB_ADMIN_PASSWORD="your-secure-password"
 ```
 
@@ -87,22 +87,22 @@ npm run import-collections -- ./collections.json --delete-missing --confirm
 
 ```json
 [
-  {
-    "name": "posts",
-    "type": "base",
-    "fields": [
-      {
-        "name": "title",
-        "type": "text",
-        "required": true
-      },
-      {
-        "name": "content",
-        "type": "text"
-      }
-    ],
-    "listRule": "@request.auth.id != ''"
-  }
+	{
+		"name": "posts",
+		"type": "base",
+		"fields": [
+			{
+				"name": "title",
+				"type": "text",
+				"required": true
+			},
+			{
+				"name": "content",
+				"type": "text"
+			}
+		],
+		"listRule": "@request.auth.id != ''"
+	}
 ]
 ```
 

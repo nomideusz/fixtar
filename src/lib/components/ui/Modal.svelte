@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { Snippet } from 'svelte';
-	
+
 	interface Props {
 		open: boolean;
 		onClose?: () => void;
@@ -9,24 +9,18 @@
 		size?: 'sm' | 'md' | 'lg' | 'xl';
 		children?: Snippet;
 	}
-	
-	let {
-		open = false,
-		onClose,
-		title,
-		size = 'md',
-		children
-	}: Props = $props();
-	
+
+	let { open = false, onClose, title, size = 'md', children }: Props = $props();
+
 	let dialog: HTMLDialogElement;
-	
+
 	const sizeClasses = {
 		sm: 'max-w-sm',
 		md: 'max-w-md',
 		lg: 'max-w-lg',
 		xl: 'max-w-xl'
 	};
-	
+
 	$effect(() => {
 		if (dialog) {
 			if (open) {
@@ -36,13 +30,13 @@
 			}
 		}
 	});
-	
+
 	function handleBackdropClick(e: MouseEvent) {
 		if (e.target === dialog) {
 			onClose?.();
 		}
 	}
-	
+
 	function handleEscape(e: KeyboardEvent) {
 		if (e.key === 'Escape') {
 			e.preventDefault();
@@ -53,27 +47,32 @@
 
 <dialog
 	bind:this={dialog}
-	class="p-0 rounded-lg shadow-xl backdrop:bg-black/50 {sizeClasses[size]} w-full"
+	class="rounded-lg p-0 shadow-xl backdrop:bg-black/50 {sizeClasses[size]} w-full"
 	onclick={handleBackdropClick}
 	onkeydown={handleEscape}
 >
-	<div class="bg-white rounded-lg">
+	<div class="rounded-lg bg-[#0f1722] border border-white/10">
 		{#if title}
-			<div class="flex items-center justify-between p-4 border-b border-neutral-200">
-				<h3 class="text-lg font-semibold text-neutral-900">{title}</h3>
+			<div class="flex items-center justify-between border-b border-white/10 p-4">
+				<h3 class="text-lg font-semibold text-white">{title}</h3>
 				<button
 					type="button"
 					onclick={onClose}
-					class="text-neutral-400 hover:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-brand-500 rounded-lg p-1"
+					class="focus:ring-brand-500 rounded-lg p-1 text-neutral-400 hover:text-neutral-500 focus:ring-2 focus:outline-none"
 					aria-label="Close modal"
 				>
-					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+					<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M6 18L18 6M6 6l12 12"
+						/>
 					</svg>
 				</button>
 			</div>
 		{/if}
-		
+
 		<div class="p-4">
 			{@render children?.()}
 		</div>
@@ -84,4 +83,4 @@
 	dialog::backdrop {
 		background-color: var(--ft-surface-overlay);
 	}
-</style> 
+</style>

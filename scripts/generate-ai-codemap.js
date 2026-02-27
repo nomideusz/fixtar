@@ -53,7 +53,9 @@ function detectArea(relativePath) {
 }
 
 function collectExports(fileContent) {
-	const matches = fileContent.matchAll(/export\s+(?:const|function|class|let|var|type|interface)\s+([A-Za-z0-9_]+)/g);
+	const matches = fileContent.matchAll(
+		/export\s+(?:const|function|class|let|var|type|interface)\s+([A-Za-z0-9_]+)/g
+	);
 	return [...new Set([...matches].map((m) => m[1]))].slice(0, 20);
 }
 
@@ -124,7 +126,9 @@ async function main() {
 		try {
 			existingRaw = await fs.readFile(OUTPUT_FILE, 'utf8');
 		} catch {
-			console.error(`Missing ${toPosixPath(path.relative(ROOT, OUTPUT_FILE))}. Run: npm run ai:codemap`);
+			console.error(
+				`Missing ${toPosixPath(path.relative(ROOT, OUTPUT_FILE))}. Run: npm run ai:codemap`
+			);
 			process.exit(1);
 		}
 
@@ -132,7 +136,9 @@ async function main() {
 		try {
 			existing = JSON.parse(existingRaw);
 		} catch {
-			console.error(`Invalid JSON in ${toPosixPath(path.relative(ROOT, OUTPUT_FILE))}. Re-generate with: npm run ai:codemap`);
+			console.error(
+				`Invalid JSON in ${toPosixPath(path.relative(ROOT, OUTPUT_FILE))}. Re-generate with: npm run ai:codemap`
+			);
 			process.exit(1);
 		}
 
@@ -159,7 +165,9 @@ async function main() {
 
 	await fs.mkdir(path.dirname(OUTPUT_FILE), { recursive: true });
 	await fs.writeFile(OUTPUT_FILE, JSON.stringify(codeMap, null, 2));
-	console.log(`Generated ${toPosixPath(path.relative(ROOT, OUTPUT_FILE))} with ${codeMap.meta.entryCount} entries.`);
+	console.log(
+		`Generated ${toPosixPath(path.relative(ROOT, OUTPUT_FILE))} with ${codeMap.meta.entryCount} entries.`
+	);
 }
 
 main().catch((error) => {

@@ -24,27 +24,31 @@
 </script>
 
 {#if isOpen}
-	<div 
-		class="mobile-nav-overlay" 
+	<div
+		class="mobile-nav-overlay"
 		onclick={onClose}
 		onkeydown={(e) => e.key === 'Escape' && onClose()}
 		role="presentation"
 	>
 		<Card class="mobile-nav-content" onclick={(e) => e.stopPropagation()}>
-			<div class="flex items-center justify-between mb-6">
+			<div class="mb-6 flex items-center justify-between">
 				<h2 class="text-lg font-semibold">Account Menu</h2>
 				<Button variant="ghost" size="sm" onclick={onClose}>
-					<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-						<path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+					<svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+						<path
+							fill-rule="evenodd"
+							d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+							clip-rule="evenodd"
+						></path>
 					</svg>
 				</Button>
 			</div>
-			
+
 			<nav class="space-y-2">
 				{#each menuItems as item (item)}
-					<a 
+					<a
 						href={item.href}
-						class="flex items-center space-x-3 px-4 py-3 rounded-lg text-neutral-700 hover:bg-neutral-50 transition-colors"
+						class="flex items-center space-x-3 rounded-lg px-4 py-3 text-neutral-300 transition-colors hover:bg-white/5"
 						onclick={handleItemClick}
 					>
 						<span class="text-lg">{item.icon}</span>
@@ -71,5 +75,3 @@
 		padding: 2rem;
 	}
 </style>
-
-

@@ -4,4 +4,4 @@
  */
 
 // Export BaseLinker integration service
-export * from './baselinker'; 
+export * from './baselinker';

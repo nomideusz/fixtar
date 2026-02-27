@@ -11,7 +11,7 @@ export const mockCategories: Category[] = [
 	{
 		id: 'drills',
 		name: 'Wiertarki i wkrętarki',
-		image: '/img/wkretarka1.webp',
+		image: '/img/wkretarka1.jpg',
 		count: 32
 	},
 	{
@@ -60,7 +60,7 @@ export const mockProducts: Product[] = [
 		id: 'best-1',
 		name: 'Stihl MS 261 C-M Pilarka łańcuchowa',
 		price: 3299.0,
-		image: '/img/pila1.png',
+		image: '/img/chainsaw-hero.png',
 		category: 'chainsaws',
 		description:
 			'Profesjonalna pilarka łańcuchowa Stihl z technologią M-Tronic. Idealna do prac leśnych i profesjonalnej wycinki drewna. Silnik 2-MIX o mocy 3,0 kW.'
@@ -69,7 +69,7 @@ export const mockProducts: Product[] = [
 		id: 'best-2',
 		name: 'Makita DHP486Z Wiertarko-wkrętarka 18V',
 		price: 899.0,
-		image: '/img/wkretarka1.webp',
+		image: '/img/wkretarka1.jpg',
 		category: 'drills',
 		description:
 			'Bezszczotkowa wiertarko-wkrętarka udarowa 18V LXT. Moment obrotowy 130 Nm, 2 biegi, oświetlenie LED.'
@@ -201,7 +201,8 @@ export const heroProducts = [
 	{
 		id: 2,
 		title: 'Makita DHP486Z 18V',
-		subtitle: 'Bezszczotkowa wiertarko-wkrętarka udarowa. Moment obrotowy 130 Nm, niezawodna w każdych warunkach.',
+		subtitle:
+			'Bezszczotkowa wiertarko-wkrętarka udarowa. Moment obrotowy 130 Nm, niezawodna w każdych warunkach.',
 		image: '/img/wkretarka1.webp',
 		badge: 'NOWOŚĆ',
 		badgeColor: 'blue',
@@ -212,8 +213,10 @@ export const heroProducts = [
 	{
 		id: 3,
 		title: 'Bosch BITURBO Szlifierka',
-		subtitle: 'Akumulatorowa szlifierka kątowa 18V z bezszczotkowym silnikiem i systemem KickBack Control.',
-		image: 'https://images.unsplash.com/photo-1590479773265-7464e5d48118?q=80&w=1165&auto=format&fit=crop',
+		subtitle:
+			'Akumulatorowa szlifierka kątowa 18V z bezszczotkowym silnikiem i systemem KickBack Control.',
+		image:
+			'https://images.unsplash.com/photo-1590479773265-7464e5d48118?q=80&w=1165&auto=format&fit=crop',
 		badge: 'POLECANY',
 		badgeColor: 'purple',
 		price: 1599.0,
@@ -223,8 +226,10 @@ export const heroProducts = [
 	{
 		id: 4,
 		title: 'Milwaukee M18 FUEL',
-		subtitle: 'Profesjonalna piła tarczowa z silnikiem POWERSTATE. Moc i precyzja dla wymagających.',
-		image: 'https://images.unsplash.com/photo-1513467535987-fd81bc7d62f8?q=80&w=500&auto=format&fit=crop',
+		subtitle:
+			'Profesjonalna piła tarczowa z silnikiem POWERSTATE. Moc i precyzja dla wymagających.',
+		image:
+			'https://images.unsplash.com/photo-1513467535987-fd81bc7d62f8?q=80&w=500&auto=format&fit=crop',
 		badge: 'POPULARNY',
 		badgeColor: 'orange',
 		price: 2199.0,

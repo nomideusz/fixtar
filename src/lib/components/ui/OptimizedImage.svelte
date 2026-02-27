@@ -115,7 +115,14 @@
 				observer.stop();
 			}
 		},
-		{ get rootMargin() { return rootMargin; }, get threshold() { return threshold; } }
+		{
+			get rootMargin() {
+				return rootMargin;
+			},
+			get threshold() {
+				return threshold;
+			}
+		}
 	);
 
 	// Setup observer when mounted
@@ -161,7 +168,11 @@
 
 	// Use IsIdle to detect when user is idle and load high-quality images
 	// Use IsIdle to detect when user is idle and load high-quality images
-	const idle = new IsIdle({ get timeout() { return idleTimeout; } });
+	const idle = new IsIdle({
+		get timeout() {
+			return idleTimeout;
+		}
+	});
 
 	// Function to load high quality version
 	function loadHighQualityImage() {
@@ -213,7 +224,7 @@
 					onLoad(imgElement);
 				}
 			};
-			
+
 			const onErrorHandler = (event: Event) => {
 				if (isMounted.current && imgElement) {
 					hasError = true;
@@ -221,12 +232,12 @@
 					onError(imgElement);
 				}
 			};
-			
+
 			// Add event listeners directly to the non-null element
 			const img = imgElement; // Create a non-null reference
 			img.addEventListener('load', onLoadHandler);
 			img.addEventListener('error', onErrorHandler);
-			
+
 			// Return cleanup function
 			return () => {
 				// Use the non-null reference for cleanup
@@ -261,62 +272,65 @@
 
 		// Remove query parameters if any
 		const baseUrl = source.split('?')[0];
-		
+
 		// Get unique breakpoints sorted from smallest to largest
 		const uniqueBps = [...new Set(bpoints)].sort((a, b) => a - b);
-		
+
 		// Calculate device-specific breakpoints if enabled
 		const dprMultiplier = useDpr ? Math.min(devicePixelRatio, 3) : 1; // Cap at 3x
-		
+
 		// Apply max width constraint if specified
-		const finalBps = maxWidth 
-			? uniqueBps.filter(bp => bp <= (maxWidth as number))
-			: uniqueBps;
-		
+		const finalBps = maxWidth ? uniqueBps.filter((bp) => bp <= (maxWidth as number)) : uniqueBps;
+
 		// For better performance, limit the number of srcset entries
 		// Choose strategic breakpoints instead of all
-		const optimizedBps = finalBps.length > 5 
-			? [finalBps[0], ...finalBps.filter((_, i) => i % 2 === 0 && i > 0), finalBps[finalBps.length - 1]]
-			: finalBps;
-		
+		const optimizedBps =
+			finalBps.length > 5
+				? [
+						finalBps[0],
+						...finalBps.filter((_, i) => i % 2 === 0 && i > 0),
+						finalBps[finalBps.length - 1]
+					]
+				: finalBps;
+
 		// Generate srcset with appropriate widths
-		return optimizedBps.map(bp => {
-			// Apply DPR multiplier for high-density displays
-			const actualWidth = Math.round(bp * dprMultiplier);
-			return `${baseUrl}?w=${actualWidth}&q=${q}&fmt=${fmt} ${bp}w`;
-		}).join(', ');
+		return optimizedBps
+			.map((bp) => {
+				// Apply DPR multiplier for high-density displays
+				const actualWidth = Math.round(bp * dprMultiplier);
+				return `${baseUrl}?w=${actualWidth}&q=${q}&fmt=${fmt} ${bp}w`;
+			})
+			.join(', ');
 	}
 
 	// Improved placeholder generation with appropriate sizing and data URI fallback
 	function generateOptimizedPlaceholder(): string | null {
 		// If placeholder is explicitly provided, use it
 		if (placeholder) return placeholder;
-		
+
 		// If generatePlaceholder is false, don't use placeholders
 		if (!generatePlaceholder || !src) return null;
-		
+
 		// Use a very small placeholder to minimize data usage
 		const minWidth = Math.min(20, breakpoints[0] || 20);
 		return src.split('?')[0] + `?q=10&w=${minWidth}&blur=10`;
 	}
-	
+
 	// Use the function in the derived value
 	const placeholderUrl = $derived<string | null>(generateOptimizedPlaceholder());
 
 	// Generate default sizes attribute if not provided
 	const defaultSizes = $derived<string>(
-		sizes || 
-		'(max-width: 640px) 100vw, ' + 
-		'(max-width: 768px) 90vw, ' +
-		'(max-width: 1024px) 60vw, ' +
-		'(max-width: 1280px) 50vw, ' +
-		'33vw'
+		sizes ||
+			'(max-width: 640px) 100vw, ' +
+				'(max-width: 768px) 90vw, ' +
+				'(max-width: 1024px) 60vw, ' +
+				'(max-width: 1280px) 50vw, ' +
+				'33vw'
 	);
 
 	// Determine actual sizes value
-	const computedSizes = $derived<string | null>(
-		sizes || defaultSizes
-	);
+	const computedSizes = $derived<string | null>(sizes || defaultSizes);
 
 	// Computed srcset values with improved responsive strategy
 	let computedSrcSet = $derived<string | null>(
@@ -352,14 +366,14 @@
 	// Ensure we use AVIF format when available by forcing the format on URLs
 	function ensureCorrectFormat(url: string, preferredFormat: string): string {
 		if (!url) return '';
-		
+
 		// Extract base URL and existing params
 		const [baseUrl, params] = url.split('?');
 		const searchParams = new URLSearchParams(params || '');
-		
+
 		// Set format explicitly
 		searchParams.set('fmt', preferredFormat);
-		
+
 		// Return formatted URL
 		return `${baseUrl}?${searchParams.toString()}`;
 	}
@@ -367,7 +381,7 @@
 	// Function to determine if we should show a placeholder
 	// Only show placeholder when it would be beneficial for UX (visible but not yet loaded)
 	const shouldShowPlaceholder = $derived(
-		shouldLoad && !isLoaded && !hasError && placeholderUrl && lazy 
+		shouldLoad && !isLoaded && !hasError && placeholderUrl && lazy
 	);
 </script>
 
@@ -388,7 +402,7 @@
 			alt={alt ? `${alt} (loading placeholder)` : 'Loading placeholder'}
 			class="placeholder"
 			aria-hidden="true"
-			loading="lazy" 
+			loading="lazy"
 			width={Math.min(20, breakpoints[0] || 20)}
 			height={Math.min(20, breakpoints[0] || 20)}
 		/>
@@ -408,11 +422,7 @@
 		{:else}
 			<picture>
 				{#if supportsAvif && (format === 'auto' || format === 'avif')}
-					<source
-						srcset={computedSrcSetAvif}
-						sizes={computedSizes}
-						type="image/avif"
-					/>
+					<source srcset={computedSrcSetAvif} sizes={computedSizes} type="image/avif" />
 				{/if}
 
 				{#if supportsWebP && (format === 'auto' || format === 'webp')}
@@ -436,7 +446,7 @@
 			</picture>
 		{/if}
 	{/if}
-	
+
 	<!-- Add loading indicator for better UX -->
 	{#if !isLoaded && !hasError && shouldLoad}
 		<div class="loading-indicator">
@@ -460,17 +470,17 @@
 		object-fit: cover;
 		transition: opacity 0.3s ease;
 	}
-	
+
 	/* Add support for different fit strategies */
-	[data-fit="contain"] img {
+	[data-fit='contain'] img {
 		object-fit: contain;
 	}
-	
-	[data-fit="fill"] img {
+
+	[data-fit='fill'] img {
 		object-fit: fill;
 	}
-	
-	[data-fit="cover"] img {
+
+	[data-fit='cover'] img {
 		object-fit: cover;
 	}
 
@@ -515,7 +525,7 @@
 	[data-loaded='true'] .placeholder {
 		opacity: 0;
 	}
-	
+
 	/* Loading indicator */
 	.loading-indicator {
 		position: absolute;
@@ -527,7 +537,7 @@
 		justify-content: center;
 		z-index: 5;
 	}
-	
+
 	.spinner {
 		width: 2rem;
 		height: 2rem;
@@ -536,11 +546,10 @@
 		border-top-color: var(--ft-primary);
 		animation: spin 1s linear infinite;
 	}
-	
+
 	@keyframes spin {
 		to {
 			transform: rotate(360deg);
 		}
 	}
 </style>
-

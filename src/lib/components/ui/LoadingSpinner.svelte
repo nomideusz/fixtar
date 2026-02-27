@@ -15,17 +15,23 @@
 
 	const sizeClasses = $derived.by(() => {
 		switch (size) {
-			case 'sm': return 'w-4 h-4';
-			case 'lg': return 'w-8 h-8';
-			default: return 'w-6 h-6';
+			case 'sm':
+				return 'w-4 h-4';
+			case 'lg':
+				return 'w-8 h-8';
+			default:
+				return 'w-6 h-6';
 		}
 	});
 
 	const textSizeClasses = $derived.by(() => {
 		switch (size) {
-			case 'sm': return 'text-xs';
-			case 'lg': return 'text-base';
-			default: return 'text-sm';
+			case 'sm':
+				return 'text-xs';
+			case 'lg':
+				return 'text-base';
+			default:
+				return 'text-sm';
 		}
 	});
 
@@ -51,9 +57,15 @@
 			<div class="flex flex-col items-center">
 				<div class="relative">
 					<!-- Outer ring -->
-					<div class="w-12 h-12 border-4 rounded-full" style="border-color: var(--ft-border);"></div>
+					<div
+						class="h-12 w-12 rounded-full border-4"
+						style="border-color: var(--ft-border);"
+					></div>
 					<!-- Spinning ring -->
-					<div class="absolute inset-0 w-12 h-12 border-4 rounded-full border-t-transparent animate-spin" style="{spinnerColorStyles} border-color: var(--spinner-color); border-top-color: transparent;"></div>
+					<div
+						class="absolute inset-0 h-12 w-12 animate-spin rounded-full border-4 border-t-transparent"
+						style="{spinnerColorStyles} border-color: var(--spinner-color); border-top-color: transparent;"
+					></div>
 				</div>
 				{#if message}
 					<p class="mt-4 font-medium" style="color: var(--ft-text-secondary);">{message}</p>
@@ -65,16 +77,22 @@
 		<div class="flex items-center justify-center">
 			<div class="relative">
 				<!-- Outer ring -->
-				<div class="{sizeClasses} border-2 rounded-full" style="border-color: var(--ft-border);"></div>
+				<div
+					class="{sizeClasses} rounded-full border-2"
+					style="border-color: var(--ft-border);"
+				></div>
 				<!-- Spinning ring -->
-				<div class="absolute inset-0 {sizeClasses} border-2 rounded-full border-t-transparent animate-spin" style="{spinnerColorStyles} border-color: var(--spinner-color); border-top-color: transparent;"></div>
+				<div
+					class="absolute inset-0 {sizeClasses} animate-spin rounded-full border-2 border-t-transparent"
+					style="{spinnerColorStyles} border-color: var(--spinner-color); border-top-color: transparent;"
+				></div>
 			</div>
 			{#if message}
-				<span class="ml-2 {textSizeClasses} font-medium" style="{spinnerColorStyles} color: var(--spinner-color);">{message}</span>
+				<span
+					class="ml-2 {textSizeClasses} font-medium"
+					style="{spinnerColorStyles} color: var(--spinner-color);">{message}</span
+				>
 			{/if}
 		</div>
 	{/if}
 {/if}
-
-
-

@@ -6,18 +6,18 @@
 	import Hero from '$lib/components/ui/Hero.svelte';
 	import { enhance } from '$app/forms';
 	import type { PageData, ActionData } from './$types';
-	
+
 	const { data, form } = $props<{ data: PageData; form?: ActionData }>();
-	
+
 	// Form states
 	let isSubmitting = $state(false);
 	let passwordSubmitting = $state(false);
 	let verificationSubmitting = $state(false);
 	let preferencesSubmitting = $state(false);
-	
+
 	// User data - use updated data from form response when available
 	let currentUser = $derived(data.user);
-	
+
 	// Profile form data
 	let profileForm = $derived.by(() => {
 		const user = data.user;
@@ -30,7 +30,7 @@
 			company: user?.company || ''
 		};
 	});
-	
+
 	// Preferences form data
 	let preferencesForm = $derived.by(() => {
 		const user = data.user;
@@ -45,19 +45,19 @@
 			theme: user?.preferences?.theme || 'light'
 		};
 	});
-	
+
 	// Password form validation
 	let currentPassword = $state('');
 	let newPassword = $state('');
 	let confirmPassword = $state('');
-	
+
 	// Password validation states
 	let passwordErrors = $state({
 		currentPassword: '',
 		newPassword: '',
 		confirmPassword: ''
 	});
-	
+
 	// Profile validation states
 	let profileErrors = $state({
 		username: '',
@@ -65,7 +65,7 @@
 		firstName: '',
 		lastName: ''
 	});
-	
+
 	// Password validation rules
 	const validatePassword = (password: string) => {
 		const errors = [];
@@ -89,7 +89,7 @@
 		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 		return emailRegex.test(email);
 	};
-	
+
 	// Real-time validation
 	$effect(() => {
 		// Password validation
@@ -97,7 +97,7 @@
 			const errors = validatePassword(newPassword);
 			passwordErrors.newPassword = errors.length > 0 ? errors.join(', ') : '';
 		}
-		
+
 		if (confirmPassword && newPassword !== confirmPassword) {
 			passwordErrors.confirmPassword = 'Hasła się nie zgadzają';
 		} else {
@@ -151,7 +151,10 @@
 
 <svelte:head>
 	<title>Ustawienia Konta - FixTar</title>
-	<meta name="description" content="Zarządzaj ustawieniami konta, bezpieczeństwem i preferencjami" />
+	<meta
+		name="description"
+		content="Zarządzaj ustawieniami konta, bezpieczeństwem i preferencjami"
+	/>
 </svelte:head>
 
 <!-- Professional Settings Hero -->
@@ -159,43 +162,102 @@
 	title="Ustawienia Konta"
 	subtitle="Zarządzaj swoimi danymi osobowymi, bezpieczeństwem i preferencjami zakupowymi"
 	centered={true}
-	className="bg-linear-to-br from-accent-50 via-white to-brand-50"
 />
 
 <div class="space-y-8">
 	<!-- Settings Navigation -->
 	<section>
 		<Card class="p-6">
-			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
 				{#each settingsSections as section (section)}
 					<button
-						onclick={() => activeSection = section.id}
-						class="settings-nav-item {activeSection === section.id ? 'settings-nav-active' : 'settings-nav-inactive'}"
+						onclick={() => (activeSection = section.id)}
+						class="settings-nav-item {activeSection === section.id
+							? 'settings-nav-active'
+							: 'settings-nav-inactive'}"
 					>
 						<div class="flex items-center">
-							<div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3 {activeSection === section.id ? 'bg-brand-100' : 'bg-neutral-100'} transition-colors duration-200">
+							<div
+								class="mr-3 flex h-10 w-10 items-center justify-center rounded-lg {activeSection ===
+								section.id
+									? 'bg-brand-500/20'
+									: 'bg-white/10'} transition-colors duration-200"
+							>
 								{#if section.icon === 'profile'}
-									<svg class="w-5 h-5 {activeSection === section.id ? 'text-brand-600' : 'text-neutral-600'}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+									<svg
+										class="h-5 w-5 {activeSection === section.id
+											? 'text-brand-600'
+											: 'text-neutral-400'}"
+										fill="none"
+										stroke="currentColor"
+										viewBox="0 0 24 24"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											stroke-width="2"
+											d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+										/>
 									</svg>
 								{:else if section.icon === 'security'}
-									<svg class="w-5 h-5 {activeSection === section.id ? 'text-brand-600' : 'text-neutral-600'}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+									<svg
+										class="h-5 w-5 {activeSection === section.id
+											? 'text-brand-600'
+											: 'text-neutral-400'}"
+										fill="none"
+										stroke="currentColor"
+										viewBox="0 0 24 24"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											stroke-width="2"
+											d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+										/>
 									</svg>
 								{:else if section.icon === 'notifications'}
-									<svg class="w-5 h-5 {activeSection === section.id ? 'text-brand-600' : 'text-neutral-600'}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM9 7h6l3 3H6l3-3z" />
+									<svg
+										class="h-5 w-5 {activeSection === section.id
+											? 'text-brand-600'
+											: 'text-neutral-400'}"
+										fill="none"
+										stroke="currentColor"
+										viewBox="0 0 24 24"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											stroke-width="2"
+											d="M15 17h5l-5 5v-5zM9 7h6l3 3H6l3-3z"
+										/>
 									</svg>
 								{:else if section.icon === 'preferences'}
-									<svg class="w-5 h-5 {activeSection === section.id ? 'text-brand-600' : 'text-neutral-600'}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+									<svg
+										class="h-5 w-5 {activeSection === section.id
+											? 'text-brand-600'
+											: 'text-neutral-400'}"
+										fill="none"
+										stroke="currentColor"
+										viewBox="0 0 24 24"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											stroke-width="2"
+											d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+										/>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											stroke-width="2"
+											d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+										/>
 									</svg>
 								{/if}
 							</div>
 							<div class="text-left">
-								<div class="font-semibold text-neutral-900 text-sm">{section.title}</div>
-								<div class="text-xs text-neutral-500 hidden sm:block">{section.description}</div>
+								<div class="text-sm font-semibold text-white">{section.title}</div>
+								<div class="hidden text-xs text-neutral-500 sm:block">{section.description}</div>
 							</div>
 						</div>
 					</button>
@@ -209,8 +271,8 @@
 		<section>
 			<Card class="p-8">
 				<div class="mb-8">
-					<h2 class="text-2xl font-bold text-neutral-900 mb-2">Informacje osobiste</h2>
-					<p class="text-neutral-600">Zaktualizuj swoje dane osobowe i kontaktowe</p>
+					<h2 class="mb-2 text-2xl font-bold text-white">Informacje osobiste</h2>
+					<p class="text-neutral-400">Zaktualizuj swoje dane osobowe i kontaktowe</p>
 				</div>
 
 				<form
@@ -229,7 +291,7 @@
 						};
 					}}
 				>
-					<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+					<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 						<div>
 							<Input
 								label="Nazwa użytkownika"
@@ -240,7 +302,7 @@
 								placeholder="Wprowadź nazwę użytkownika"
 							/>
 						</div>
-						
+
 						<div>
 							<Input
 								label="Adres email"
@@ -252,7 +314,7 @@
 								placeholder="Wprowadź adres email"
 							/>
 						</div>
-						
+
 						<div>
 							<Input
 								label="Imię"
@@ -262,7 +324,7 @@
 								placeholder="Wprowadź imię"
 							/>
 						</div>
-						
+
 						<div>
 							<Input
 								label="Nazwisko"
@@ -272,7 +334,7 @@
 								placeholder="Wprowadź nazwisko"
 							/>
 						</div>
-						
+
 						<div>
 							<Input
 								label="Telefon"
@@ -282,7 +344,7 @@
 								placeholder="+48 123 456 789"
 							/>
 						</div>
-						
+
 						<div>
 							<Input
 								label="Firma (opcjonalnie)"
@@ -294,8 +356,8 @@
 					</div>
 
 					<div class="mt-8 flex justify-end">
-						<Button 
-							type="submit" 
+						<Button
+							type="submit"
 							disabled={isSubmitting || !!profileErrors.username || !!profileErrors.email}
 							loading={isSubmitting}
 						>
@@ -312,14 +374,14 @@
 		<section>
 			<Card class="p-8">
 				<div class="mb-8">
-					<h2 class="text-2xl font-bold text-neutral-900 mb-2">Bezpieczeństwo konta</h2>
-					<p class="text-neutral-600">Zarządzaj hasłem i ustawieniami bezpieczeństwa</p>
+					<h2 class="mb-2 text-2xl font-bold text-white">Bezpieczeństwo konta</h2>
+					<p class="text-neutral-400">Zarządzaj hasłem i ustawieniami bezpieczeństwa</p>
 				</div>
 
 				<!-- Change Password -->
 				<div class="mb-8">
-					<h3 class="text-lg font-semibold text-neutral-900 mb-4">Zmiana hasła</h3>
-					
+					<h3 class="mb-4 text-lg font-semibold text-white">Zmiana hasła</h3>
+
 					<form
 						method="POST"
 						action="?/changePassword"
@@ -333,13 +395,13 @@
 									newPassword = '';
 									confirmPassword = '';
 								} else if (result.type === 'failure') {
-								notifications.error((result.data?.message as string) || 'Wystąpił błąd');
+									notifications.error((result.data?.message as string) || 'Wystąpił błąd');
 								}
 								await update();
 							};
 						}}
 					>
-						<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+						<div class="grid grid-cols-1 gap-6 md:grid-cols-3">
 							<div>
 								<Input
 									label="Obecne hasło"
@@ -351,7 +413,7 @@
 									placeholder="Wprowadź obecne hasło"
 								/>
 							</div>
-							
+
 							<div>
 								<Input
 									label="Nowe hasło"
@@ -363,7 +425,7 @@
 									placeholder="Wprowadź nowe hasło"
 								/>
 							</div>
-							
+
 							<div>
 								<Input
 									label="Potwierdź hasło"
@@ -378,9 +440,14 @@
 						</div>
 
 						<div class="mt-6">
-							<Button 
-								type="submit" 
-								disabled={passwordSubmitting || !!passwordErrors.newPassword || !!passwordErrors.confirmPassword || !currentPassword || !newPassword || !confirmPassword}
+							<Button
+								type="submit"
+								disabled={passwordSubmitting ||
+									!!passwordErrors.newPassword ||
+									!!passwordErrors.confirmPassword ||
+									!currentPassword ||
+									!newPassword ||
+									!confirmPassword}
 								loading={passwordSubmitting}
 							>
 								Zmień hasło
@@ -390,28 +457,30 @@
 				</div>
 
 				<!-- Security Features -->
-				<div class="border-t border-neutral-200 pt-8">
-					<h3 class="text-lg font-semibold text-neutral-900 mb-4">Dodatkowe zabezpieczenia</h3>
-					
+				<div class="border-t border-white/10 pt-8">
+					<h3 class="mb-4 text-lg font-semibold text-white">Dodatkowe zabezpieczenia</h3>
+
 					<div class="space-y-4">
-						<div class="flex items-center justify-between p-4 bg-neutral-50 rounded-lg">
+						<div class="flex items-center justify-between rounded-lg bg-white/5 p-4">
 							<div>
-								<h4 class="font-medium text-neutral-900">Weryfikacja dwuetapowa</h4>
-								<p class="text-sm text-neutral-600">Dodatkowa warstwa bezpieczeństwa dla Twojego konta</p>
+								<h4 class="font-medium text-white">Weryfikacja dwuetapowa</h4>
+								<p class="text-sm text-neutral-400">
+									Dodatkowa warstwa bezpieczeństwa dla Twojego konta
+								</p>
 							</div>
 							<Button variant="outline" size="sm">
 								{currentUser?.twoFactorEnabled ? 'Wyłącz' : 'Włącz'}
 							</Button>
 						</div>
 
-						<div class="flex items-center justify-between p-4 bg-neutral-50 rounded-lg">
+						<div class="flex items-center justify-between rounded-lg bg-white/5 p-4">
 							<div>
-								<h4 class="font-medium text-neutral-900">Aktywne sesje</h4>
-								<p class="text-sm text-neutral-600">Zarządzaj urządzeniami zalogowanymi na Twoje konto</p>
+								<h4 class="font-medium text-white">Aktywne sesje</h4>
+								<p class="text-sm text-neutral-400">
+									Zarządzaj urządzeniami zalogowanymi na Twoje konto
+								</p>
 							</div>
-							<Button variant="outline" size="sm">
-								Zarządzaj sesjami
-							</Button>
+							<Button variant="outline" size="sm">Zarządzaj sesjami</Button>
 						</div>
 					</div>
 				</div>
@@ -424,8 +493,8 @@
 		<section>
 			<Card class="p-8">
 				<div class="mb-8">
-					<h2 class="text-2xl font-bold text-neutral-900 mb-2">Preferencje powiadomień</h2>
-					<p class="text-neutral-600">Wybierz rodzaje powiadomień, które chcesz otrzymywać</p>
+					<h2 class="mb-2 text-2xl font-bold text-white">Preferencje powiadomień</h2>
+					<p class="text-neutral-400">Wybierz rodzaje powiadomień, które chcesz otrzymywać</p>
 				</div>
 
 				<form
@@ -442,63 +511,69 @@
 					<div class="space-y-6">
 						<!-- Email Notifications -->
 						<div>
-							<h3 class="text-lg font-semibold text-neutral-900 mb-4">Powiadomienia email</h3>
+							<h3 class="mb-4 text-lg font-semibold text-white">Powiadomienia email</h3>
 							<div class="space-y-4">
 								<label class="flex items-center">
-									<input 
-										type="checkbox" 
+									<input
+										type="checkbox"
 										name="orderUpdates"
 										bind:checked={preferencesForm.orderUpdates}
-										class="w-4 h-4 text-brand-600 bg-neutral-100 border-neutral-300 rounded focus:ring-brand-500 focus:ring-2"
-									>
+										class="text-brand-600 focus:ring-brand-500 h-4 w-4 rounded border-white/15 bg-neutral-100 focus:ring-2"
+									/>
 									<div class="ml-3">
-										<div class="font-medium text-neutral-900">Aktualizacje zamówień</div>
-										<div class="text-sm text-neutral-600">Otrzymuj powiadomienia o statusie zamówień</div>
+										<div class="font-medium text-white">Aktualizacje zamówień</div>
+										<div class="text-sm text-neutral-400">
+											Otrzymuj powiadomienia o statusie zamówień
+										</div>
 									</div>
 								</label>
 
 								<label class="flex items-center">
-									<input 
-										type="checkbox" 
+									<input
+										type="checkbox"
 										name="marketingEmails"
 										bind:checked={preferencesForm.marketingEmails}
-										class="w-4 h-4 text-brand-600 bg-neutral-100 border-neutral-300 rounded focus:ring-brand-500 focus:ring-2"
-									>
+										class="text-brand-600 focus:ring-brand-500 h-4 w-4 rounded border-white/15 bg-neutral-100 focus:ring-2"
+									/>
 									<div class="ml-3">
-										<div class="font-medium text-neutral-900">Promocje i oferty</div>
-										<div class="text-sm text-neutral-600">Informacje o promocjach i nowych produktach</div>
+										<div class="font-medium text-white">Promocje i oferty</div>
+										<div class="text-sm text-neutral-400">
+											Informacje o promocjach i nowych produktach
+										</div>
 									</div>
 								</label>
 
 								<label class="flex items-center">
-									<input 
-										type="checkbox" 
+									<input
+										type="checkbox"
 										name="newsletter"
 										bind:checked={preferencesForm.newsletter}
-										class="w-4 h-4 text-brand-600 bg-neutral-100 border-neutral-300 rounded focus:ring-brand-500 focus:ring-2"
-									>
+										class="text-brand-600 focus:ring-brand-500 h-4 w-4 rounded border-white/15 bg-neutral-100 focus:ring-2"
+									/>
 									<div class="ml-3">
-										<div class="font-medium text-neutral-900">Newsletter</div>
-										<div class="text-sm text-neutral-600">Miesięczny newsletter z nowościami</div>
+										<div class="font-medium text-white">Newsletter</div>
+										<div class="text-sm text-neutral-400">Miesięczny newsletter z nowościami</div>
 									</div>
 								</label>
 							</div>
 						</div>
 
 						<!-- SMS Notifications -->
-						<div class="border-t border-neutral-200 pt-6">
-							<h3 class="text-lg font-semibold text-neutral-900 mb-4">Powiadomienia SMS</h3>
+						<div class="border-t border-white/10 pt-6">
+							<h3 class="mb-4 text-lg font-semibold text-white">Powiadomienia SMS</h3>
 							<div class="space-y-4">
 								<label class="flex items-center">
-									<input 
-										type="checkbox" 
+									<input
+										type="checkbox"
 										name="smsNotifications"
 										bind:checked={preferencesForm.smsNotifications}
-										class="w-4 h-4 text-brand-600 bg-neutral-100 border-neutral-300 rounded focus:ring-brand-500 focus:ring-2"
-									>
+										class="text-brand-600 focus:ring-brand-500 h-4 w-4 rounded border-white/15 bg-neutral-100 focus:ring-2"
+									/>
 									<div class="ml-3">
-										<div class="font-medium text-neutral-900">Powiadomienia SMS</div>
-										<div class="text-sm text-neutral-600">Otrzymuj SMS o ważnych aktualizacjach</div>
+										<div class="font-medium text-white">Powiadomienia SMS</div>
+										<div class="text-sm text-neutral-400">
+											Otrzymuj SMS o ważnych aktualizacjach
+										</div>
 									</div>
 								</label>
 							</div>
@@ -506,9 +581,7 @@
 					</div>
 
 					<div class="mt-8 flex justify-end">
-						<Button type="submit">
-							Zapisz preferencje
-						</Button>
+						<Button type="submit">Zapisz preferencje</Button>
 					</div>
 				</form>
 			</Card>
@@ -520,8 +593,8 @@
 		<section>
 			<Card class="p-8">
 				<div class="mb-8">
-					<h2 class="text-2xl font-bold text-neutral-900 mb-2">Preferencje ogólne</h2>
-					<p class="text-neutral-600">Dostosuj swoje doświadczenie zakupowe</p>
+					<h2 class="mb-2 text-2xl font-bold text-white">Preferencje ogólne</h2>
+					<p class="text-neutral-400">Dostosuj swoje doświadczenie zakupowe</p>
 				</div>
 
 				<form
@@ -537,18 +610,20 @@
 						};
 					}}
 				>
-					<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+					<div class="grid grid-cols-1 gap-8 md:grid-cols-2">
 						<!-- Language & Region -->
 						<div>
-							<h3 class="text-lg font-semibold text-neutral-900 mb-4">Język i region</h3>
+							<h3 class="mb-4 text-lg font-semibold text-white">Język i region</h3>
 							<div class="space-y-4">
 								<div>
-									<label for="language" class="block text-sm font-medium text-neutral-700 mb-2">Język interfejsu</label>
-									<select 
+									<label for="language" class="mb-2 block text-sm font-medium text-neutral-300"
+										>Język interfejsu</label
+									>
+									<select
 										id="language"
 										name="language"
 										bind:value={preferencesForm.language}
-										class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+										class="focus:ring-brand-500 w-full rounded-lg border border-white/15 px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none"
 									>
 										<option value="pl">Polski</option>
 										<option value="en">English</option>
@@ -557,12 +632,14 @@
 								</div>
 
 								<div>
-									<label for="currency" class="block text-sm font-medium text-neutral-700 mb-2">Waluta</label>
-									<select 
+									<label for="currency" class="mb-2 block text-sm font-medium text-neutral-300"
+										>Waluta</label
+									>
+									<select
 										id="currency"
 										name="currency"
 										bind:value={preferencesForm.currency}
-										class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+										class="focus:ring-brand-500 w-full rounded-lg border border-white/15 px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none"
 									>
 										<option value="PLN">PLN (złoty)</option>
 										<option value="EUR">EUR (euro)</option>
@@ -574,15 +651,17 @@
 
 						<!-- Display -->
 						<div>
-							<h3 class="text-lg font-semibold text-neutral-900 mb-4">Wygląd</h3>
+							<h3 class="mb-4 text-lg font-semibold text-white">Wygląd</h3>
 							<div class="space-y-4">
 								<div>
-									<label for="theme" class="block text-sm font-medium text-neutral-700 mb-2">Motyw</label>
-									<select 
+									<label for="theme" class="mb-2 block text-sm font-medium text-neutral-300"
+										>Motyw</label
+									>
+									<select
 										id="theme"
 										name="theme"
 										bind:value={preferencesForm.theme}
-										class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+										class="focus:ring-brand-500 w-full rounded-lg border border-white/15 px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none"
 									>
 										<option value="light">Jasny</option>
 										<option value="dark">Ciemny</option>
@@ -594,11 +673,7 @@
 					</div>
 
 					<div class="mt-8 flex justify-end">
-						<Button 
-							type="submit"
-							loading={preferencesSubmitting}
-							disabled={preferencesSubmitting}
-						>
+						<Button type="submit" loading={preferencesSubmitting} disabled={preferencesSubmitting}>
 							Zapisz preferencje
 						</Button>
 					</div>
@@ -609,19 +684,13 @@
 
 	<!-- Account Actions -->
 	<section>
-		<Card class="p-8 bg-linear-to-br from-danger/5 to-brand-50 border-2 border-danger/10">
+		<Card class="from-danger/5 to-brand-50 border-danger/10 border-2 bg-linear-to-br p-8">
 			<div class="text-center">
-				<h3 class="text-xl font-bold text-neutral-900 mb-4">Akcje konta</h3>
-				<p class="text-neutral-600 mb-6">
-					Zarządzaj swoim kontem lub usuń je całkowicie
-				</p>
-				<div class="flex flex-col sm:flex-row gap-4 justify-center">
-					<Button href="/account/export" variant="outline">
-						Eksportuj dane
-					</Button>
-					<Button variant="secondary">
-							Usuń konto
-						</Button>
+				<h3 class="mb-4 text-xl font-bold text-white">Akcje konta</h3>
+				<p class="mb-6 text-neutral-400">Zarządzaj swoim kontem lub usuń je całkowicie</p>
+				<div class="flex flex-col justify-center gap-4 sm:flex-row">
+					<Button href="/account/export" variant="outline">Eksportuj dane</Button>
+					<Button variant="secondary">Usuń konto</Button>
 				</div>
 			</div>
 		</Card>
@@ -638,22 +707,21 @@
 		text-align: left;
 		width: 100%;
 	}
-	
+
 	.settings-nav-active {
 		background-color: rgb(219 234 254);
 		border-color: rgb(147 197 253);
 		color: rgb(29 78 216);
 	}
-	
+
 	.settings-nav-inactive {
 		background-color: rgb(249 250 251);
 		color: rgb(55 65 81);
 	}
-	
+
 	.settings-nav-inactive:hover {
 		background-color: rgb(239 246 255);
 		border-color: rgb(191 219 254);
 		color: rgb(37 99 235);
 	}
 </style>
-

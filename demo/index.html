@@ -1,225 +1,269 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" data-theme="cyber">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0a0a12">
-  <title>FixTar Design System Demo</title>
-  <link rel="stylesheet" href="../src/lib/styles/index.css">
-  <style>
-    /* Demo-specific styles */
-    .demo-section {
-      margin: 2rem 0;
-      padding: 2rem;
-      border-radius: var(--radius-lg);
-      background-color: var(--color-bg-secondary);
-    }
-    
-    .demo-themes {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-    
-    .demo-theme-block {
-      flex: 1;
-      min-width: 240px;
-      padding: 1rem;
-      background-color: var(--color-bg-secondary);
-      border-radius: var(--radius-md);
-      border: 1px solid var(--color-border-secondary);
-    }
-    
-    .theme-preview {
-      padding: 1rem;
-      border-radius: var(--radius-md);
-      margin-bottom: 1rem;
-    }
-    
-    .demo-colors {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-      gap: 0.5rem;
-      margin-top: 1rem;
-    }
-    
-    .color-swatch {
-      width: 100%;
-      height: 60px;
-      border-radius: var(--radius-md);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: var(--font-size-xs);
-      text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
-    }
-    
-    .theme-switcher-container {
-      position: fixed;
-      top: 1rem;
-      right: 1rem;
-    }
-    
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    
-    .theme-label {
-      display: inline-block;
-      padding: 0.25rem 0.5rem;
-      border-radius: var(--radius-sm);
-      font-size: var(--font-size-xs);
-      font-weight: var(--font-weight-medium);
-      text-transform: uppercase;
-      background-color: var(--color-primary);
-      color: white;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="theme-switcher-container">
-      <theme-switcher></theme-switcher>
-    </div>
-    
-    <header class="demo-section">
-      <div class="header">
-        <h1>FixTar Design System</h1>
-        <div class="theme-label js-theme-name">cyber</div>
-      </div>
-      <p>A flexible and extensible theming system for building modern web applications.</p>
-      
-      <div class="demo-buttons">
-        <button class="btn btn-primary">Primary Button</button>
-        <button class="btn btn-secondary">Secondary Button</button>
-        <button class="btn btn-accent">Accent Button</button>
-        <button class="btn btn-outline">Outline Button</button>
-        <button class="btn btn-cyber">Cyber Button</button>
-      </div>
-    </header>
-    
-    <section class="demo-section">
-      <h2>Theme Components</h2>
-      
-      <div class="card" style="margin-bottom: 1rem;">
-        <div class="card-header">
-          <h3>Card Component</h3>
-        </div>
-        <div class="card-body">
-          <p>This is a standard card component that adapts to the current theme.</p>
-          <input type="text" class="input" placeholder="Input field" />
-        </div>
-        <div class="card-footer">
-          <button class="btn btn-primary">Action</button>
-        </div>
-      </div>
-      
-      <div class="card-cyber" style="margin-bottom: 1rem; padding: 1rem;">
-        <h3>Themed Card (Cyber)</h3>
-        <p>This is a cyber-themed card that has theme-specific styling.</p>
-      </div>
-      
-      <div class="alert">
-        <strong>Info Alert</strong>: This is an information alert message.
-      </div>
-      
-      <div class="alert alert-success" style="margin-top: 0.5rem;">
-        <strong>Success Alert</strong>: This is a success alert message.
-      </div>
-      
-      <div class="alert alert-warning" style="margin-top: 0.5rem;">
-        <strong>Warning Alert</strong>: This is a warning alert message.
-      </div>
-      
-      <div class="alert alert-danger" style="margin-top: 0.5rem;">
-        <strong>Danger Alert</strong>: This is a danger alert message.
-      </div>
-    </section>
-    
-    <section class="demo-section">
-      <h2>Theme Colors</h2>
-      
-      <h3>Brand Colors</h3>
-      <div class="demo-colors">
-        <div class="color-swatch bg-brand-primary">Primary</div>
-        <div class="color-swatch bg-brand-secondary">Secondary</div>
-        <div class="color-swatch bg-accent">Accent</div>
-        <div class="color-swatch bg-success">Success</div>
-        <div class="color-swatch bg-warning">Warning</div>
-        <div class="color-swatch bg-danger">Danger</div>
-        <div class="color-swatch bg-info">Info</div>
-      </div>
-      
-      <h3>Background Colors</h3>
-      <div class="demo-colors">
-        <div class="color-swatch bg-primary">Primary BG</div>
-        <div class="color-swatch bg-secondary">Secondary BG</div>
-        <div class="color-swatch bg-tertiary">Tertiary BG</div>
-      </div>
-      
-      <h3>Text Colors</h3>
-      <div>
-        <p class="text-primary">Primary Text - The quick brown fox jumps over the lazy dog.</p>
-        <p class="text-secondary">Secondary Text - The quick brown fox jumps over the lazy dog.</p>
-        <p class="text-tertiary">Tertiary Text - The quick brown fox jumps over the lazy dog.</p>
-        <p class="text-muted">Muted Text - The quick brown fox jumps over the lazy dog.</p>
-      </div>
-    </section>
-    
-    <section class="demo-section">
-      <h2>Available Themes</h2>
-      
-      <div class="demo-themes">
-        <div class="demo-theme-block">
-          <div class="theme-preview theme-cyber">
-            <div class="theme-label">Cyber Theme</div>
-            <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
-              <div style="width: 20px; height: 20px; border-radius: 50%; background: var(--color-primary);"></div>
-              <div style="width: 20px; height: 20px; border-radius: 50%; background: var(--color-secondary);"></div>
-              <div style="width: 20px; height: 20px; border-radius: 50%; background: var(--color-accent);"></div>
-            </div>
-          </div>
-          <button class="btn btn-primary" data-theme-toggle="cyber">Apply Cyber Theme</button>
-        </div>
-        
-        <div class="demo-theme-block">
-          <div class="theme-preview theme-dark">
-            <div class="theme-label">Dark Theme</div>
-            <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
-              <div style="width: 20px; height: 20px; border-radius: 50%; background: var(--color-primary);"></div>
-              <div style="width: 20px; height: 20px; border-radius: 50%; background: var(--color-secondary);"></div>
-              <div style="width: 20px; height: 20px; border-radius: 50%; background: var(--color-accent);"></div>
-            </div>
-          </div>
-          <button class="btn btn-primary" data-theme-toggle="dark">Apply Dark Theme</button>
-        </div>
-      </div>
-    </section>
-    
-    <footer class="demo-section">
-      <p>FixTar Design System - Example implementation</p>
-      <p class="text-tertiary">Create your own themes by following the template structure in cyber.css and dark.css</p>
-    </footer>
-  </div>
-  
-  <script type="module">
-    import '../src/lib/components/ThemeSwitcher.js';
-    import { getTheme } from '../src/lib/js/theme-system.js';
-    
-    // Update theme label when theme changes
-    window.addEventListener('themechange', (e) => {
-      const themeLabel = document.querySelector('.js-theme-name');
-      if (themeLabel) {
-        themeLabel.textContent = e.detail.theme;
-      }
-    });
-    
-    // Set initial theme label
-    document.querySelector('.js-theme-name').textContent = getTheme();
-  </script>
-</body>
-</html> 
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="theme-color" content="#0a0a12" />
+		<title>FixTar Design System Demo</title>
+		<link rel="stylesheet" href="../src/lib/styles/index.css" />
+		<style>
+			/* Demo-specific styles */
+			.demo-section {
+				margin: 2rem 0;
+				padding: 2rem;
+				border-radius: var(--radius-lg);
+				background-color: var(--color-bg-secondary);
+			}
+
+			.demo-themes {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 1rem;
+				margin-top: 1rem;
+			}
+
+			.demo-theme-block {
+				flex: 1;
+				min-width: 240px;
+				padding: 1rem;
+				background-color: var(--color-bg-secondary);
+				border-radius: var(--radius-md);
+				border: 1px solid var(--color-border-secondary);
+			}
+
+			.theme-preview {
+				padding: 1rem;
+				border-radius: var(--radius-md);
+				margin-bottom: 1rem;
+			}
+
+			.demo-colors {
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+				gap: 0.5rem;
+				margin-top: 1rem;
+			}
+
+			.color-swatch {
+				width: 100%;
+				height: 60px;
+				border-radius: var(--radius-md);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				color: white;
+				font-size: var(--font-size-xs);
+				text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+			}
+
+			.theme-switcher-container {
+				position: fixed;
+				top: 1rem;
+				right: 1rem;
+			}
+
+			.header {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+			}
+
+			.theme-label {
+				display: inline-block;
+				padding: 0.25rem 0.5rem;
+				border-radius: var(--radius-sm);
+				font-size: var(--font-size-xs);
+				font-weight: var(--font-weight-medium);
+				text-transform: uppercase;
+				background-color: var(--color-primary);
+				color: white;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="theme-switcher-container">
+				<theme-switcher></theme-switcher>
+			</div>
+
+			<header class="demo-section">
+				<div class="header">
+					<h1>FixTar Design System</h1>
+					<div class="theme-label js-theme-name">cyber</div>
+				</div>
+				<p>A flexible and extensible theming system for building modern web applications.</p>
+
+				<div class="demo-buttons">
+					<button class="btn btn-primary">Primary Button</button>
+					<button class="btn btn-secondary">Secondary Button</button>
+					<button class="btn btn-accent">Accent Button</button>
+					<button class="btn btn-outline">Outline Button</button>
+					<button class="btn btn-cyber">Cyber Button</button>
+				</div>
+			</header>
+
+			<section class="demo-section">
+				<h2>Theme Components</h2>
+
+				<div class="card" style="margin-bottom: 1rem">
+					<div class="card-header">
+						<h3>Card Component</h3>
+					</div>
+					<div class="card-body">
+						<p>This is a standard card component that adapts to the current theme.</p>
+						<input type="text" class="input" placeholder="Input field" />
+					</div>
+					<div class="card-footer">
+						<button class="btn btn-primary">Action</button>
+					</div>
+				</div>
+
+				<div class="card-cyber" style="margin-bottom: 1rem; padding: 1rem">
+					<h3>Themed Card (Cyber)</h3>
+					<p>This is a cyber-themed card that has theme-specific styling.</p>
+				</div>
+
+				<div class="alert"><strong>Info Alert</strong>: This is an information alert message.</div>
+
+				<div class="alert alert-success" style="margin-top: 0.5rem">
+					<strong>Success Alert</strong>: This is a success alert message.
+				</div>
+
+				<div class="alert alert-warning" style="margin-top: 0.5rem">
+					<strong>Warning Alert</strong>: This is a warning alert message.
+				</div>
+
+				<div class="alert alert-danger" style="margin-top: 0.5rem">
+					<strong>Danger Alert</strong>: This is a danger alert message.
+				</div>
+			</section>
+
+			<section class="demo-section">
+				<h2>Theme Colors</h2>
+
+				<h3>Brand Colors</h3>
+				<div class="demo-colors">
+					<div class="color-swatch bg-brand-primary">Primary</div>
+					<div class="color-swatch bg-brand-secondary">Secondary</div>
+					<div class="color-swatch bg-accent">Accent</div>
+					<div class="color-swatch bg-success">Success</div>
+					<div class="color-swatch bg-warning">Warning</div>
+					<div class="color-swatch bg-danger">Danger</div>
+					<div class="color-swatch bg-info">Info</div>
+				</div>
+
+				<h3>Background Colors</h3>
+				<div class="demo-colors">
+					<div class="color-swatch bg-primary">Primary BG</div>
+					<div class="color-swatch bg-secondary">Secondary BG</div>
+					<div class="color-swatch bg-tertiary">Tertiary BG</div>
+				</div>
+
+				<h3>Text Colors</h3>
+				<div>
+					<p class="text-primary">Primary Text - The quick brown fox jumps over the lazy dog.</p>
+					<p class="text-secondary">
+						Secondary Text - The quick brown fox jumps over the lazy dog.
+					</p>
+					<p class="text-tertiary">Tertiary Text - The quick brown fox jumps over the lazy dog.</p>
+					<p class="text-muted">Muted Text - The quick brown fox jumps over the lazy dog.</p>
+				</div>
+			</section>
+
+			<section class="demo-section">
+				<h2>Available Themes</h2>
+
+				<div class="demo-themes">
+					<div class="demo-theme-block">
+						<div class="theme-preview theme-cyber">
+							<div class="theme-label">Cyber Theme</div>
+							<div style="margin-top: 1rem; display: flex; gap: 0.5rem">
+								<div
+									style="
+										width: 20px;
+										height: 20px;
+										border-radius: 50%;
+										background: var(--color-primary);
+									"
+								></div>
+								<div
+									style="
+										width: 20px;
+										height: 20px;
+										border-radius: 50%;
+										background: var(--color-secondary);
+									"
+								></div>
+								<div
+									style="
+										width: 20px;
+										height: 20px;
+										border-radius: 50%;
+										background: var(--color-accent);
+									"
+								></div>
+							</div>
+						</div>
+						<button class="btn btn-primary" data-theme-toggle="cyber">Apply Cyber Theme</button>
+					</div>
+
+					<div class="demo-theme-block">
+						<div class="theme-preview theme-dark">
+							<div class="theme-label">Dark Theme</div>
+							<div style="margin-top: 1rem; display: flex; gap: 0.5rem">
+								<div
+									style="
+										width: 20px;
+										height: 20px;
+										border-radius: 50%;
+										background: var(--color-primary);
+									"
+								></div>
+								<div
+									style="
+										width: 20px;
+										height: 20px;
+										border-radius: 50%;
+										background: var(--color-secondary);
+									"
+								></div>
+								<div
+									style="
+										width: 20px;
+										height: 20px;
+										border-radius: 50%;
+										background: var(--color-accent);
+									"
+								></div>
+							</div>
+						</div>
+						<button class="btn btn-primary" data-theme-toggle="dark">Apply Dark Theme</button>
+					</div>
+				</div>
+			</section>
+
+			<footer class="demo-section">
+				<p>FixTar Design System - Example implementation</p>
+				<p class="text-tertiary">
+					Create your own themes by following the template structure in cyber.css and dark.css
+				</p>
+			</footer>
+		</div>
+
+		<script type="module">
+			import '../src/lib/components/ThemeSwitcher.js';
+			import { getTheme } from '../src/lib/js/theme-system.js';
+
+			// Update theme label when theme changes
+			window.addEventListener('themechange', (e) => {
+				const themeLabel = document.querySelector('.js-theme-name');
+				if (themeLabel) {
+					themeLabel.textContent = e.detail.theme;
+				}
+			});
+
+			// Set initial theme label
+			document.querySelector('.js-theme-name').textContent = getTheme();
+		</script>
+	</body>
+</html>

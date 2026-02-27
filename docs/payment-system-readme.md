@@ -5,19 +5,19 @@
 The payment system is implemented with a modular architecture that supports multiple payment providers. Currently active methods:
 
 ### ✅ Working Payment Methods
+
 1. **Bank Transfer (Przelew tradycyjny)** - Fully functional
    - Shows bank details on success page
    - Reference number auto-generated
-   
 2. **Cash on Delivery (Płatność przy odbiorze)** - Fully functional
    - 5 PLN additional fee
    - Order goes straight to processing
 
 ### 🔄 Ready to Activate (Need Credentials)
+
 1. **Przelewy24** - Code ready, needs merchant account
    - Supports BLIK, cards, and 165+ payment methods
    - Sandbox testing available
-   
 2. **PayU** - Can be added with minimal effort
 3. **Stripe** - Can be added for international payments
 
@@ -34,6 +34,7 @@ The payment system is implemented with a modular architecture that supports mult
 ## Error Handling
 
 The system gracefully handles:
+
 - Unconfigured payment methods (falls back to bank transfer)
 - Failed payment attempts (order is cleaned up)
 - Missing credentials (clear error messages)
@@ -59,6 +60,7 @@ src/lib/services/payment/
 ## Testing
 
 Current test flow:
+
 1. Add items to cart
 2. Go to checkout
 3. Select "Przelew tradycyjny" or "Płatność przy odbiorze"
@@ -80,4 +82,4 @@ Current test flow:
 3. **Add email notifications**:
    - Order confirmation
    - Payment instructions
-   - Status updates 
+   - Status updates

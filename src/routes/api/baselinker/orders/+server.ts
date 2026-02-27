@@ -19,7 +19,9 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 		const result = await service.pushOrder(orderData);
 
 		if (result.success) {
-			console.log(`[BaseLinker] Order ${orderData.orderNumber} pushed successfully. BL ID: ${result.baselinkerOrderId}`);
+			console.log(
+				`[BaseLinker] Order ${orderData.orderNumber} pushed successfully. BL ID: ${result.baselinkerOrderId}`
+			);
 		} else {
 			console.error(`[BaseLinker] Failed to push order ${orderData.orderNumber}:`, result.error);
 		}

@@ -2,10 +2,22 @@ import type { PageServerLoad, Actions } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
 
 const VOIVODESHIPS = [
-	'dolnośląskie', 'kujawsko-pomorskie', 'lubelskie', 'lubuskie',
-	'łódzkie', 'małopolskie', 'mazowieckie', 'opolskie',
-	'podkarpackie', 'podlaskie', 'pomorskie', 'śląskie',
-	'świętokrzyskie', 'warmińsko-mazurskie', 'wielkopolskie', 'zachodniopomorskie'
+	'dolnośląskie',
+	'kujawsko-pomorskie',
+	'lubelskie',
+	'lubuskie',
+	'łódzkie',
+	'małopolskie',
+	'mazowieckie',
+	'opolskie',
+	'podkarpackie',
+	'podlaskie',
+	'pomorskie',
+	'śląskie',
+	'świętokrzyskie',
+	'warmińsko-mazurskie',
+	'wielkopolskie',
+	'zachodniopomorskie'
 ];
 
 interface ShippingMethod {
@@ -33,7 +45,12 @@ export const load = (async ({ locals }) => {
 	return {
 		isAuthenticated: !!user,
 		user: user || null,
-		addresses: [] as Array<{ default?: boolean; street?: string; city?: string; postalCode?: string }>,
+		addresses: [] as Array<{
+			default?: boolean;
+			street?: string;
+			city?: string;
+			postalCode?: string;
+		}>,
 		cartItems: [],
 		shippingMethods: [] as ShippingMethod[],
 		paymentMethods: [] as PaymentMethod[],

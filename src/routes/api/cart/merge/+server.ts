@@ -12,7 +12,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 	}
 
 	try {
-		const { guestItems } = await request.json() as { guestItems: CartItem[] };
+		const { guestItems } = (await request.json()) as { guestItems: CartItem[] };
 
 		if (!Array.isArray(guestItems)) {
 			return json({ success: false, message: 'Invalid cart data format' }, { status: 400 });

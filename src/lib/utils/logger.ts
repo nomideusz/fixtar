@@ -26,10 +26,11 @@ class Logger {
 	private maxLogs = 1000; // Keep last 1000 logs in memory
 
 	constructor() {
-		this.isDevelopment = typeof window !== 'undefined' 
-			? window.location.hostname === 'localhost' 
-			: process.env.NODE_ENV === 'development';
-		
+		this.isDevelopment =
+			typeof window !== 'undefined'
+				? window.location.hostname === 'localhost'
+				: process.env.NODE_ENV === 'development';
+
 		this.logLevel = this.isDevelopment ? LogLevel.DEBUG : LogLevel.INFO;
 	}
 
@@ -65,7 +66,7 @@ class Logger {
 
 		// Console output with appropriate method
 		const formatted = this.formatMessage(entry);
-		
+
 		switch (entry.level) {
 			case LogLevel.ERROR:
 				console.error(formatted, entry.data);
@@ -151,7 +152,7 @@ class Logger {
 	// Get logs for debugging
 	getLogs(level?: LogLevel): LogEntry[] {
 		if (level !== undefined) {
-			return this.logs.filter(log => log.level <= level);
+			return this.logs.filter((log) => log.level <= level);
 		}
 		return [...this.logs];
 	}
@@ -206,4 +207,4 @@ export const uiLogger = {
 	warn: (message: string, data?: any) => logger.warn('UI', message, data),
 	info: (message: string, data?: any) => logger.info('UI', message, data),
 	debug: (message: string, data?: any) => logger.debug('UI', message, data)
-}; 
+};

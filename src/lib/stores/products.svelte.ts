@@ -84,27 +84,43 @@ function createProductsStore() {
 	);
 
 	return {
-		get items() { return products; },
-		get loading() { return loading; },
-		get error() { return error; },
-		get featured() { return featured; },
-		get inStock() { return inStock; },
+		get items() {
+			return products;
+		},
+		get loading() {
+			return loading;
+		},
+		get error() {
+			return error;
+		},
+		get featured() {
+			return featured;
+		},
+		get inStock() {
+			return inStock;
+		},
 
 		// TODO: Implement with BaseLinker API
 		async fetchProducts() {
 			if (!browser) return;
-			console.warn('[productsStore] fetchProducts: PocketBase removed, implement with BaseLinker API');
+			console.warn(
+				'[productsStore] fetchProducts: PocketBase removed, implement with BaseLinker API'
+			);
 			return null;
 		},
 
 		async fetchProduct(_: string): Promise<Product | null> {
 			void _;
-			console.warn('[productsStore] fetchProduct: PocketBase removed, implement with BaseLinker API');
+			console.warn(
+				'[productsStore] fetchProduct: PocketBase removed, implement with BaseLinker API'
+			);
 			return null;
 		},
 
 		async fetchFeaturedProducts() {
-			console.warn('[productsStore] fetchFeaturedProducts: PocketBase removed, implement with BaseLinker API');
+			console.warn(
+				'[productsStore] fetchFeaturedProducts: PocketBase removed, implement with BaseLinker API'
+			);
 			return [];
 		},
 
@@ -115,14 +131,19 @@ function createProductsStore() {
 		},
 
 		async updateProduct(_id: string, _data: any) {
-			void _id; void _data;
-			console.warn('[productsStore] updateProduct: PocketBase removed, implement with BaseLinker API');
+			void _id;
+			void _data;
+			console.warn(
+				'[productsStore] updateProduct: PocketBase removed, implement with BaseLinker API'
+			);
 			return null;
 		},
 
 		async removeProduct(_id: string) {
 			void _id;
-			console.warn('[productsStore] removeProduct: PocketBase removed, implement with BaseLinker API');
+			console.warn(
+				'[productsStore] removeProduct: PocketBase removed, implement with BaseLinker API'
+			);
 			return false;
 		},
 
@@ -138,17 +159,25 @@ function createCategoriesStore() {
 	const loading = $state(false);
 
 	return {
-		get items() { return categories; },
-		get loading() { return loading; },
+		get items() {
+			return categories;
+		},
+		get loading() {
+			return loading;
+		},
 
 		// TODO: Implement with BaseLinker API
 		async fetchCategories() {
-			console.warn('[categoriesStore] fetchCategories: PocketBase removed, implement with BaseLinker API');
+			console.warn(
+				'[categoriesStore] fetchCategories: PocketBase removed, implement with BaseLinker API'
+			);
 			return [];
 		},
 
 		async fetchFeaturedCategories() {
-			console.warn('[categoriesStore] fetchFeaturedCategories: PocketBase removed, implement with BaseLinker API');
+			console.warn(
+				'[categoriesStore] fetchFeaturedCategories: PocketBase removed, implement with BaseLinker API'
+			);
 			return [];
 		}
 	};

@@ -25,7 +25,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 	}
 
 	try {
-		const { items } = await request.json() as { items: CartItem[] };
+		const { items } = (await request.json()) as { items: CartItem[] };
 
 		if (!Array.isArray(items)) {
 			return json({ success: false, message: 'Invalid cart data format' }, { status: 400 });
@@ -34,7 +34,11 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		// TODO: Upsert cart rows in Turso DB for user locals.user.id
 		console.warn('[TODO] api/cart/sync POST: persist cart to DB for user', locals.user.id);
 
-		return json({ success: true, message: 'Cart synced (stub)', last_sync: new Date().toISOString() });
+		return json({
+			success: true,
+			message: 'Cart synced (stub)',
+			last_sync: new Date().toISOString()
+		});
 	} catch (err) {
 		console.error('Error syncing cart:', err);
 		return json({ success: false, message: 'Error syncing cart' }, { status: 500 });

@@ -11,7 +11,7 @@ export interface User {
 function createUserStore() {
 	const persisted = new PersistedState<User | null>('user', null, {
 		storage: 'local',
-		syncTabs: true,
+		syncTabs: true
 	});
 
 	const isAuthenticated = $derived(persisted.current !== null);
@@ -36,7 +36,7 @@ function createUserStore() {
 			if (persisted.current) {
 				persisted.current = { ...persisted.current, ...updates };
 			}
-		},
+		}
 	};
 }
 

@@ -13,7 +13,7 @@ function createNotifications() {
 		const entry: Notification = {
 			...notification,
 			id,
-			duration: notification.duration ?? 5000,
+			duration: notification.duration ?? 5000
 		};
 
 		items = [...items, entry];
@@ -41,7 +41,7 @@ function createNotifications() {
 		remove,
 		clear() {
 			items = [];
-		},
+		}
 	};
 }
 

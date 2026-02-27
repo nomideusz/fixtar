@@ -58,8 +58,7 @@
 	--color-info: #2563eb;
 	--color-info-light: #dbeafe;
 
-	--font-sans:
-		'Barlow', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	--font-sans: 'Barlow', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 	--font-heading:
 		'Chakra Petch', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 	--font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', monospace;
@@ -81,36 +80,36 @@
    ========================================================================== */
 
 :root {
-	/* -- Surface / Background -- */
-	--ft-surface: #ffffff;
-	--ft-surface-secondary: var(--color-neutral-50);
-	--ft-surface-tertiary: var(--color-neutral-100);
-	--ft-surface-elevated: #ffffff;
-	--ft-surface-overlay: rgba(0, 0, 0, 0.5);
+	/* -- Surface / Background (Dark Industrial) -- */
+	--ft-surface: var(--ft-dark, #0c1118);
+	--ft-surface-secondary: rgba(255, 255, 255, 0.03);
+	--ft-surface-tertiary: rgba(255, 255, 255, 0.06);
+	--ft-surface-elevated: #0f1722;
+	--ft-surface-overlay: rgba(0, 0, 0, 0.6);
 
 	/* -- Text -- */
-	--ft-text: var(--color-neutral-900);
-	--ft-text-secondary: var(--color-neutral-600);
-	--ft-text-muted: var(--color-neutral-400);
-	--ft-text-inverse: #ffffff;
-	--ft-text-brand: var(--color-brand-600);
+	--ft-text: #ffffff;
+	--ft-text-secondary: rgba(255, 255, 255, 0.55);
+	--ft-text-muted: rgba(255, 255, 255, 0.35);
+	--ft-text-inverse: var(--color-neutral-900);
+	--ft-text-brand: var(--color-brand-400);
 
 	/* -- Border -- */
-	--ft-border: var(--color-neutral-200);
-	--ft-border-hover: var(--color-neutral-300);
+	--ft-border: rgba(255, 255, 255, 0.08);
+	--ft-border-hover: rgba(255, 255, 255, 0.15);
 	--ft-border-focus: var(--color-brand-500);
 
 	/* -- Interactive / Primary action -- */
-	--ft-primary: var(--color-brand-600);
-	--ft-primary-hover: var(--color-brand-700);
-	--ft-primary-active: var(--color-brand-800);
-	--ft-primary-light: var(--color-brand-100);
+	--ft-primary: var(--color-brand-500);
+	--ft-primary-hover: var(--color-brand-400);
+	--ft-primary-active: var(--color-brand-600);
+	--ft-primary-light: rgba(55, 138, 146, 0.15);
 	--ft-primary-ring: var(--color-brand-500);
 
 	/* -- Interactive / Secondary action -- */
-	--ft-secondary: var(--color-accent-600);
-	--ft-secondary-hover: var(--color-accent-700);
-	--ft-secondary-light: var(--color-accent-100);
+	--ft-secondary: var(--color-accent-500);
+	--ft-secondary-hover: var(--color-accent-400);
+	--ft-secondary-light: rgba(55, 138, 146, 0.15);
 
 	/* -- Semantic status -- */
 	--ft-success: var(--color-success);
@@ -151,6 +150,17 @@
 	--ft-tracking-normal: 0;
 	--ft-tracking-wide: 0.05em;
 	--ft-tracking-wider: 0.1em;
+
+	/* -- Dark section surfaces (industrial theme) -- */
+	--ft-dark: #0c1118;
+	--ft-dark-deeper: #090e13;
+	--ft-dark-card: rgba(255, 255, 255, 0.02);
+	--ft-dark-card-hover: rgba(255, 255, 255, 0.04);
+	--ft-dark-border: rgba(255, 255, 255, 0.06);
+	--ft-dark-border-hover: rgba(55, 138, 146, 0.15);
+	--ft-dark-text: #ffffff;
+	--ft-dark-text-secondary: rgba(255, 255, 255, 0.35);
+	--ft-dark-text-muted: rgba(255, 255, 255, 0.2);
 }
 
 /* Future dark mode (uncomment & customize when ready)
@@ -191,6 +201,18 @@
 	/* Remove default focus for mouse users */
 	:focus:not(:focus-visible) {
 		outline: none;
+	}
+
+	/* Dark-themed selects & options */
+	select {
+		background-color: var(--ft-surface-elevated, #0f1722);
+		color: var(--ft-text, #ffffff);
+		border-color: var(--ft-border-hover, rgba(255, 255, 255, 0.15));
+	}
+
+	select option {
+		background-color: var(--ft-surface-elevated, #0f1722);
+		color: var(--ft-text, #ffffff);
 	}
 
 	/* Headings inherit font-heading */

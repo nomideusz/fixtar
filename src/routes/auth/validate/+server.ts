@@ -27,18 +27,27 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 		}
 
 		// Forward cookies so Better Auth can validate cookie-based session
-		const cookieHeader = cookies.getAll().map(c => `${c.name}=${c.value}`).join('; ');
+		const cookieHeader = cookies
+			.getAll()
+			.map((c) => `${c.name}=${c.value}`)
+			.join('; ');
 		if (cookieHeader) headers.set('cookie', cookieHeader);
 
 		const session = await auth.api.getSession({ headers });
 
 		if (session?.user) {
-			return json({ isValid: true, user: { id: session.user.id, email: session.user.email, name: session.user.name } });
+			return json({
+				isValid: true,
+				user: { id: session.user.id, email: session.user.email, name: session.user.name }
+			});
 		}
 
 		return json({ isValid: false, error: 'No valid session' }, { status: 401 });
 	} catch (error) {
 		console.error('Session validation error:', error);
-		return json({ isValid: false, error: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 });
+		return json(
+			{ isValid: false, error: error instanceof Error ? error.message : 'Unknown error' },
+			{ status: 500 }
+		);
 	}
 };

@@ -10,7 +10,10 @@ export const auth = betterAuth({
 	}),
 
 	// Secret for signing sessions — MUST be set via BETTER_AUTH_SECRET env var in production
-	secret: env.BETTER_AUTH_SECRET || process.env.BETTER_AUTH_SECRET || 'dev-placeholder-set-BETTER_AUTH_SECRET-in-env',
+	secret:
+		env.BETTER_AUTH_SECRET ||
+		process.env.BETTER_AUTH_SECRET ||
+		'dev-placeholder-set-BETTER_AUTH_SECRET-in-env',
 	baseURL: env.BETTER_AUTH_URL || process.env.BETTER_AUTH_URL || 'http://localhost:5173',
 
 	emailAndPassword: {

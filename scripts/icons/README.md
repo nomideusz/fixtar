@@ -112,7 +112,7 @@ npm run icon:batch -- --directory=path/to/svg/dir [--category=category-name]
 
 - `--directory`: Directory containing SVG files to process (required)
 - `--category`: Category to add the icons to (default: "general")
-- `--pattern`: Pattern to match SVG files (default: "*.svg")
+- `--pattern`: Pattern to match SVG files (default: "\*.svg")
 - `--optimize`: Whether to optimize SVGs before adding (default: true)
 - `--dryRun`: Preview what would be done without making changes (default: false)
 
@@ -143,6 +143,7 @@ npx tsx scripts/icons/batch-process.ts --directory=./SVGs/new --dryRun=true
 ### Workflow for Complex SVGs
 
 1. Process the complex SVG:
+
    ```bash
    npx tsx scripts/icons/advanced-svg-processing.ts --file=./complex-icon.svg --output=./processed-icon.svg
    ```
@@ -194,7 +195,7 @@ After adding a new icon, you can use it in your application immediately:
 
 ```svelte
 <script>
-  import Icon from '$lib/components/Icon.svelte';
+	import Icon from '$lib/components/Icon.svelte';
 </script>
 
 <Icon name="your-new-icon" size="md" />
@@ -213,4 +214,4 @@ export const iconCategories = {
 };
 ```
 
-Then you can add icons to this category using the script. 
+Then you can add icons to this category using the script.

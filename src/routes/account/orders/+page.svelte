@@ -29,7 +29,7 @@
 				return 'text-success-dark bg-success/10';
 			case 'processing':
 			case 'pending':
-				return 'text-brand-800 bg-brand-100';
+				return 'text-brand-800 bg-brand-500/20';
 			case 'shipped':
 			case 'shipping':
 				return 'text-accent-800 bg-accent-100';
@@ -37,7 +37,7 @@
 			case 'canceled':
 				return 'text-danger-dark bg-danger/10';
 			default:
-				return 'text-neutral-800 bg-neutral-100';
+				return 'text-neutral-200 bg-white/10';
 		}
 	}
 
@@ -121,7 +121,6 @@
 	title="Moje Zamówienia"
 	subtitle="Przeglądaj historię zamówień, śledź status dostaw i zarządzaj swoimi zakupami"
 	centered={true}
-	className="bg-linear-to-br from-brand-50 via-white to-accent-50"
 />
 
 <div class="space-y-8">
@@ -138,8 +137,8 @@
 					/>
 				</svg>
 			</div>
-			<h3 class="mb-2 text-xl font-bold text-neutral-900">Wystąpił błąd</h3>
-			<p class="mb-6 text-neutral-600">{errorMessage}</p>
+			<h3 class="mb-2 text-xl font-bold text-white">Wystąpił błąd</h3>
+			<p class="mb-6 text-neutral-400">{errorMessage}</p>
 			<Button href="/account">Wróć do konta</Button>
 		</Card>
 	{:else}
@@ -148,7 +147,7 @@
 			<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
 				<Card hover class="group p-6 text-center">
 					<div
-						class="from-brand-100 to-brand-200 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br transition-transform duration-200 group-hover:scale-110"
+						class="from-brand-500/100/20 to-brand-500/30 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br transition-transform duration-200 group-hover:scale-110"
 					>
 						<svg
 							class="text-brand-600 h-6 w-6"
@@ -165,7 +164,7 @@
 						</svg>
 					</div>
 					<div class="text-brand-600 mb-1 text-2xl font-bold">{orderStats().total}</div>
-					<div class="text-sm font-medium text-neutral-600">Łączne zamówienia</div>
+					<div class="text-sm font-medium text-neutral-400">Łączne zamówienia</div>
 				</Card>
 
 				<Card hover class="group p-6 text-center">
@@ -182,12 +181,12 @@
 						</svg>
 					</div>
 					<div class="text-success mb-1 text-2xl font-bold">{orderStats().delivered}</div>
-					<div class="text-sm font-medium text-neutral-600">Dostarczone</div>
+					<div class="text-sm font-medium text-neutral-400">Dostarczone</div>
 				</Card>
 
 				<Card hover class="group p-6 text-center">
 					<div
-						class="from-brand-100 to-brand-200 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br transition-transform duration-200 group-hover:scale-110"
+						class="from-brand-500/100/20 to-brand-500/30 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br transition-transform duration-200 group-hover:scale-110"
 					>
 						<svg
 							class="text-brand-600 h-6 w-6"
@@ -204,7 +203,7 @@
 						</svg>
 					</div>
 					<div class="text-brand-600 mb-1 text-2xl font-bold">{orderStats().processing}</div>
-					<div class="text-sm font-medium text-neutral-600">W trakcie</div>
+					<div class="text-sm font-medium text-neutral-400">W trakcie</div>
 				</Card>
 
 				<Card hover class="group p-6 text-center">
@@ -228,7 +227,7 @@
 					<div class="text-accent-600 mb-1 text-2xl font-bold">
 						{orderStats().totalSpent.toFixed(2)} zł
 					</div>
-					<div class="text-sm font-medium text-neutral-600">Łączne wydatki</div>
+					<div class="text-sm font-medium text-neutral-400">Łączne wydatki</div>
 				</Card>
 			</div>
 		</section>
@@ -240,13 +239,13 @@
 					<div class="flex flex-col gap-4 sm:flex-row">
 						<!-- Status Filter -->
 						<div>
-							<label for="status-filter" class="mb-2 block text-sm font-medium text-neutral-700"
+							<label for="status-filter" class="mb-2 block text-sm font-medium text-neutral-300"
 								>Filtruj po statusie</label
 							>
 							<select
 								id="status-filter"
 								bind:value={statusFilter}
-								class="focus:ring-brand-500 rounded-lg border border-neutral-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none"
+								class="focus:ring-brand-500 rounded-lg border border-white/15 px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none"
 							>
 								<option value="all">Wszystkie</option>
 								<option value="delivered">Dostarczone</option>
@@ -258,11 +257,13 @@
 
 						<!-- Sort -->
 						<div>
-							<label for="sort-filter" class="mb-2 block text-sm font-medium text-neutral-700">Sortuj według</label>
+							<label for="sort-filter" class="mb-2 block text-sm font-medium text-neutral-300"
+								>Sortuj według</label
+							>
 							<select
 								id="sort-filter"
 								bind:value={sortBy}
-								class="focus:ring-brand-500 rounded-lg border border-neutral-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none"
+								class="focus:ring-brand-500 rounded-lg border border-white/15 px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none"
 							>
 								<option value="date-desc">Data: najnowsze</option>
 								<option value="date-asc">Data: najstarsze</option>
@@ -272,7 +273,7 @@
 						</div>
 					</div>
 
-					<div class="text-sm text-neutral-600">
+					<div class="text-sm text-neutral-400">
 						Wyświetlam {filteredOrders().length} z {orders.length} zamówień
 					</div>
 				</div>
@@ -285,7 +286,7 @@
 				<!-- Empty State -->
 				<Card class="p-12 text-center">
 					<div
-						class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-neutral-100"
+						class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/10"
 					>
 						<svg
 							class="h-8 w-8 text-neutral-400"
@@ -301,10 +302,10 @@
 							/>
 						</svg>
 					</div>
-					<h3 class="mb-2 text-xl font-bold text-neutral-900">
+					<h3 class="mb-2 text-xl font-bold text-white">
 						{statusFilter === 'all' ? 'Brak zamówień' : 'Brak zamówień z wybranym statusem'}
 					</h3>
-					<p class="mb-6 text-neutral-600">
+					<p class="mb-6 text-neutral-400">
 						{statusFilter === 'all'
 							? 'Rozpocznij zakupy i zobacz swoje zamówienia tutaj'
 							: 'Spróbuj zmienić filtr lub dodać nowe zamówienia'}
@@ -328,11 +329,11 @@
 										<div class="mb-3 flex items-center gap-4">
 											<div>
 												<h3
-													class="group-hover:text-brand-600 text-lg font-bold text-neutral-900 transition-colors"
+													class="group-hover:text-brand-600 text-lg font-bold text-white transition-colors"
 												>
 													Zamówienie #{order.orderNumber || order.id}
 												</h3>
-												<p class="text-sm text-neutral-600">
+												<p class="text-sm text-neutral-400">
 													Złożone {formatDate(order.created)}
 												</p>
 											</div>
@@ -348,19 +349,19 @@
 										<div class="grid grid-cols-1 gap-4 text-sm sm:grid-cols-3">
 											<div>
 												<span class="text-neutral-500">Suma zamówienia:</span>
-												<span class="ml-1 font-semibold text-neutral-900"
+												<span class="ml-1 font-semibold text-white"
 													>{(order.total || 0).toFixed(2)} zł</span
 												>
 											</div>
 											<div>
 												<span class="text-neutral-500">Metoda płatności:</span>
-												<span class="ml-1 font-semibold text-neutral-900"
+												<span class="ml-1 font-semibold text-white"
 													>{order.paymentMethod || 'Karta'}</span
 												>
 											</div>
 											<div>
 												<span class="text-neutral-500">Dostawa:</span>
-												<span class="ml-1 font-semibold text-neutral-900"
+												<span class="ml-1 font-semibold text-white"
 													>{order.shippingMethod || 'Standardowa'}</span
 												>
 											</div>
@@ -390,12 +391,12 @@
 
 		<!-- Quick Actions -->
 		<section>
-			<Card class="from-brand-50 to-accent-50 border-2 border-neutral-100 bg-linear-to-br p-8">
+			<Card class="from-brand-500/100/8 to-accent-500/100/8 border-2 border-white/10 bg-linear-to-br p-8">
 				<div class="text-center">
-					<h3 class="mb-4 text-xl font-bold text-neutral-900">
+					<h3 class="mb-4 text-xl font-bold text-white">
 						Potrzebujesz pomocy z zamówieniem?
 					</h3>
-					<p class="mb-6 text-neutral-600">
+					<p class="mb-6 text-neutral-400">
 						Nasz zespół wsparcia jest gotowy do pomocy w każdej kwestii dotyczącej Twoich zamówień
 					</p>
 					<div class="flex flex-col justify-center gap-4 sm:flex-row">

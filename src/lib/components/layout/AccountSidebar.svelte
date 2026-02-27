@@ -14,13 +14,12 @@
 <Card class="account-sidebar">
 	<nav class="space-y-2">
 		{#each menuItems as item (item)}
-			<a 
+			<a
 				href={item.href}
-				class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors duration-200 {
-					$page.url.pathname === item.href 
-						? 'bg-brand-50 text-brand-700 border-l-4 border-brand-500' 
-						: 'text-neutral-700 hover:bg-neutral-50'
-				}"
+				class="flex items-center space-x-3 rounded-lg px-4 py-3 transition-colors duration-200 {$page
+					.url.pathname === item.href
+					? 'bg-brand-500/15 text-brand-400 border-brand-500 border-l-4'
+					: 'text-neutral-300 hover:bg-white/5'}"
 			>
 				<span class="text-lg">{item.icon}</span>
 				<span class="font-medium">{item.label}</span>
@@ -35,5 +34,3 @@
 		padding: 1rem;
 	}
 </style>
-
-

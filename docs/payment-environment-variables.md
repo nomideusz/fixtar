@@ -3,6 +3,7 @@
 Add these environment variables to your `.env` file when implementing payment providers:
 
 ## Przelewy24
+
 ```env
 # Przelewy24 Configuration
 P24_MERCHANT_ID=your_merchant_id
@@ -14,6 +15,7 @@ P24_WEBHOOK_SECRET=your_webhook_secret
 ```
 
 ## PayU
+
 ```env
 # PayU Configuration
 PAYU_POS_ID=your_pos_id
@@ -24,6 +26,7 @@ PAYU_TEST_MODE=true  # Set to false for production
 ```
 
 ## Stripe
+
 ```env
 # Stripe Configuration
 STRIPE_SECRET_KEY=sk_test_your_key
@@ -32,6 +35,7 @@ STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
 ```
 
 ## Bank Transfer Settings
+
 Update the bank details in `src/lib/services/payment/bank-transfer.ts` with your actual bank account information.
 
 ## Testing Payment Providers
@@ -47,4 +51,4 @@ Update the bank details in `src/lib/services/payment/bank-transfer.ts` with your
 
 3. **Stripe Test Mode**:
    - Test cards: https://stripe.com/docs/testing
-   - Polish card: 4000 0048 4000 0006 
+   - Polish card: 4000 0048 4000 0006

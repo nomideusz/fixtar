@@ -1,1914 +1,1375 @@
 {
-  "meta": {
-    "project": "FixTar",
-    "generatedAt": "2026-02-26T21:55:21.956Z",
-    "sourceDir": "src",
-    "entryCount": 128,
-    "areaCount": {
-      "other": 19,
-      "layout": 8,
-      "ui": 13,
-      "i18n": 1,
-      "server": 2,
-      "services": 7,
-      "stores": 6,
-      "pages": 22,
-      "account": 16,
-      "admin": 8,
-      "api": 9,
-      "auth": 8,
-      "cart": 1,
-      "checkout": 4,
-      "catalog": 4
-    }
-  },
-  "criticalFiles": [
-    "src/routes/+layout.svelte",
-    "src/lib/components/layout/CartDrawer.svelte",
-    "src/lib/components/layout/Navbar.svelte",
-    "src/lib/stores/cart.svelte.ts",
-    "src/lib/stores/language.svelte.ts",
-    "src/lib/i18n/translations.ts",
-    "src/routes/products/[slug]/+page.server.ts"
-  ],
-  "entries": [
-    {
-      "path": "src/app.d.ts",
-      "area": "other",
-      "route": null,
-      "exports": [],
-      "imports": [
-        "svelte"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/demo.spec.ts",
-      "area": "other",
-      "route": null,
-      "exports": [],
-      "imports": [
-        "vitest"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/hooks.d.ts",
-      "area": "other",
-      "route": null,
-      "exports": [],
-      "imports": [],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/hooks.server.ts",
-      "area": "other",
-      "route": null,
-      "exports": [
-        "handle"
-      ],
-      "imports": [
-        "@sveltejs/kit/hooks",
-        "@sveltejs/kit",
-        "$lib/server/auth",
-        "$lib/server/pocketbase"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/hooks.ts",
-      "area": "other",
-      "route": null,
-      "exports": [
-        "reroute",
-        "nonCachedUrl",
-        "clearBrowserState",
-        "hasSessionClient",
-        "transport"
-      ],
-      "imports": [],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/lib/components/home/FeaturedProducts.svelte",
-      "area": "other",
-      "route": null,
-      "exports": [],
-      "imports": [
-        "$lib/components/ui/Button.svelte",
-        "$lib/components/ui/ProductCard.svelte",
-        "$lib/stores/products.svelte"
-      ],
-      "svelteRunes": [
-        "$props"
-      ]
-    },
-    {
-      "path": "src/lib/components/home/FeaturesSection.svelte",
-      "area": "other",
-      "route": null,
-      "exports": [],
-      "imports": [],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/lib/components/home/HeroSection.svelte",
-      "area": "other",
-      "route": null,
-      "exports": [],
-      "imports": [
-        "$lib/components/ui/Button.svelte",
-        "$lib/stores/products.svelte"
-      ],
-      "svelteRunes": [
-        "$props"
-      ]
-    },
-    {
-      "path": "src/lib/components/home/NewsletterSection.svelte",
-      "area": "other",
-      "route": null,
-      "exports": [],
-      "imports": [
-        "$lib/stores"
-      ],
-      "svelteRunes": [
-        "$state"
-      ]
-    },
-    {
-      "path": "src/lib/components/index.ts",
-      "area": "other",
-      "route": null,
-      "exports": [],
-      "imports": [
-        "./ui/Button.svelte",
-        "./ui/Card.svelte",
-        "./ui/Input.svelte",
-        "./ui/Modal.svelte",
-        "./ui/ProductCard.svelte",
-        "./ui/Notifications.svelte",
-        "./layout/Navbar.svelte",
-        "./layout/Footer.svelte",
-        "./layout/MainNavbar.svelte"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/lib/components/layout/AccountMobileNav.svelte",
-      "area": "layout",
-      "route": null,
-      "exports": [],
-      "imports": [
-        "$lib/components/ui/Card.svelte",
-        "$lib/components/ui/Button.svelte"
-      ],
-      "svelteRunes": [
-        "$props"
-      ]
-    },
-    {
-      "path": "src/lib/components/layout/AccountSidebar.svelte",
-      "area": "layout",
-      "route": null,
-      "exports": [],
-      "imports": [
-        "$lib/components/ui/Card.svelte",
-        "$app/stores"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/lib/components/layout/CartDrawer.svelte",
-      "area": "layout",
-      "route": null,
-      "exports": [
-        "openDrawer",
-        "closeDrawer",
-        "toggleDrawer"
-      ],
-      "imports": [
-        "svelte",
-        "svelte/transition",
-        "runed",
-        "$lib/components/ui/Button.svelte",
-        "$lib/i18n/translations",
-        "$lib/stores",
-        "$lib/types"
-      ],
-      "svelteRunes": [
-        "$state",
-        "$derived",
-        "$effect",
-        "$props"
-      ]
-    },
-    {
-      "path": "src/lib/components/layout/Footer.svelte",
-      "area": "layout",
-      "route": null,
-      "exports": [],
-      "imports": [
-        "$lib/img/logo-FixTar-white.webp"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/lib/components/layout/MainNavbar.svelte",
-      "area": "layout",
-      "route": null,
-      "exports": [],
-      "imports": [
-        "$app/stores",
-        "$app/navigation",
-        "$lib/stores",
-        "$lib/img/logo-FixTar.webp"
-      ],
-      "svelteRunes": [
-        "$state",
-        "$derived",
-        "$props"
-      ]
-    },
-    {
-      "path": "src/lib/components/layout/Navbar.svelte",
-      "area": "layout",
-      "route": null,
-      "exports": [],
-      "imports": [
-        "svelte",
-        "$lib/stores",
-        "$lib/components/ui/Button.svelte",
-        "$lib/img/logo-FixTar.webp"
-      ],
-      "svelteRunes": [
-        "$state",
-        "$derived",
-        "$props"
-      ]
-    },
-    {
-      "path": "src/lib/components/layout/PageContainer.svelte",
-      "area": "layout",
-      "route": null,
-      "exports": [],
-      "imports": [
-        "svelte"
-      ],
-      "svelteRunes": [
-        "$derived",
-        "$props"
-      ]
-    },
-    {
-      "path": "src/lib/components/layout/Section.svelte",
-      "area": "layout",
-      "route": null,
-      "exports": [],
-      "imports": [
-        "svelte",
-        "$lib/stores/language.svelte",
-        "$lib/i18n/translations"
-      ],
-      "svelteRunes": [
-        "$props"
-      ]
-    },
-    {
-      "path": "src/lib/components/ui/AnnouncementBanner.svelte",
-      "area": "ui",
-      "route": null,
-      "exports": [],
-      "imports": [
-        "$lib/components/ui/Button.svelte"
-      ],
-      "svelteRunes": [
-        "$state",
-        "$props"
-      ]
-    },
-    {
-      "path": "src/lib/components/ui/Breadcrumbs.svelte",
-      "area": "ui",
-      "route": null,
-      "exports": [],
-      "imports": [
-        "$app/state"
-      ],
-      "svelteRunes": [
-        "$effect",
-        "$props"
-      ]
-    },
-    {
-      "path": "src/lib/components/ui/Button.svelte",
-      "area": "ui",
-      "route": null,
-      "exports": [],
-      "imports": [
-        "svelte/elements",
-        "svelte"
-      ],
-      "svelteRunes": [
-        "$derived",
-        "$props"
-      ]
-    },
-    {
-      "path": "src/lib/components/ui/Card.svelte",
-      "area": "ui",
-      "route": null,
-      "exports": [],
-      "imports": [
-        "svelte/elements"
-      ],
-      "svelteRunes": [
-        "$derived",
-        "$props"
-      ]
-    },
-    {
-      "path": "src/lib/components/ui/CustomBadge.svelte",
-      "area": "ui",
-      "route": null,
-      "exports": [],
-      "imports": [
-        "svelte"
-      ],
-      "svelteRunes": [
-        "$props"
-      ]
-    },
-    {
-      "path": "src/lib/components/ui/Hero.svelte",
-      "area": "ui",
-      "route": null,
-      "exports": [],
-      "imports": [
-        "./Button.svelte"
-      ],
-      "svelteRunes": [
-        "$props"
-      ]
-    },
-    {
-      "path": "src/lib/components/ui/Input.svelte",
-      "area": "ui",
-      "route": null,
-      "exports": [],
-      "imports": [
-        "svelte/elements"
-      ],
-      "svelteRunes": [
-        "$derived",
-        "$props"
-      ]
-    },
-    {
-      "path": "src/lib/components/ui/LoadingSpinner.svelte",
-      "area": "ui",
-      "route": null,
-      "exports": [],
-      "imports": [],
-      "svelteRunes": [
-        "$props"
-      ]
-    },
-    {
-      "path": "src/lib/components/ui/Modal.svelte",
-      "area": "ui",
-      "route": null,
-      "exports": [],
-      "imports": [
-        "svelte"
-      ],
-      "svelteRunes": [
-        "$effect",
-        "$props"
-      ]
-    },
-    {
-      "path": "src/lib/components/ui/Notifications.svelte",
-      "area": "ui",
-      "route": null,
-      "exports": [],
-      "imports": [
-        "$lib/stores/notifications.svelte",
-        "svelte/transition",
-        "svelte/reactivity"
-      ],
-      "svelteRunes": [
-        "$effect"
-      ]
-    },
-    {
-      "path": "src/lib/components/ui/OptimizedImage.d.ts",
-      "area": "ui",
-      "route": null,
-      "exports": [
-        "OptimizedImageProps"
-      ],
-      "imports": [],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/lib/components/ui/OptimizedImage.svelte",
-      "area": "ui",
-      "route": null,
-      "exports": [],
-      "imports": [
-        "runed"
-      ],
-      "svelteRunes": [
-        "$state",
-        "$derived",
-        "$effect",
-        "$props"
-      ]
-    },
-    {
-      "path": "src/lib/components/ui/ProductCard.svelte",
-      "area": "ui",
-      "route": null,
-      "exports": [],
-      "imports": [
-        "./Button.svelte",
-        "$lib/stores/products.svelte",
-        "$lib/stores"
-      ],
-      "svelteRunes": [
-        "$derived",
-        "$props"
-      ]
-    },
-    {
-      "path": "src/lib/data/mockData.ts",
-      "area": "other",
-      "route": null,
-      "exports": [
-        "mockCategories",
-        "mockProducts",
-        "bestSellers",
-        "newArrivals",
-        "trendingProducts",
-        "heroProducts"
-      ],
-      "imports": [
-        "$lib/types"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/lib/i18n/translations.ts",
-      "area": "i18n",
-      "route": null,
-      "exports": [
-        "TranslationKey",
-        "TranslationMap",
-        "translations"
-      ],
-      "imports": [],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/lib/pocketbase.ts",
-      "area": "other",
-      "route": null,
-      "exports": [
-        "pb",
-        "currentUser"
-      ],
-      "imports": [
-        "pocketbase",
-        "svelte/store",
-        "$app/environment",
-        "$env/dynamic/public"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/lib/server/auth.ts",
-      "area": "server",
-      "route": null,
-      "exports": [
-        "SESSION_COOKIE_NAME",
-        "LoginSchema",
-        "RegisterSchema",
-        "AuthUser",
-        "logoutUser",
-        "setSessionCookie",
-        "setSessionCookieWithParams",
-        "deleteSessionCookie"
-      ],
-      "imports": [
-        "zod",
-        "pocketbase",
-        "./pocketbase",
-        "@sveltejs/kit"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/lib/server/pocketbase.ts",
-      "area": "server",
-      "route": null,
-      "exports": [
-        "createPocketBaseClient",
-        "isDemoMode",
-        "pb"
-      ],
-      "imports": [
-        "pocketbase",
-        "$env/dynamic/private"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/lib/services/baselinker.ts",
-      "area": "services",
-      "route": null,
-      "exports": [
-        "BaseLinkerConfig",
-        "BaseLinkerProduct",
-        "BaseLinkerVariant",
-        "BaseLinkerOrder",
-        "BaseLinkerOrderProduct",
-        "BaseLinkerInventory",
-        "SyncResult",
-        "OrderPushResult",
-        "BaseLinkerService",
-        "getBaseLinkerService"
-      ],
-      "imports": [
-        "$env/dynamic/private"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/lib/services/index.ts",
-      "area": "services",
-      "route": null,
-      "exports": [],
-      "imports": [
-        "./baselinker"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/lib/services/payment/bank-transfer.ts",
-      "area": "services",
-      "route": null,
-      "exports": [
-        "BankTransferProvider"
-      ],
-      "imports": [
-        "./types"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/lib/services/payment/cash-on-delivery.ts",
-      "area": "services",
-      "route": null,
-      "exports": [
-        "CashOnDeliveryProvider"
-      ],
-      "imports": [
-        "./types"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/lib/services/payment/index.ts",
-      "area": "services",
-      "route": null,
-      "exports": [
-        "PaymentService"
-      ],
-      "imports": [
-        "./types",
-        "./bank-transfer",
-        "./cash-on-delivery"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/lib/services/payment/przelewy24.ts",
-      "area": "services",
-      "route": null,
-      "exports": [
-        "Przelewy24Provider"
-      ],
-      "imports": [
-        "./types",
-        "crypto"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/lib/services/payment/types.ts",
-      "area": "services",
-      "route": null,
-      "exports": [
-        "PaymentProvider",
-        "PaymentOrder",
-        "PaymentResult",
-        "BankTransferDetails",
-        "VerificationResult",
-        "PaymentStatus"
-      ],
-      "imports": [],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/lib/stores/cart.svelte.ts",
-      "area": "stores",
-      "route": null,
-      "exports": [
-        "CartItem",
-        "cart"
-      ],
-      "imports": [
-        "runed",
-        "$app/environment"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/lib/stores/index.ts",
-      "area": "stores",
-      "route": null,
-      "exports": [],
-      "imports": [
-        "./cart.svelte",
-        "./user.svelte",
-        "./products.svelte",
-        "./notifications.svelte",
-        "./language.svelte"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/lib/stores/language.svelte.ts",
-      "area": "stores",
-      "route": null,
-      "exports": [
-        "Language",
-        "languageStore"
-      ],
-      "imports": [
-        "runed"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/lib/stores/notifications.svelte.ts",
-      "area": "stores",
-      "route": null,
-      "exports": [
-        "Notification",
-        "notifications"
-      ],
-      "imports": [],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/lib/stores/products.svelte.ts",
-      "area": "stores",
-      "route": null,
-      "exports": [
-        "Product",
-        "Category",
-        "productsStore",
-        "categoriesStore"
-      ],
-      "imports": [
-        "$lib/pocketbase",
-        "$app/environment"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/lib/stores/user.svelte.ts",
-      "area": "stores",
-      "route": null,
-      "exports": [
-        "User",
-        "userStore"
-      ],
-      "imports": [
-        "runed"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/lib/types.ts",
-      "area": "other",
-      "route": null,
-      "exports": [
-        "Product",
-        "CartItem",
-        "UserAddress",
-        "User",
-        "Category"
-      ],
-      "imports": [],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/lib/utils/cache.ts",
-      "area": "other",
-      "route": null,
-      "exports": [
-        "serverCache"
-      ],
-      "imports": [],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/lib/utils/currency.ts",
-      "area": "other",
-      "route": null,
-      "exports": [
-        "CurrencyCode",
-        "currencySymbols",
-        "symbolToCurrency",
-        "getCurrencySymbol",
-        "getCurrencyCode",
-        "formatPrice"
-      ],
-      "imports": [],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/lib/utils/date.ts",
-      "area": "other",
-      "route": null,
-      "exports": [
-        "formatDate",
-        "formatDateShort",
-        "formatDateRelative"
-      ],
-      "imports": [],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/lib/utils/index.ts",
-      "area": "other",
-      "route": null,
-      "exports": [],
-      "imports": [
-        "./currency",
-        "./date"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/lib/utils/logger.ts",
-      "area": "other",
-      "route": null,
-      "exports": [
-        "LogEntry",
-        "logger",
-        "authLogger",
-        "dbLogger",
-        "apiLogger",
-        "performanceLogger",
-        "uiLogger"
-      ],
-      "imports": [],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/lib/utils/performance.ts",
-      "area": "other",
-      "route": null,
-      "exports": [
-        "BatchProcessor",
-        "LazyValue",
-        "RateLimiter"
-      ],
-      "imports": [],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/+error.svelte",
-      "area": "pages",
-      "route": "/+error.svelte",
-      "exports": [],
-      "imports": [
-        "$app/stores",
-        "$app/environment",
-        "svelte"
-      ],
-      "svelteRunes": [
-        "$state"
-      ]
-    },
-    {
-      "path": "src/routes/+layout.server.ts",
-      "area": "pages",
-      "route": "/+layout.server.ts",
-      "exports": [
-        "load"
-      ],
-      "imports": [
-        "./$types"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/+layout.svelte",
-      "area": "pages",
-      "route": "/+layout.svelte",
-      "exports": [],
-      "imports": [
-        "svelte",
-        "$lib/stores",
-        "$lib/components/layout/Navbar.svelte",
-        "$lib/components/layout/CartDrawer.svelte",
-        "$lib/components/layout/Footer.svelte",
-        "$lib/components/ui/Notifications.svelte",
-        "$lib/i18n/translations"
-      ],
-      "svelteRunes": [
-        "$state",
-        "$effect",
-        "$props"
-      ]
-    },
-    {
-      "path": "src/routes/+layout.ts",
-      "area": "pages",
-      "route": "/+layout.ts",
-      "exports": [
-        "load"
-      ],
-      "imports": [
-        "./$types"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/+page.server.ts",
-      "area": "pages",
-      "route": "/+page.server.ts",
-      "exports": [
-        "load"
-      ],
-      "imports": [
-        "./$types",
-        "$lib/stores/products.svelte",
-        "$env/dynamic/private",
-        "$lib/server/pocketbase",
-        "$lib/data/mockData"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/+page.svelte",
-      "area": "pages",
-      "route": "/+page.svelte",
-      "exports": [],
-      "imports": [
-        "$lib/stores/products.svelte",
-        "$lib/components/home/HeroSection.svelte",
-        "$lib/components/home/FeaturedProducts.svelte",
-        "$lib/components/home/FeaturesSection.svelte",
-        "$lib/components/home/NewsletterSection.svelte"
-      ],
-      "svelteRunes": [
-        "$props"
-      ]
-    },
-    {
-      "path": "src/routes/about/+page.svelte",
-      "area": "pages",
-      "route": "/about/+page.svelte",
-      "exports": [],
-      "imports": [
-        "$lib/components/ui/Hero.svelte",
-        "$lib/components/ui/Card.svelte",
-        "$lib/components/ui/Button.svelte"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/account/+layout.server.ts",
-      "area": "account",
-      "route": "/account/+layout.server.ts",
-      "exports": [
-        "load"
-      ],
-      "imports": [
-        "@sveltejs/kit",
-        "./$types",
-        "$lib/server/auth",
-        "$app/environment"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/account/+layout.svelte",
-      "area": "account",
-      "route": "/account/+layout.svelte",
-      "exports": [],
-      "imports": [
-        "$app/stores",
-        "$lib/stores",
-        "$app/navigation",
-        "$lib/components/ui/Card.svelte",
-        "svelte",
-        "./$types"
-      ],
-      "svelteRunes": [
-        "$state",
-        "$derived",
-        "$effect",
-        "$props"
-      ]
-    },
-    {
-      "path": "src/routes/account/+page.server.ts",
-      "area": "account",
-      "route": "/account/+page.server.ts",
-      "exports": [
-        "actions",
-        "load"
-      ],
-      "imports": [
-        "@sveltejs/kit",
-        "$lib/server/auth",
-        "./$types"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/account/+page.svelte",
-      "area": "account",
-      "route": "/account/+page.svelte",
-      "exports": [],
-      "imports": [
-        "svelte",
-        "$lib/stores",
-        "$lib/components/ui/Button.svelte",
-        "$lib/components/ui/Card.svelte",
-        "$lib/components/ui/Hero.svelte",
-        "./$types"
-      ],
-      "svelteRunes": [
-        "$derived"
-      ]
-    },
-    {
-      "path": "src/routes/account/addresses/[id]/edit/+page.server.ts",
-      "area": "account",
-      "route": "/account/addresses/[id]/edit/+page.server.ts",
-      "exports": [
-        "load",
-        "actions"
-      ],
-      "imports": [
-        "@sveltejs/kit"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/account/addresses/[id]/edit/+page.svelte",
-      "area": "account",
-      "route": "/account/addresses/[id]/edit/+page.svelte",
-      "exports": [],
-      "imports": [
-        "$lib/components/ui/Card.svelte",
-        "$lib/components/ui/Button.svelte",
-        "$lib/stores",
-        "$app/forms",
-        "$app/navigation",
-        "./$types"
-      ],
-      "svelteRunes": [
-        "$state",
-        "$derived",
-        "$effect"
-      ]
-    },
-    {
-      "path": "src/routes/account/addresses/+page.server.ts",
-      "area": "account",
-      "route": "/account/addresses/+page.server.ts",
-      "exports": [
-        "load",
-        "actions"
-      ],
-      "imports": [
-        "@sveltejs/kit",
-        "./$types"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/account/addresses/+page.svelte",
-      "area": "account",
-      "route": "/account/addresses/+page.svelte",
-      "exports": [],
-      "imports": [
-        "$lib/components/ui/Card.svelte",
-        "$lib/components/ui/Button.svelte",
-        "$lib/stores",
-        "$app/forms",
-        "./$types"
-      ],
-      "svelteRunes": [
-        "$state",
-        "$derived",
-        "$effect"
-      ]
-    },
-    {
-      "path": "src/routes/account/addresses/new/+page.server.ts",
-      "area": "account",
-      "route": "/account/addresses/new/+page.server.ts",
-      "exports": [
-        "load",
-        "actions"
-      ],
-      "imports": [
-        "@sveltejs/kit",
-        "./$types"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/account/addresses/new/+page.svelte",
-      "area": "account",
-      "route": "/account/addresses/new/+page.svelte",
-      "exports": [],
-      "imports": [
-        "$lib/components/ui/Card.svelte",
-        "$lib/components/ui/Button.svelte",
-        "$lib/stores",
-        "$app/forms",
-        "$app/navigation",
-        "./$types"
-      ],
-      "svelteRunes": [
-        "$state",
-        "$effect"
-      ]
-    },
-    {
-      "path": "src/routes/account/favorites/+page.server.ts",
-      "area": "account",
-      "route": "/account/favorites/+page.server.ts",
-      "exports": [
-        "load",
-        "actions"
-      ],
-      "imports": [
-        "@sveltejs/kit",
-        "./$types"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/account/favorites/+page.svelte",
-      "area": "account",
-      "route": "/account/favorites/+page.svelte",
-      "exports": [],
-      "imports": [
-        "./$types",
-        "svelte",
-        "svelte/transition",
-        "svelte/easing",
-        "$app/forms"
-      ],
-      "svelteRunes": [
-        "$state",
-        "$derived"
-      ]
-    },
-    {
-      "path": "src/routes/account/orders/+page.server.ts",
-      "area": "account",
-      "route": "/account/orders/+page.server.ts",
-      "exports": [
-        "load"
-      ],
-      "imports": [
-        "@sveltejs/kit",
-        "./$types"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/account/orders/+page.svelte",
-      "area": "account",
-      "route": "/account/orders/+page.svelte",
-      "exports": [],
-      "imports": [
-        "$lib/components/ui/Card.svelte",
-        "$lib/components/ui/Button.svelte",
-        "$lib/components/ui/Hero.svelte",
-        "./$types"
-      ],
-      "svelteRunes": [
-        "$state",
-        "$derived"
-      ]
-    },
-    {
-      "path": "src/routes/account/settings/+page.server.ts",
-      "area": "account",
-      "route": "/account/settings/+page.server.ts",
-      "exports": [
-        "load",
-        "actions"
-      ],
-      "imports": [
-        "@sveltejs/kit",
-        "./$types"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/account/settings/+page.svelte",
-      "area": "account",
-      "route": "/account/settings/+page.svelte",
-      "exports": [],
-      "imports": [
-        "$lib/stores",
-        "$lib/components/ui/Card.svelte",
-        "$lib/components/ui/Button.svelte",
-        "$lib/components/ui/Input.svelte",
-        "$lib/components/ui/Hero.svelte",
-        "$app/forms",
-        "./$types"
-      ],
-      "svelteRunes": [
-        "$state",
-        "$derived",
-        "$effect"
-      ]
-    },
-    {
-      "path": "src/routes/admin/+layout.svelte",
-      "area": "admin",
-      "route": "/admin/+layout.svelte",
-      "exports": [],
-      "imports": [
-        "$app/stores",
-        "$lib/stores",
-        "$app/navigation",
-        "svelte"
-      ],
-      "svelteRunes": [
-        "$effect"
-      ]
-    },
-    {
-      "path": "src/routes/admin/+page.server.ts",
-      "area": "admin",
-      "route": "/admin/+page.server.ts",
-      "exports": [
-        "load"
-      ],
-      "imports": [
-        "./$types",
-        "$env/dynamic/private"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/admin/+page.svelte",
-      "area": "admin",
-      "route": "/admin/+page.svelte",
-      "exports": [],
-      "imports": [
-        "$lib/stores",
-        "$app/navigation",
-        "$lib/components/ui/Card.svelte",
-        "$lib/components/ui/Button.svelte"
-      ],
-      "svelteRunes": [
-        "$derived",
-        "$effect",
-        "$props"
-      ]
-    },
-    {
-      "path": "src/routes/admin/baselinker/+page.svelte",
-      "area": "admin",
-      "route": "/admin/baselinker/+page.svelte",
-      "exports": [],
-      "imports": [
-        "$lib/components/ui/Button.svelte",
-        "$lib/components/ui/Card.svelte"
-      ],
-      "svelteRunes": [
-        "$state"
-      ]
-    },
-    {
-      "path": "src/routes/admin/customers/+page.svelte",
-      "area": "admin",
-      "route": "/admin/customers/+page.svelte",
-      "exports": [],
-      "imports": [
-        "$lib/stores",
-        "$app/navigation",
-        "$lib/components/ui/Card.svelte",
-        "$lib/components/ui/Button.svelte",
-        "svelte",
-        "$lib/pocketbase",
-        "$lib/components/ui/LoadingSpinner.svelte",
-        "$lib/utils/date"
-      ],
-      "svelteRunes": [
-        "$state",
-        "$derived",
-        "$effect"
-      ]
-    },
-    {
-      "path": "src/routes/admin/orders/+page.svelte",
-      "area": "admin",
-      "route": "/admin/orders/+page.svelte",
-      "exports": [],
-      "imports": [
-        "$lib/components/ui/Card.svelte",
-        "$lib/components/ui/Button.svelte",
-        "$lib/components/ui/Input.svelte"
-      ],
-      "svelteRunes": [
-        "$state",
-        "$derived"
-      ]
-    },
-    {
-      "path": "src/routes/admin/products/+page.server.ts",
-      "area": "admin",
-      "route": "/admin/products/+page.server.ts",
-      "exports": [
-        "load"
-      ],
-      "imports": [
-        "./$types",
-        "$env/dynamic/private"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/admin/products/+page.svelte",
-      "area": "admin",
-      "route": "/admin/products/+page.svelte",
-      "exports": [],
-      "imports": [
-        "$app/navigation",
-        "$app/stores",
-        "$lib/components/ui/Button.svelte",
-        "$lib/components/ui/Input.svelte",
-        "$lib/components/ui/Card.svelte",
-        "$lib/stores",
-        "$app/environment"
-      ],
-      "svelteRunes": [
-        "$state",
-        "$effect",
-        "$props"
-      ]
-    },
-    {
-      "path": "src/routes/api/admin/clean-fake-data/+server.ts",
-      "area": "api",
-      "route": "/api/admin/clean-fake-data/+server.ts",
-      "exports": [
-        "POST"
-      ],
-      "imports": [
-        "@sveltejs/kit",
-        "./$types",
-        "$app/environment",
-        "$lib/server/pocketbase"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/api/admin/products/status/+server.ts",
-      "area": "api",
-      "route": "/api/admin/products/status/+server.ts",
-      "exports": [
-        "POST",
-        "GET"
-      ],
-      "imports": [
-        "@sveltejs/kit",
-        "./$types",
-        "$lib/server/pocketbase",
-        "$env/dynamic/private"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/api/auth/debug/+server.ts",
-      "area": "api",
-      "route": "/api/auth/debug/+server.ts",
-      "exports": [
-        "GET"
-      ],
-      "imports": [
-        "@sveltejs/kit",
-        "./$types",
-        "$lib/server/pocketbase"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/api/auth/validate/+server.ts",
-      "area": "api",
-      "route": "/api/auth/validate/+server.ts",
-      "exports": [
-        "POST"
-      ],
-      "imports": [
-        "@sveltejs/kit",
-        "$lib/server/auth",
-        "./$types"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/api/baselinker/orders/+server.ts",
-      "area": "api",
-      "route": "/api/baselinker/orders/+server.ts",
-      "exports": [
-        "POST",
-        "GET"
-      ],
-      "imports": [
-        "@sveltejs/kit",
-        "./$types",
-        "$lib/services/baselinker"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/api/baselinker/sync/+server.ts",
-      "area": "api",
-      "route": "/api/baselinker/sync/+server.ts",
-      "exports": [
-        "POST",
-        "GET"
-      ],
-      "imports": [
-        "@sveltejs/kit",
-        "./$types",
-        "$lib/services/baselinker"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/api/cart/merge/+server.ts",
-      "area": "api",
-      "route": "/api/cart/merge/+server.ts",
-      "exports": [
-        "POST"
-      ],
-      "imports": [
-        "@sveltejs/kit",
-        "./$types",
-        "$lib/server/auth",
-        "$lib/types"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/api/cart/sync/+server.ts",
-      "area": "api",
-      "route": "/api/cart/sync/+server.ts",
-      "exports": [
-        "GET",
-        "POST"
-      ],
-      "imports": [
-        "@sveltejs/kit",
-        "./$types",
-        "$lib/server/auth",
-        "$lib/types"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/api/webhooks/payment/+server.ts",
-      "area": "api",
-      "route": "/api/webhooks/payment/+server.ts",
-      "exports": [
-        "POST"
-      ],
-      "imports": [
-        "@sveltejs/kit",
-        "./$types",
-        "$lib/services/payment",
-        "pocketbase",
-        "$env/dynamic/private"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/auth/login/+page.server.ts",
-      "area": "auth",
-      "route": "/auth/login/+page.server.ts",
-      "exports": [
-        "actions"
-      ],
-      "imports": [
-        "$lib/server/auth",
-        "@sveltejs/kit",
-        "./$types",
-        "$env/dynamic/private"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/auth/login/+page.svelte",
-      "area": "auth",
-      "route": "/auth/login/+page.svelte",
-      "exports": [],
-      "imports": [
-        "$app/forms",
-        "$app/navigation",
-        "$lib/components/ui/Button.svelte",
-        "$lib/components/ui/Input.svelte",
-        "$lib/components/ui/Card.svelte",
-        "$lib/stores",
-        "./$types",
-        "$lib/img/logo-FixTar.webp"
-      ],
-      "svelteRunes": [
-        "$state",
-        "$derived",
-        "$effect"
-      ]
-    },
-    {
-      "path": "src/routes/auth/logout/+page.svelte",
-      "area": "auth",
-      "route": "/auth/logout/+page.svelte",
-      "exports": [],
-      "imports": [
-        "$lib/stores",
-        "$app/navigation",
-        "svelte",
-        "$lib/components/ui/Card.svelte",
-        "$lib/components/ui/Hero.svelte",
-        "$lib/components/ui/Button.svelte",
-        "$lib/img/logo-FixTar.webp"
-      ],
-      "svelteRunes": [
-        "$state"
-      ]
-    },
-    {
-      "path": "src/routes/auth/logout/+page.ts",
-      "area": "auth",
-      "route": "/auth/logout/+page.ts",
-      "exports": [
-        "load"
-      ],
-      "imports": [
-        "@sveltejs/kit",
-        "./$types"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/auth/logout/+server.ts",
-      "area": "auth",
-      "route": "/auth/logout/+server.ts",
-      "exports": [
-        "POST",
-        "GET"
-      ],
-      "imports": [
-        "$lib/server/auth",
-        "@sveltejs/kit",
-        "./$types"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/auth/register/+page.server.ts",
-      "area": "auth",
-      "route": "/auth/register/+page.server.ts",
-      "exports": [
-        "actions"
-      ],
-      "imports": [
-        "$lib/server/auth",
-        "@sveltejs/kit",
-        "./$types"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/auth/register/+page.svelte",
-      "area": "auth",
-      "route": "/auth/register/+page.svelte",
-      "exports": [],
-      "imports": [
-        "$app/forms",
-        "$app/navigation",
-        "$lib/components/ui/Button.svelte",
-        "$lib/components/ui/Input.svelte",
-        "$lib/components/ui/Card.svelte",
-        "$lib/stores",
-        "$lib/img/logo-FixTar.webp"
-      ],
-      "svelteRunes": [
-        "$state",
-        "$effect"
-      ]
-    },
-    {
-      "path": "src/routes/auth/validate/+server.ts",
-      "area": "auth",
-      "route": "/auth/validate/+server.ts",
-      "exports": [
-        "POST"
-      ],
-      "imports": [
-        "@sveltejs/kit",
-        "$lib/server/auth",
-        "./$types"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/cart/+page.svelte",
-      "area": "cart",
-      "route": "/cart/+page.svelte",
-      "exports": [],
-      "imports": [
-        "$lib/stores",
-        "$lib/components/ui/Button.svelte",
-        "$lib/components/ui/Input.svelte"
-      ],
-      "svelteRunes": [
-        "$state",
-        "$derived"
-      ]
-    },
-    {
-      "path": "src/routes/categories/+page.server.ts",
-      "area": "pages",
-      "route": "/categories/+page.server.ts",
-      "exports": [
-        "load"
-      ],
-      "imports": [
-        "./$types",
-        "$lib/stores/products.svelte",
-        "$env/dynamic/private"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/categories/+page.svelte",
-      "area": "pages",
-      "route": "/categories/+page.svelte",
-      "exports": [],
-      "imports": [
-        "$app/navigation",
-        "$lib/components/ui/Card.svelte",
-        "$lib/components/ui/Button.svelte",
-        "$lib/components/ui/Input.svelte",
-        "$lib/stores/products.svelte"
-      ],
-      "svelteRunes": [
-        "$state",
-        "$props"
-      ]
-    },
-    {
-      "path": "src/routes/checkout/+page.server.ts",
-      "area": "checkout",
-      "route": "/checkout/+page.server.ts",
-      "exports": [
-        "load",
-        "actions"
-      ],
-      "imports": [
-        "@sveltejs/kit",
-        "./$types",
-        "$lib/services/payment"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/checkout/+page.svelte",
-      "area": "checkout",
-      "route": "/checkout/+page.svelte",
-      "exports": [],
-      "imports": [
-        "$lib/stores",
-        "$app/navigation",
-        "$app/forms",
-        "$lib/components/ui/Button.svelte",
-        "$lib/components/ui/Input.svelte",
-        "$lib/components/ui/Card.svelte",
-        "$lib/components/ui/Hero.svelte",
-        "./$types"
-      ],
-      "svelteRunes": [
-        "$state",
-        "$derived",
-        "$effect",
-        "$props"
-      ]
-    },
-    {
-      "path": "src/routes/checkout/success/+page.server.ts",
-      "area": "checkout",
-      "route": "/checkout/success/+page.server.ts",
-      "exports": [
-        "load"
-      ],
-      "imports": [
-        "@sveltejs/kit",
-        "./$types"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/checkout/success/+page.svelte",
-      "area": "checkout",
-      "route": "/checkout/success/+page.svelte",
-      "exports": [],
-      "imports": [
-        "$lib/components/ui/Button.svelte",
-        "$lib/components/ui/Card.svelte",
-        "$lib/components/ui/Hero.svelte",
-        "./$types",
-        "$app/stores"
-      ],
-      "svelteRunes": [
-        "$derived"
-      ]
-    },
-    {
-      "path": "src/routes/contact/+page.svelte",
-      "area": "pages",
-      "route": "/contact/+page.svelte",
-      "exports": [],
-      "imports": [
-        "$lib/components/ui/Card.svelte",
-        "$lib/components/ui/Button.svelte",
-        "$lib/components/ui/Input.svelte",
-        "$lib/components/ui/Hero.svelte",
-        "$lib/stores"
-      ],
-      "svelteRunes": [
-        "$state"
-      ]
-    },
-    {
-      "path": "src/routes/deals/+page.svelte",
-      "area": "pages",
-      "route": "/deals/+page.svelte",
-      "exports": [],
-      "imports": [
-        "$lib/components/ui/Card.svelte",
-        "$lib/components/ui/Button.svelte"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/docs/+layout.svelte",
-      "area": "pages",
-      "route": "/docs/+layout.svelte",
-      "exports": [],
-      "imports": [
-        "$app/state",
-        "svelte/transition",
-        "svelte/easing",
-        "$lib/components/layout/PageContainer.svelte",
-        "svelte"
-      ],
-      "svelteRunes": [
-        "$state"
-      ]
-    },
-    {
-      "path": "src/routes/docs/+page.svelte",
-      "area": "pages",
-      "route": "/docs/+page.svelte",
-      "exports": [],
-      "imports": [
-        "$app/navigation",
-        "svelte",
-        "$lib/components/ui/LoadingSpinner.svelte",
-        "$lib/components/layout/PageContainer.svelte"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/orders/[id]/+page.server.ts",
-      "area": "pages",
-      "route": "/orders/[id]/+page.server.ts",
-      "exports": [
-        "load"
-      ],
-      "imports": [
-        "./$types",
-        "@sveltejs/kit",
-        "$env/dynamic/private",
-        "$lib/stores/products.svelte"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/orders/[id]/+page.svelte",
-      "area": "pages",
-      "route": "/orders/[id]/+page.svelte",
-      "exports": [],
-      "imports": [
-        "$app/stores",
-        "$lib/components/ui/Card.svelte",
-        "$lib/components/ui/Button.svelte",
-        "$lib/components/ui/CustomBadge.svelte",
-        "$lib/utils"
-      ],
-      "svelteRunes": [
-        "$props"
-      ]
-    },
-    {
-      "path": "src/routes/page.svelte.test.ts",
-      "area": "pages",
-      "route": "/page.svelte.test.ts",
-      "exports": [],
-      "imports": [
-        "vitest",
-        "@testing-library/svelte",
-        "./+page.svelte"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/products/[slug]/+page.server.ts",
-      "area": "catalog",
-      "route": "/products/[slug]/+page.server.ts",
-      "exports": [
-        "load"
-      ],
-      "imports": [
-        "@sveltejs/kit",
-        "./$types",
-        "$lib/stores/products.svelte",
-        "$env/dynamic/private",
-        "$lib/server/pocketbase",
-        "$lib/data/mockData"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/products/[slug]/+page.svelte",
-      "area": "catalog",
-      "route": "/products/[slug]/+page.svelte",
-      "exports": [],
-      "imports": [
-        "$lib/stores",
-        "$lib/components/ui/Button.svelte",
-        "$lib/components/ui/Card.svelte",
-        "$lib/components/ui/ProductCard.svelte",
-        "$lib/pocketbase",
-        "$lib/stores/products.svelte"
-      ],
-      "svelteRunes": [
-        "$state",
-        "$derived",
-        "$props"
-      ]
-    },
-    {
-      "path": "src/routes/products/+page.server.ts",
-      "area": "catalog",
-      "route": "/products/+page.server.ts",
-      "exports": [
-        "load"
-      ],
-      "imports": [
-        "./$types",
-        "$lib/stores/products.svelte",
-        "$env/dynamic/private",
-        "$lib/utils/cache",
-        "$lib/utils/performance",
-        "$lib/server/pocketbase",
-        "$lib/data/mockData"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/products/+page.svelte",
-      "area": "catalog",
-      "route": "/products/+page.svelte",
-      "exports": [],
-      "imports": [
-        "$app/navigation",
-        "$app/stores",
-        "$lib/components/ui/ProductCard.svelte",
-        "$lib/components/ui/Card.svelte",
-        "$lib/components/ui/Input.svelte",
-        "$lib/components/ui/Button.svelte",
-        "$lib/components/ui/LoadingSpinner.svelte",
-        "$lib/components/ui/Hero.svelte",
-        "$lib/stores/products.svelte"
-      ],
-      "svelteRunes": [
-        "$state",
-        "$derived",
-        "$effect",
-        "$props"
-      ]
-    },
-    {
-      "path": "src/routes/robots.txt/+server.ts",
-      "area": "pages",
-      "route": "/robots.txt/+server.ts",
-      "exports": [
-        "GET"
-      ],
-      "imports": [
-        "$env/dynamic/private"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/search/+page.server.ts",
-      "area": "pages",
-      "route": "/search/+page.server.ts",
-      "exports": [
-        "load"
-      ],
-      "imports": [
-        "./$types",
-        "$lib/stores/products.svelte",
-        "$env/dynamic/private",
-        "$lib/utils/cache",
-        "$lib/utils/performance"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/search/+page.svelte",
-      "area": "pages",
-      "route": "/search/+page.svelte",
-      "exports": [],
-      "imports": [
-        "$app/navigation",
-        "$lib/components/ui/ProductCard.svelte",
-        "$lib/components/ui/Button.svelte",
-        "$lib/components/ui/Input.svelte",
-        "$lib/stores/products.svelte",
-        "$lib/components/ui/LoadingSpinner.svelte",
-        "$lib/components/ui/Hero.svelte",
-        "$app/state"
-      ],
-      "svelteRunes": [
-        "$derived",
-        "$props"
-      ]
-    },
-    {
-      "path": "src/routes/sitemap.xml/+server.ts",
-      "area": "pages",
-      "route": "/sitemap.xml/+server.ts",
-      "exports": [
-        "GET"
-      ],
-      "imports": [
-        "$env/dynamic/private"
-      ],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/wishlist/+page.svelte",
-      "area": "pages",
-      "route": "/wishlist/+page.svelte",
-      "exports": [],
-      "imports": [],
-      "svelteRunes": []
-    },
-    {
-      "path": "src/routes/wishlist/+page.ts",
-      "area": "pages",
-      "route": "/wishlist/+page.ts",
-      "exports": [
-        "load"
-      ],
-      "imports": [
-        "./$types"
-      ],
-      "svelteRunes": []
-    }
-  ]
+	"meta": {
+		"project": "FixTar",
+		"generatedAt": "2026-02-26T21:55:21.956Z",
+		"sourceDir": "src",
+		"entryCount": 128,
+		"areaCount": {
+			"other": 19,
+			"layout": 8,
+			"ui": 13,
+			"i18n": 1,
+			"server": 2,
+			"services": 7,
+			"stores": 6,
+			"pages": 22,
+			"account": 16,
+			"admin": 8,
+			"api": 9,
+			"auth": 8,
+			"cart": 1,
+			"checkout": 4,
+			"catalog": 4
+		}
+	},
+	"criticalFiles": [
+		"src/routes/+layout.svelte",
+		"src/lib/components/layout/CartDrawer.svelte",
+		"src/lib/components/layout/Navbar.svelte",
+		"src/lib/stores/cart.svelte.ts",
+		"src/lib/stores/language.svelte.ts",
+		"src/lib/i18n/translations.ts",
+		"src/routes/products/[slug]/+page.server.ts"
+	],
+	"entries": [
+		{
+			"path": "src/app.d.ts",
+			"area": "other",
+			"route": null,
+			"exports": [],
+			"imports": ["svelte"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/demo.spec.ts",
+			"area": "other",
+			"route": null,
+			"exports": [],
+			"imports": ["vitest"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/hooks.d.ts",
+			"area": "other",
+			"route": null,
+			"exports": [],
+			"imports": [],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/hooks.server.ts",
+			"area": "other",
+			"route": null,
+			"exports": ["handle"],
+			"imports": [
+				"@sveltejs/kit/hooks",
+				"@sveltejs/kit",
+				"$lib/server/auth",
+				"$lib/server/pocketbase"
+			],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/hooks.ts",
+			"area": "other",
+			"route": null,
+			"exports": ["reroute", "nonCachedUrl", "clearBrowserState", "hasSessionClient", "transport"],
+			"imports": [],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/lib/components/home/FeaturedProducts.svelte",
+			"area": "other",
+			"route": null,
+			"exports": [],
+			"imports": [
+				"$lib/components/ui/Button.svelte",
+				"$lib/components/ui/ProductCard.svelte",
+				"$lib/stores/products.svelte"
+			],
+			"svelteRunes": ["$props"]
+		},
+		{
+			"path": "src/lib/components/home/FeaturesSection.svelte",
+			"area": "other",
+			"route": null,
+			"exports": [],
+			"imports": [],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/lib/components/home/HeroSection.svelte",
+			"area": "other",
+			"route": null,
+			"exports": [],
+			"imports": ["$lib/components/ui/Button.svelte", "$lib/stores/products.svelte"],
+			"svelteRunes": ["$props"]
+		},
+		{
+			"path": "src/lib/components/home/NewsletterSection.svelte",
+			"area": "other",
+			"route": null,
+			"exports": [],
+			"imports": ["$lib/stores"],
+			"svelteRunes": ["$state"]
+		},
+		{
+			"path": "src/lib/components/index.ts",
+			"area": "other",
+			"route": null,
+			"exports": [],
+			"imports": [
+				"./ui/Button.svelte",
+				"./ui/Card.svelte",
+				"./ui/Input.svelte",
+				"./ui/Modal.svelte",
+				"./ui/ProductCard.svelte",
+				"./ui/Notifications.svelte",
+				"./layout/Navbar.svelte",
+				"./layout/Footer.svelte",
+				"./layout/MainNavbar.svelte"
+			],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/lib/components/layout/AccountMobileNav.svelte",
+			"area": "layout",
+			"route": null,
+			"exports": [],
+			"imports": ["$lib/components/ui/Card.svelte", "$lib/components/ui/Button.svelte"],
+			"svelteRunes": ["$props"]
+		},
+		{
+			"path": "src/lib/components/layout/AccountSidebar.svelte",
+			"area": "layout",
+			"route": null,
+			"exports": [],
+			"imports": ["$lib/components/ui/Card.svelte", "$app/stores"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/lib/components/layout/CartDrawer.svelte",
+			"area": "layout",
+			"route": null,
+			"exports": ["openDrawer", "closeDrawer", "toggleDrawer"],
+			"imports": [
+				"svelte",
+				"svelte/transition",
+				"runed",
+				"$lib/components/ui/Button.svelte",
+				"$lib/i18n/translations",
+				"$lib/stores",
+				"$lib/types"
+			],
+			"svelteRunes": ["$state", "$derived", "$effect", "$props"]
+		},
+		{
+			"path": "src/lib/components/layout/Footer.svelte",
+			"area": "layout",
+			"route": null,
+			"exports": [],
+			"imports": ["$lib/img/logo-FixTar-white.webp"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/lib/components/layout/MainNavbar.svelte",
+			"area": "layout",
+			"route": null,
+			"exports": [],
+			"imports": ["$app/stores", "$app/navigation", "$lib/stores", "$lib/img/logo-FixTar.webp"],
+			"svelteRunes": ["$state", "$derived", "$props"]
+		},
+		{
+			"path": "src/lib/components/layout/Navbar.svelte",
+			"area": "layout",
+			"route": null,
+			"exports": [],
+			"imports": [
+				"svelte",
+				"$lib/stores",
+				"$lib/components/ui/Button.svelte",
+				"$lib/img/logo-FixTar.webp"
+			],
+			"svelteRunes": ["$state", "$derived", "$props"]
+		},
+		{
+			"path": "src/lib/components/layout/PageContainer.svelte",
+			"area": "layout",
+			"route": null,
+			"exports": [],
+			"imports": ["svelte"],
+			"svelteRunes": ["$derived", "$props"]
+		},
+		{
+			"path": "src/lib/components/layout/Section.svelte",
+			"area": "layout",
+			"route": null,
+			"exports": [],
+			"imports": ["svelte", "$lib/stores/language.svelte", "$lib/i18n/translations"],
+			"svelteRunes": ["$props"]
+		},
+		{
+			"path": "src/lib/components/ui/AnnouncementBanner.svelte",
+			"area": "ui",
+			"route": null,
+			"exports": [],
+			"imports": ["$lib/components/ui/Button.svelte"],
+			"svelteRunes": ["$state", "$props"]
+		},
+		{
+			"path": "src/lib/components/ui/Breadcrumbs.svelte",
+			"area": "ui",
+			"route": null,
+			"exports": [],
+			"imports": ["$app/state"],
+			"svelteRunes": ["$effect", "$props"]
+		},
+		{
+			"path": "src/lib/components/ui/Button.svelte",
+			"area": "ui",
+			"route": null,
+			"exports": [],
+			"imports": ["svelte/elements", "svelte"],
+			"svelteRunes": ["$derived", "$props"]
+		},
+		{
+			"path": "src/lib/components/ui/Card.svelte",
+			"area": "ui",
+			"route": null,
+			"exports": [],
+			"imports": ["svelte/elements"],
+			"svelteRunes": ["$derived", "$props"]
+		},
+		{
+			"path": "src/lib/components/ui/CustomBadge.svelte",
+			"area": "ui",
+			"route": null,
+			"exports": [],
+			"imports": ["svelte"],
+			"svelteRunes": ["$props"]
+		},
+		{
+			"path": "src/lib/components/ui/Hero.svelte",
+			"area": "ui",
+			"route": null,
+			"exports": [],
+			"imports": ["./Button.svelte"],
+			"svelteRunes": ["$props"]
+		},
+		{
+			"path": "src/lib/components/ui/Input.svelte",
+			"area": "ui",
+			"route": null,
+			"exports": [],
+			"imports": ["svelte/elements"],
+			"svelteRunes": ["$derived", "$props"]
+		},
+		{
+			"path": "src/lib/components/ui/LoadingSpinner.svelte",
+			"area": "ui",
+			"route": null,
+			"exports": [],
+			"imports": [],
+			"svelteRunes": ["$props"]
+		},
+		{
+			"path": "src/lib/components/ui/Modal.svelte",
+			"area": "ui",
+			"route": null,
+			"exports": [],
+			"imports": ["svelte"],
+			"svelteRunes": ["$effect", "$props"]
+		},
+		{
+			"path": "src/lib/components/ui/Notifications.svelte",
+			"area": "ui",
+			"route": null,
+			"exports": [],
+			"imports": ["$lib/stores/notifications.svelte", "svelte/transition", "svelte/reactivity"],
+			"svelteRunes": ["$effect"]
+		},
+		{
+			"path": "src/lib/components/ui/OptimizedImage.d.ts",
+			"area": "ui",
+			"route": null,
+			"exports": ["OptimizedImageProps"],
+			"imports": [],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/lib/components/ui/OptimizedImage.svelte",
+			"area": "ui",
+			"route": null,
+			"exports": [],
+			"imports": ["runed"],
+			"svelteRunes": ["$state", "$derived", "$effect", "$props"]
+		},
+		{
+			"path": "src/lib/components/ui/ProductCard.svelte",
+			"area": "ui",
+			"route": null,
+			"exports": [],
+			"imports": ["./Button.svelte", "$lib/stores/products.svelte", "$lib/stores"],
+			"svelteRunes": ["$derived", "$props"]
+		},
+		{
+			"path": "src/lib/data/mockData.ts",
+			"area": "other",
+			"route": null,
+			"exports": [
+				"mockCategories",
+				"mockProducts",
+				"bestSellers",
+				"newArrivals",
+				"trendingProducts",
+				"heroProducts"
+			],
+			"imports": ["$lib/types"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/lib/i18n/translations.ts",
+			"area": "i18n",
+			"route": null,
+			"exports": ["TranslationKey", "TranslationMap", "translations"],
+			"imports": [],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/lib/pocketbase.ts",
+			"area": "other",
+			"route": null,
+			"exports": ["pb", "currentUser"],
+			"imports": ["pocketbase", "svelte/store", "$app/environment", "$env/dynamic/public"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/lib/server/auth.ts",
+			"area": "server",
+			"route": null,
+			"exports": [
+				"SESSION_COOKIE_NAME",
+				"LoginSchema",
+				"RegisterSchema",
+				"AuthUser",
+				"logoutUser",
+				"setSessionCookie",
+				"setSessionCookieWithParams",
+				"deleteSessionCookie"
+			],
+			"imports": ["zod", "pocketbase", "./pocketbase", "@sveltejs/kit"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/lib/server/pocketbase.ts",
+			"area": "server",
+			"route": null,
+			"exports": ["createPocketBaseClient", "isDemoMode", "pb"],
+			"imports": ["pocketbase", "$env/dynamic/private"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/lib/services/baselinker.ts",
+			"area": "services",
+			"route": null,
+			"exports": [
+				"BaseLinkerConfig",
+				"BaseLinkerProduct",
+				"BaseLinkerVariant",
+				"BaseLinkerOrder",
+				"BaseLinkerOrderProduct",
+				"BaseLinkerInventory",
+				"SyncResult",
+				"OrderPushResult",
+				"BaseLinkerService",
+				"getBaseLinkerService"
+			],
+			"imports": ["$env/dynamic/private"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/lib/services/index.ts",
+			"area": "services",
+			"route": null,
+			"exports": [],
+			"imports": ["./baselinker"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/lib/services/payment/bank-transfer.ts",
+			"area": "services",
+			"route": null,
+			"exports": ["BankTransferProvider"],
+			"imports": ["./types"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/lib/services/payment/cash-on-delivery.ts",
+			"area": "services",
+			"route": null,
+			"exports": ["CashOnDeliveryProvider"],
+			"imports": ["./types"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/lib/services/payment/index.ts",
+			"area": "services",
+			"route": null,
+			"exports": ["PaymentService"],
+			"imports": ["./types", "./bank-transfer", "./cash-on-delivery"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/lib/services/payment/przelewy24.ts",
+			"area": "services",
+			"route": null,
+			"exports": ["Przelewy24Provider"],
+			"imports": ["./types", "crypto"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/lib/services/payment/types.ts",
+			"area": "services",
+			"route": null,
+			"exports": [
+				"PaymentProvider",
+				"PaymentOrder",
+				"PaymentResult",
+				"BankTransferDetails",
+				"VerificationResult",
+				"PaymentStatus"
+			],
+			"imports": [],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/lib/stores/cart.svelte.ts",
+			"area": "stores",
+			"route": null,
+			"exports": ["CartItem", "cart"],
+			"imports": ["runed", "$app/environment"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/lib/stores/index.ts",
+			"area": "stores",
+			"route": null,
+			"exports": [],
+			"imports": [
+				"./cart.svelte",
+				"./user.svelte",
+				"./products.svelte",
+				"./notifications.svelte",
+				"./language.svelte"
+			],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/lib/stores/language.svelte.ts",
+			"area": "stores",
+			"route": null,
+			"exports": ["Language", "languageStore"],
+			"imports": ["runed"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/lib/stores/notifications.svelte.ts",
+			"area": "stores",
+			"route": null,
+			"exports": ["Notification", "notifications"],
+			"imports": [],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/lib/stores/products.svelte.ts",
+			"area": "stores",
+			"route": null,
+			"exports": ["Product", "Category", "productsStore", "categoriesStore"],
+			"imports": ["$lib/pocketbase", "$app/environment"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/lib/stores/user.svelte.ts",
+			"area": "stores",
+			"route": null,
+			"exports": ["User", "userStore"],
+			"imports": ["runed"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/lib/types.ts",
+			"area": "other",
+			"route": null,
+			"exports": ["Product", "CartItem", "UserAddress", "User", "Category"],
+			"imports": [],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/lib/utils/cache.ts",
+			"area": "other",
+			"route": null,
+			"exports": ["serverCache"],
+			"imports": [],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/lib/utils/currency.ts",
+			"area": "other",
+			"route": null,
+			"exports": [
+				"CurrencyCode",
+				"currencySymbols",
+				"symbolToCurrency",
+				"getCurrencySymbol",
+				"getCurrencyCode",
+				"formatPrice"
+			],
+			"imports": [],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/lib/utils/date.ts",
+			"area": "other",
+			"route": null,
+			"exports": ["formatDate", "formatDateShort", "formatDateRelative"],
+			"imports": [],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/lib/utils/index.ts",
+			"area": "other",
+			"route": null,
+			"exports": [],
+			"imports": ["./currency", "./date"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/lib/utils/logger.ts",
+			"area": "other",
+			"route": null,
+			"exports": [
+				"LogEntry",
+				"logger",
+				"authLogger",
+				"dbLogger",
+				"apiLogger",
+				"performanceLogger",
+				"uiLogger"
+			],
+			"imports": [],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/lib/utils/performance.ts",
+			"area": "other",
+			"route": null,
+			"exports": ["BatchProcessor", "LazyValue", "RateLimiter"],
+			"imports": [],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/+error.svelte",
+			"area": "pages",
+			"route": "/+error.svelte",
+			"exports": [],
+			"imports": ["$app/stores", "$app/environment", "svelte"],
+			"svelteRunes": ["$state"]
+		},
+		{
+			"path": "src/routes/+layout.server.ts",
+			"area": "pages",
+			"route": "/+layout.server.ts",
+			"exports": ["load"],
+			"imports": ["./$types"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/+layout.svelte",
+			"area": "pages",
+			"route": "/+layout.svelte",
+			"exports": [],
+			"imports": [
+				"svelte",
+				"$lib/stores",
+				"$lib/components/layout/Navbar.svelte",
+				"$lib/components/layout/CartDrawer.svelte",
+				"$lib/components/layout/Footer.svelte",
+				"$lib/components/ui/Notifications.svelte",
+				"$lib/i18n/translations"
+			],
+			"svelteRunes": ["$state", "$effect", "$props"]
+		},
+		{
+			"path": "src/routes/+layout.ts",
+			"area": "pages",
+			"route": "/+layout.ts",
+			"exports": ["load"],
+			"imports": ["./$types"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/+page.server.ts",
+			"area": "pages",
+			"route": "/+page.server.ts",
+			"exports": ["load"],
+			"imports": [
+				"./$types",
+				"$lib/stores/products.svelte",
+				"$env/dynamic/private",
+				"$lib/server/pocketbase",
+				"$lib/data/mockData"
+			],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/+page.svelte",
+			"area": "pages",
+			"route": "/+page.svelte",
+			"exports": [],
+			"imports": [
+				"$lib/stores/products.svelte",
+				"$lib/components/home/HeroSection.svelte",
+				"$lib/components/home/FeaturedProducts.svelte",
+				"$lib/components/home/FeaturesSection.svelte",
+				"$lib/components/home/NewsletterSection.svelte"
+			],
+			"svelteRunes": ["$props"]
+		},
+		{
+			"path": "src/routes/about/+page.svelte",
+			"area": "pages",
+			"route": "/about/+page.svelte",
+			"exports": [],
+			"imports": [
+				"$lib/components/ui/Hero.svelte",
+				"$lib/components/ui/Card.svelte",
+				"$lib/components/ui/Button.svelte"
+			],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/account/+layout.server.ts",
+			"area": "account",
+			"route": "/account/+layout.server.ts",
+			"exports": ["load"],
+			"imports": ["@sveltejs/kit", "./$types", "$lib/server/auth", "$app/environment"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/account/+layout.svelte",
+			"area": "account",
+			"route": "/account/+layout.svelte",
+			"exports": [],
+			"imports": [
+				"$app/stores",
+				"$lib/stores",
+				"$app/navigation",
+				"$lib/components/ui/Card.svelte",
+				"svelte",
+				"./$types"
+			],
+			"svelteRunes": ["$state", "$derived", "$effect", "$props"]
+		},
+		{
+			"path": "src/routes/account/+page.server.ts",
+			"area": "account",
+			"route": "/account/+page.server.ts",
+			"exports": ["actions", "load"],
+			"imports": ["@sveltejs/kit", "$lib/server/auth", "./$types"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/account/+page.svelte",
+			"area": "account",
+			"route": "/account/+page.svelte",
+			"exports": [],
+			"imports": [
+				"svelte",
+				"$lib/stores",
+				"$lib/components/ui/Button.svelte",
+				"$lib/components/ui/Card.svelte",
+				"$lib/components/ui/Hero.svelte",
+				"./$types"
+			],
+			"svelteRunes": ["$derived"]
+		},
+		{
+			"path": "src/routes/account/addresses/[id]/edit/+page.server.ts",
+			"area": "account",
+			"route": "/account/addresses/[id]/edit/+page.server.ts",
+			"exports": ["load", "actions"],
+			"imports": ["@sveltejs/kit"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/account/addresses/[id]/edit/+page.svelte",
+			"area": "account",
+			"route": "/account/addresses/[id]/edit/+page.svelte",
+			"exports": [],
+			"imports": [
+				"$lib/components/ui/Card.svelte",
+				"$lib/components/ui/Button.svelte",
+				"$lib/stores",
+				"$app/forms",
+				"$app/navigation",
+				"./$types"
+			],
+			"svelteRunes": ["$state", "$derived", "$effect"]
+		},
+		{
+			"path": "src/routes/account/addresses/+page.server.ts",
+			"area": "account",
+			"route": "/account/addresses/+page.server.ts",
+			"exports": ["load", "actions"],
+			"imports": ["@sveltejs/kit", "./$types"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/account/addresses/+page.svelte",
+			"area": "account",
+			"route": "/account/addresses/+page.svelte",
+			"exports": [],
+			"imports": [
+				"$lib/components/ui/Card.svelte",
+				"$lib/components/ui/Button.svelte",
+				"$lib/stores",
+				"$app/forms",
+				"./$types"
+			],
+			"svelteRunes": ["$state", "$derived", "$effect"]
+		},
+		{
+			"path": "src/routes/account/addresses/new/+page.server.ts",
+			"area": "account",
+			"route": "/account/addresses/new/+page.server.ts",
+			"exports": ["load", "actions"],
+			"imports": ["@sveltejs/kit", "./$types"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/account/addresses/new/+page.svelte",
+			"area": "account",
+			"route": "/account/addresses/new/+page.svelte",
+			"exports": [],
+			"imports": [
+				"$lib/components/ui/Card.svelte",
+				"$lib/components/ui/Button.svelte",
+				"$lib/stores",
+				"$app/forms",
+				"$app/navigation",
+				"./$types"
+			],
+			"svelteRunes": ["$state", "$effect"]
+		},
+		{
+			"path": "src/routes/account/favorites/+page.server.ts",
+			"area": "account",
+			"route": "/account/favorites/+page.server.ts",
+			"exports": ["load", "actions"],
+			"imports": ["@sveltejs/kit", "./$types"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/account/favorites/+page.svelte",
+			"area": "account",
+			"route": "/account/favorites/+page.svelte",
+			"exports": [],
+			"imports": ["./$types", "svelte", "svelte/transition", "svelte/easing", "$app/forms"],
+			"svelteRunes": ["$state", "$derived"]
+		},
+		{
+			"path": "src/routes/account/orders/+page.server.ts",
+			"area": "account",
+			"route": "/account/orders/+page.server.ts",
+			"exports": ["load"],
+			"imports": ["@sveltejs/kit", "./$types"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/account/orders/+page.svelte",
+			"area": "account",
+			"route": "/account/orders/+page.svelte",
+			"exports": [],
+			"imports": [
+				"$lib/components/ui/Card.svelte",
+				"$lib/components/ui/Button.svelte",
+				"$lib/components/ui/Hero.svelte",
+				"./$types"
+			],
+			"svelteRunes": ["$state", "$derived"]
+		},
+		{
+			"path": "src/routes/account/settings/+page.server.ts",
+			"area": "account",
+			"route": "/account/settings/+page.server.ts",
+			"exports": ["load", "actions"],
+			"imports": ["@sveltejs/kit", "./$types"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/account/settings/+page.svelte",
+			"area": "account",
+			"route": "/account/settings/+page.svelte",
+			"exports": [],
+			"imports": [
+				"$lib/stores",
+				"$lib/components/ui/Card.svelte",
+				"$lib/components/ui/Button.svelte",
+				"$lib/components/ui/Input.svelte",
+				"$lib/components/ui/Hero.svelte",
+				"$app/forms",
+				"./$types"
+			],
+			"svelteRunes": ["$state", "$derived", "$effect"]
+		},
+		{
+			"path": "src/routes/admin/+layout.svelte",
+			"area": "admin",
+			"route": "/admin/+layout.svelte",
+			"exports": [],
+			"imports": ["$app/stores", "$lib/stores", "$app/navigation", "svelte"],
+			"svelteRunes": ["$effect"]
+		},
+		{
+			"path": "src/routes/admin/+page.server.ts",
+			"area": "admin",
+			"route": "/admin/+page.server.ts",
+			"exports": ["load"],
+			"imports": ["./$types", "$env/dynamic/private"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/admin/+page.svelte",
+			"area": "admin",
+			"route": "/admin/+page.svelte",
+			"exports": [],
+			"imports": [
+				"$lib/stores",
+				"$app/navigation",
+				"$lib/components/ui/Card.svelte",
+				"$lib/components/ui/Button.svelte"
+			],
+			"svelteRunes": ["$derived", "$effect", "$props"]
+		},
+		{
+			"path": "src/routes/admin/baselinker/+page.svelte",
+			"area": "admin",
+			"route": "/admin/baselinker/+page.svelte",
+			"exports": [],
+			"imports": ["$lib/components/ui/Button.svelte", "$lib/components/ui/Card.svelte"],
+			"svelteRunes": ["$state"]
+		},
+		{
+			"path": "src/routes/admin/customers/+page.svelte",
+			"area": "admin",
+			"route": "/admin/customers/+page.svelte",
+			"exports": [],
+			"imports": [
+				"$lib/stores",
+				"$app/navigation",
+				"$lib/components/ui/Card.svelte",
+				"$lib/components/ui/Button.svelte",
+				"svelte",
+				"$lib/pocketbase",
+				"$lib/components/ui/LoadingSpinner.svelte",
+				"$lib/utils/date"
+			],
+			"svelteRunes": ["$state", "$derived", "$effect"]
+		},
+		{
+			"path": "src/routes/admin/orders/+page.svelte",
+			"area": "admin",
+			"route": "/admin/orders/+page.svelte",
+			"exports": [],
+			"imports": [
+				"$lib/components/ui/Card.svelte",
+				"$lib/components/ui/Button.svelte",
+				"$lib/components/ui/Input.svelte"
+			],
+			"svelteRunes": ["$state", "$derived"]
+		},
+		{
+			"path": "src/routes/admin/products/+page.server.ts",
+			"area": "admin",
+			"route": "/admin/products/+page.server.ts",
+			"exports": ["load"],
+			"imports": ["./$types", "$env/dynamic/private"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/admin/products/+page.svelte",
+			"area": "admin",
+			"route": "/admin/products/+page.svelte",
+			"exports": [],
+			"imports": [
+				"$app/navigation",
+				"$app/stores",
+				"$lib/components/ui/Button.svelte",
+				"$lib/components/ui/Input.svelte",
+				"$lib/components/ui/Card.svelte",
+				"$lib/stores",
+				"$app/environment"
+			],
+			"svelteRunes": ["$state", "$effect", "$props"]
+		},
+		{
+			"path": "src/routes/api/admin/clean-fake-data/+server.ts",
+			"area": "api",
+			"route": "/api/admin/clean-fake-data/+server.ts",
+			"exports": ["POST"],
+			"imports": ["@sveltejs/kit", "./$types", "$app/environment", "$lib/server/pocketbase"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/api/admin/products/status/+server.ts",
+			"area": "api",
+			"route": "/api/admin/products/status/+server.ts",
+			"exports": ["POST", "GET"],
+			"imports": ["@sveltejs/kit", "./$types", "$lib/server/pocketbase", "$env/dynamic/private"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/api/auth/debug/+server.ts",
+			"area": "api",
+			"route": "/api/auth/debug/+server.ts",
+			"exports": ["GET"],
+			"imports": ["@sveltejs/kit", "./$types", "$lib/server/pocketbase"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/api/auth/validate/+server.ts",
+			"area": "api",
+			"route": "/api/auth/validate/+server.ts",
+			"exports": ["POST"],
+			"imports": ["@sveltejs/kit", "$lib/server/auth", "./$types"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/api/baselinker/orders/+server.ts",
+			"area": "api",
+			"route": "/api/baselinker/orders/+server.ts",
+			"exports": ["POST", "GET"],
+			"imports": ["@sveltejs/kit", "./$types", "$lib/services/baselinker"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/api/baselinker/sync/+server.ts",
+			"area": "api",
+			"route": "/api/baselinker/sync/+server.ts",
+			"exports": ["POST", "GET"],
+			"imports": ["@sveltejs/kit", "./$types", "$lib/services/baselinker"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/api/cart/merge/+server.ts",
+			"area": "api",
+			"route": "/api/cart/merge/+server.ts",
+			"exports": ["POST"],
+			"imports": ["@sveltejs/kit", "./$types", "$lib/server/auth", "$lib/types"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/api/cart/sync/+server.ts",
+			"area": "api",
+			"route": "/api/cart/sync/+server.ts",
+			"exports": ["GET", "POST"],
+			"imports": ["@sveltejs/kit", "./$types", "$lib/server/auth", "$lib/types"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/api/webhooks/payment/+server.ts",
+			"area": "api",
+			"route": "/api/webhooks/payment/+server.ts",
+			"exports": ["POST"],
+			"imports": [
+				"@sveltejs/kit",
+				"./$types",
+				"$lib/services/payment",
+				"pocketbase",
+				"$env/dynamic/private"
+			],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/auth/login/+page.server.ts",
+			"area": "auth",
+			"route": "/auth/login/+page.server.ts",
+			"exports": ["actions"],
+			"imports": ["$lib/server/auth", "@sveltejs/kit", "./$types", "$env/dynamic/private"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/auth/login/+page.svelte",
+			"area": "auth",
+			"route": "/auth/login/+page.svelte",
+			"exports": [],
+			"imports": [
+				"$app/forms",
+				"$app/navigation",
+				"$lib/components/ui/Button.svelte",
+				"$lib/components/ui/Input.svelte",
+				"$lib/components/ui/Card.svelte",
+				"$lib/stores",
+				"./$types",
+				"$lib/img/logo-FixTar.webp"
+			],
+			"svelteRunes": ["$state", "$derived", "$effect"]
+		},
+		{
+			"path": "src/routes/auth/logout/+page.svelte",
+			"area": "auth",
+			"route": "/auth/logout/+page.svelte",
+			"exports": [],
+			"imports": [
+				"$lib/stores",
+				"$app/navigation",
+				"svelte",
+				"$lib/components/ui/Card.svelte",
+				"$lib/components/ui/Hero.svelte",
+				"$lib/components/ui/Button.svelte",
+				"$lib/img/logo-FixTar.webp"
+			],
+			"svelteRunes": ["$state"]
+		},
+		{
+			"path": "src/routes/auth/logout/+page.ts",
+			"area": "auth",
+			"route": "/auth/logout/+page.ts",
+			"exports": ["load"],
+			"imports": ["@sveltejs/kit", "./$types"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/auth/logout/+server.ts",
+			"area": "auth",
+			"route": "/auth/logout/+server.ts",
+			"exports": ["POST", "GET"],
+			"imports": ["$lib/server/auth", "@sveltejs/kit", "./$types"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/auth/register/+page.server.ts",
+			"area": "auth",
+			"route": "/auth/register/+page.server.ts",
+			"exports": ["actions"],
+			"imports": ["$lib/server/auth", "@sveltejs/kit", "./$types"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/auth/register/+page.svelte",
+			"area": "auth",
+			"route": "/auth/register/+page.svelte",
+			"exports": [],
+			"imports": [
+				"$app/forms",
+				"$app/navigation",
+				"$lib/components/ui/Button.svelte",
+				"$lib/components/ui/Input.svelte",
+				"$lib/components/ui/Card.svelte",
+				"$lib/stores",
+				"$lib/img/logo-FixTar.webp"
+			],
+			"svelteRunes": ["$state", "$effect"]
+		},
+		{
+			"path": "src/routes/auth/validate/+server.ts",
+			"area": "auth",
+			"route": "/auth/validate/+server.ts",
+			"exports": ["POST"],
+			"imports": ["@sveltejs/kit", "$lib/server/auth", "./$types"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/cart/+page.svelte",
+			"area": "cart",
+			"route": "/cart/+page.svelte",
+			"exports": [],
+			"imports": [
+				"$lib/stores",
+				"$lib/components/ui/Button.svelte",
+				"$lib/components/ui/Input.svelte"
+			],
+			"svelteRunes": ["$state", "$derived"]
+		},
+		{
+			"path": "src/routes/categories/+page.server.ts",
+			"area": "pages",
+			"route": "/categories/+page.server.ts",
+			"exports": ["load"],
+			"imports": ["./$types", "$lib/stores/products.svelte", "$env/dynamic/private"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/categories/+page.svelte",
+			"area": "pages",
+			"route": "/categories/+page.svelte",
+			"exports": [],
+			"imports": [
+				"$app/navigation",
+				"$lib/components/ui/Card.svelte",
+				"$lib/components/ui/Button.svelte",
+				"$lib/components/ui/Input.svelte",
+				"$lib/stores/products.svelte"
+			],
+			"svelteRunes": ["$state", "$props"]
+		},
+		{
+			"path": "src/routes/checkout/+page.server.ts",
+			"area": "checkout",
+			"route": "/checkout/+page.server.ts",
+			"exports": ["load", "actions"],
+			"imports": ["@sveltejs/kit", "./$types", "$lib/services/payment"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/checkout/+page.svelte",
+			"area": "checkout",
+			"route": "/checkout/+page.svelte",
+			"exports": [],
+			"imports": [
+				"$lib/stores",
+				"$app/navigation",
+				"$app/forms",
+				"$lib/components/ui/Button.svelte",
+				"$lib/components/ui/Input.svelte",
+				"$lib/components/ui/Card.svelte",
+				"$lib/components/ui/Hero.svelte",
+				"./$types"
+			],
+			"svelteRunes": ["$state", "$derived", "$effect", "$props"]
+		},
+		{
+			"path": "src/routes/checkout/success/+page.server.ts",
+			"area": "checkout",
+			"route": "/checkout/success/+page.server.ts",
+			"exports": ["load"],
+			"imports": ["@sveltejs/kit", "./$types"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/checkout/success/+page.svelte",
+			"area": "checkout",
+			"route": "/checkout/success/+page.svelte",
+			"exports": [],
+			"imports": [
+				"$lib/components/ui/Button.svelte",
+				"$lib/components/ui/Card.svelte",
+				"$lib/components/ui/Hero.svelte",
+				"./$types",
+				"$app/stores"
+			],
+			"svelteRunes": ["$derived"]
+		},
+		{
+			"path": "src/routes/contact/+page.svelte",
+			"area": "pages",
+			"route": "/contact/+page.svelte",
+			"exports": [],
+			"imports": [
+				"$lib/components/ui/Card.svelte",
+				"$lib/components/ui/Button.svelte",
+				"$lib/components/ui/Input.svelte",
+				"$lib/components/ui/Hero.svelte",
+				"$lib/stores"
+			],
+			"svelteRunes": ["$state"]
+		},
+		{
+			"path": "src/routes/deals/+page.svelte",
+			"area": "pages",
+			"route": "/deals/+page.svelte",
+			"exports": [],
+			"imports": ["$lib/components/ui/Card.svelte", "$lib/components/ui/Button.svelte"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/docs/+layout.svelte",
+			"area": "pages",
+			"route": "/docs/+layout.svelte",
+			"exports": [],
+			"imports": [
+				"$app/state",
+				"svelte/transition",
+				"svelte/easing",
+				"$lib/components/layout/PageContainer.svelte",
+				"svelte"
+			],
+			"svelteRunes": ["$state"]
+		},
+		{
+			"path": "src/routes/docs/+page.svelte",
+			"area": "pages",
+			"route": "/docs/+page.svelte",
+			"exports": [],
+			"imports": [
+				"$app/navigation",
+				"svelte",
+				"$lib/components/ui/LoadingSpinner.svelte",
+				"$lib/components/layout/PageContainer.svelte"
+			],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/orders/[id]/+page.server.ts",
+			"area": "pages",
+			"route": "/orders/[id]/+page.server.ts",
+			"exports": ["load"],
+			"imports": [
+				"./$types",
+				"@sveltejs/kit",
+				"$env/dynamic/private",
+				"$lib/stores/products.svelte"
+			],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/orders/[id]/+page.svelte",
+			"area": "pages",
+			"route": "/orders/[id]/+page.svelte",
+			"exports": [],
+			"imports": [
+				"$app/stores",
+				"$lib/components/ui/Card.svelte",
+				"$lib/components/ui/Button.svelte",
+				"$lib/components/ui/CustomBadge.svelte",
+				"$lib/utils"
+			],
+			"svelteRunes": ["$props"]
+		},
+		{
+			"path": "src/routes/page.svelte.test.ts",
+			"area": "pages",
+			"route": "/page.svelte.test.ts",
+			"exports": [],
+			"imports": ["vitest", "@testing-library/svelte", "./+page.svelte"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/products/[slug]/+page.server.ts",
+			"area": "catalog",
+			"route": "/products/[slug]/+page.server.ts",
+			"exports": ["load"],
+			"imports": [
+				"@sveltejs/kit",
+				"./$types",
+				"$lib/stores/products.svelte",
+				"$env/dynamic/private",
+				"$lib/server/pocketbase",
+				"$lib/data/mockData"
+			],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/products/[slug]/+page.svelte",
+			"area": "catalog",
+			"route": "/products/[slug]/+page.svelte",
+			"exports": [],
+			"imports": [
+				"$lib/stores",
+				"$lib/components/ui/Button.svelte",
+				"$lib/components/ui/Card.svelte",
+				"$lib/components/ui/ProductCard.svelte",
+				"$lib/pocketbase",
+				"$lib/stores/products.svelte"
+			],
+			"svelteRunes": ["$state", "$derived", "$props"]
+		},
+		{
+			"path": "src/routes/products/+page.server.ts",
+			"area": "catalog",
+			"route": "/products/+page.server.ts",
+			"exports": ["load"],
+			"imports": [
+				"./$types",
+				"$lib/stores/products.svelte",
+				"$env/dynamic/private",
+				"$lib/utils/cache",
+				"$lib/utils/performance",
+				"$lib/server/pocketbase",
+				"$lib/data/mockData"
+			],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/products/+page.svelte",
+			"area": "catalog",
+			"route": "/products/+page.svelte",
+			"exports": [],
+			"imports": [
+				"$app/navigation",
+				"$app/stores",
+				"$lib/components/ui/ProductCard.svelte",
+				"$lib/components/ui/Card.svelte",
+				"$lib/components/ui/Input.svelte",
+				"$lib/components/ui/Button.svelte",
+				"$lib/components/ui/LoadingSpinner.svelte",
+				"$lib/components/ui/Hero.svelte",
+				"$lib/stores/products.svelte"
+			],
+			"svelteRunes": ["$state", "$derived", "$effect", "$props"]
+		},
+		{
+			"path": "src/routes/robots.txt/+server.ts",
+			"area": "pages",
+			"route": "/robots.txt/+server.ts",
+			"exports": ["GET"],
+			"imports": ["$env/dynamic/private"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/search/+page.server.ts",
+			"area": "pages",
+			"route": "/search/+page.server.ts",
+			"exports": ["load"],
+			"imports": [
+				"./$types",
+				"$lib/stores/products.svelte",
+				"$env/dynamic/private",
+				"$lib/utils/cache",
+				"$lib/utils/performance"
+			],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/search/+page.svelte",
+			"area": "pages",
+			"route": "/search/+page.svelte",
+			"exports": [],
+			"imports": [
+				"$app/navigation",
+				"$lib/components/ui/ProductCard.svelte",
+				"$lib/components/ui/Button.svelte",
+				"$lib/components/ui/Input.svelte",
+				"$lib/stores/products.svelte",
+				"$lib/components/ui/LoadingSpinner.svelte",
+				"$lib/components/ui/Hero.svelte",
+				"$app/state"
+			],
+			"svelteRunes": ["$derived", "$props"]
+		},
+		{
+			"path": "src/routes/sitemap.xml/+server.ts",
+			"area": "pages",
+			"route": "/sitemap.xml/+server.ts",
+			"exports": ["GET"],
+			"imports": ["$env/dynamic/private"],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/wishlist/+page.svelte",
+			"area": "pages",
+			"route": "/wishlist/+page.svelte",
+			"exports": [],
+			"imports": [],
+			"svelteRunes": []
+		},
+		{
+			"path": "src/routes/wishlist/+page.ts",
+			"area": "pages",
+			"route": "/wishlist/+page.ts",
+			"exports": ["load"],
+			"imports": ["./$types"],
+			"svelteRunes": []
+		}
+	]
 }

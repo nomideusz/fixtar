@@ -44,7 +44,9 @@
 	});
 
 	// Prefetch product catalog
-	onMount(() => { productsStore.fetchProducts(); });
+	onMount(() => {
+		productsStore.fetchProducts();
+	});
 </script>
 
 <Notifications />
@@ -55,17 +57,11 @@
 	{@render children?.()}
 </main>
 
-<Footer /> 
+<Footer />
 
 <style>
 	.layout-main {
-		background: linear-gradient(
-			to bottom right,
-			var(--ft-surface-secondary),
-			var(--ft-surface),
-			var(--ft-surface-secondary)
-		);
+		background: var(--ft-dark, #0c1118);
+		color: var(--ft-dark-text, #ffffff);
 	}
 </style>
-
-

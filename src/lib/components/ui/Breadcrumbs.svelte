@@ -76,10 +76,12 @@
 			<!-- Only show home link if we're not using custom items, or if custom items don't include home -->
 			{#if !items || !items.some((item: { label: string; href: string }) => item.href === '/')}
 				<li>
-					<a href="/" class="text-sm font-medium text-neutral-400 hover:text-brand-600">
+					<a href="/" class="hover:text-brand-600 text-sm font-medium text-neutral-400">
 						<span class="flex items-center gap-1.5">
-							<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-								<path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+							<svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+								<path
+									d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"
+								/>
 							</svg>
 							<span class="home-label">Home</span>
 						</span>
@@ -89,15 +91,22 @@
 
 			{#each pathSegments as segment (segment)}
 				<li class="flex items-center">
-					<svg class="w-4 h-4 text-neutral-400 mx-2" fill="currentColor" viewBox="0 0 20 20">
-						<path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+					<svg class="mx-2 h-4 w-4 text-neutral-400" fill="currentColor" viewBox="0 0 20 20">
+						<path
+							fill-rule="evenodd"
+							d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+							clip-rule="evenodd"
+						/>
 					</svg>
 					{#if !segment.isActive}
-						<a href={segment.href} class="text-sm font-medium text-neutral-400 hover:text-brand-600">
+						<a
+							href={segment.href}
+							class="hover:text-brand-600 text-sm font-medium text-neutral-400"
+						>
 							{segment.text || segment.href.split('/').pop() || ''}
 						</a>
 					{:else}
-						<span class="text-sm font-medium text-brand-600">
+						<span class="text-brand-600 text-sm font-medium">
 							{segment.text || segment.href.split('/').pop() || ''}
 						</span>
 					{/if}
@@ -185,10 +194,6 @@
 	:global(.breadcrumb-cyber ol > li + li::before) {
 		color: var(--ft-text-muted);
 		margin: 0 0.5rem;
-		content: '/'
+		content: '/';
 	}
 </style>
-
-
-
-

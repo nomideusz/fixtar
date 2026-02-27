@@ -14,13 +14,15 @@ This guide will help you set up PocketBase with real product data for the FixTar
 
 1. Download PocketBase from [https://pocketbase.io/docs/](https://pocketbase.io/docs/)
 2. Extract and run:
+
    ```bash
    # Windows
    ./pocketbase.exe serve
-   
+
    # macOS/Linux
    ./pocketbase serve
    ```
+
 3. PocketBase will start on `http://127.0.0.1:8090`
 4. Visit the admin UI and create your first admin account
 
@@ -44,7 +46,8 @@ PB_ADMIN_PASSWORD=your_secure_password_here
 # PB_ADMIN_PASSWORD=your_production_password
 ```
 
-**Important**: 
+**Important**:
+
 - Replace `your_secure_password_here` with the actual password you created in PocketBase
 - Add `.env` to your `.gitignore` file to keep credentials secure
 
@@ -67,6 +70,7 @@ npm run db:setup
 ```
 
 This script will:
+
 - ✅ Create the `categories` collection with 5 sample categories
 - ✅ Create the `products` collection with proper schema
 - ✅ Populate with 5 real products (iPhone 15 Pro, Galaxy S24 Ultra, MacBook Pro, etc.)
@@ -104,6 +108,7 @@ The setup script creates products without images. To add images:
 ### Recommended Product Images
 
 For the sample products, you can use these image types:
+
 - **iPhone 15 Pro**: Product shots in different colors
 - **Galaxy S24 Ultra**: Official Samsung product images
 - **MacBook Pro**: Apple's official product photography
@@ -114,46 +119,46 @@ For the sample products, you can use these image types:
 
 ### Categories Collection
 
-| Field | Type | Description |
-|-------|------|-------------|
-| name | text | Category name (e.g., "Electronics") |
-| slug | text | URL-friendly identifier |
-| description | text | Category description |
-| parent | relation | Parent category (for subcategories) |
-| image | file | Category image |
-| featured | bool | Show on homepage |
-| displayOrder | number | Sort order |
-| seo | json | SEO metadata |
-| metadata | json | Additional data |
+| Field        | Type     | Description                         |
+| ------------ | -------- | ----------------------------------- |
+| name         | text     | Category name (e.g., "Electronics") |
+| slug         | text     | URL-friendly identifier             |
+| description  | text     | Category description                |
+| parent       | relation | Parent category (for subcategories) |
+| image        | file     | Category image                      |
+| featured     | bool     | Show on homepage                    |
+| displayOrder | number   | Sort order                          |
+| seo          | json     | SEO metadata                        |
+| metadata     | json     | Additional data                     |
 
 ### Products Collection
 
-| Field | Type | Description |
-|-------|------|-------------|
-| name | text | Product name |
-| slug | text | URL-friendly identifier |
-| description | editor | Rich text description |
-| shortDescription | text | Brief summary |
-| price | number | Current price |
-| compareAtPrice | number | Original/MSRP price |
-| cost | number | Cost basis |
-| sku | text | Stock keeping unit |
-| barcode | text | Product barcode |
-| categories | relation | Associated categories |
-| mainImage | file | Primary product image |
-| gallery | file | Additional images |
-| status | select | draft/active/archived |
-| inventory | json | Stock information |
-| variants | json | Product variations |
-| attributes | json | Product specifications |
-| weight | number | Product weight |
-| dimensions | json | Product dimensions |
-| featured | bool | Show on homepage |
-| shipping | json | Shipping information |
-| taxable | bool | Subject to tax |
-| taxClass | text | Tax classification |
-| seo | json | SEO metadata |
-| metadata | json | Additional data |
+| Field            | Type     | Description             |
+| ---------------- | -------- | ----------------------- |
+| name             | text     | Product name            |
+| slug             | text     | URL-friendly identifier |
+| description      | editor   | Rich text description   |
+| shortDescription | text     | Brief summary           |
+| price            | number   | Current price           |
+| compareAtPrice   | number   | Original/MSRP price     |
+| cost             | number   | Cost basis              |
+| sku              | text     | Stock keeping unit      |
+| barcode          | text     | Product barcode         |
+| categories       | relation | Associated categories   |
+| mainImage        | file     | Primary product image   |
+| gallery          | file     | Additional images       |
+| status           | select   | draft/active/archived   |
+| inventory        | json     | Stock information       |
+| variants         | json     | Product variations      |
+| attributes       | json     | Product specifications  |
+| weight           | number   | Product weight          |
+| dimensions       | json     | Product dimensions      |
+| featured         | bool     | Show on homepage        |
+| shipping         | json     | Shipping information    |
+| taxable          | bool     | Subject to tax          |
+| taxClass         | text     | Tax classification      |
+| seo              | json     | SEO metadata            |
+| metadata         | json     | Additional data         |
 
 ## Sample Data
 
@@ -186,20 +191,24 @@ The setup script creates these sample products:
 ## Troubleshooting
 
 ### Authentication Failed
+
 - Verify your `.env` file has correct credentials
 - Ensure PocketBase is running
 - Check that admin account exists in PocketBase
 
 ### Collection Already Exists
+
 - The script safely skips existing collections
 - To recreate, delete collections in PocketBase admin first
 
 ### Network Connection Issues
+
 - Verify `POCKETBASE_URL` in `.env`
 - Check firewall settings
 - Ensure PocketBase is accessible
 
 ### Missing Dependencies
+
 ```bash
 npm install tsx dotenv pocketbase
 ```
@@ -226,4 +235,4 @@ For production:
 
 - **PocketBase Docs**: [https://pocketbase.io/docs/](https://pocketbase.io/docs/)
 - **SvelteKit Integration**: Check `src/lib/pocketbase.ts`
-- **Admin Interface**: Built-in at `/admin` route 
+- **Admin Interface**: Built-in at `/admin` route
