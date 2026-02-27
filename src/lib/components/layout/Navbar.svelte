@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { cart, userStore } from '$lib/stores';
-	import Button from '$lib/components/ui/Button.svelte';
 	import FixTarLogoWhite from '$lib/img/logo-FixTar-white.webp';
 
 	interface Props {
@@ -14,12 +13,27 @@
 	let userMenuOpen = $state(false);
 	let scrolled = $state(false);
 
+	function closeMobileMenu() {
+		mobileMenuOpen = false;
+	}
+
 	onMount(() => {
 		const onScroll = () => {
 			scrolled = window.scrollY > 20;
 		};
 		window.addEventListener('scroll', onScroll, { passive: true });
 		return () => window.removeEventListener('scroll', onScroll);
+	});
+
+	$effect(() => {
+		if (mobileMenuOpen) {
+			document.body.style.overflow = 'hidden';
+		} else {
+			document.body.style.overflow = '';
+		}
+		return () => {
+			document.body.style.overflow = '';
+		};
 	});
 
 	const cartCount = $derived(cart.count);
@@ -53,7 +67,7 @@
 
 	<!-- Nav body -->
 	<div class="nav-body">
-		<div class="mx-auto max-w-screen-2xl px-6 sm:px-8 lg:px-12">
+		<div class="mx-auto max-w-screen-2xl px-3 sm:px-8 lg:px-12">
 			<div class="flex items-center justify-between">
 				<!-- Logo -->
 				<a href="/" class="group shrink-0">
@@ -74,7 +88,7 @@
 				</div>
 
 				<!-- Actions -->
-				<div class="flex items-center gap-1.5 md:gap-2.5">
+				<div class="flex items-center gap-1 sm:gap-1.5 md:gap-2.5">
 					<a href="/search" class="nav-icon" aria-label="Szukaj">
 						<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path
@@ -192,7 +206,13 @@
 							{/if}
 						</div>
 					{:else}
-						<a href="/auth/login" class="login-btn hidden md:inline-flex">Zaloguj</a>
+						<a href="/auth/login" class="nav-icon lg:hidden" aria-label="Zaloguj">
+							<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+									d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+							</svg>
+						</a>
+						<a href="/auth/login" class="login-btn hidden lg:inline-flex">Zaloguj</a>
 					{/if}
 
 					<!-- Mobile toggle -->
@@ -228,7 +248,7 @@
 	{#if mobileMenuOpen}
 		<div class="mobile-overlay fixed inset-x-0 bottom-0 lg:hidden" style="top: calc(2px + 4.25rem)">
 			<div class="mobile-menu animate-slide-down">
-				<a href="/search" class="mobile-link">
+				<a href="/search" class="mobile-link" style="animation-delay: 0.03s" onclick={closeMobileMenu}>
 					<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
 						><path
 							stroke-linecap="round"
@@ -239,17 +259,17 @@
 					>
 					Szukaj
 				</a>
-				<a href="/products" class="mobile-link">Produkty</a>
-				<a href="/categories" class="mobile-link">Kategorie</a>
-				<a href="/deals" class="mobile-link">Promocje</a>
-				<a href="/about" class="mobile-link">O Nas</a>
-				<a href="/contact" class="mobile-link">Kontakt</a>
+				<a href="/products" class="mobile-link" style="animation-delay: 0.06s" onclick={closeMobileMenu}>Produkty</a>
+				<a href="/categories" class="mobile-link" style="animation-delay: 0.09s" onclick={closeMobileMenu}>Kategorie</a>
+				<a href="/deals" class="mobile-link" style="animation-delay: 0.12s" onclick={closeMobileMenu}>Promocje</a>
+				<a href="/about" class="mobile-link" style="animation-delay: 0.15s" onclick={closeMobileMenu}>O Nas</a>
+				<a href="/contact" class="mobile-link" style="animation-delay: 0.18s" onclick={closeMobileMenu}>Kontakt</a>
 
 				{#if userStore.current}
 					<div class="mobile-separator">
-						<a href="/account" class="mobile-link">Moje Konto</a>
+						<a href="/account" class="mobile-link" onclick={closeMobileMenu}>Moje Konto</a>
 						{#if userStore.current.isAdmin}
-							<a href="/admin" class="mobile-link">Panel Administratora</a>
+							<a href="/admin" class="mobile-link" onclick={closeMobileMenu}>Panel Administratora</a>
 						{/if}
 						<button onclick={handleLogout} class="mobile-link mobile-link--danger w-full"
 							>Wyloguj</button
@@ -257,7 +277,7 @@
 					</div>
 				{:else}
 					<div class="mobile-separator">
-						<Button href="/auth/login" variant="outline" fullWidth>Zaloguj</Button>
+						<a href="/auth/login" class="mobile-login-btn" onclick={closeMobileMenu}>Zaloguj</a>
 					</div>
 				{/if}
 			</div>
@@ -357,12 +377,18 @@
 
 	/* ── Icon buttons ── */
 	.nav-icon {
-		padding: 0.57rem;
+		padding: 0.45rem;
 		color: rgba(255, 255, 255, 0.5);
 		transition: color 0.2s, background-color 0.2s, border-color 0.2s;
 		cursor: pointer;
 		border: 1px solid rgba(255, 255, 255, 0.05);
 		background: rgba(255, 255, 255, 0.02);
+	}
+
+	@media (min-width: 640px) {
+		.nav-icon {
+			padding: 0.57rem;
+		}
 	}
 
 	.nav-icon:hover {
@@ -398,7 +424,6 @@
 		letter-spacing: 0.12em;
 		color: rgba(55, 138, 146, 0.95);
 		border: 1px solid rgba(55, 138, 146, 0.35);
-		display: inline-flex;
 		align-items: center;
 		justify-content: center;
 		height: 2.5rem;
@@ -474,21 +499,51 @@
 		display: flex;
 		align-items: center;
 		gap: 0.75rem;
-		padding: 0.875rem 1rem;
+		padding: 1rem 1.25rem;
 		color: rgba(255, 255, 255, 0.5);
 		font-family: var(--font-heading);
 		font-weight: 500;
-		font-size: 0.85rem;
+		font-size: 0.9rem;
 		letter-spacing: 0.08em;
 		text-transform: uppercase;
 		transition: all 0.2s ease;
 		cursor: pointer;
 		animation: slideIn 0.25s ease-out both;
+		-webkit-tap-highlight-color: transparent;
+		min-height: 3rem;
 	}
 
-	.mobile-link:hover {
+	.mobile-link:hover,
+	.mobile-link:active {
 		color: white;
-		background: rgba(255, 255, 255, 0.03);
+		background: rgba(255, 255, 255, 0.05);
+	}
+
+	.mobile-login-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		padding: 0.875rem 1.25rem;
+		min-height: 3rem;
+		font-family: var(--font-heading);
+		text-transform: uppercase;
+		font-size: 0.85rem;
+		font-weight: 600;
+		letter-spacing: 0.12em;
+		color: rgba(55, 138, 146, 0.95);
+		border: 1px solid rgba(55, 138, 146, 0.35);
+		background: rgba(9, 14, 19, 0.4);
+		transition: all 0.25s ease;
+		-webkit-tap-highlight-color: transparent;
+		cursor: pointer;
+	}
+
+	.mobile-login-btn:hover,
+	.mobile-login-btn:active {
+		background: rgba(55, 138, 146, 0.85);
+		color: white;
+		border-color: rgba(55, 138, 146, 0.85);
 	}
 
 	.mobile-link--danger {
