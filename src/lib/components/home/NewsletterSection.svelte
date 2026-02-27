@@ -36,7 +36,7 @@
 				<span class="text-sm font-medium">Dołącz do ponad 15,000 subskrybentów</span>
 			</div>
 
-			<h2 class="text-5xl lg:text-6xl font-bold text-white mb-6">Newsletter FixTar</h2>
+			<h2 class="text-5xl lg:text-6xl font-bold font-heading text-white mb-6 tracking-tight">Newsletter FixTar</h2>
 			<p class="text-xl text-neutral-200 mb-12">
 				Otrzymuj informacje o najnowszych narzędziach, promocjach i nowościach ze świata elektronarzędzi
 			</p>

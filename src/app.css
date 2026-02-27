@@ -59,9 +59,9 @@
 	--color-info-light: #dbeafe;
 
 	--font-sans:
-		'Rajdhani', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+		'Barlow', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 	--font-heading:
-		'Rajdhani', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+		'Chakra Petch', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 	--font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', monospace;
 
 	--radius-xs: 0;
@@ -125,6 +125,32 @@
 	/* -- Footer -- */
 	--ft-footer-bg: var(--color-neutral-900);
 	--ft-footer-text: var(--color-neutral-300);
+
+	/* -- Typography scale (Major Third — 1.25) -- */
+	--ft-text-xs: 0.75rem;
+	--ft-text-sm: 0.875rem;
+	--ft-text-base: 1rem;
+	--ft-text-lg: 1.125rem;
+	--ft-text-xl: 1.25rem;
+	--ft-text-2xl: 1.5rem;
+	--ft-text-3xl: 1.875rem;
+	--ft-text-4xl: 2.25rem;
+	--ft-text-5xl: 3rem;
+	--ft-text-display: clamp(3rem, 7vw, 5.5rem);
+
+	/* -- Line-heights -- */
+	--ft-leading-none: 0.95;
+	--ft-leading-tight: 1.15;
+	--ft-leading-snug: 1.3;
+	--ft-leading-normal: 1.5;
+	--ft-leading-relaxed: 1.7;
+
+	/* -- Letter-spacing -- */
+	--ft-tracking-tighter: -0.03em;
+	--ft-tracking-tight: -0.015em;
+	--ft-tracking-normal: 0;
+	--ft-tracking-wide: 0.05em;
+	--ft-tracking-wider: 0.1em;
 }
 
 /* Future dark mode (uncomment & customize when ready)

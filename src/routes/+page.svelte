@@ -3,12 +3,11 @@
 	import HeroSection from '$lib/components/home/HeroSection.svelte';
 	import FeaturedProducts from '$lib/components/home/FeaturedProducts.svelte';
 	import FeaturesSection from '$lib/components/home/FeaturesSection.svelte';
-	import NewsletterSection from '$lib/components/home/NewsletterSection.svelte';
+
 
 	interface Props {
 		data: {
 			featuredProducts: Product[];
-			totalProducts: number;
 			error?: string;
 		};
 	}
@@ -24,4 +23,4 @@
 <HeroSection featuredProduct={data.featuredProducts[0]} />
 <FeaturedProducts products={data.featuredProducts} error={data.error} />
 <FeaturesSection />
-<NewsletterSection /> 
+

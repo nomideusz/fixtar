@@ -1,58 +1,44 @@
 import { json } from '@sveltejs/kit';
-import { validateSession, setSessionCookieWithParams, SESSION_COOKIE_NAME } from '$lib/server/auth';
 import type { RequestHandler } from './$types';
+import { auth } from '$lib/server/auth';
 
-export const POST: RequestHandler = async ({ request, cookies, url }) => {
+/**
+ * POST /auth/validate
+ * Validate the current Better Auth session
+ * NOTE: Better Auth already validates sessions via svelteKitHandler in hooks.server.ts.
+ * This endpoint exists for client-side explicit token validation.
+ */
+export const POST: RequestHandler = async ({ request, cookies }) => {
 	try {
-		// Get token from request body, handling empty bodies gracefully
-		let token = null;
-		try {
-			// First try to get token from request body JSON
-			const contentType = request.headers.get('content-type') || '';
-			if (contentType.includes('application/json')) {
+		// Try to get session from Authorization header (token in body) or cookies
+		const headers = new Headers();
+
+		const contentType = request.headers.get('content-type') || '';
+		if (contentType.includes('application/json')) {
+			try {
 				const text = await request.text();
-				if (text && text.length > 0) {
+				if (text) {
 					const body = JSON.parse(text);
-					token = body.token;
+					if (body.token) headers.set('authorization', `Bearer ${body.token}`);
 				}
+			} catch {
+				// ignore parse errors — fall through to cookie-based auth
 			}
-		} catch (e) {
-			console.log('[AUTH] Error parsing request body:', e);
-			// Continue - will validate cookie-based auth
 		}
 
-		// If no token in body, try from cookies
-		if (!token) {
-			token = cookies.get(SESSION_COOKIE_NAME);
+		// Forward cookies so Better Auth can validate cookie-based session
+		const cookieHeader = cookies.getAll().map(c => `${c.name}=${c.value}`).join('; ');
+		if (cookieHeader) headers.set('cookie', cookieHeader);
+
+		const session = await auth.api.getSession({ headers });
+
+		if (session?.user) {
+			return json({ isValid: true, user: { id: session.user.id, email: session.user.email, name: session.user.name } });
 		}
 
-		if (!token) {
-			return json({ isValid: false, error: 'No session token found' }, { status: 401 });
-		}
-
-		// Validate the token
-		const { user, isValid } = await validateSession(token);
-
-		if (isValid && user) {
-			// Set the cookie so future requests will be authenticated
-			setSessionCookieWithParams(cookies, url, token);
-
-			return json({
-				isValid: true,
-				user,
-				token
-			});
-		} else {
-			return json({ isValid: false, error: 'Invalid session' }, { status: 401 });
-		}
+		return json({ isValid: false, error: 'No valid session' }, { status: 401 });
 	} catch (error) {
 		console.error('Session validation error:', error);
-		return json(
-			{
-				isValid: false,
-				error: error instanceof Error ? error.message : 'Unknown error'
-			},
-			{ status: 500 }
-		);
+		return json({ isValid: false, error: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 });
 	}
 };

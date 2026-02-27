@@ -49,7 +49,7 @@
 			Error {$page.status || 404}
 		</div>
 
-		<h1 class="mb-4 bg-linear-to-r from-brand-600 to-accent-600 bg-clip-text text-4xl font-black text-transparent md:text-5xl lg:text-6xl">
+		<h1 class="mb-4 bg-linear-to-r from-brand-600 to-accent-600 bg-clip-text text-4xl font-bold text-transparent md:text-5xl lg:text-6xl">
 			Page Not Found
 		</h1>
 

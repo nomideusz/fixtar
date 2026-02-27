@@ -30,7 +30,7 @@
 <section class="py-24 relative overflow-hidden bg-neutral-50">
 	<div class="max-w-screen-2xl mx-auto px-6 sm:px-8 lg:px-12">
 		<div class="text-center mb-16">
-			<h2 class="text-5xl lg:text-6xl font-bold text-neutral-900 mb-6">
+			<h2 class="text-5xl lg:text-6xl font-bold font-heading text-neutral-900 mb-6 tracking-tight">
 				Dlaczego <span class="text-brand-600">FixTar</span>?
 			</h2>
 			<p class="text-xl text-neutral-600 max-w-3xl mx-auto">
@@ -41,8 +41,8 @@
 		<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 			{#each features as feature (feature.title)}
 				{@const cs = colorStyles[feature.color]}
-				<div class="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-2 overflow-hidden border border-neutral-100 relative">
-					<div class="w-16 h-16 {cs.icon} rounded-2xl flex items-center justify-center mb-6 shadow-md group-hover:shadow-lg transition-shadow">
+				<div class="group bg-white p-8 shadow-sm hover:shadow-md transition-all duration-500 hover:-translate-y-2 overflow-hidden border border-neutral-200 relative">
+					<div class="w-16 h-16 {cs.icon} flex items-center justify-center mb-6">
 						<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={feature.icon} />
 						</svg>

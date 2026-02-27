@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cart, userStore, notifications } from '$lib/stores';
+	import { cart } from '$lib/stores';
 	import { goto } from '$app/navigation';
 	import { enhance } from '$app/forms';
 	import Button from '$lib/components/ui/Button.svelte';
@@ -110,7 +110,7 @@
 		if (!formData.postalCode || !/^\d{2}-\d{3}$/.test(formData.postalCode)) {
 			errors.postalCode = 'Podaj kod pocztowy w formacie XX-XXX';
 		}
-		if (!formData.phone || !/^[\d\s\+\-\(\)]+$/.test(formData.phone)) {
+		if (!formData.phone || !/^[\d\s+\-()]+$/.test(formData.phone)) {
 			errors.phone = 'Podaj prawidłowy numer telefonu';
 		}
 		
@@ -709,7 +709,7 @@
 									<p>Składając zamówienie, akceptujesz nasz</p>
 									<p>
 										<a href="/regulamin" class="underline hover:text-neutral-700 font-medium">Regulamin</a>
-										{' '}i{' '}
+										&nbsp;i&nbsp;
 										<a href="/polityka-prywatnosci" class="underline hover:text-neutral-700 font-medium">Politykę prywatności</a>
 									</p>
 								</div>

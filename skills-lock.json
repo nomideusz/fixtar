@@ -1,6 +1,16 @@
 {
   "version": 1,
   "skills": {
+    "better-auth-best-practices": {
+      "source": "better-auth/skills",
+      "sourceType": "github",
+      "computedHash": "ae9bd37665a525bdb056ff6f27afc0f9c7c75809e3e23ed85c0d398dd10f6a96"
+    },
+    "create-auth-skill": {
+      "source": "better-auth/skills",
+      "sourceType": "github",
+      "computedHash": "6e6575d1b1d8602bbcecc8d7152ff7622c472fcc71fbc73a35fb9b855b8a161e"
+    },
     "ecommerce-platform-specialist": {
       "source": "qodex-ai/ai-agent-skills",
       "sourceType": "github",

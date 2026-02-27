@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { goto } from '$app/navigation';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
 	import Card from '$lib/components/ui/Card.svelte';
@@ -82,18 +81,21 @@
 				return async ({ result, update }) => {
 					loading = false;
 					
-					if (result.type === 'success') {
+					if (result.type === 'redirect') {
 						notifications.success('Witaj z powrotem!');
-						// The server will handle the redirect
+						// Full page nav so the browser sends the session cookie with the next request
+						window.location.assign(result.location);
+					} else if (result.type === 'success') {
+						notifications.success('Witaj z powrotem!');
+						window.location.assign('/account');
 					} else if (result.type === 'failure') {
 						const message = result.data?.message || 'Błąd logowania. Sprawdź dane i spróbuj ponownie.';
 						errors.general = typeof message === 'string' ? message : 'Błąd logowania. Sprawdź dane i spróbuj ponownie.';
+						await update();
 					} else if (result.type === 'error') {
 						errors.general = 'Wystąpił nieoczekiwany błąd. Spróbuj ponownie.';
+						await update();
 					}
-					
-					// Update the form
-					await update();
 				};
 			}} class="space-y-4">
 				{#if errors.general}

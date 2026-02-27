@@ -4,7 +4,7 @@
 	import Button from '$lib/components/ui/Button.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
 	import Card from '$lib/components/ui/Card.svelte';
-	import { userStore, notifications } from '$lib/stores';
+	import { notifications } from '$lib/stores';
 	import FixTarLogo from '$lib/img/logo-FixTar.webp';
 	
 	const { form } = $props<{ form?: any }>();
@@ -131,17 +131,17 @@
 					
 					return async ({ result, update }) => {
 						loading = false;
-						if (result.type === 'success') {
-							notifications.success('Witaj w FixTar! Twoje konto zostało utworzone.');
-							goto('/auth/login');
-						} else if (result.type === 'failure') {
-							const message = typeof result.data?.message === 'string' 
-								? result.data.message 
-								: 'Rejestracja nie powiodła się. Spróbuj ponownie.';
-							errors.general = message;
-							notifications.error('Błąd rejestracji. Sprawdź dane i spróbuj ponownie.');
-						}
+					if (result.type === 'redirect' || result.type === 'success') {
+						notifications.success('Witaj w FixTar! Twoje konto zostało utworzone.');
+						goto(result.type === 'redirect' ? result.location : '/auth/login');
+					} else if (result.type === 'failure') {
+						const message = typeof result.data?.message === 'string' 
+							? result.data.message 
+							: 'Rejestracja nie powiodła się. Spróbuj ponownie.';
+						errors.general = message;
+						notifications.error('Błąd rejestracji. Sprawdź dane i spróbuj ponownie.');
 						await update();
+					}
 					};
 				}}
 				class="space-y-4"

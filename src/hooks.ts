@@ -26,13 +26,6 @@ export const clearBrowserState = (): void => {
 		localStorage.removeItem('user_data');
 		sessionStorage.removeItem('user_data');
 
-		// Clear any PocketBase related data
-		localStorage.removeItem('pocketbase_auth');
-		sessionStorage.removeItem('pocketbase_auth');
-
-		// Clear any cookie detection markers
-		document.cookie = 'pb-auth_exists=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-
 		console.log('Browser state cleared successfully');
 	} catch (error) {
 		console.error('Error clearing browser state:', error);
@@ -40,18 +33,16 @@ export const clearBrowserState = (): void => {
 };
 
 /**
- * Checks if the user appears to be logged in based on client-side indicators
+ * Checks if the user appears to be logged in based on client-side indicators.
+ * Better Auth sets a `better-auth.session_token` cookie.
  */
 export const hasSessionClient = (): boolean => {
 	if (typeof document === 'undefined') return false;
 
 	try {
-		// Check for user data in localStorage
-		const userData = localStorage.getItem('user_data');
-		if (userData && userData !== 'null') return true;
-
-		// Check for session cookie existence marker
-		return document.cookie.split(';').some((c) => c.trim().startsWith('pb-auth_exists='));
+		return document.cookie.split(';').some((c) =>
+			c.trim().startsWith('better-auth.session_token=')
+		);
 	} catch (e) {
 		return false;
 	}

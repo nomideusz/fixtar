@@ -5,13 +5,13 @@ export const mockCategories: Category[] = [
 	{
 		id: 'chainsaws',
 		name: 'Pilarki łańcuchowe',
-		image: '/img/hero-chainsaw.png',
+		image: '/img/pila1.png',
 		count: 18
 	},
 	{
 		id: 'drills',
 		name: 'Wiertarki i wkrętarki',
-		image: 'https://images.unsplash.com/photo-1572981779307-38b8cabb2407?q=80&w=500&h=400&fit=crop',
+		image: '/img/wkretarka1.webp',
 		count: 32
 	},
 	{
@@ -60,7 +60,7 @@ export const mockProducts: Product[] = [
 		id: 'best-1',
 		name: 'Stihl MS 261 C-M Pilarka łańcuchowa',
 		price: 3299.0,
-		image: '/img/hero-chainsaw.png',
+		image: '/img/pila1.png',
 		category: 'chainsaws',
 		description:
 			'Profesjonalna pilarka łańcuchowa Stihl z technologią M-Tronic. Idealna do prac leśnych i profesjonalnej wycinki drewna. Silnik 2-MIX o mocy 3,0 kW.'
@@ -69,7 +69,7 @@ export const mockProducts: Product[] = [
 		id: 'best-2',
 		name: 'Makita DHP486Z Wiertarko-wkrętarka 18V',
 		price: 899.0,
-		image: 'https://images.unsplash.com/photo-1572981779307-38b8cabb2407?q=80&w=500&h=400&fit=crop',
+		image: '/img/wkretarka1.webp',
 		category: 'drills',
 		description:
 			'Bezszczotkowa wiertarko-wkrętarka udarowa 18V LXT. Moment obrotowy 130 Nm, 2 biegi, oświetlenie LED.'
@@ -87,7 +87,7 @@ export const mockProducts: Product[] = [
 		id: 'best-4',
 		name: 'Husqvarna 135 Mark II Pilarka',
 		price: 1699.0,
-		image: 'https://images.unsplash.com/photo-1504148455328-c376907d081c?q=80&w=500&h=400&fit=crop',
+		image: '/img/pila1.webp',
 		category: 'chainsaws',
 		description:
 			'Lekka i wydajna pilarka łańcuchowa do użytku domowego. Silnik X-Torq, automatyczny oiler, waga zaledwie 4,7 kg.'
@@ -191,7 +191,7 @@ export const heroProducts = [
 		title: 'Stihl MS 261 C-M',
 		subtitle:
 			'Profesjonalna pilarka łańcuchowa z technologią M-Tronic. Niezawodna moc dla wymagających zadań leśnych i budowlanych.',
-		image: '/img/hero-chainsaw.png',
+		image: '/img/pila1.png',
 		badge: 'BESTSELLER',
 		badgeColor: 'green',
 		price: 3299.0,
@@ -202,7 +202,7 @@ export const heroProducts = [
 		id: 2,
 		title: 'Makita DHP486Z 18V',
 		subtitle: 'Bezszczotkowa wiertarko-wkrętarka udarowa. Moment obrotowy 130 Nm, niezawodna w każdych warunkach.',
-		image: 'https://images.unsplash.com/photo-1572981779307-38b8cabb2407?q=80&w=1171&auto=format&fit=crop',
+		image: '/img/wkretarka1.webp',
 		badge: 'NOWOŚĆ',
 		badgeColor: 'blue',
 		price: 899.0,

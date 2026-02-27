@@ -3,7 +3,6 @@
 	import Button from '$lib/components/ui/Button.svelte';
 	import Card from '$lib/components/ui/Card.svelte';
 	import ProductCard from '$lib/components/ui/ProductCard.svelte';
-	import { pb } from '$lib/pocketbase';
 	import type { Product } from '$lib/stores/products.svelte';
 
 	interface Props {
@@ -289,7 +288,7 @@
 							<!-- Enhanced Image Thumbnails -->
 							{#if allImages.length > 1}
 								<div class="flex space-x-3 overflow-x-auto pb-2">
-									{#each allImages as image, index}
+									{#each allImages as image, index (image)}
 										<button
 											onclick={() => selectedImageIndex = index}
 											class="shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all duration-200 {
@@ -371,7 +370,7 @@
 					<Card glass={true} class="p-4">
 						<h3 class="text-sm font-semibold text-neutral-900 mb-3">Kategorie</h3>
 						<div class="flex flex-wrap gap-2">
-							{#each product.expand.categories as category}
+							{#each product.expand.categories as category (category.id)}
 								<a 
 									href="/products?category={category.slug}"
 									class="inline-flex items-center bg-brand-50 hover:bg-brand-100 text-brand-700 text-sm font-medium px-3 py-1.5 rounded-lg transition-colors"
@@ -393,7 +392,8 @@
 						<div class="text-neutral-700 leading-relaxed">
 							{#if product.description}
 								<div class="prose prose-sm max-w-none">
-									{@html product.description.replace(/\n/g, '<br>')}
+									<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+								{@html product.description.replace(/\n/g, '<br>')}
 								</div>
 							{:else}
 								<p>{product.shortDescription}</p>
@@ -516,7 +516,7 @@
 						</p>
 					</div>
 					<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-						{#each relatedProducts as relatedProduct}
+						{#each relatedProducts as relatedProduct (relatedProduct.id)}
 							<ProductCard product={relatedProduct} />
 						{/each}
 					</div>

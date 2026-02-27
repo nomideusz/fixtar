@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { navigating } from '$app/stores';
+	import { SvelteSet, SvelteURLSearchParams } from 'svelte/reactivity';
 	import ProductCard from '$lib/components/ui/ProductCard.svelte';
 	import Card from '$lib/components/ui/Card.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
@@ -25,7 +26,6 @@
 			searchQuery: string;
 			selectedCategory: string;
 			sortBy: string;
-			itemsPerPage: number;
 			error?: string;
 		};
 	}
@@ -47,7 +47,7 @@
 	// UI State
 	let viewMode = $state<'grid' | 'list'>('grid');
 	let showMobileFilters = $state(false);
-	let expandedCategories = $state(new Set<string>());
+	let expandedCategories = new SvelteSet<string>();
 	let priceRange = $state({ min: '0', max: '1000' });
 	let showInStock = $state(false);
 	
@@ -73,7 +73,7 @@
 			if (mainCategory) {
 				if (!expandedCategories.has(mainCategory.slug)) {
 					expandedCategories.add(mainCategory.slug);
-					expandedCategories = new Set(expandedCategories);
+					expandedCategories = new SvelteSet(expandedCategories);
 				}
 			} else {
 				// Check if selected category is a subcategory, then expand its parent
@@ -83,7 +83,7 @@
 					if (parentCategory) {
 						if (!expandedCategories.has(parentCategory.slug)) {
 							expandedCategories.add(parentCategory.slug);
-							expandedCategories = new Set(expandedCategories);
+							expandedCategories = new SvelteSet(expandedCategories);
 						}
 					}
 				}
@@ -93,7 +93,7 @@
 	
 	// Update URL when filters change
 	function updateURL() {
-		const params = new URLSearchParams();
+		const params = new SvelteURLSearchParams();
 		if (searchQuery) params.set('search', searchQuery);
 		if (selectedCategory) params.set('category', selectedCategory);
 		if (sortBy !== 'name') params.set('sort', sortBy);
@@ -117,7 +117,7 @@
 		const mainCategory = data.categories.find(cat => cat.slug === categorySlug);
 		if (mainCategory) {
 			expandedCategories.add(categorySlug);
-			expandedCategories = new Set(expandedCategories);
+			expandedCategories = new SvelteSet(expandedCategories);
 		}
 		
 		updateURL();
@@ -129,7 +129,7 @@
 	}
 	
 	function handlePageChange(page: number) {
-		const params = new URLSearchParams();
+		const params = new SvelteURLSearchParams();
 		if (searchQuery) params.set('search', searchQuery);
 		if (selectedCategory) params.set('category', selectedCategory);
 		if (sortBy !== 'name') params.set('sort', sortBy);
@@ -145,7 +145,7 @@
 		sortBy = 'name';
 		showInStock = false;
 		priceRange = { min: '0', max: '1000' };
-		expandedCategories = new Set();
+		expandedCategories = new SvelteSet();
 		goto('/products');
 	}
 	
@@ -160,7 +160,7 @@
 		} else {
 			expandedCategories.add(categorySlug);
 		}
-		expandedCategories = new Set(expandedCategories);
+		expandedCategories = new SvelteSet(expandedCategories);
 	}
 </script>
 
@@ -740,7 +740,7 @@
 									{#each Array.from({ length: Math.min(5, data.totalPages) }, (_, i) => {
 										const start = Math.max(1, data.currentPage - 2);
 										return start + i;
-									}) as pageNum}
+								}) as pageNum (pageNum)}
 										{#if pageNum <= data.totalPages}
 											<Button
 												onclick={() => handlePageChange(pageNum)}

@@ -25,6 +25,8 @@
 - Avoid adding raw hex values when equivalent token exists.
 - Prefer shared UI primitives (`Button`, `Card`, etc.) over ad-hoc variants.
 - Keep UX changes minimal and consistent with current layout/components.
+- Typography: Chakra Petch for headings (`font-heading`), Barlow for body (`font-sans`). Max heading weight is 700.
+- Use `font-heading` class on headings/prices/badges; body text inherits Barlow via `font-sans`.
 
 ## Internationalization Rules
 - For new UI labels, always add keys in `src/lib/i18n/translations.ts` (EN + PL).

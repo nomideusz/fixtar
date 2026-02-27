@@ -14,7 +14,7 @@
 <section class="py-24 relative bg-linear-to-b from-neutral-50 to-white">
 	<div class="max-w-screen-2xl mx-auto px-6 sm:px-8 lg:px-12">
 		<div class="text-center mb-20">
-			<h2 class="text-6xl lg:text-7xl xl:text-8xl font-black text-neutral-900 mb-6">Wybrane Produkty</h2>
+			<h2 class="text-5xl lg:text-6xl font-bold font-heading text-neutral-900 mb-6 tracking-tight">Wybrane Produkty</h2>
 			<p class="text-xl lg:text-2xl text-neutral-600 max-w-3xl mx-auto">
 				Starannie wyselekcjonowane produkty, które pokochają nasi klienci
 			</p>

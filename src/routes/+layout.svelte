@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '../app.css';
 	import { onMount } from 'svelte';
+	import { browser } from '$app/environment';
 	import type { Snippet } from 'svelte';
 	import { userStore, productsStore, languageStore } from '$lib/stores';
 	import Navbar from '$lib/components/layout/Navbar.svelte';
@@ -21,8 +22,11 @@
 		closeDrawer: () => void;
 	} | null>(null);
 
+	// Always use 'en' on the server to match SSR output; on the client use persisted value.
+	// This prevents hydration mismatches caused by localStorage differing from SSR.
 	const layoutT = (key: TranslationKey) => {
-		return translations[languageStore.current]?.[key] || translations.en[key] || key;
+		const lang = browser ? languageStore.current : 'en';
+		return translations[lang]?.[key] || translations.en[key] || key;
 	};
 
 	$effect(() => {

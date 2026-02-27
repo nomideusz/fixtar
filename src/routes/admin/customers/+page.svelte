@@ -4,7 +4,6 @@
 	import Card from '$lib/components/ui/Card.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import { onMount } from 'svelte';
-	import { pb } from '$lib/pocketbase';
 	import LoadingSpinner from '$lib/components/ui/LoadingSpinner.svelte';
 	import { formatDate } from '$lib/utils/date';
 
@@ -35,11 +34,8 @@
 			loading = true;
 			error = null;
 
-			// Get auth headers
+			// Auth is handled via cookies automatically
 			const headers: Record<string, string> = {};
-			if (pb && pb.authStore && pb.authStore.token) {
-				headers['Authorization'] = `Bearer ${pb.authStore.token}`;
-			}
 
 			const params = new URLSearchParams({
 				page: currentPage.toString(),

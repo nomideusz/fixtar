@@ -1,12 +1,8 @@
 import { sequence } from '@sveltejs/kit/hooks';
 import type { Handle } from '@sveltejs/kit';
-import {
-	SESSION_COOKIE_NAME,
-	validateSession,
-	deleteSessionCookie,
-	logoutUser
-} from '$lib/server/auth';
-import { createPocketBaseClient, isDemoMode } from '$lib/server/pocketbase';
+import { building } from '$app/environment';
+import { auth } from '$lib/server/auth';
+import { svelteKitHandler } from 'better-auth/svelte-kit';
 
 // Security headers to improve site security
 const securityHeaders = {
@@ -17,61 +13,23 @@ const securityHeaders = {
 	'Permissions-Policy': 'camera=(), microphone=(), geolocation=()'
 };
 
-// Handle authentication
+// Handle authentication via Better Auth
 const handleAuth: Handle = async ({ event, resolve }) => {
-	// Set defaults on event.locals
-	event.locals.isAuthenticated = false;
-	event.locals.user = null;
-	event.locals.token = null;
+	return svelteKitHandler({ event, resolve, auth, building });
+};
 
-	// In demo mode, skip PocketBase auth entirely
-	if (isDemoMode()) {
-		event.locals.pb = null as any;
-		return resolve(event);
-	}
+// Populate locals from Better Auth session
+const populateLocals: Handle = async ({ event, resolve }) => {
+	const session = await auth.api.getSession({ headers: event.request.headers });
 
-	// Create a fresh PocketBase client for this request
-	const pb = createPocketBaseClient();
-
-	// Get the session token from cookies
-	const token = event.cookies.get(SESSION_COOKIE_NAME);
-
-	// Log authentication attempt for debugging
-	console.log(
-		`[hooks] Auth check for: ${event.url.pathname}, token ${token ? 'present' : 'absent'}`
-	);
-
-	// Set PB on event.locals
-	event.locals.pb = pb;
-
-	if (token) {
-		try {
-			// Validate the session token
-			console.log('[hooks] Found token, validating session...');
-			const { user, isValid } = await validateSession(token);
-
-			console.log('[hooks] Validation result:', { isValid, userExists: !!user });
-
-			if (isValid && user) {
-				// Valid session - set locals for routes to access
-				console.log('[hooks] Session is valid, setting user in locals:', user.username);
-				event.locals.user = user;
-				event.locals.token = token;
-				event.locals.isAuthenticated = true;
-			} else {
-				// Invalid session - clean up cookies
-				console.log('[hooks] Session is invalid, cleaning up cookies');
-				logoutUser(pb);
-				deleteSessionCookie(event);
-			}
-		} catch (error) {
-			// Error during validation - clean up
-			console.error('Session validation error:', error);
-			logoutUser(pb);
-			deleteSessionCookie(event);
-		}
+	if (session) {
+		event.locals.user = session.user;
+		event.locals.session = session.session;
+		event.locals.isAuthenticated = true;
 	} else {
-		console.log('[hooks] No auth token found in cookies');
+		event.locals.user = null;
+		event.locals.session = null;
+		event.locals.isAuthenticated = false;
 	}
 
 	return resolve(event);
@@ -81,7 +39,6 @@ const handleAuth: Handle = async ({ event, resolve }) => {
 const handleSecurity: Handle = async ({ event, resolve }) => {
 	const response = await resolve(event);
 
-	// Add security headers to all responses
 	Object.entries(securityHeaders).forEach(([header, value]) => {
 		response.headers.set(header, value);
 	});
@@ -94,10 +51,8 @@ const filterBots: Handle = async ({ event, resolve }) => {
 	const userAgent = event.request.headers.get('user-agent') || '';
 	const isBot = /bot|crawl|spider|slurp|mediapartners-google/i.test(userAgent);
 
-	// Set bot info on locals for use in routes if needed
 	event.locals.isBot = isBot;
 
-	// If this is a bot accessing a protected route, return 404 early
 	if (
 		isBot &&
 		(event.url.pathname.startsWith('/account') || event.url.pathname.startsWith('/api'))
@@ -109,4 +64,4 @@ const filterBots: Handle = async ({ event, resolve }) => {
 };
 
 // Sequence the handlers
-export const handle: Handle = sequence(filterBots, handleAuth, handleSecurity);
+export const handle: Handle = sequence(filterBots, handleAuth, populateLocals, handleSecurity);

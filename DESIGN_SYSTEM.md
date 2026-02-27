@@ -151,18 +151,53 @@ Use these in component CSS via `var(--ft-*)`. They reference the palette tokens 
 
 ## 3. Typography
 
-| Token | Value | Utility |
-|-------|-------|---------|
-| `--font-sans` | `'Inter', system-ui, …` | `font-sans` (body) |
-| `--font-heading` | `'Inter', system-ui, …` | `font-heading` (h1–h6) |
-| `--font-mono` | `'JetBrains Mono', …` | `font-mono` |
+### Font stacks
 
-> **Note:** To use Inter and JetBrains Mono, add Google Fonts links in `app.html` when ready:
-> ```html
-> <link rel="preconnect" href="https://fonts.googleapis.com" />
-> <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono&display=swap" rel="stylesheet" />
-> ```
-> Until then, the system-ui fallback chain Provides good typography.
+| Token | Value | Utility | Role |
+|-------|-------|---------|------|
+| `--font-sans` | `'Barlow', system-ui, …` | `font-sans` | Body text, UI elements, forms |
+| `--font-heading` | `'Chakra Petch', system-ui, …` | `font-heading` | Headings (h1–h6), display text, prices |
+| `--font-mono` | `'JetBrains Mono', …` | `font-mono` | SKUs, code |
+
+> Fonts are loaded via Google Fonts in `app.html`. Barlow: 400/500/600. Chakra Petch: 400/500/600/700.
+
+### Type scale (Major Third — 1.25 ratio)
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--ft-text-xs` | `0.75rem` (12px) | Badges, fine print |
+| `--ft-text-sm` | `0.875rem` (14px) | Captions, metadata |
+| `--ft-text-base` | `1rem` (16px) | Body text |
+| `--ft-text-lg` | `1.125rem` (18px) | Lead paragraphs |
+| `--ft-text-xl` | `1.25rem` (20px) | Card titles |
+| `--ft-text-2xl` | `1.5rem` (24px) | Section intros |
+| `--ft-text-3xl` | `1.875rem` (30px) | Page titles |
+| `--ft-text-4xl` | `2.25rem` (36px) | Hero subtitles |
+| `--ft-text-5xl` | `3rem` (48px) | Section headlines |
+| `--ft-text-display` | `clamp(3rem, 7vw, 5.5rem)` | Hero display |
+
+### Weight assignments
+
+| Element | Font | Weight | Tracking |
+|---------|------|--------|----------|
+| Hero display titles | Chakra Petch | 700 (Bold) | `--ft-tracking-tighter` |
+| Section h2 headings | Chakra Petch | 700 (Bold) | `--ft-tracking-tight` |
+| Card titles, h3 | Chakra Petch | 600 (Semibold) | normal |
+| Prices | Chakra Petch | 700 (Bold) | normal + `tabular-nums` |
+| Body paragraphs | Barlow | 400 (Regular) | normal |
+| Nav links, labels | Barlow | 500 (Medium) | normal |
+| Buttons, CTAs | Barlow | 600 (Semibold) | `--ft-tracking-wide` |
+| Uppercase badges | Barlow | 600 (Semibold) | `--ft-tracking-wider` |
+
+### Line-height tokens
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--ft-leading-none` | `0.95` | Display text |
+| `--ft-leading-tight` | `1.15` | Headings |
+| `--ft-leading-snug` | `1.3` | Subheadings |
+| `--ft-leading-normal` | `1.5` | UI text |
+| `--ft-leading-relaxed` | `1.7` | Body / descriptions |
 
 ---
 

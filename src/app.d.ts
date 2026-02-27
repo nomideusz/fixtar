@@ -2,11 +2,10 @@
 declare global {
 	namespace App {
 		interface Locals {
-			user: import('$lib/server/pb-auth').PocketBaseUser | null;
-			token: string | null;
+			user: import('better-auth').User | null;
+			session: import('better-auth').Session | null;
 			isAuthenticated: boolean;
-			pb: import('pocketbase').default;
-			isBot?: boolean; // Added for bot detection in hooks
+			isBot?: boolean;
 		}
 	}
 }

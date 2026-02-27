@@ -31,7 +31,7 @@
 				subject: '',
 				message: ''
 			};
-		} catch (error) {
+		} catch {
 			notifications.error('Nie udało się wysłać wiadomości. Spróbuj ponownie.');
 		} finally {
 			sending = false;

@@ -1,0 +1,165 @@
+# Migrate Authentication from PocketBase to Better Auth + Turso
+
+Remove PocketBase entirely and replace with **Better Auth** (framework-agnostic auth library with first-class SvelteKit support) backed by **Turso** (edge-hosted libSQL/SQLite). Products will come from BaseLinker API — no product DB needed.
+
+## User Review Required
+
+> [!IMPORTANT]
+> **PocketBase removal is total.** All data routes (products, categories, orders) currently fetch from PocketBase. These pages will stop functioning until you wire them to BaseLinker or another data source. The scope of this plan is **auth only** — product/order pages will be left with data-fetching stubs/TODO markers.
+
+> [!IMPORTANT]
+> **OAuth providers require credentials.** You'll need to create OAuth apps on [Google Cloud Console](https://console.cloud.google.com/apis/credentials) and [GitHub Developer Settings](https://github.com/settings/developers) and add `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` to your [.env](file:///c:/cmder/apps/fixtar/.env).
+
+> [!WARNING]
+> **Email verification & password reset require an email sender.** Better Auth supports pluggable email (Resend, SendGrid, Nodemailer, etc.). This plan uses a stub/console-log sender initially. You'll need to configure a real provider before production.
+
+> [!CAUTION]
+> **Existing PocketBase users cannot be migrated automatically.** If you have real users registered in PocketBase, their accounts will not carry over. The Turso DB starts fresh.
+
+---
+
+## Proposed Changes
+
+### 1. Dependencies & Config
+
+#### [MODIFY] [package.json](file:///c:/cmder/apps/fixtar/package.json)
+- Add `better-auth`, `@libsql/client`, `drizzle-orm`, `drizzle-kit`
+- Remove `pocketbase` from devDependencies
+- Remove `@node-rs/argon2`, `@oslojs/encoding` (Better Auth handles hashing internally)
+- Add db migration script: `"db:migrate": "drizzle-kit push"`
+
+#### [MODIFY] [svelte.config.js](file:///c:/cmder/apps/fixtar/svelte.config.js)
+- Switch from `@sveltejs/adapter-netlify` to `@sveltejs/adapter-auto`
+
+#### [MODIFY] [.env.example](file:///c:/cmder/apps/fixtar/.env.example)
+- Remove: `POCKETBASE_URL`, `PB_ADMIN_EMAIL`, `PB_ADMIN_PASSWORD`, `PUBLIC_POCKETBASE_URL`
+- Add: `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`, `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`
+- Add: `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`
+
+---
+
+### 2. Auth Core (New Files)
+
+#### [NEW] [db.ts](file:///c:/cmder/apps/fixtar/src/lib/server/db.ts)
+- Turso/libSQL client setup using `@libsql/client`
+- Export `db` client for use by Better Auth and Drizzle
+
+#### [MODIFY] [auth.ts](file:///c:/cmder/apps/fixtar/src/lib/server/auth.ts)
+- **Complete rewrite** — replace all PocketBase auth logic with Better Auth server config
+- Configure `betterAuth()` with: Turso database, email/password plugin, social providers (Google, GitHub), email verification, password reset
+- Export [auth](file:///c:/cmder/apps/fixtar/src/lib/server/pocketbase.ts#26-50) handler and [Session](file:///c:/cmder/apps/fixtar/src/lib/server/auth.ts#473-546)/[User](file:///c:/cmder/apps/fixtar/src/lib/server/auth.ts#28-37) types
+
+#### [NEW] [auth-client.ts](file:///c:/cmder/apps/fixtar/src/lib/auth-client.ts)
+- Client-side Better Auth instance using `createAuthClient` from `better-auth/svelte`
+- Exports `signIn`, `signUp`, `signOut`, `useSession` reactive helpers
+
+#### [NEW] [schema.ts](file:///c:/cmder/apps/fixtar/src/lib/server/schema.ts)
+- Drizzle schema definitions for Better Auth tables (user, session, account, verification)
+- These tables are auto-managed by Better Auth but defining schema helps with type safety
+
+#### [NEW] [drizzle.config.ts](file:///c:/cmder/apps/fixtar/drizzle.config.ts)
+- Drizzle Kit configuration pointing to Turso DB for migrations
+
+---
+
+### 3. Hooks & Type Definitions
+
+#### [MODIFY] [hooks.server.ts](file:///c:/cmder/apps/fixtar/src/hooks.server.ts)
+- Replace PocketBase auth handler with Better Auth `svelteKitHandler`
+- Populate `event.locals.user` and `event.locals.session` from Better Auth
+- Keep security headers and bot filter hooks
+
+#### [MODIFY] [hooks.ts](file:///c:/cmder/apps/fixtar/src/hooks.ts)
+- Remove PocketBase local storage / cookie references
+- Update [clearBrowserState()](file:///c:/cmder/apps/fixtar/src/hooks.ts#19-41) and [hasSessionClient()](file:///c:/cmder/apps/fixtar/src/hooks.ts#42-59) to work with Better Auth cookies
+
+#### [MODIFY] [app.d.ts](file:///c:/cmder/apps/fixtar/src/app.d.ts)
+- Replace `Locals.user` type from PocketBase to Better Auth user type
+- Replace `Locals.pb` with `Locals.session`
+- Remove `Locals.token`
+
+---
+
+### 4. Auth Routes (Rewrite)
+
+#### [MODIFY] [login/+page.server.ts](file:///c:/cmder/apps/fixtar/src/routes/auth/login/+page.server.ts)
+- Replace PocketBase login with Better Auth `auth.api.signInEmail`
+
+#### [MODIFY] [login/+page.svelte](file:///c:/cmder/apps/fixtar/src/routes/auth/login/+page.svelte)
+- Update to use Better Auth client-side `signIn.email()` or keep server action approach
+
+#### [MODIFY] [register/+page.server.ts](file:///c:/cmder/apps/fixtar/src/routes/auth/register/+page.server.ts)
+- Replace PocketBase registration with Better Auth `auth.api.signUpEmail`
+
+#### [MODIFY] [register/+page.svelte](file:///c:/cmder/apps/fixtar/src/routes/auth/register/+page.svelte)
+- Update to use Better Auth client-side `signUp.email()` or keep server action approach
+
+#### [MODIFY] [logout/+server.ts](file:///c:/cmder/apps/fixtar/src/routes/auth/logout/+server.ts)
+- Simplify to Better Auth `signOut()`
+
+#### [MODIFY] [logout/+page.svelte](file:///c:/cmder/apps/fixtar/src/routes/auth/logout/+page.svelte)
+- Update to use Better Auth client-side `signOut()`
+
+---
+
+### 5. Account & Admin Pages
+
+#### [MODIFY] [account/+layout.server.ts](file:///c:/cmder/apps/fixtar/src/routes/account/+layout.server.ts)
+- Read user from `event.locals.user` (already does, just update type)
+
+#### [MODIFY] [account/settings/+page.server.ts](file:///c:/cmder/apps/fixtar/src/routes/account/settings/+page.server.ts)
+- Replace PocketBase user update/password change/email verification with Better Auth APIs
+
+#### [MODIFY] Multiple account pages
+- [account/+page.server.ts](file:///c:/cmder/apps/fixtar/src/routes/account/+page.server.ts), `account/orders/+page.server.ts`, `account/favorites/+page.server.ts`, `account/addresses/*` — remove PocketBase client usage, update to use `locals.user`/`locals.session`
+
+#### [MODIFY] [admin/+page.server.ts](file:///c:/cmder/apps/fixtar/src/routes/admin/+page.server.ts)
+- Remove PocketBase stats fetching, replace with placeholder/BaseLinker stats
+
+---
+
+### 6. PocketBase Removal
+
+#### [DELETE] [pocketbase.ts](file:///c:/cmder/apps/fixtar/src/lib/pocketbase.ts)
+- Client-side PocketBase instance no longer needed
+
+#### [DELETE] [server/pocketbase.ts](file:///c:/cmder/apps/fixtar/src/lib/server/pocketbase.ts)
+- Server-side PocketBase client no longer needed
+
+#### [MODIFY] [service-worker.js](file:///c:/cmder/apps/fixtar/static/service-worker.js)
+- Remove PocketBase API interception comment/logic
+
+#### [MODIFY] Various product/category/order server files
+- Remove PocketBase data fetching, add TODO comments for BaseLinker integration
+- Files: `products/+page.server.ts`, `products/[slug]/+page.server.ts`, `search/+page.server.ts`, `categories/+page.server.ts`, `orders/[id]/+page.server.ts`, `checkout/+page.server.ts`
+- These will fallback to demo mode / mock data for now
+
+---
+
+## Verification Plan
+
+### Automated Checks
+
+1. **Build check** — Ensures no TypeScript errors or broken imports:
+   ```
+   pnpm build
+   ```
+
+2. **Grep for leftover PocketBase references** — Should return zero results:
+   ```
+   grep -ri "pocketbase" src/ --include="*.ts" --include="*.svelte" --include="*.js"
+   grep -ri "POCKETBASE_URL" src/ --include="*.ts" --include="*.svelte"
+   ```
+
+3. **Existing unit tests** — Run to check nothing regresses:
+   ```
+   pnpm test:unit -- --run
+   ```
+
+### Manual Verification
+- After setting up Turso credentials and OAuth apps, run `pnpm dev` and test:
+  1. Visit `/auth/register` → create account with email/password
+  2. Visit `/auth/login` → log in with created account
+  3. Visit `/account` → verify session exists and user data appears
+  4. Click logout → verify session cleared
+  5. Test OAuth flow (Google/GitHub) if credentials configured
