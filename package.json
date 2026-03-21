@@ -18,7 +18,8 @@
 		"db:setup": "tsx scripts/db/setup-database.ts",
 		"db:products": "tsx scripts/db/create-products.ts",
 		"db:categories": "tsx scripts/db/create-categories.ts",
-		"db:migrate": "drizzle-kit push"
+		"db:migrate": "drizzle-kit push",
+		"db:search": "tsx scripts/db/setup-search.ts"
 	},
 	"type": "module",
 	"peerDependencies": {
@@ -72,7 +73,8 @@
 		"better-auth": "^1.4.19",
 		"drizzle-orm": "^0.45.1",
 		"runed": "^0.37.1",
-		"zod": "^4.3.6"
+		"zod": "^4.3.6",
+		"@nomideusz/svelte-search": "file:packages/svelte-search"
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [
