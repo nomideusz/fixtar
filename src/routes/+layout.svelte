@@ -45,19 +45,43 @@
 	});
 </script>
 
+<a href="#main-content" class="skip-link">Przejdź do treści</a>
 <Notifications />
 <TrustBar />
 <Navbar onCartOpen={() => (cartOpen = true)} categories={data?.categories ?? []} />
 <CartDrawer bind:this={cartDrawerRef} toggleCart={() => (cartOpen = false)} t={layoutT} />
 
-<main>
+<main id="main-content" tabindex="-1">
 	{@render children?.()}
 </main>
 
 <Footer />
 
 <style>
+	.skip-link {
+		position: absolute;
+		top: -100%;
+		left: 16px;
+		z-index: 100;
+		padding: 10px 20px;
+		background: var(--ft-accent);
+		color: white;
+		font-size: 0.82rem;
+		font-weight: 600;
+		border-radius: var(--radius-sm);
+		text-decoration: none;
+		box-shadow: 0 2px 8px rgba(55, 138, 146, 0.3);
+		transition: top 0.15s ease;
+	}
+
+	.skip-link:focus {
+		top: 8px;
+		outline: 2px solid var(--ft-accent);
+		outline-offset: 2px;
+	}
+
 	main {
-		min-height: 100vh;
+		min-height: 100dvh;
+		outline: none;
 	}
 </style>

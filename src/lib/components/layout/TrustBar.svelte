@@ -108,8 +108,8 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		min-width: 32px;
-		min-height: 32px;
+		min-width: 44px;
+		min-height: 44px;
 		border: none;
 		background: none;
 		color: var(--ft-text-muted);
@@ -121,6 +121,11 @@
 	.trust-dismiss:hover {
 		color: var(--ft-text);
 		background: rgba(0, 0, 0, 0.04);
+	}
+
+	.trust-dismiss:focus-visible {
+		outline: 2px solid var(--ft-accent);
+		outline-offset: 2px;
 	}
 
 	/* Mobile: hide dots, stack items */

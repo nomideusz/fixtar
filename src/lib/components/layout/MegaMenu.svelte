@@ -95,7 +95,6 @@
 </script>
 
 {#if visible}
-	<!-- Backdrop covers full page — clicking it closes the menu -->
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<div class="mega-backdrop" onclick={onClose} onkeydown={(e) => e.key === 'Escape' && onClose()} role="presentation"></div>
 
@@ -104,10 +103,12 @@
 		role="menu"
 		tabindex="-1"
 		aria-label="Kategorie produktów"
+		onkeydown={(e) => e.key === 'Escape' && onClose()}
 	>
 		<div class="mega-inner">
 			<div class="mega-header">
-				<h3 class="mega-title">Kategorie</h3>
+				<!-- Using span instead of h3 to avoid heading hierarchy skip (no h1/h2 above in nav) -->
+				<span class="mega-title">Kategorie</span>
 				<a href="/products" class="mega-all" onclick={onClose}>
 					Wszystkie produkty
 					<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -125,7 +126,7 @@
 						role="menuitem"
 						onclick={onClose}
 					>
-						<div class="mega-icon">
+						<div class="mega-icon" aria-hidden="true">
 							<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 								{#each icon.paths as d}
 									<path {d} />
@@ -136,6 +137,9 @@
 							<span class="mega-item-name">{cat.name}</span>
 							<span class="mega-item-count">{cat.count} {cat.count === 1 ? 'produkt' : cat.count < 5 ? 'produkty' : 'produktów'}</span>
 						</div>
+						<svg class="mega-item-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<polyline points="9 18 15 12 9 6" />
+						</svg>
 					</a>
 				{/each}
 			</div>
@@ -147,6 +151,9 @@
 						<line x1="7" y1="7" x2="7.01" y2="7" />
 					</svg>
 					Sprawdź aktualne promocje
+					<svg class="mega-promo-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<path d="M5 12h14" /><path d="M12 5l7 7-7 7" />
+					</svg>
 				</a>
 			</div>
 		</div>
@@ -158,7 +165,8 @@
 		position: fixed;
 		inset: 0;
 		z-index: 39;
-		background: rgba(0, 0, 0, 0.04);
+		background: rgba(0, 0, 0, 0.06);
+		cursor: pointer;
 	}
 
 	.mega-menu {
@@ -169,12 +177,13 @@
 		z-index: 40;
 		background: var(--ft-surface);
 		border-bottom: 1px solid var(--ft-line);
-		box-shadow: var(--ft-shadow-lg, 0 10px 40px rgba(0, 0, 0, 0.08));
+		box-shadow:
+			0 8px 32px rgba(21, 29, 43, 0.06),
+			0 2px 8px rgba(21, 29, 43, 0.04);
 		animation: megaSlideIn 0.2s ease-out;
 	}
 
-	/* Invisible bridge extending upward so the hover zone is continuous
-	   from the trigger link down into the mega-menu content */
+	/* Invisible bridge: continuous hover zone from trigger to menu */
 	.mega-menu::before {
 		content: '';
 		position: absolute;
@@ -187,11 +196,17 @@
 	@keyframes megaSlideIn {
 		from {
 			opacity: 0;
-			transform: translateY(-4px);
+			transform: translateY(-6px);
 		}
 		to {
 			opacity: 1;
 			transform: translateY(0);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.mega-menu {
+			animation: none;
 		}
 	}
 
@@ -206,13 +221,13 @@
 		align-items: center;
 		justify-content: space-between;
 		margin-bottom: 20px;
-		padding-bottom: 12px;
+		padding-bottom: 14px;
 		border-bottom: 1px solid var(--ft-line);
 	}
 
 	.mega-title {
 		font-family: var(--font-display);
-		font-size: 0.75rem;
+		font-size: 0.72rem;
 		font-weight: 600;
 		text-transform: uppercase;
 		letter-spacing: 0.1em;
@@ -223,22 +238,34 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 6px;
-		font-size: 0.75rem;
+		font-size: 0.72rem;
 		font-weight: 600;
 		color: var(--ft-accent);
 		text-decoration: none;
-		transition: gap 0.2s ease;
+		cursor: pointer;
+		border-radius: var(--radius-sm);
+		padding: 6px 10px;
+		margin: -6px -10px;
+		transition:
+			gap 0.2s ease,
+			background var(--dur-fast) ease;
 	}
 
 	.mega-all:hover {
 		gap: 10px;
+		background: rgba(55, 138, 146, 0.06);
+	}
+
+	.mega-all:focus-visible {
+		outline: 2px solid var(--ft-accent);
+		outline-offset: 2px;
 	}
 
 	/* ── Grid ── */
 	.mega-grid {
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
-		gap: 6px;
+		gap: 4px;
 	}
 
 	@media (min-width: 768px) {
@@ -250,6 +277,7 @@
 	@media (min-width: 1280px) {
 		.mega-grid {
 			grid-template-columns: repeat(4, 1fr);
+			gap: 4px 8px;
 		}
 	}
 
@@ -262,17 +290,24 @@
 		border-radius: var(--radius-sm);
 		text-decoration: none;
 		color: inherit;
+		cursor: pointer;
 		transition: all 0.15s ease;
 	}
 
-	.mega-item:hover {
+	.mega-item:hover,
+	.mega-item:focus-visible {
 		background: var(--ft-frost);
+	}
+
+	.mega-item:focus-visible {
+		outline: 2px solid var(--ft-accent);
+		outline-offset: -2px;
 	}
 
 	.mega-icon {
 		flex-shrink: 0;
-		width: 36px;
-		height: 36px;
+		width: 38px;
+		height: 38px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -285,18 +320,24 @@
 	.mega-item:hover .mega-icon {
 		background: var(--ft-accent);
 		color: white;
+		box-shadow: 0 2px 8px rgba(55, 138, 146, 0.2);
 	}
 
 	.mega-item-info {
 		display: flex;
 		flex-direction: column;
-		gap: 1px;
+		gap: 2px;
+		flex: 1;
+		min-width: 0;
 	}
 
 	.mega-item-name {
 		font-size: 0.82rem;
 		font-weight: 600;
 		color: var(--ft-dark);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 	.mega-item-count {
@@ -304,10 +345,23 @@
 		color: var(--ft-text-muted);
 	}
 
+	.mega-item-arrow {
+		flex-shrink: 0;
+		color: var(--ft-text-faint);
+		opacity: 0;
+		transform: translateX(-4px);
+		transition: all 0.15s ease;
+	}
+
+	.mega-item:hover .mega-item-arrow {
+		opacity: 0.6;
+		transform: translateX(0);
+	}
+
 	/* ── Footer ── */
 	.mega-footer {
 		margin-top: 16px;
-		padding-top: 12px;
+		padding-top: 14px;
 		border-top: 1px solid var(--ft-line);
 	}
 
@@ -319,10 +373,33 @@
 		font-weight: 600;
 		color: var(--ft-warm);
 		text-decoration: none;
-		transition: color 0.15s ease;
+		cursor: pointer;
+		border-radius: var(--radius-sm);
+		padding: 6px 10px;
+		margin: -6px -10px;
+		transition:
+			color 0.15s ease,
+			background var(--dur-fast) ease;
 	}
 
 	.mega-promo:hover {
 		color: var(--ft-accent);
+		background: rgba(55, 138, 146, 0.04);
+	}
+
+	.mega-promo:focus-visible {
+		outline: 2px solid var(--ft-accent);
+		outline-offset: 2px;
+	}
+
+	.mega-promo-arrow {
+		opacity: 0;
+		transform: translateX(-4px);
+		transition: all 0.15s ease;
+	}
+
+	.mega-promo:hover .mega-promo-arrow {
+		opacity: 0.7;
+		transform: translateX(0);
 	}
 </style>

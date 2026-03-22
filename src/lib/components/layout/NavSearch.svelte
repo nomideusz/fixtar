@@ -353,6 +353,11 @@
 		background: var(--ft-frost);
 	}
 
+	.search-clear:focus-visible {
+		outline: 2px solid var(--ft-accent);
+		outline-offset: 2px;
+	}
+
 	.search-close {
 		position: absolute;
 		right: 10px;
@@ -408,6 +413,12 @@
 		}
 	}
 
+	@media (prefers-reduced-motion: reduce) {
+		.search-dropdown {
+			animation: none;
+		}
+	}
+
 	/* ── Sections ── */
 	.dropdown-section {
 		padding: 8px;
@@ -450,6 +461,11 @@
 		color: var(--ft-accent);
 	}
 
+	.dropdown-clear-btn:focus-visible {
+		outline: 2px solid var(--ft-accent);
+		outline-offset: 2px;
+	}
+
 	/* ── Recent search item ── */
 	.dropdown-recent {
 		display: flex;
@@ -467,8 +483,14 @@
 		transition: background 0.1s ease;
 	}
 
-	.dropdown-recent:hover {
+	.dropdown-recent:hover,
+	.dropdown-recent:focus-visible {
 		background: var(--ft-frost);
+	}
+
+	.dropdown-recent:focus-visible {
+		outline: 2px solid var(--ft-accent);
+		outline-offset: -2px;
 	}
 
 	.dropdown-recent svg {
@@ -492,8 +514,14 @@
 	}
 
 	.dropdown-result:hover,
-	.dropdown-result.is-selected {
+	.dropdown-result.is-selected,
+	.dropdown-result:focus-visible {
 		background: var(--ft-frost);
+	}
+
+	.dropdown-result:focus-visible {
+		outline: 2px solid var(--ft-accent);
+		outline-offset: -2px;
 	}
 
 	.result-thumb {
@@ -605,5 +633,10 @@
 
 	.dropdown-all:hover {
 		background: rgba(55, 138, 146, 0.08);
+	}
+
+	.dropdown-all:focus-visible {
+		outline: 2px solid var(--ft-accent);
+		outline-offset: -2px;
 	}
 </style>
