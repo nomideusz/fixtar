@@ -8,21 +8,21 @@
 		success: 'bg-success text-[--ft-text] border-success/40',
 		error: 'bg-danger !text-white border-danger/40',
 		info: 'bg-info text-[--ft-text] border-info/40',
-		warning: 'bg-warning text-neutral-900 border-warning/60'
+		warning: 'bg-warning text-[--ft-text-strong] border-warning/60'
 	};
 
 	const messageClasses: Record<string, string> = {
 		success: 'text-[--ft-text]/90',
 		error: 'text-[--ft-text]/90',
 		info: 'text-[--ft-text]/90',
-		warning: 'text-neutral-900/90'
+		warning: 'text-[--ft-text-strong]/90'
 	};
 
 	const closeButtonClasses: Record<string, string> = {
 		success: 'bg-[--ft-frost] hover:bg-[--ft-line] text-[--ft-text]/70 hover:text-[--ft-text]',
 		error: 'bg-[--ft-frost] hover:bg-[--ft-line] text-[--ft-text]/70 hover:text-[--ft-text]',
 		info: 'bg-[--ft-frost] hover:bg-[--ft-line] text-[--ft-text]/70 hover:text-[--ft-text]',
-		warning: 'bg-black/5 hover:bg-black/10 text-[--ft-text] hover:text-neutral-900'
+		warning: 'bg-black/5 hover:bg-black/10 text-[--ft-text] hover:text-[--ft-text-strong]'
 	};
 
 	const iconPaths: Record<string, string> = {

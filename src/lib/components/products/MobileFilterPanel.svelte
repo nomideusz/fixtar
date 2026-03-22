@@ -90,7 +90,7 @@
 	></div>
 
 	<!-- Panel -->
-	<div bind:this={panelElement} role="dialog" aria-label="Filtry" class="fixed inset-y-0 right-0 w-full max-w-sm bg-[--ft-surface] shadow-2xl">
+	<div bind:this={panelElement} role="dialog" aria-label="Filtry" class="fixed inset-y-0 right-0 w-full max-w-sm bg-[--ft-surface] shadow-2xl" style="overscroll-behavior: contain;">
 		<div class="flex h-full flex-col">
 			<!-- Header -->
 			<div

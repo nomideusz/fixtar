@@ -62,7 +62,7 @@
 
 			{#if image && !centered}
 				<div class="mt-12 lg:mt-0">
-					<img src={image} alt={title} class="h-auto w-full rounded-lg object-cover" />
+					<img src={image} alt={title} class="h-auto w-full rounded-lg object-cover" width="640" height="400" loading="lazy" />
 				</div>
 			{/if}
 		</div>

@@ -338,6 +338,7 @@
 		background: var(--ft-bg);
 		z-index: 40;
 		overflow-y: auto;
+		overscroll-behavior: contain;
 	}
 
 	@media (min-width: 768px) {

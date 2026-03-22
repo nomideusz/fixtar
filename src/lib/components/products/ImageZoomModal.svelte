@@ -91,10 +91,46 @@
 	const canGoPrev = $derived(selectedIndex > 0);
 	const canGoNext = $derived(selectedIndex < images.length - 1);
 	const hasMultiple = $derived(images.length > 1);
+
+	// Focus trap
+	let modalElement = $state<HTMLDivElement | null>(null);
+
+	$effect(() => {
+		if (!modalElement) return;
+
+		const focusableSelectors = 'button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+		const firstFocusable = modalElement.querySelector<HTMLElement>(focusableSelectors);
+		firstFocusable?.focus();
+
+		function handleFocusTrap(e: KeyboardEvent) {
+			if (e.key !== 'Tab') return;
+
+			const focusableElements = modalElement!.querySelectorAll<HTMLElement>(focusableSelectors);
+			const first = focusableElements[0];
+			const last = focusableElements[focusableElements.length - 1];
+
+			if (e.shiftKey) {
+				if (document.activeElement === first) {
+					e.preventDefault();
+					last?.focus();
+				}
+			} else {
+				if (document.activeElement === last) {
+					e.preventDefault();
+					first?.focus();
+				}
+			}
+		}
+
+		document.addEventListener('keydown', handleFocusTrap);
+		return () => document.removeEventListener('keydown', handleFocusTrap);
+	});
 </script>
 
 <div
-	class="fixed inset-0 z-50 flex items-center justify-center bg-[--ft-surface-overlay]"
+	bind:this={modalElement}
+	class="fixed inset-0 z-50 flex items-center justify-center"
+	style="background-color: rgba(0, 0, 0, 0.4); overscroll-behavior: contain;"
 	onkeydown={handleKeyDown}
 	role="dialog"
 	aria-modal="true"

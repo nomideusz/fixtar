@@ -2,8 +2,8 @@
 	import Button from '$lib/components/ui/Button.svelte';
 
 	const {
-		message = 'Welcome to our store!',
-		actionText = 'Shop Now',
+		message = 'Witamy w naszym sklepie!',
+		actionText = 'Kup teraz',
 		actionUrl = '/products',
 		dismissible = true
 	}: {
@@ -34,7 +34,7 @@
 				</div>
 
 				{#if dismissible}
-					<button onclick={dismiss} class="announcement-dismiss" aria-label="Dismiss announcement">
+					<button onclick={dismiss} class="announcement-dismiss" aria-label="Zamknij ogłoszenie">
 						<svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
 							<path
 								fill-rule="evenodd"
@@ -53,26 +53,31 @@
 	.announcement-banner {
 		position: relative;
 		z-index: 40;
-		background-color: var(--ft-primary);
-		color: var(--ft-text-inverse);
+		background-color: var(--ft-accent);
+		color: #ffffff;
 	}
 
 	:global(.announcement-action) {
-		color: var(--ft-text-inverse);
-		border: 1px solid color-mix(in srgb, var(--ft-text-inverse) 60%, transparent);
+		color: #ffffff;
+		border: 1px solid rgba(255, 255, 255, 0.6);
 	}
 
 	:global(.announcement-action:hover) {
 		background-color: var(--ft-surface);
-		color: var(--ft-primary);
+		color: var(--ft-accent);
 	}
 
 	.announcement-dismiss {
-		color: color-mix(in srgb, var(--ft-text-inverse) 90%, transparent);
+		min-width: 44px;
+		min-height: 44px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: rgba(255, 255, 255, 0.9);
 		transition: color 0.2s;
 	}
 
 	.announcement-dismiss:hover {
-		color: var(--ft-text-inverse);
+		color: #ffffff;
 	}
 </style>

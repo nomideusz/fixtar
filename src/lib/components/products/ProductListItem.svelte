@@ -49,6 +49,8 @@
 						alt={product.name}
 						class="h-full w-full object-cover"
 						loading="lazy"
+						width="96"
+						height="96"
 						onerror={handleImageError}
 					/>
 					<div class="hidden h-full w-full items-center justify-center">
@@ -81,7 +83,7 @@
 				<div class="flex items-center gap-3">
 					<span class="text-brand-600 text-xl font-bold">{product.price.toFixed(2)} zł</span>
 					{#if product.compareAtPrice && product.compareAtPrice > product.price}
-						<span class="text-sm text-[--ft-text-secondary] line-through"
+						<span class="text-sm text-[--ft-text-muted] line-through"
 							>{product.compareAtPrice.toFixed(2)} zł</span
 						>
 					{/if}

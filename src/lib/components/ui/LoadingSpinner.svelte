@@ -38,50 +38,44 @@
 	const spinnerColorStyles = $derived.by(() => {
 		switch (color) {
 			case 'white':
-				return '--spinner-color: var(--ft-text-inverse);';
+				return '--spinner-color: #ffffff;';
 			case 'muted':
 				return '--spinner-color: var(--ft-text-muted);';
 			default:
-				return '--spinner-color: var(--ft-primary);';
+				return '--spinner-color: var(--ft-accent);';
 		}
 	});
 </script>
 
 {#if visible}
 	{#if variant === 'overlay'}
-		<!-- Full screen overlay version -->
 		<div
 			class="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm"
 			style="background-color: color-mix(in srgb, var(--ft-surface) 82%, transparent);"
 		>
 			<div class="flex flex-col items-center">
 				<div class="relative">
-					<!-- Outer ring -->
 					<div
 						class="h-12 w-12 rounded-full border-4"
-						style="border-color: var(--ft-border);"
+						style="border-color: var(--ft-line);"
 					></div>
-					<!-- Spinning ring -->
 					<div
 						class="absolute inset-0 h-12 w-12 animate-spin rounded-full border-4 border-t-transparent"
 						style="{spinnerColorStyles} border-color: var(--spinner-color); border-top-color: transparent;"
 					></div>
 				</div>
 				{#if message}
-					<p class="mt-4 font-medium" style="color: var(--ft-text-secondary);">{message}</p>
+					<p class="mt-4 font-medium" style="color: var(--ft-text-muted);">{message}</p>
 				{/if}
 			</div>
 		</div>
 	{:else}
-		<!-- Inline version -->
 		<div class="flex items-center justify-center">
 			<div class="relative">
-				<!-- Outer ring -->
 				<div
 					class="{sizeClasses} rounded-full border-2"
-					style="border-color: var(--ft-border);"
+					style="border-color: var(--ft-line);"
 				></div>
-				<!-- Spinning ring -->
 				<div
 					class="absolute inset-0 {sizeClasses} animate-spin rounded-full border-2 border-t-transparent"
 					style="{spinnerColorStyles} border-color: var(--spinner-color); border-top-color: transparent;"

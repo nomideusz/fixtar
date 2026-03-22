@@ -51,7 +51,7 @@
 		letter-spacing: 0.08em;
 		border-radius: var(--radius-sm, 6px);
 		cursor: pointer;
-		transition: all 0.15s ease;
+		transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 		text-decoration: none;
 		border: 1px solid transparent;
 	}

@@ -51,15 +51,15 @@
 	onclick={handleBackdropClick}
 	onkeydown={handleEscape}
 >
-	<div class="rounded-lg bg-[var(--ft-surface-elevated)] border border-[--ft-line]">
+	<div class="rounded-lg bg-[var(--ft-surface)] border border-[--ft-line]">
 		{#if title}
 			<div class="flex items-center justify-between border-b border-[--ft-line] p-4">
 				<h3 class="text-lg font-semibold text-[--ft-text]">{title}</h3>
 				<button
 					type="button"
 					onclick={onClose}
-					class="focus:ring-brand-500 rounded-lg p-1 text-[--ft-text-muted] hover:text-[--ft-text-muted] focus:ring-2 focus:outline-none"
-					aria-label="Close modal"
+					class="focus:ring-brand-500 rounded-lg p-1 text-[--ft-text-muted] hover:text-[--ft-text] focus:ring-2 focus:outline-none"
+					aria-label="Zamknij"
 				>
 					<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path
@@ -81,6 +81,10 @@
 
 <style>
 	dialog::backdrop {
-		background-color: var(--ft-surface-overlay);
+		background-color: rgba(0, 0, 0, 0.4);
+	}
+
+	dialog {
+		overscroll-behavior: contain;
 	}
 </style>

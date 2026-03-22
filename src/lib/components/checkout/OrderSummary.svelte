@@ -48,7 +48,7 @@
 				<div class="flex items-center space-x-4 rounded-xl bg-[--ft-frost] p-4">
 					{#if item.image}
 						<div class="h-16 w-16 shrink-0 overflow-hidden rounded-lg">
-							<img src={item.image} alt={item.name} class="h-full w-full object-cover" />
+							<img src={item.image} alt={item.name} class="h-full w-full object-cover" width="64" height="64" loading="lazy" />
 						</div>
 					{:else}
 						{@render imagePlaceholder()}

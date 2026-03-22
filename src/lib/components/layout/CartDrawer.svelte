@@ -289,6 +289,7 @@
 		background-color: var(--ft-surface);
 		box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.22);
 		border-left: 1px solid var(--ft-line);
+		overscroll-behavior: contain;
 	}
 
 	@media (min-width: 1280px) {
@@ -308,7 +309,7 @@
 	}
 
 	.cart-drawer__title {
-		font-family: var(--font-heading);
+		font-family: var(--font-display);
 		font-size: 1.125rem;
 		font-weight: 600;
 		line-height: 1.3;

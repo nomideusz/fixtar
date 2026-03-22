@@ -36,7 +36,7 @@
 	{/if}
 
 	<input
-		{id}
+		id={inputId}
 		bind:value
 		class="input-field input--{size} {error ? 'input--error' : ''} {className}"
 		aria-invalid={!!error}

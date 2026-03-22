@@ -43,7 +43,7 @@ Warm slate + teal accent. DM Sans headlines + Inter body.
 ### Component Library
 
 **UI primitives:** `src/lib/components/ui/`  
-Button, Card, Input, Hero, Modal, Breadcrumbs, LoadingSpinner, ProductCard, CustomBadge, Notifications, OptimizedImage, AnnouncementBanner
+Button, Card, Input, Hero, Modal, Breadcrumbs, LoadingSpinner, ProductCard, CustomBadge, Notifications, AnnouncementBanner
 
 **Domain components:**  
 - `products/` — CategoryFilter, MobileFilterPanel, ProductListItem, ActiveFilters, ProductGallery, ImageZoomModal  
@@ -51,7 +51,7 @@ Button, Card, Input, Hero, Modal, Breadcrumbs, LoadingSpinner, ProductCard, Cust
 - `account/` — StatCard, QuickActionCard, RecentOrdersTable, SettingsNav, NotificationToggle  
 - `admin/` — SortableHeader, StatusBadge, StatusOverviewCards, ProductRow  
 - `home/` — HeroSection, CategoriesSection, FeaturedProducts, FeaturesSection  
-- `layout/` — Navbar, Footer, CartDrawer, AccountSidebar, AccountMobileNav
+- `layout/` — Navbar, Footer, CartDrawer, AccountMobileNav
 
 ### Shared Utilities
 - `src/lib/utils/inventory.ts` — `getStockInfo(product)` → `{ inStock, label, colorClass }`
@@ -110,6 +110,27 @@ Button, Card, Input, Hero, Modal, Breadcrumbs, LoadingSpinner, ProductCard, Cust
 - **MobileFilterPanel** — Added focus trap with Tab cycling and Escape key, `role="dialog"`, `aria-label`.
 - All passing `svelte-check` with **0 errors, 0 warnings** ✅
 
+### Session 7 — Web Interface Guidelines Audit & Simplification
+- **Deleted dead components:** `AccountSidebar.svelte` (never imported, superseded by account layout inline sidebar), `OptimizedImage.svelte` (320-line unused over-engineered image component with `runed` dependency)
+- **Input.svelte:** Fixed `id` vs `inputId` bug — label `for` attribute now matches input `id`
+- **Button.svelte:** Replaced `transition: all` with explicit property list
+- **Modal.svelte:** Fixed `--ft-surface-elevated`→`--ft-surface`, `--ft-surface-overlay`→literal rgba, "Close modal"→"Zamknij", hover contrast increased, added `overscroll-behavior: contain`
+- **LoadingSpinner.svelte:** Replaced `--ft-primary`→`--ft-accent`, `--ft-border`→`--ft-line`, `--ft-text-secondary`→`--ft-text-muted`, `--ft-text-inverse`→literal `#ffffff`
+- **Notifications.svelte:** Replaced 3× `text-neutral-900` → `text-[--ft-text-strong]`
+- **CustomBadge.svelte:** Simplified from 90 lines (18 class combos, 6 variants×3 modes) to 45 lines — only `size`, `rounded`, `customClass` remain (all callers used `customClass` anyway)
+- **AnnouncementBanner.svelte:** English→Polish defaults, `--ft-primary`/`--ft-text-inverse`→canonical tokens, added 44px touch target on dismiss button
+- **Breadcrumbs.svelte:** Full rewrite — eliminated 19 `:global()` rules, fixed double separators (CSS `::before` + SVG), "Home"→"Strona główna", `--ft-border`/`--ft-primary`/`--ft-surface-tertiary`→canonical tokens. Now fully scoped CSS.
+- **Hero.svelte:** Added `width`/`height`/`loading="lazy"` to image
+- **CartDrawer.svelte:** Added `overscroll-behavior: contain`, `--font-heading`→`--font-display`
+- **Navbar.svelte:** Added `overscroll-behavior: contain` on mobile overlay
+- **MobileFilterPanel.svelte:** Added `overscroll-behavior: contain`
+- **ImageZoomModal.svelte:** Added focus trap, `--ft-surface-overlay`→literal rgba, `overscroll-behavior: contain`
+- **ProductGallery.svelte:** Added `width`/`height`/`loading="lazy"` to main + thumbnail images
+- **ProductListItem.svelte:** Added `width`/`height` to image, `--ft-text-secondary`→`--ft-text-muted`
+- **OrderSummary.svelte:** Added `width`/`height`/`loading="lazy"` to item images
+- **ActiveFilters.svelte:** `--ft-text-secondary`→`--ft-text-muted`
+- All passing `svelte-check` with **0 errors, 0 warnings** ✅
+
 ---
 
 ## TODO — Remaining Work
@@ -125,15 +146,15 @@ Button, Card, Input, Hero, Modal, Breadcrumbs, LoadingSpinner, ProductCard, Cust
 #### i18n / Language
 - [x] **AccountMobileNav** — ~~English labels~~ Polish, ~~emoji icons~~ SVG, focus trap added
 - [x] **Error page** — ~~English text~~ fully translated to Polish, emoji→SVG
-- [ ] **AccountSidebar (account layout)** — already has Polish labels + SVG icons ✅
-- [ ] **Breadcrumbs** — check all pages use Polish labels
+- [x] **AccountSidebar** — deleted dead component (layout has its own inline sidebar)
 
 #### Accessibility
 - [x] **MobileFilterPanel** — ~~no focus trap~~ focus trap added with Tab cycling + Escape
 - [x] **CartDrawer** — ~~no focus trap~~ focus trap added
-- [ ] **ImageZoomModal** — verify focus trap and Escape key handling
+- [x] **ImageZoomModal** — ~~verify focus trap~~ focus trap + overscroll-behavior added
 - [x] **Deals page** — ~~newsletter form input has no `<label>`~~ `<label>` added
 - [ ] **About page** — uses emoji icons for features (🚀 etc.) — should be SVG
+- [x] **Breadcrumbs** — ~~"Home" in English~~ "Strona główna", rewritten with scoped CSS
 
 ### MEDIUM Priority
 
@@ -158,8 +179,8 @@ Button, Card, Input, Hero, Modal, Breadcrumbs, LoadingSpinner, ProductCard, Cust
 
 #### Polish & Enhancement
 - [ ] **Footer** — audit spacing, token usage, responsive layout
-- [ ] **Notifications component** — `hover:text-neutral-900` in warning dismiss button
-- [ ] **CustomBadge** — warning variants use `text-neutral-900`
+- [x] **Notifications component** — ~~`hover:text-neutral-900`~~ → `text-[--ft-text-strong]`
+- [x] **CustomBadge** — ~~warning variants~~ simplified from 90→45 lines, removed unused variant system
 - [ ] **Product detail** — `bg-neutral-600` for out-of-stock badge (works but not tokenized)
 - [ ] **Skeleton loading** — add skeleton screens for product grid loading (currently uses spinner overlay)
 - [ ] **Scroll restoration** — verify products page preserves scroll position on back navigation

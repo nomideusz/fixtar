@@ -29,6 +29,8 @@
 							src={images[selectedImageIndex]}
 							alt={productName}
 							class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+							width="600"
+							height="600"
 						/>
 					</button>
 				</div>
@@ -86,6 +88,9 @@
 								src={image}
 								alt={`${productName} widok ${index + 1}`}
 								class="h-full w-full object-cover"
+								width="80"
+								height="80"
+								loading="lazy"
 							/>
 						</button>
 					{/each}

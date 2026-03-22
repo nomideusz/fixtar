@@ -107,7 +107,7 @@
 				variant="ghost"
 				size="sm"
 				onclick={onClearAll}
-				class="text-[--ft-text-secondary] hover:text-[--ft-text]"
+				class="text-[--ft-text-muted] hover:text-[--ft-text]"
 			>
 				Wyczyść wszystkie
 			</Button>
