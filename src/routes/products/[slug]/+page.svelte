@@ -133,7 +133,7 @@
 <div class="min-h-screen">
 	<div class="ft-container ft-section">
 		<!-- Breadcrumb -->
-		<nav class="mb-8">
+		<nav class="mb-12">
 			<Breadcrumbs items={breadcrumbItems} />
 		</nav>
 
@@ -191,9 +191,9 @@
 							{#each product.expand.categories as category (category.id)}
 								<a
 									href="/products?category={category.slug}"
-									class="inline-flex items-center rounded-full border border-[--ft-line] bg-[--ft-frost] px-3 py-1.5 text-sm font-medium text-[--ft-text] transition-colors hover:border-[--ft-accent] hover:text-[--ft-accent]"
+									class="category-pill"
 								>
-									<svg class="mr-1.5 h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+									<svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
 										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
 									</svg>
 									{category.name}
@@ -416,5 +416,38 @@
 
 	.product-description :global(p:last-child) {
 		margin-bottom: 0;
+	}
+
+	.category-pill {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.375rem;
+		padding: 0.5rem 1rem;
+		min-height: 40px;
+		border-radius: var(--radius-sm);
+		border: 1px solid var(--ft-line);
+		background: var(--ft-surface);
+		color: var(--ft-text);
+		font-size: 0.8rem;
+		font-weight: 600;
+		letter-spacing: 0.02em;
+		text-decoration: none;
+		transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+	}
+
+	.category-pill:hover {
+		border-color: var(--ft-accent);
+		color: var(--ft-accent);
+		background: var(--ft-frost);
+		box-shadow: var(--ft-shadow-sm);
+	}
+
+	.category-pill svg {
+		color: var(--ft-text-muted);
+		transition: color 0.15s ease;
+	}
+
+	.category-pill:hover svg {
+		color: var(--ft-accent);
 	}
 </style>
