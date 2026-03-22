@@ -83,7 +83,7 @@
 	<meta name="description" content="Manage customer orders" />
 </svelte:head>
 
-<div class="mx-auto max-w-screen-2xl px-6 py-8 sm:px-8 lg:px-12">
+<div class="ft-container py-8">
 	<!-- Header -->
 	<div class="mb-8">
 		<h1 class="text-3xl font-bold text-neutral-900">Manage Orders</h1>

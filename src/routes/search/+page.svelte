@@ -138,7 +138,7 @@
 
 <!-- Main Content -->
 <div>
-	<div class="mx-auto max-w-screen-2xl px-6 py-16 sm:px-8 lg:px-12">
+	<div class="ft-container px-6 py-16 sm:px-8 lg:px-12">
 		{#if data.error}
 			<div class="mx-auto max-w-2xl">
 				<div class="bg-danger-50 border-danger-light rounded-xl border p-6 text-center">

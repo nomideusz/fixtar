@@ -101,7 +101,7 @@
 
 <!-- Main Content -->
 <div>
-	<div class="mx-auto max-w-screen-2xl px-6 py-16 sm:px-8 lg:px-12">
+	<div class="ft-container px-6 py-16 sm:px-8 lg:px-12">
 		<!-- Company Story Section -->
 		<section class="mb-20">
 			<div class="grid grid-cols-1 items-center gap-16 lg:grid-cols-2">

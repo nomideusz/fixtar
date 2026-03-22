@@ -36,7 +36,7 @@
 	<meta name="description" content="Check out our latest deals and special offers" />
 </svelte:head>
 
-<div class="mx-auto max-w-screen-2xl px-6 py-8 sm:px-8 lg:px-12">
+<div class="ft-container py-8">
 	<div class="mb-8">
 		<h1 class="text-3xl font-bold text-[--ft-text]">Special Deals</h1>
 		<p class="mt-2 text-neutral-400">Don't miss out on these amazing offers!</p>

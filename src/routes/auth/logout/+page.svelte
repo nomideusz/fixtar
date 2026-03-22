@@ -78,7 +78,7 @@
 />
 
 <div class="min-h-screen">
-	<div class="mx-auto max-w-screen-2xl px-6 py-16 sm:px-8 lg:px-12">
+	<div class="ft-container px-6 py-16 sm:px-8 lg:px-12">
 		<div class="mx-auto max-w-md">
 			<!-- Enhanced Logo Section -->
 			<div class="mb-8 text-center">

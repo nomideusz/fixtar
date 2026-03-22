@@ -46,7 +46,7 @@
 <div class="min-h-screen bg-neutral-50">
 	<!-- Admin Header -->
 	<header class="border-b bg-white shadow-sm">
-		<div class="mx-auto max-w-screen-2xl px-6 sm:px-8 lg:px-12">
+		<div class="ft-container">
 			<div class="flex h-16 items-center justify-between">
 				<div class="flex items-center">
 					<h1 class="text-xl font-semibold text-neutral-900">FixTar Admin</h1>
@@ -63,7 +63,7 @@
 
 	<!-- Admin Navigation -->
 	<nav class="bg-white shadow-sm">
-		<div class="mx-auto max-w-screen-2xl px-6 sm:px-8 lg:px-12">
+		<div class="ft-container">
 			<div class="flex space-x-8">
 				{#each navItems as item (item)}
 					<a

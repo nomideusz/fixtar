@@ -65,7 +65,7 @@
 
 {#if user}
 	<div class="min-h-screen bg-white/5">
-		<div class="mx-auto max-w-screen-2xl px-6 py-8 sm:px-8 lg:px-12">
+		<div class="ft-container py-8">
 			<div class="flex flex-col gap-8 lg:flex-row">
 				<!-- Enhanced Desktop Sidebar -->
 				<div class="shrink-0 lg:w-80">

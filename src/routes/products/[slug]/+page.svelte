@@ -193,7 +193,7 @@
 
 <!-- Background -->
 <div class="min-h-screen">
-	<div class="mx-auto max-w-screen-2xl px-6 py-8 sm:px-8 lg:px-12">
+	<div class="ft-container py-8">
 		<!-- Enhanced Breadcrumb -->
 		<nav class="mb-8">
 			<ol class="flex items-center space-x-2 text-sm">

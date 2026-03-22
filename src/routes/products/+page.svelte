@@ -178,7 +178,7 @@
 
 <!-- Enhanced Search Section -->
 <section class="border-b border-[--ft-border]">
-	<div class="mx-auto max-w-screen-2xl px-6 py-8 sm:px-8 lg:px-12">
+	<div class="ft-container py-8">
 		<!-- Breadcrumbs with modern styling -->
 		<nav class="mb-6 flex" aria-label="Breadcrumb">
 			<ol class="inline-flex items-center space-x-1 md:space-x-2">
@@ -311,7 +311,7 @@
 
 <!-- Main Content with Modern Layout -->
 <div class="min-h-screen">
-	<div class="mx-auto max-w-screen-2xl px-6 py-8 sm:px-8 lg:px-12">
+	<div class="ft-container py-8">
 		<div class="lg:grid lg:grid-cols-4 lg:gap-8">
 			<!-- Enhanced Desktop Sidebar -->
 			<div class="hidden lg:col-span-1 lg:block">

@@ -27,7 +27,7 @@
 	<meta name="description" content="Review your shopping cart" />
 </svelte:head>
 
-<div class="mx-auto max-w-screen-2xl px-6 py-8 sm:px-8 lg:px-12">
+<div class="ft-container py-8">
 	<h1 class="mb-8 text-3xl font-bold text-[--ft-text]">Shopping Cart</h1>
 
 	{#if cart.items.length === 0}

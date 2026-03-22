@@ -60,7 +60,7 @@
 />
 
 <div class="min-h-screen">
-	<div class="mx-auto max-w-screen-2xl px-6 py-16 sm:px-8 lg:px-12">
+	<div class="ft-container px-6 py-16 sm:px-8 lg:px-12">
 		<!-- Enhanced Success Header -->
 		<div class="mb-12 text-center">
 			<div class="relative mb-8 inline-block">

@@ -77,7 +77,7 @@
 </svelte:head>
 
 <div class="min-h-screen">
-	<div class="mx-auto max-w-screen-2xl px-6 py-8 sm:px-8 lg:px-12">
+	<div class="ft-container py-8">
 		<!-- Header -->
 		<div class="mb-8">
 			<div class="flex items-center justify-between">

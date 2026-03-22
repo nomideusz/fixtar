@@ -7,7 +7,7 @@
 	<meta name="description" content="Twoja lista życzeń w FixTar" />
 </svelte:head>
 
-<div class="mx-auto max-w-screen-2xl px-6 py-8 sm:px-8 lg:px-12">
+<div class="ft-container py-8">
 	<h1 class="mb-8 text-3xl font-bold text-[--ft-text]">Lista Życzeń</h1>
 
 	<div class="py-16 text-center">

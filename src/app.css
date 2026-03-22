@@ -332,6 +332,15 @@ h4 {
    5. UTILITIES
    ========================================================================== */
 
+/* Page container — matches homepage sections */
+.ft-container {
+	max-width: var(--ft-container);
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: var(--ft-gutter);
+	padding-right: var(--ft-gutter);
+}
+
 @layer utilities {
 	.no-scrollbar::-webkit-scrollbar {
 		display: none;
