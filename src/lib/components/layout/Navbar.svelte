@@ -3,15 +3,28 @@
 	import { page } from '$app/stores';
 	import { cart, userStore } from '$lib/stores';
 	import FixTarLogo from '$lib/img/logo-FixTar.webp';
+	import MegaMenu from './MegaMenu.svelte';
+	import NavSearch from './NavSearch.svelte';
+
+	interface Category {
+		id: string;
+		name: string;
+		slug: string;
+		count: number;
+	}
 
 	interface Props {
 		onCartOpen?: () => void;
+		categories?: Category[];
 	}
 
-	let { onCartOpen }: Props = $props();
+	let { onCartOpen, categories = [] }: Props = $props();
 
 	let mobileMenuOpen = $state(false);
 	let scrolled = $state(false);
+	let megaMenuVisible = $state(false);
+	let searchOpen = $state(false);
+	let megaMenuTimer: ReturnType<typeof setTimeout>;
 
 	function closeMobileMenu() {
 		mobileMenuOpen = false;
@@ -38,6 +51,25 @@
 
 	const cartCount = $derived(cart.count);
 
+	function showMegaMenu() {
+		clearTimeout(megaMenuTimer);
+		megaMenuVisible = true;
+	}
+
+	function hideMegaMenu() {
+		clearTimeout(megaMenuTimer);
+		megaMenuTimer = setTimeout(() => {
+			megaMenuVisible = false;
+		}, 150);
+	}
+
+	function toggleSearch() {
+		searchOpen = !searchOpen;
+		if (searchOpen) {
+			megaMenuVisible = false;
+		}
+	}
+
 	async function handleLogout() {
 		userStore.logout();
 		try {
@@ -49,19 +81,47 @@
 
 {#snippet navLinks(mobile = false)}
 	{@const links = [
-		{ href: '/products', label: 'Produkty' },
-		{ href: '/deals', label: 'Promocje' },
-		{ href: '/about', label: 'O Nas' },
-		{ href: '/contact', label: 'Kontakt' }
+		{ href: '/products', label: 'Produkty', hasMega: true },
+		{ href: '/deals', label: 'Promocje', hasMega: false },
+		{ href: '/about', label: 'O Nas', hasMega: false },
+		{ href: '/contact', label: 'Kontakt', hasMega: false }
 	]}
 	{#each links as link (link.href)}
 		{@const isActive = $page.url.pathname.startsWith(link.href)}
-		<a
-			href={link.href}
-			class="{mobile ? 'mobile-link' : 'nav-link'} {isActive ? 'is-active' : ''}"
-			onclick={mobile ? closeMobileMenu : undefined}
-			aria-current={isActive ? 'page' : undefined}
-		>{link.label}</a>
+		{#if link.hasMega && !mobile}
+			<!-- svelte-ignore a11y_no_static_element_interactions -->
+			<div
+				class="nav-link-mega-wrap"
+				onmouseenter={showMegaMenu}
+				onmouseleave={hideMegaMenu}
+			>
+				<a
+					href={link.href}
+					class="nav-link {isActive ? 'is-active' : ''}"
+					aria-current={isActive ? 'page' : undefined}
+					aria-haspopup="true"
+					aria-expanded={megaMenuVisible}
+				>
+					{link.label}
+					<svg class="nav-link-chevron" class:is-open={megaMenuVisible} width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<polyline points="6 9 12 15 18 9" />
+					</svg>
+				</a>
+				<!-- Mega menu lives inside the hover wrapper so mouseleave covers both -->
+				<MegaMenu
+					{categories}
+					visible={megaMenuVisible}
+					onClose={() => (megaMenuVisible = false)}
+				/>
+			</div>
+		{:else}
+			<a
+				href={link.href}
+				class="{mobile ? 'mobile-link' : 'nav-link'} {isActive ? 'is-active' : ''}"
+				onclick={mobile ? closeMobileMenu : undefined}
+				aria-current={isActive ? 'page' : undefined}
+			>{link.label}</a>
+		{/if}
 	{/each}
 {/snippet}
 
@@ -77,13 +137,26 @@
 			{@render navLinks()}
 		</div>
 
+		<!-- Desktop inline search -->
+		{#if searchOpen}
+			<div class="nav-search-wrap">
+				<NavSearch onClose={() => (searchOpen = false)} />
+			</div>
+		{/if}
+
 		<!-- Actions -->
 		<div class="nav-actions">
-			<a href="/search" class="nav-icon" aria-label="Szukaj">
-				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-					<circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
-				</svg>
-			</a>
+			<button onclick={toggleSearch} class="nav-icon" class:is-search-active={searchOpen} aria-label="Szukaj">
+				{#if searchOpen}
+					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+					</svg>
+				{:else}
+					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+					</svg>
+				{/if}
+			</button>
 
 			<button onclick={() => onCartOpen?.()} class="nav-icon cart-icon" aria-label="Koszyk">
 				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -141,6 +214,7 @@
 			</div>
 		</div>
 	{/if}
+
 </nav>
 
 <style>
@@ -214,6 +288,38 @@
 
 	.nav-link.is-active {
 		color: var(--ft-accent);
+	}
+
+	/* ── Mega menu trigger ── */
+	.nav-link-mega-wrap {
+		position: static; /* mega-menu absolute positioning resolves against <nav> */
+	}
+
+	.nav-link-chevron {
+		margin-left: 2px;
+		transition: transform 0.2s ease;
+	}
+
+	.nav-link-chevron.is-open {
+		transform: rotate(180deg);
+	}
+
+	/* ── Inline search ── */
+	.nav-search-wrap {
+		display: none;
+		flex: 1;
+		max-width: 480px;
+	}
+
+	@media (min-width: 768px) {
+		.nav-search-wrap {
+			display: block;
+		}
+	}
+
+	.is-search-active {
+		color: var(--ft-accent) !important;
+		background: var(--ft-frost) !important;
 	}
 
 	.mobile-link.is-active {

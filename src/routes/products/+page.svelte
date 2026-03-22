@@ -7,11 +7,13 @@
 	import Input from '$lib/components/ui/Input.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import LoadingSpinner from '$lib/components/ui/LoadingSpinner.svelte';
+	import ProductCardSkeleton from '$lib/components/ui/ProductCardSkeleton.svelte';
 	import Breadcrumbs from '$lib/components/ui/Breadcrumbs.svelte';
 	import CategoryFilter from '$lib/components/products/CategoryFilter.svelte';
 	import MobileFilterPanel from '$lib/components/products/MobileFilterPanel.svelte';
 	import ProductListItem from '$lib/components/products/ProductListItem.svelte';
 	import ActiveFilters from '$lib/components/products/ActiveFilters.svelte';
+	import QuickViewModal from '$lib/components/products/QuickViewModal.svelte';
 	import type { Product, Category } from '$lib/stores/products.svelte';
 
 	interface CategoryWithCount extends Category {
@@ -51,6 +53,7 @@
 	// UI State
 	let viewMode = $state<'grid' | 'list'>('grid');
 	let showMobileFilters = $state(false);
+	let quickViewProduct = $state<Product | null>(null);
 	let expandedCategories = new SvelteSet<string>();
 	let priceRange = $state({ min: '0', max: '1000' });
 	let showInStock = $state(false);
@@ -391,22 +394,14 @@
 					onClearAll={clearFilters}
 				/>
 
-				<!-- Products with Loading Overlay -->
-				<div class="relative">
+				<!-- Products -->
+				<div>
 					{#if $navigating}
-						<div
-							class="absolute inset-0 z-10 flex items-center justify-center rounded-xl bg-black/30 backdrop-blur-sm"
-							role="status"
-							aria-live="polite"
-						>
-							<div class="flex flex-col items-center gap-3">
-								<LoadingSpinner visible={true} />
-								<p class="text-sm font-medium text-[--ft-text-muted]">Ładowanie produktów...</p>
-							</div>
+						<!-- Skeleton loading state -->
+						<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3" role="status" aria-label="Ładowanie produktów">
+							<ProductCardSkeleton count={6} />
 						</div>
-					{/if}
-
-					{#if data.error}
+					{:else if data.error}
 						<Card class="p-12 text-center">
 							<div class="mx-auto max-w-md">
 								<svg
@@ -432,7 +427,7 @@
 						{#if viewMode === 'grid'}
 							<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
 								{#each data.products as product (product)}
-									<ProductCard {product} />
+									<ProductCard {product} onQuickView={(p) => (quickViewProduct = p)} />
 								{/each}
 							</div>
 						{:else}
@@ -547,6 +542,11 @@
 		</div>
 	</div>
 </div>
+
+<!-- Quick View Modal -->
+{#if quickViewProduct}
+	<QuickViewModal product={quickViewProduct} onClose={() => (quickViewProduct = null)} />
+{/if}
 
 <style>
 	.view-mode-button {

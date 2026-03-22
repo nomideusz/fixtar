@@ -12,7 +12,11 @@
 
 	interface Props {
 		children?: Snippet;
-		data?: { user?: any; isAuthenticated?: boolean };
+		data?: {
+			user?: any;
+			isAuthenticated?: boolean;
+			categories?: Array<{ id: string; name: string; slug: string; count: number }>;
+		};
 	}
 
 	let { children, data }: Props = $props();
@@ -43,7 +47,7 @@
 
 <Notifications />
 <TrustBar />
-<Navbar onCartOpen={() => (cartOpen = true)} />
+<Navbar onCartOpen={() => (cartOpen = true)} categories={data?.categories ?? []} />
 <CartDrawer bind:this={cartDrawerRef} toggleCart={() => (cartOpen = false)} t={layoutT} />
 
 <main>

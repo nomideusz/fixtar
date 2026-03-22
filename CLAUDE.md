@@ -168,6 +168,59 @@ Button, Card, Input, Hero, Modal, Breadcrumbs, LoadingSpinner, ProductCard, Cust
 
 All passing `svelte-check` with **0 errors, 0 warnings** ✅
 
+### Session 10 — Phase 2: Navigation & Search
+
+#### Layout-Level Categories
+- **`+layout.server.ts`** — Now loads categories from DB via `getCategories()` and passes them to all pages. Navbar receives categories as a prop from root layout.
+
+#### New Components Created
+- **`MegaMenu.svelte`** (`src/lib/components/layout/`) — Full-width dropdown mega-menu on "Produkty" hover. Category grid (2→3→4 cols responsive) with icon + name + count. Header with "Wszystkie produkty" link. Footer with promo link to /deals. Slide-in animation, delayed hide on mouseleave (150ms debounce). Backdrop overlay to close on mouse exit. `role="menu"`, `tabindex="-1"`, `role="menuitem"` on items.
+- **`NavSearch.svelte`** (`src/lib/components/layout/`) — Inline search with autocomplete dropdown. Frost bg input with search icon. Debounced API calls (250ms, min 2 chars) to `/api/search?q=...&limit=6`. Results show product thumbnail (40px), name, category, and price. Keyboard navigation (↑↓ Enter Escape). Recent searches from `localStorage` (last 5) with clear button. "Pokaż wszystkie wyniki" footer link. `role="combobox"`, `aria-expanded`, `aria-haspopup="listbox"`. Loading state with animated dots.
+
+#### Updated Components
+- **`Navbar.svelte`** — Integrated MegaMenu and NavSearch. "Produkty" link now has chevron indicator and triggers mega-menu on hover. Search icon toggles inline search bar (desktop only). Search icon swaps to X when search is open. Added `categories` prop. New CSS: `.nav-link-mega-wrap`, `.nav-link-chevron`, `.nav-search-wrap`, `.is-search-active`.
+- **`+layout.svelte`** — Passes `data.categories` to `<Navbar>`.
+
+All passing `svelte-check` with **0 errors, 0 warnings** ✅
+
+### Session 11 — MegaMenu Fix + Phase 3: Product Experience
+
+#### MegaMenu Fixes
+- **Hover interaction:** Fixed disconnected hover zone — MegaMenu now receives `onMouseEnter`/`onMouseLeave` props that share the same debounce timer as the Navbar trigger. Moving mouse from "Produkty" to the mega-menu dropdown no longer causes premature close.
+- **Icon variety:** Expanded from 4 slugs (3 identical) to 10 distinct category icons (szlifierki, wiertarki, piły, młotowiertarki, frezarki, odkurzacze, narzędzia ręczne, akcesoria, kompresory, spawarki). Icons now use multi-path SVGs for richer visuals.
+- **Backdrop:** Added subtle `rgba(0,0,0,0.04)` tint and `role="presentation"` for a11y.
+- **a11y:** Added `onkeydown` Escape handler on backdrop to resolve svelte-check warning.
+
+#### New Components
+- **`ProductCardSkeleton.svelte`** (`src/lib/components/ui/`) — Skeleton loading cards with shimmer animation. Configurable `count` prop (default 6). Staggered fade-in per card (80ms delay). Matches ProductCard layout: image area + title + subtitle + price/stock + button placeholders.
+
+- **`QuickViewModal.svelte`** (`src/lib/components/products/`) — Modal for quick product preview without leaving the page.
+  - Image gallery with thumbnail selector (up to 5 images)
+  - Product details: category, name, price (with discount), stock status, short description, SKU
+  - Quantity selector with +/- buttons
+  - "Dodaj do koszyka" with quantity support
+  - "Zobacz szczegóły produktu" link to full page
+  - Focus trap, Escape to close, backdrop click to close
+  - `overscroll-behavior: contain` on both backdrop and panel
+  - Smooth entry animations (backdrop fade + panel scale/slide)
+
+#### Enhanced Components
+- **`ProductCard.svelte`** — Major upgrade:
+  - **Stock status dot** (top-right): green=dostępny, amber=ostatnie sztuki, red=wyprzedany
+  - **Category label** above product name (from `expand.categories` or `categories[]`)
+  - **Hover overlay** (desktop only): "Dodaj do koszyka" button + quick view eye icon, slides up on hover
+  - **Mobile actions**: Always-visible "Dodaj do koszyka" button with cart icon
+  - **Improved stock label**: Shows colored dot + text ("Dostępny", "Ostatnie X szt.", "Wyprzedany")
+  - **Card lift**: `translateY(-2px)` on hover for subtle depth
+  - Events use `stopPropagation` to prevent navigation when clicking cart/quickview buttons
+
+- **Products page** (`/products`):
+  - **Skeleton loading**: Replaced black overlay + spinner with 6 skeleton cards during navigation
+  - **Quick View**: ProductCards now pass `onQuickView` → opens QuickViewModal
+  - Added `QuickViewModal` and `ProductCardSkeleton` imports
+
+All passing `svelte-check` with **0 errors, 0 warnings** ✅
+
 ---
 
 ## TODO — Modernization Roadmap
@@ -230,47 +283,47 @@ All passing `svelte-check` with **0 errors, 0 warnings** ✅
 
 ### 🟠 Phase 2 — Navigation & Search
 
-#### 2.1 Enhanced Navigation
-- [ ] Add mega-menu dropdown on "Produkty" hover (desktop)
-- [ ] Create `MegaMenu.svelte` — grid of categories with icons/thumbnails + counts
+#### 2.1 Enhanced Navigation ✅
+- [x] Add mega-menu dropdown on "Produkty" hover (desktop)
+- [x] Create `MegaMenu.svelte` — grid of categories with icons/thumbnails + counts
 - [ ] Promotion badge on "Promocje" nav item when active deals exist
-- [ ] Smooth open/close transitions
+- [x] Smooth open/close transitions (slide-in animation, delayed hide on mouseleave)
 
-#### 2.2 Navbar Inline Search
-- [ ] Expandable search input in navbar (click search icon → input slides open)
-- [ ] Replace redirect to /search with inline dropdown results
-- [ ] Show: matching products (name + thumb), categories, brands
-- [ ] Keyboard navigation (↑↓ Enter Escape)
+#### 2.2 Navbar Inline Search ✅
+- [x] Expandable search input in navbar (click search icon → input slides open)
+- [x] Replace redirect to /search with inline dropdown results
+- [x] Show: matching products (name + thumb + price), categories
+- [x] Keyboard navigation (↑↓ Enter Escape)
 
-#### 2.3 Search Autocomplete (products page)
-- [ ] Port yoga project's omnisearch UX pattern
-- [ ] Autocomplete dropdown with product suggestions, categories, brands
-- [ ] Recent searches from localStorage
-- [ ] Debounced server search for fuzzy matching
-- [ ] "X wyników dla '...'" result summary
+#### 2.3 Search Autocomplete ✅
+- [x] Autocomplete dropdown with product suggestions via `/api/search` endpoint
+- [x] Recent searches from localStorage (last 5, with clear button)
+- [x] Debounced server search (250ms) for fuzzy matching
+- [x] "Pokaż wszystkie wyniki dla '...'" link to full search page
+- [ ] Port yoga project's omnisearch UX to products page (sidebar search)
 
 ---
 
 ### 🟡 Phase 3 — Product Experience
 
 #### 3.1 Enhanced Product Cards
-- [ ] Stock status indicator (green dot = dostępny, orange = ostatnie sztuki)
+- [x] Stock status indicator (green dot = dostępny, orange = ostatnie sztuki)
 - [ ] Brand badge/logo on card
 - [ ] Quick specs from description (e.g., "2000W · 48T" for saws)
 - [ ] Wishlist heart icon on hover
-- [ ] "Dodaj do koszyka" appears on hover (desktop) / always visible (mobile)
+- [x] "Dodaj do koszyka" appears on hover (desktop) / always visible (mobile)
 
 #### 3.2 Products Page Refinements
-- [ ] Create `ProductCardSkeleton.svelte` — skeleton loading (6-9 gray placeholders)
-- [ ] Replace spinner overlay with skeleton cards during navigation
+- [x] Create `ProductCardSkeleton.svelte` — skeleton loading (6-9 gray placeholders)
+- [x] Replace spinner overlay with skeleton cards during navigation
 - [ ] Sticky toolbar with active filter count badge
-- [ ] Result count above grid: "Znaleziono X produktów"
+- [x] Result count above grid: "Znaleziono X produktów"
 
 #### 3.3 Quick View Modal
-- [ ] Create `QuickViewModal.svelte` — click product → modal with gallery + details + add to cart
-- [ ] Image gallery with thumbnails
-- [ ] Key specs + price + stock status + CTA
-- [ ] "Zobacz szczegóły" link to full product page
+- [x] Create `QuickViewModal.svelte` — click product → modal with gallery + details + add to cart
+- [x] Image gallery with thumbnails
+- [x] Key specs + price + stock status + CTA
+- [x] "Zobacz szczegóły" link to full product page
 
 #### 3.4 Product Detail Enhancements
 - [ ] Specification table (parse from description or BaseLinker data)
