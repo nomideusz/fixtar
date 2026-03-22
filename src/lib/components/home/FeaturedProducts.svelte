@@ -126,7 +126,7 @@
 	.featured-title {
 		font-family: var(--font-display);
 		font-size: clamp(1.6rem, 3vw, 2.2rem);
-		font-weight: 400;
+		font-weight: 700;
 		color: var(--ft-dark);
 		letter-spacing: -0.02em;
 	}

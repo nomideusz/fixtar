@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { cart, userStore } from '$lib/stores';
+	import FixTarLogo from '$lib/img/logo-FixTar.webp';
 
 	interface Props {
 		onCartOpen?: () => void;
@@ -56,8 +57,7 @@
 	<div class="nav-inner">
 		<!-- Logo -->
 		<a href="/" class="nav-logo">
-			<span class="logo-dot"></span>
-			<span class="logo-text">FixTar</span>
+			<img src={FixTarLogo} alt="FixTar" class="logo-img" />
 		</a>
 
 		<!-- Desktop links -->
@@ -162,28 +162,18 @@
 	.nav-logo {
 		display: flex;
 		align-items: center;
-		gap: 10px;
 		text-decoration: none;
 		flex-shrink: 0;
 	}
 
-	.logo-dot {
-		width: 8px;
-		height: 8px;
-		border-radius: 50%;
-		background: var(--ft-accent);
-		transition: transform var(--dur-fast) ease;
+	.logo-img {
+		height: 32px;
+		width: auto;
+		transition: opacity var(--dur-fast) ease;
 	}
 
-	.nav-logo:hover .logo-dot {
-		transform: scale(1.3);
-	}
-
-	.logo-text {
-		font-family: var(--font-display);
-		font-size: 1.3rem;
-		color: var(--ft-dark);
-		letter-spacing: -0.02em;
+	.nav-logo:hover .logo-img {
+		opacity: 0.8;
 	}
 
 	/* ── Desktop links ── */
