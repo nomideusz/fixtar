@@ -82,6 +82,36 @@
 		notifications.success(`Dodano ${quantity} ${product.name} do koszyka`);
 	}
 
+	function formatDescription(text: string): string {
+		// Sanitize: escape HTML entities
+		const escaped = text
+			.replace(/&/g, '&amp;')
+			.replace(/</g, '&lt;')
+			.replace(/>/g, '&gt;')
+			.replace(/"/g, '&quot;');
+
+		// Split into paragraphs by double newlines first
+		let paragraphs = escaped.split(/\n\s*\n/).filter(Boolean);
+
+		// If no double newlines found, try single newlines
+		if (paragraphs.length <= 1) {
+			paragraphs = escaped.split(/\n/).filter(Boolean);
+		}
+
+		// If still one blob, try to add breaks at sentence boundaries for readability
+		if (paragraphs.length <= 1 && escaped.length > 200) {
+			// Break on common product description patterns:
+			// - Sentence ends followed by uppercase (new item/feature)
+			// - Items in a list pattern (e.g. "Pistolet do pompowania" "Pistolet malarski")
+			const formatted = escaped
+				.replace(/([.!?])\s+([A-ZŻŹĆĄŚĘŁÓŃ])/g, '$1</p><p>$2')
+				.replace(/(\))\s+([A-ZŻŹĆĄŚĘŁÓŃ])/g, '$1</p><p>$2');
+			return `<p>${formatted}</p>`;
+		}
+
+		return paragraphs.map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
+	}
+
 	function adjustQuantity(delta: number) {
 		const newQty = quantity + delta;
 		if (newQty >= 1 && newQty <= maxQuantity) {
@@ -114,98 +144,77 @@
 			</div>
 
 			<!-- Product Info -->
-			<div class="space-y-8">
+			<div class="flex flex-col gap-6">
 				<!-- Header -->
-				<div>
+				<div class="pb-6 border-b border-[--ft-line]">
 					<h1 class="mb-4 text-3xl leading-tight font-bold text-[--ft-text] lg:text-4xl">
 						{product.name}
 					</h1>
 
-					<!-- Price & Stock -->
-					<div class="space-y-4">
-						<div class="flex items-center gap-4">
-							<span class="text-brand-600 text-4xl font-bold">
-								{product.price.toFixed(2)} zł
+					<!-- Price -->
+					<div class="mb-4 flex items-center gap-4">
+						<span class="text-brand-600 text-4xl font-bold">
+							{product.price.toFixed(2)} zł
+						</span>
+						{#if hasDiscount}
+							<span class="text-xl text-[--ft-text-muted] line-through">
+								{product.compareAtPrice?.toFixed(2)} zł
 							</span>
-							{#if hasDiscount}
-								<div class="flex items-center gap-2">
-									<span class="text-xl text-[--ft-text-muted] line-through">
-										{product.compareAtPrice?.toFixed(2)} zł
-									</span>
-									<span
-										class="bg-danger rounded-lg px-2 py-1 text-sm font-semibold !text-white"
-									>
-										-{discountPercent}%
-									</span>
-								</div>
-							{/if}
+							<span class="bg-danger rounded-lg px-2 py-1 text-sm font-semibold !text-white">
+								-{discountPercent}%
+							</span>
+						{/if}
+					</div>
+
+					<!-- Stock & SKU -->
+					<div class="flex items-center gap-3">
+						<div class="flex items-center gap-2">
+							<div class="h-2 w-2 rounded-full {stock.inStock ? 'bg-success' : 'bg-danger'}"></div>
+							<span class="text-sm font-semibold {stock.colorClass}">
+								{stock.label}
+							</span>
 						</div>
 
-						<div class="flex items-center gap-3">
-							<div class="flex items-center gap-2">
-								<div
-									class="h-2 w-2 rounded-full {stock.inStock ? 'bg-success' : 'bg-danger'}"
-								></div>
-								<span class="text-sm font-semibold {stock.colorClass}">
-									{stock.label}
-								</span>
+						{#if product.sku}
+							<div class="text-sm text-[--ft-text-muted]">
+								SKU: <span class="font-mono">{product.sku}</span>
 							</div>
-
-							{#if product.sku}
-								<div class="text-sm text-[--ft-text-muted]">
-									SKU: <span class="font-mono">{product.sku}</span>
-								</div>
-							{/if}
-						</div>
+						{/if}
 					</div>
 				</div>
 
 				<!-- Categories -->
 				{#if product.expand?.categories?.length}
-					<Card glass={true} class="p-4">
-						<h3 class="mb-3 text-sm font-semibold text-[--ft-text]">Kategorie</h3>
+					<div class="pb-6 border-b border-[--ft-line]">
+						<h3 class="mb-3 text-sm font-semibold uppercase tracking-wider text-[--ft-text-muted]">Kategorie</h3>
 						<div class="flex flex-wrap gap-2">
 							{#each product.expand.categories as category (category.id)}
 								<a
 									href="/products?category={category.slug}"
-									class="bg-brand-50 hover:bg-brand-100 text-brand-700 inline-flex items-center rounded-lg px-3 py-1.5 text-sm font-medium transition-colors"
+									class="inline-flex items-center rounded-full border border-[--ft-line] bg-[--ft-frost] px-3 py-1.5 text-sm font-medium text-[--ft-text] transition-colors hover:border-[--ft-accent] hover:text-[--ft-accent]"
 								>
-									<svg
-										class="mr-1 h-3 w-3"
-										fill="none"
-										stroke="currentColor"
-										viewBox="0 0 24 24"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
-										/>
+									<svg class="mr-1.5 h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
 									</svg>
 									{category.name}
 								</a>
 							{/each}
 						</div>
-					</Card>
+					</div>
 				{/if}
 
 				<!-- Description -->
 				{#if product.description || product.shortDescription}
-					<Card class="p-6">
-						<h3 class="mb-4 text-lg font-semibold text-[--ft-text]">Opis produktu</h3>
-						<div class="product-description leading-relaxed text-[--ft-text-muted]">
+					<div class="pb-6 border-b border-[--ft-line]">
+						<h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-[--ft-text-muted]">Opis produktu</h3>
+						<div class="product-description text-sm leading-relaxed text-[--ft-text]">
 							{#if product.description}
-								<div class="max-w-none space-y-2">
-									{#each product.description.split(/\n+/).filter(Boolean) as paragraph}
-										<p>{paragraph}</p>
-									{/each}
-								</div>
+								{@html formatDescription(product.description)}
 							{:else}
 								<p>{product.shortDescription}</p>
 							{/if}
 						</div>
-					</Card>
+					</div>
 				{/if}
 
 				<!-- Purchase / Out of Stock -->
@@ -399,3 +408,13 @@
 		{/if}
 	</div>
 </div>
+
+<style>
+	.product-description :global(p) {
+		margin-bottom: 0.75rem;
+	}
+
+	.product-description :global(p:last-child) {
+		margin-bottom: 0;
+	}
+</style>
