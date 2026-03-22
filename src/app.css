@@ -132,6 +132,8 @@
    3. BASE STYLES
    ========================================================================== */
 
+@layer base {
+
 *,
 *::before,
 *::after {
@@ -260,6 +262,8 @@ h4 {
 .ft-animate {
 	animation: ft-fade-up 0.35s var(--ease-out) both;
 }
+
+} /* end @layer base */
 
 /* ==========================================================================
    4. COMPONENT CLASSES
