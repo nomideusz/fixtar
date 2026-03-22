@@ -278,9 +278,8 @@
 					<p class="mx-auto mb-8 max-w-md text-neutral-400">
 						Wpisz nazwę produktu, kategorię lub słowo kluczowe w polu wyszukiwania powyżej
 					</p>
-					<div class="flex flex-col justify-center gap-4 sm:flex-row">
-						<Button href="/products" variant="outline">Przeglądaj katalog</Button>
-						<Button href="/categories">Zobacz kategorie</Button>
+					<div class="flex justify-center">
+						<Button href="/products">Przeglądaj katalog</Button>
 					</div>
 				</div>
 			</div>

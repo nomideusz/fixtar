@@ -87,7 +87,6 @@
 				<!-- Desktop nav -->
 				<div class="hidden items-center gap-0.5 lg:flex">
 					<a href="/products" class="nav-link">Produkty</a>
-					<a href="/categories" class="nav-link">Kategorie</a>
 					<a href="/deals" class="nav-link">Promocje</a>
 					<a href="/about" class="nav-link">O Nas</a>
 					<a href="/contact" class="nav-link">Kontakt</a>
@@ -266,10 +265,9 @@
 					Szukaj
 				</a>
 				<a href="/products" class="mobile-link" style="animation-delay: 0.06s" onclick={closeMobileMenu}>Produkty</a>
-				<a href="/categories" class="mobile-link" style="animation-delay: 0.09s" onclick={closeMobileMenu}>Kategorie</a>
-				<a href="/deals" class="mobile-link" style="animation-delay: 0.12s" onclick={closeMobileMenu}>Promocje</a>
-				<a href="/about" class="mobile-link" style="animation-delay: 0.15s" onclick={closeMobileMenu}>O Nas</a>
-				<a href="/contact" class="mobile-link" style="animation-delay: 0.18s" onclick={closeMobileMenu}>Kontakt</a>
+				<a href="/deals" class="mobile-link" style="animation-delay: 0.09s" onclick={closeMobileMenu}>Promocje</a>
+				<a href="/about" class="mobile-link" style="animation-delay: 0.12s" onclick={closeMobileMenu}>O Nas</a>
+				<a href="/contact" class="mobile-link" style="animation-delay: 0.15s" onclick={closeMobileMenu}>Kontakt</a>
 
 				{#if userStore.current}
 					<div class="mobile-separator">

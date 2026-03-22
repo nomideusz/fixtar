@@ -79,8 +79,7 @@ src/
 │   └── i18n/           # Translations (EN + PL)
 ├── routes/
 │   ├── +page           # Homepage (hero, categories, featured)
-│   ├── products/       # Product listing + detail
-│   ├── categories/     # Category browser
+│   ├── products/       # Product listing + detail (with category filtering)
 │   ├── search/         # Full-text search
 │   ├── admin/          # Admin dashboard + product management
 │   ├── api/            # API endpoints (search, sync, orders)
