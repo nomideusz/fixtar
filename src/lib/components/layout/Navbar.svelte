@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
 	import { cart, userStore } from '$lib/stores';
 	import FixTarLogo from '$lib/img/logo-FixTar.webp';
 
@@ -47,10 +48,21 @@
 </script>
 
 {#snippet navLinks(mobile = false)}
-	<a href="/products" class={mobile ? 'mobile-link' : 'nav-link'} onclick={mobile ? closeMobileMenu : undefined}>Produkty</a>
-	<a href="/deals" class={mobile ? 'mobile-link' : 'nav-link'} onclick={mobile ? closeMobileMenu : undefined}>Promocje</a>
-	<a href="/about" class={mobile ? 'mobile-link' : 'nav-link'} onclick={mobile ? closeMobileMenu : undefined}>O Nas</a>
-	<a href="/contact" class={mobile ? 'mobile-link' : 'nav-link'} onclick={mobile ? closeMobileMenu : undefined}>Kontakt</a>
+	{@const links = [
+		{ href: '/products', label: 'Produkty' },
+		{ href: '/deals', label: 'Promocje' },
+		{ href: '/about', label: 'O Nas' },
+		{ href: '/contact', label: 'Kontakt' }
+	]}
+	{#each links as link (link.href)}
+		{@const isActive = $page.url.pathname.startsWith(link.href)}
+		<a
+			href={link.href}
+			class="{mobile ? 'mobile-link' : 'nav-link'} {isActive ? 'is-active' : ''}"
+			onclick={mobile ? closeMobileMenu : undefined}
+			aria-current={isActive ? 'page' : undefined}
+		>{link.label}</a>
+	{/each}
 {/snippet}
 
 <nav class="nav" class:is-scrolled={scrolled}>
@@ -68,13 +80,13 @@
 		<!-- Actions -->
 		<div class="nav-actions">
 			<a href="/search" class="nav-icon" aria-label="Szukaj">
-				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 					<circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
 				</svg>
 			</a>
 
 			<button onclick={() => onCartOpen?.()} class="nav-icon cart-icon" aria-label="Koszyk">
-				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 					<path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" /><line x1="3" y1="6" x2="21" y2="6" /><path d="M16 10a4 4 0 01-8 0" />
 				</svg>
 				{#if cartCount > 0}
@@ -84,7 +96,7 @@
 
 			{#if userStore.current}
 				<a href="/account" class="nav-icon" aria-label="Konto">
-					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 						<path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" />
 					</svg>
 				</a>
@@ -202,6 +214,15 @@
 		color: var(--ft-dark);
 	}
 
+	.nav-link.is-active {
+		color: var(--ft-accent);
+	}
+
+	.mobile-link.is-active {
+		color: var(--ft-accent);
+		background: var(--ft-frost);
+	}
+
 	/* ── Actions ── */
 	.nav-actions {
 		display: flex;
@@ -214,8 +235,8 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 36px;
-		height: 36px;
+		min-width: 44px;
+		min-height: 44px;
 		border-radius: 50%;
 		color: var(--ft-text-muted);
 		background: transparent;
@@ -337,6 +358,7 @@
 		align-items: center;
 		gap: 10px;
 		padding: 14px 16px;
+		min-height: 48px;
 		font-size: 0.85rem;
 		font-weight: 500;
 		letter-spacing: 0.04em;

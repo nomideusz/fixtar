@@ -1,11 +1,13 @@
 <script lang="ts">
 	import Card from '$lib/components/ui/Card.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
-	import Hero from '$lib/components/ui/Hero.svelte';
+	import StatCard from '$lib/components/account/StatCard.svelte';
+	import { getOrderStatus } from '$lib/utils/order-status';
 	import type { PageData } from './$types';
 
-	// Get real data from server
 	const { data } = $props<{ data: PageData }>();
+
+	// --- Types ---
 
 	interface Order {
 		id: string;
@@ -17,70 +19,32 @@
 		shippingMethod?: string;
 	}
 
-	// Use real orders data from server
+	// --- Derived Data ---
+
 	const orders = $derived((data.orders || []) as Order[]);
-	const hasError = $derived(!!data.error);
-	const errorMessage = $derived(data.error || '');
 
-	function getStatusColor(status: string) {
-		switch (status.toLowerCase()) {
-			case 'delivered':
-			case 'completed':
-				return 'text-success-dark bg-success/10';
-			case 'processing':
-			case 'pending':
-				return 'text-brand-800 bg-brand-500/20';
-			case 'shipped':
-			case 'shipping':
-				return 'text-accent-800 bg-accent-100';
-			case 'cancelled':
-			case 'canceled':
-				return 'text-danger-dark bg-danger/10';
-			default:
-				return 'text-neutral-200 bg-white/10';
-		}
-	}
+	const orderStats = $derived.by(() => {
+		const lowerStatuses = orders.map((o) => o.status.toLowerCase());
+		return {
+			total: orders.length,
+			delivered: lowerStatuses.filter((s) => s === 'delivered' || s === 'completed').length,
+			processing: lowerStatuses.filter((s) => s === 'processing' || s === 'pending').length,
+			totalSpent: orders.reduce((sum, o) => sum + (o.total || 0), 0)
+		};
+	});
 
-	function formatStatus(status: string) {
-		switch (status.toLowerCase()) {
-			case 'delivered':
-			case 'completed':
-				return 'Dostarczono';
-			case 'processing':
-				return 'Przetwarzane';
-			case 'pending':
-				return 'Oczekuje';
-			case 'shipped':
-			case 'shipping':
-				return 'Wysłano';
-			case 'cancelled':
-			case 'canceled':
-				return 'Anulowano';
-			default:
-				return status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
-		}
-	}
+	// --- Filters ---
 
-	function formatDate(dateString: string) {
-		return new Date(dateString).toLocaleDateString('pl-PL', {
-			year: 'numeric',
-			month: 'long',
-			day: 'numeric'
-		});
-	}
-
-	// Filter and sort functionality
 	let statusFilter = $state('all');
 	let sortBy = $state('date-desc');
 
-	const filteredOrders = $derived(() => {
-		let filtered = orders;
+	const filteredOrders = $derived.by(() => {
+		let filtered =
+			statusFilter === 'all'
+				? orders
+				: orders.filter((o) => o.status.toLowerCase() === statusFilter);
 
-		if (statusFilter !== 'all') {
-			filtered = filtered.filter((order) => order.status.toLowerCase() === statusFilter);
-		}
-
-		return filtered.sort((a, b) => {
+		return filtered.toSorted((a, b) => {
 			switch (sortBy) {
 				case 'date-asc':
 					return new Date(a.created).getTime() - new Date(b.created).getTime();
@@ -96,19 +60,20 @@
 		});
 	});
 
-	// Order statistics
-	const orderStats = $derived(() => {
-		const total = orders.length;
-		const delivered = orders.filter(
-			(o) => o.status.toLowerCase() === 'delivered' || o.status.toLowerCase() === 'completed'
-		).length;
-		const processing = orders.filter(
-			(o) => o.status.toLowerCase() === 'processing' || o.status.toLowerCase() === 'pending'
-		).length;
-		const totalSpent = orders.reduce((sum, order) => sum + (order.total || 0), 0);
+	// --- Helpers ---
 
-		return { total, delivered, processing, totalSpent };
-	});
+	function formatDate(dateString: string): string {
+		return new Date(dateString).toLocaleDateString('pl-PL', {
+			year: 'numeric',
+			month: 'long',
+			day: 'numeric'
+		});
+	}
+
+	function isCompleted(status: string): boolean {
+		const s = status.toLowerCase();
+		return s === 'delivered' || s === 'completed';
+	}
 </script>
 
 <svelte:head>
@@ -116,19 +81,26 @@
 	<meta name="description" content="Zobacz historię swoich zamówień i śledź ich status" />
 </svelte:head>
 
-<!-- Professional Orders Hero -->
-<Hero
-	title="Moje Zamówienia"
-	subtitle="Przeglądaj historię zamówień, śledź status dostaw i zarządzaj swoimi zakupami"
-	centered={true}
-/>
-
 <div class="space-y-8">
-	{#if hasError}
+	<!-- Page Header -->
+	<section>
+		<h1 class="text-2xl font-bold text-[--ft-text-strong]" style="font-family:var(--font-display);letter-spacing:-0.02em">Moje Zamówienia</h1>
+		<p class="mt-1 text-[--ft-text-muted]">Przeglądaj historię zamówień, śledź status dostaw i zarządzaj swoimi zakupami</p>
+	</section>
+
+	<div class="space-y-8">
+	{#if data.error}
 		<!-- Error State -->
 		<Card class="p-8 text-center">
-			<div class="bg-danger/10 mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl">
-				<svg class="text-danger h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+			<div
+				class="bg-danger/10 mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl"
+			>
+				<svg
+					class="text-danger h-8 w-8"
+					fill="none"
+					stroke="currentColor"
+					viewBox="0 0 24 24"
+				>
 					<path
 						stroke-linecap="round"
 						stroke-linejoin="round"
@@ -138,115 +110,55 @@
 				</svg>
 			</div>
 			<h3 class="mb-2 text-xl font-bold text-[--ft-text]">Wystąpił błąd</h3>
-			<p class="mb-6 text-neutral-400">{errorMessage}</p>
+			<p class="mb-6 text-[--ft-text-muted]">{data.error}</p>
 			<Button href="/account">Wróć do konta</Button>
 		</Card>
 	{:else}
-		<!-- Order Statistics -->
+		<!-- Stats -->
 		<section>
 			<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-				<Card hover class="group p-6 text-center">
-					<div
-						class="from-brand-500/100/20 to-brand-500/30 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br transition-transform duration-200 group-hover:scale-110"
-					>
-						<svg
-							class="text-brand-600 h-6 w-6"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-							/>
+				<StatCard value={orderStats.total} label="Łączne zamówienia">
+					{#snippet icon()}
+						<svg class="text-brand-600 h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
 						</svg>
-					</div>
-					<div class="text-brand-600 mb-1 text-2xl font-bold">{orderStats().total}</div>
-					<div class="text-sm font-medium text-neutral-400">Łączne zamówienia</div>
-				</Card>
+					{/snippet}
+				</StatCard>
 
-				<Card hover class="group p-6 text-center">
-					<div
-						class="from-success/10 to-success-light mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br transition-transform duration-200 group-hover:scale-110"
-					>
+				<StatCard value={orderStats.delivered} label="Dostarczone" valueClass="text-success" gradientClass="from-success/10 to-success-light">
+					{#snippet icon()}
 						<svg class="text-success h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M5 13l4 4L19 7"
-							/>
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
 						</svg>
-					</div>
-					<div class="text-success mb-1 text-2xl font-bold">{orderStats().delivered}</div>
-					<div class="text-sm font-medium text-neutral-400">Dostarczone</div>
-				</Card>
+					{/snippet}
+				</StatCard>
 
-				<Card hover class="group p-6 text-center">
-					<div
-						class="from-brand-500/100/20 to-brand-500/30 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br transition-transform duration-200 group-hover:scale-110"
-					>
-						<svg
-							class="text-brand-600 h-6 w-6"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-							/>
+				<StatCard value={orderStats.processing} label="W trakcie">
+					{#snippet icon()}
+						<svg class="text-brand-600 h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
 						</svg>
-					</div>
-					<div class="text-brand-600 mb-1 text-2xl font-bold">{orderStats().processing}</div>
-					<div class="text-sm font-medium text-neutral-400">W trakcie</div>
-				</Card>
+					{/snippet}
+				</StatCard>
 
-				<Card hover class="group p-6 text-center">
-					<div
-						class="from-accent-100 to-accent-200 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br transition-transform duration-200 group-hover:scale-110"
-					>
-						<svg
-							class="text-accent-600 h-6 w-6"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
-							/>
+				<StatCard value="{orderStats.totalSpent.toFixed(2)} zł" label="Łączne wydatki" valueClass="text-accent-600" gradientClass="from-accent-100 to-accent-200">
+					{#snippet icon()}
+						<svg class="text-accent-600 h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
 						</svg>
-					</div>
-					<div class="text-accent-600 mb-1 text-2xl font-bold">
-						{orderStats().totalSpent.toFixed(2)} zł
-					</div>
-					<div class="text-sm font-medium text-neutral-400">Łączne wydatki</div>
-				</Card>
+					{/snippet}
+				</StatCard>
 			</div>
 		</section>
 
-		<!-- Filters and Sort -->
+		<!-- Filters -->
 		<section>
 			<Card class="p-6">
 				<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 					<div class="flex flex-col gap-4 sm:flex-row">
-						<!-- Status Filter -->
 						<div>
-							<label for="status-filter" class="mb-2 block text-sm font-medium text-neutral-300"
-								>Filtruj po statusie</label
-							>
-							<select
-								id="status-filter"
-								bind:value={statusFilter}
-								class="focus:ring-brand-500 rounded-lg border border-white/15 px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none"
-							>
+							<label for="status-filter" class="mb-2 block text-sm font-medium text-[--ft-text]">Filtruj po statusie</label>
+							<select id="status-filter" bind:value={statusFilter} class="focus:ring-brand-500 rounded-lg border border-[--ft-line] px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none">
 								<option value="all">Wszystkie</option>
 								<option value="delivered">Dostarczone</option>
 								<option value="processing">Przetwarzane</option>
@@ -255,16 +167,9 @@
 							</select>
 						</div>
 
-						<!-- Sort -->
 						<div>
-							<label for="sort-filter" class="mb-2 block text-sm font-medium text-neutral-300"
-								>Sortuj według</label
-							>
-							<select
-								id="sort-filter"
-								bind:value={sortBy}
-								class="focus:ring-brand-500 rounded-lg border border-white/15 px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none"
-							>
+							<label for="sort-filter" class="mb-2 block text-sm font-medium text-[--ft-text]">Sortuj według</label>
+							<select id="sort-filter" bind:value={sortBy} class="focus:ring-brand-500 rounded-lg border border-[--ft-line] px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none">
 								<option value="date-desc">Data: najnowsze</option>
 								<option value="date-asc">Data: najstarsze</option>
 								<option value="total-desc">Kwota: malejąco</option>
@@ -273,8 +178,8 @@
 						</div>
 					</div>
 
-					<div class="text-sm text-neutral-400">
-						Wyświetlam {filteredOrders().length} z {orders.length} zamówień
+					<div class="text-sm text-[--ft-text-muted]">
+						Wyświetlam {filteredOrders.length} z {orders.length} zamówień
 					</div>
 				</div>
 			</Card>
@@ -282,102 +187,69 @@
 
 		<!-- Orders List -->
 		<section>
-			{#if filteredOrders().length === 0}
-				<!-- Empty State -->
+			{#if filteredOrders.length === 0}
 				<Card class="p-12 text-center">
-					<div
-						class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/10"
-					>
-						<svg
-							class="h-8 w-8 text-neutral-400"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-							/>
+					<div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-[--ft-frost]">
+						<svg class="h-8 w-8 text-[--ft-text-muted]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
 						</svg>
 					</div>
 					<h3 class="mb-2 text-xl font-bold text-[--ft-text]">
 						{statusFilter === 'all' ? 'Brak zamówień' : 'Brak zamówień z wybranym statusem'}
 					</h3>
-					<p class="mb-6 text-neutral-400">
+					<p class="mb-6 text-[--ft-text-muted]">
 						{statusFilter === 'all'
 							? 'Rozpocznij zakupy i zobacz swoje zamówienia tutaj'
 							: 'Spróbuj zmienić filtr lub dodać nowe zamówienia'}
 					</p>
 					<div class="flex flex-col justify-center gap-3 sm:flex-row">
 						{#if statusFilter !== 'all'}
-							<Button variant="outline" onclick={() => (statusFilter = 'all')}>
-								Pokaż wszystkie
-							</Button>
+							<Button variant="outline" onclick={() => (statusFilter = 'all')}>Pokaż wszystkie</Button>
 						{/if}
 						<Button href="/products">Rozpocznij zakupy</Button>
 					</div>
 				</Card>
 			{:else}
 				<div class="space-y-4">
-					{#each filteredOrders() as order (order)}
+					{#each filteredOrders as order (order)}
+						{@const status = getOrderStatus(order.status)}
 						<Card hover class="group">
 							<div class="p-6">
 								<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
 									<div class="mb-4 flex-1 lg:mb-0">
 										<div class="mb-3 flex items-center gap-4">
 											<div>
-												<h3
-													class="group-hover:text-brand-600 text-lg font-bold text-[--ft-text] transition-colors"
-												>
+												<h3 class="group-hover:text-brand-600 text-lg font-bold text-[--ft-text] transition-colors">
 													Zamówienie #{order.orderNumber || order.id}
 												</h3>
-												<p class="text-sm text-neutral-400">
-													Złożone {formatDate(order.created)}
-												</p>
+												<p class="text-sm text-[--ft-text-muted]">Złożone {formatDate(order.created)}</p>
 											</div>
-											<span
-												class="inline-flex rounded-full px-3 py-1 text-xs font-semibold {getStatusColor(
-													order.status
-												)}"
-											>
-												{formatStatus(order.status)}
+											<span class="inline-flex rounded-full px-3 py-1 text-xs font-semibold {status.colorClass}">
+												{status.label}
 											</span>
 										</div>
 
 										<div class="grid grid-cols-1 gap-4 text-sm sm:grid-cols-3">
 											<div>
-												<span class="text-neutral-500">Suma zamówienia:</span>
-												<span class="ml-1 font-semibold text-[--ft-text]"
-													>{(order.total || 0).toFixed(2)} zł</span
-												>
+												<span class="text-[--ft-text-muted]">Suma zamówienia:</span>
+												<span class="ml-1 font-semibold text-[--ft-text]">{(order.total || 0).toFixed(2)} zł</span>
 											</div>
 											<div>
-												<span class="text-neutral-500">Metoda płatności:</span>
-												<span class="ml-1 font-semibold text-[--ft-text]"
-													>{order.paymentMethod || 'Karta'}</span
-												>
+												<span class="text-[--ft-text-muted]">Metoda płatności:</span>
+												<span class="ml-1 font-semibold text-[--ft-text]">{order.paymentMethod || 'Karta'}</span>
 											</div>
 											<div>
-												<span class="text-neutral-500">Dostawa:</span>
-												<span class="ml-1 font-semibold text-[--ft-text]"
-													>{order.shippingMethod || 'Standardowa'}</span
-												>
+												<span class="text-[--ft-text-muted]">Dostawa:</span>
+												<span class="ml-1 font-semibold text-[--ft-text]">{order.shippingMethod || 'Standardowa'}</span>
 											</div>
 										</div>
 									</div>
 
 									<div class="flex flex-col gap-3 sm:flex-row">
-										<Button
-											href="/account/orders/{order.id}"
-											variant="outline"
-											size="sm"
-											class="group-hover:border-brand-500 group-hover:text-brand-600 transition-colors"
-										>
+										<Button href="/account/orders/{order.id}" variant="outline" size="sm" class="group-hover:border-brand-500 group-hover:text-brand-600 transition-colors">
 											Zobacz szczegóły
 										</Button>
-										{#if order.status.toLowerCase() === 'delivered' || order.status.toLowerCase() === 'completed'}
+										{#if isCompleted(order.status)}
 											<Button href="/products?reorder={order.id}" size="sm">Zamów ponownie</Button>
 										{/if}
 									</div>
@@ -389,16 +261,12 @@
 			{/if}
 		</section>
 
-		<!-- Quick Actions -->
+		<!-- Support -->
 		<section>
-			<Card class="from-brand-500/100/8 to-accent-500/100/8 border-2 border-white/10 bg-linear-to-br p-8">
+			<Card class="from-brand-500/100/8 to-accent-500/100/8 border-2 border-[--ft-line] bg-linear-to-br p-8">
 				<div class="text-center">
-					<h3 class="mb-4 text-xl font-bold text-[--ft-text]">
-						Potrzebujesz pomocy z zamówieniem?
-					</h3>
-					<p class="mb-6 text-neutral-400">
-						Nasz zespół wsparcia jest gotowy do pomocy w każdej kwestii dotyczącej Twoich zamówień
-					</p>
+					<h3 class="mb-4 text-xl font-bold text-[--ft-text]">Potrzebujesz pomocy z zamówieniem?</h3>
+					<p class="mb-6 text-[--ft-text-muted]">Nasz zespół wsparcia jest gotowy do pomocy w każdej kwestii dotyczącej Twoich zamówień</p>
 					<div class="flex flex-col justify-center gap-4 sm:flex-row">
 						<Button href="/contact" variant="outline">Skontaktuj się z nami</Button>
 						<Button href="/help/orders">Pomoc z zamówieniami</Button>
@@ -407,4 +275,5 @@
 			</Card>
 		</section>
 	{/if}
+</div>
 </div>

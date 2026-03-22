@@ -125,7 +125,7 @@
 				</div>
 				<div>
 					<p class="text-sm text-neutral-600">Status połączenia</p>
-					<p class="font-semibold {inventories.length > 0 ? 'text-success' : 'text-neutral-400'}">
+					<p class="font-semibold {inventories.length > 0 ? 'text-success' : 'text-[--ft-text-muted]'}">
 						{inventories.length > 0 ? 'Połączono' : 'Nie połączono'}
 					</p>
 				</div>
@@ -187,7 +187,7 @@
 
 			<div class="space-y-4">
 				<div>
-					<label for="inventory-select" class="mb-1 block text-sm font-medium text-neutral-700">
+					<label for="inventory-select" class="mb-1 block text-sm font-medium text-[--ft-text]">
 						Wybierz katalog BaseLinker
 					</label>
 					<select
@@ -239,7 +239,7 @@
 				</div>
 				<div class="rounded-lg bg-neutral-50 p-3 text-center">
 					<p class="text-2xl font-bold text-neutral-600">{syncResult.productsSkipped}</p>
-					<p class="text-sm text-neutral-700">Pominiętych</p>
+					<p class="text-sm text-[--ft-text]">Pominiętych</p>
 				</div>
 				<div class="bg-danger/5 rounded-lg p-3 text-center">
 					<p class="text-danger text-2xl font-bold">{syncResult.errors.length}</p>

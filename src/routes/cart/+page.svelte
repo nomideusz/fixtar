@@ -27,13 +27,13 @@
 	<meta name="description" content="Review your shopping cart" />
 </svelte:head>
 
-<div class="ft-container py-8">
+<div class="ft-container ft-section">
 	<h1 class="mb-8 text-3xl font-bold text-[--ft-text]">Shopping Cart</h1>
 
 	{#if cart.items.length === 0}
 		<div class="py-16 text-center">
 			<svg
-				class="mx-auto h-24 w-24 text-neutral-400"
+				class="mx-auto h-24 w-24 text-[--ft-text-muted]"
 				fill="none"
 				stroke="currentColor"
 				viewBox="0 0 24 24"
@@ -46,14 +46,14 @@
 				/>
 			</svg>
 			<h2 class="mt-4 text-xl font-semibold text-[--ft-text]">Your cart is empty</h2>
-			<p class="mt-2 text-neutral-400">Start shopping to add items to your cart</p>
+			<p class="mt-2 text-[--ft-text-muted]">Start shopping to add items to your cart</p>
 			<Button href="/products" class="mt-6">Browse Products</Button>
 		</div>
 	{:else}
 		<div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
 			<!-- Cart Items -->
 			<div class="lg:col-span-2">
-				<div class="border border-white/10 bg-white/5 p-6">
+				<div class="border border-[--ft-line] bg-[--ft-frost] p-6">
 					<h2 class="mb-4 text-xl font-semibold">Cart Items ({cart.items.length})</h2>
 					<div class="space-y-4">
 						{#each cart.items as item (item)}
@@ -61,9 +61,9 @@
 								{#if item.image}
 									<img src={item.image} alt={item.name} class="h-20 w-20 rounded object-cover" />
 								{:else}
-									<div class="flex h-20 w-20 items-center justify-center rounded bg-white/10">
+									<div class="flex h-20 w-20 items-center justify-center rounded bg-[--ft-frost]">
 										<svg
-											class="h-8 w-8 text-neutral-400"
+											class="h-8 w-8 text-[--ft-text-muted]"
 											fill="none"
 											stroke="currentColor"
 											viewBox="0 0 24 24"
@@ -80,13 +80,13 @@
 
 								<div class="flex-1">
 									<h3 class="font-medium text-[--ft-text]">{item.name}</h3>
-									<p class="text-neutral-400">${item.price.toFixed(2)}</p>
+									<p class="text-[--ft-text-muted]">${item.price.toFixed(2)}</p>
 								</div>
 
 								<div class="flex items-center space-x-2">
 									<button
 										onclick={() => cart.updateQuantity(item.productId, item.quantity - 1)}
-										class="rounded border border-white/15 p-1 hover:bg-white/10"
+										class="rounded border border-[--ft-line] p-1 hover:bg-[--ft-frost]"
 										aria-label="Decrease quantity"
 									>
 										<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -101,7 +101,7 @@
 									<span class="w-12 text-center font-medium">{item.quantity}</span>
 									<button
 										onclick={() => cart.updateQuantity(item.productId, item.quantity + 1)}
-										class="rounded border border-white/15 p-1 hover:bg-white/10"
+										class="rounded border border-[--ft-line] p-1 hover:bg-[--ft-frost]"
 										aria-label="Increase quantity"
 									>
 										<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -134,7 +134,7 @@
 
 			<!-- Order Summary -->
 			<div class="lg:col-span-1">
-				<div class="border border-white/10 bg-white/5 p-6">
+				<div class="border border-[--ft-line] bg-[--ft-frost] p-6">
 					<h2 class="mb-4 text-xl font-semibold">Order Summary</h2>
 
 					<!-- Coupon Code -->
@@ -158,7 +158,7 @@
 					<!-- Price Breakdown -->
 					<div class="space-y-2 border-t py-4">
 						<div class="flex justify-between">
-							<span class="text-neutral-400">Subtotal</span>
+							<span class="text-[--ft-text-muted]">Subtotal</span>
 							<span class="font-medium">${subtotal.toFixed(2)}</span>
 						</div>
 						{#if discount > 0}
@@ -168,7 +168,7 @@
 							</div>
 						{/if}
 						<div class="flex justify-between">
-							<span class="text-neutral-400">Shipping</span>
+							<span class="text-[--ft-text-muted]">Shipping</span>
 							<span class="font-medium">Free</span>
 						</div>
 					</div>

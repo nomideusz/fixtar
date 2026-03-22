@@ -78,7 +78,7 @@
 />
 
 <div class="min-h-screen">
-	<div class="ft-container px-6 py-16 sm:px-8 lg:px-12">
+	<div class="ft-container ft-section-lg">
 		<div class="mx-auto max-w-md">
 			<!-- Enhanced Logo Section -->
 			<div class="mb-8 text-center">
@@ -168,7 +168,7 @@
 				<div class="mb-8">
 					{#if logoutStage === 'processing'}
 						<h1 class="mb-4 text-3xl font-bold text-[--ft-text]">Wylogowywanie...</h1>
-						<p class="mb-6 text-lg text-neutral-400">Prosimy czekać, kończymy sesję</p>
+						<p class="mb-6 text-lg text-[--ft-text-muted]">Prosimy czekać, kończymy sesję</p>
 						<div class="flex items-center justify-center space-x-2">
 							<div class="bg-brand-600 h-2 w-2 animate-bounce rounded-full"></div>
 							<div
@@ -182,7 +182,7 @@
 						</div>
 					{:else if logoutStage === 'complete'}
 						<h1 class="mb-4 text-3xl font-bold text-[--ft-text]">Zostałeś wylogowany</h1>
-						<p class="mb-6 text-lg text-neutral-400">Dziękujemy za skorzystanie z FixTar</p>
+						<p class="mb-6 text-lg text-[--ft-text-muted]">Dziękujemy za skorzystanie z FixTar</p>
 						<div class="bg-success/5 border-success-light mb-6 rounded-xl border-2 p-4">
 							<p class="text-success-dark text-sm font-medium">
 								Przekierowanie za {countdown}
@@ -191,7 +191,7 @@
 						</div>
 					{:else}
 						<h1 class="mb-4 text-3xl font-bold text-[--ft-text]">Wystąpił błąd</h1>
-						<p class="mb-6 text-lg text-neutral-400">Nie udało się zakończyć sesji</p>
+						<p class="mb-6 text-lg text-[--ft-text-muted]">Nie udało się zakończyć sesji</p>
 						<div class="bg-danger/5 border-danger-light mb-6 rounded-xl border-2 p-4">
 							<p class="text-danger-dark text-sm font-medium">
 								Przekierowanie nastąpi automatycznie
@@ -221,7 +221,7 @@
 							<Button
 								href="/auth/login"
 								variant="outline"
-								class="hover:border-brand-500 hover:text-brand-600 border-2 border-white/15 font-medium transition-all duration-300"
+								class="hover:border-brand-500 hover:text-brand-600 border-2 border-[--ft-line] font-medium transition-all duration-300"
 							>
 								<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 									<path
@@ -237,7 +237,7 @@
 							<Button
 								href="/products"
 								variant="outline"
-								class="hover:border-success hover:text-success border-2 border-white/15 font-medium transition-all duration-300"
+								class="hover:border-success hover:text-success border-2 border-[--ft-line] font-medium transition-all duration-300"
 							>
 								<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 									<path
@@ -271,8 +271,8 @@
 
 			<!-- Security & Privacy Info -->
 			<div class="mt-8 text-center">
-				<div class="rounded-xl bg-white/5 p-6 shadow-md">
-					<div class="mb-3 flex items-center justify-center text-sm text-neutral-400">
+				<div class="rounded-xl bg-[--ft-frost] p-6 shadow-md">
+					<div class="mb-3 flex items-center justify-center text-sm text-[--ft-text-muted]">
 						<svg
 							class="text-success mr-2 h-4 w-4"
 							fill="none"
@@ -288,7 +288,7 @@
 						</svg>
 						Twoja sesja została bezpiecznie zakończona
 					</div>
-					<div class="space-y-1 text-xs text-neutral-500">
+					<div class="space-y-1 text-xs text-[--ft-text-muted]">
 						<p>Wszystkie dane sesji zostały usunięte z przeglądarki</p>
 						<p>Twoje konto pozostaje bezpieczne</p>
 					</div>

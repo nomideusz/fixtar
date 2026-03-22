@@ -56,7 +56,7 @@
 	<div class="page-container" in:fade={{ duration: 300 }}>
 		<div class="page-header" in:fly={{ y: -20, duration: 400, delay: 200 }}>
 			<h1 class="page-title">My Favorites</h1>
-			<p class="text-neutral-500">Products you've saved for later</p>
+			<p class="text-[--ft-text-muted]">Products you've saved for later</p>
 		</div>
 
 		<div class="favorites-container">
@@ -64,7 +64,7 @@
 				<div class="card empty-state-card" in:fly={{ y: 20, duration: 500, delay: 400 }}>
 					<div class="cyber-grid"></div>
 					<div class="empty-state">
-						<p class="text-neutral-500">You don't have any favorites yet.</p>
+						<p class="text-[--ft-text-muted]">You don't have any favorites yet.</p>
 						<a href="/products" class="btn btn-primary"> Browse Products </a>
 					</div>
 				</div>

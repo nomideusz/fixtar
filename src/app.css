@@ -139,6 +139,7 @@
 
 html {
 	scroll-behavior: smooth;
+	touch-action: manipulation;
 }
 
 body {
@@ -339,6 +340,39 @@ h4 {
 	margin-right: auto;
 	padding-left: var(--ft-gutter);
 	padding-right: var(--ft-gutter);
+}
+
+/*
+ * Page section spacing — consistent vertical rhythm
+ *
+ * Use these on the outermost content wrapper INSIDE each page,
+ * after any Hero / page-header.
+ *
+ *   .ft-section        — standard page section      (48 → 64px)
+ *   .ft-section-lg     — hero-adjacent / spacious    (64 → 96px)
+ *   .ft-section-sm     — compact (toolbars, sub-nav) (32 → 40px)
+ *
+ * Navbar clearance:
+ *   .ft-below-nav      — top-padding to clear fixed navbar (72px)
+ */
+
+.ft-section {
+	padding-top: clamp(48px, 6vh, 64px);
+	padding-bottom: clamp(48px, 6vh, 64px);
+}
+
+.ft-section-lg {
+	padding-top: clamp(64px, 8vh, 96px);
+	padding-bottom: clamp(64px, 8vh, 96px);
+}
+
+.ft-section-sm {
+	padding-top: clamp(32px, 4vh, 40px);
+	padding-bottom: clamp(32px, 4vh, 40px);
+}
+
+.ft-below-nav {
+	padding-top: 72px;
 }
 
 @layer utilities {

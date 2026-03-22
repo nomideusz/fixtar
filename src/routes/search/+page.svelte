@@ -55,7 +55,7 @@
 			<div class="group relative">
 				<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
 					<svg
-						class="group-focus-within:text-brand-600 h-5 w-5 text-neutral-400 transition-colors"
+						class="group-focus-within:text-brand-600 h-5 w-5 text-[--ft-text-muted] transition-colors"
 						fill="none"
 						stroke="currentColor"
 						viewBox="0 0 24 24"
@@ -84,7 +84,7 @@
 						aria-label="Wyczyść wyszukiwanie"
 					>
 						<svg
-							class="h-5 w-5 text-neutral-400 transition-colors group-hover/clear:text-neutral-400"
+							class="h-5 w-5 text-[--ft-text-muted] transition-colors group-hover/clear:text-[--ft-text-muted]"
 							fill="none"
 							stroke="currentColor"
 							viewBox="0 0 24 24"
@@ -118,7 +118,7 @@
 
 		<!-- Popular Searches -->
 		<div class="mt-8 text-center">
-			<p class="mb-3 text-sm text-neutral-500">Popularne wyszukiwania:</p>
+			<p class="mb-3 text-sm text-[--ft-text-muted]">Popularne wyszukiwania:</p>
 			<div class="flex flex-wrap justify-center gap-2">
 				{#each ['Pilarki', 'Wiertarki', 'Szlifierki', 'Spawarki', 'Narzędzia ogrodowe'] as term (term)}
 					<button
@@ -126,7 +126,7 @@
 							searchQuery = term;
 							handleSearchSubmit(new Event('submit'));
 						}}
-						class="cursor-pointer rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-neutral-300 transition-colors hover:bg-white/20"
+						class="cursor-pointer rounded-full bg-[--ft-frost] px-4 py-2 text-sm font-medium text-[--ft-text] transition-colors hover:bg-[--ft-line]"
 					>
 						{term}
 					</button>
@@ -138,7 +138,7 @@
 
 <!-- Main Content -->
 <div>
-	<div class="ft-container px-6 py-16 sm:px-8 lg:px-12">
+	<div class="ft-container ft-section-lg">
 		{#if data.error}
 			<div class="mx-auto max-w-2xl">
 				<div class="bg-danger-50 border-danger-light rounded-xl border p-6 text-center">
@@ -161,9 +161,9 @@
 			</div>
 		{:else if searchQuery && data.products.length === 0}
 			<div class="mx-auto max-w-2xl">
-				<div class="rounded-xl bg-white/5 p-12 text-center">
+				<div class="rounded-xl bg-[--ft-frost] p-12 text-center">
 					<svg
-						class="mx-auto mb-6 h-16 w-16 text-neutral-500"
+						class="mx-auto mb-6 h-16 w-16 text-[--ft-text-muted]"
 						fill="none"
 						stroke="currentColor"
 						viewBox="0 0 24 24"
@@ -176,12 +176,12 @@
 						/>
 					</svg>
 					<h3 class="mb-3 text-xl font-semibold text-[--ft-text]">Brak wyników</h3>
-					<p class="mb-6 text-neutral-400">
+					<p class="mb-6 text-[--ft-text-muted]">
 						Nie znaleźliśmy produktów pasujących do "{searchQuery}"
 					</p>
 					<div class="space-y-3">
-						<p class="text-sm text-neutral-500">Spróbuj:</p>
-						<ul class="inline-block space-y-2 text-left text-sm text-neutral-400">
+						<p class="text-sm text-[--ft-text-muted]">Spróbuj:</p>
+						<ul class="inline-block space-y-2 text-left text-sm text-[--ft-text-muted]">
 							<li class="flex items-start">
 								<svg
 									class="text-brand-500 mt-0.5 mr-2 h-4 w-4 shrink-0"
@@ -253,7 +253,7 @@
 		{:else}
 			<!-- Empty State - No search yet -->
 			<div class="mx-auto max-w-2xl">
-				<div class="from-white/5 to-white/5 rounded-2xl bg-linear-to-br p-12 text-center">
+				<div class="from-[--ft-frost] to-[--ft-frost] rounded-2xl bg-linear-to-br p-12 text-center">
 					<div class="relative">
 						<div class="absolute inset-0 flex items-center justify-center">
 							<div
@@ -275,7 +275,7 @@
 						</svg>
 					</div>
 					<h3 class="mb-3 text-2xl font-bold text-[--ft-text]">Rozpocznij wyszukiwanie</h3>
-					<p class="mx-auto mb-8 max-w-md text-neutral-400">
+					<p class="mx-auto mb-8 max-w-md text-[--ft-text-muted]">
 						Wpisz nazwę produktu, kategorię lub słowo kluczowe w polu wyszukiwania powyżej
 					</p>
 					<div class="flex justify-center">

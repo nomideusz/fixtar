@@ -2,7 +2,10 @@
 	import { cart, notifications } from '$lib/stores';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Card from '$lib/components/ui/Card.svelte';
+	import Breadcrumbs from '$lib/components/ui/Breadcrumbs.svelte';
 	import ProductCard from '$lib/components/ui/ProductCard.svelte';
+	import ProductGallery from '$lib/components/products/ProductGallery.svelte';
+	import { getStockInfo } from '$lib/utils/inventory';
 	import type { Product } from '$lib/stores/products.svelte';
 
 	interface Props {
@@ -17,44 +20,54 @@
 	const relatedProducts = $derived(data.relatedProducts);
 
 	let quantity = $state(1);
-	let selectedImageIndex = $state(0);
-	let imageZoomed = $state(false);
-	let zoomLevel = $state(1);
-	let panX = $state(0);
-	let panY = $state(0);
-	let isDragging = $state(false);
-	let dragStartX = $state(0);
-	let dragStartY = $state(0);
 
-	// Check if product is in stock
-	function isInStock(product: Product): boolean {
-		if (!product.inventory?.trackQuantity) return true;
-		return product.inventory.quantity > 0;
-	}
+	// --- Derived Values ---
 
-	// Get stock status
-	function getStockStatus(product: Product): string {
-		if (!product.inventory?.trackQuantity) return 'Dostępny';
+	const stock = $derived(getStockInfo(product));
 
-		const qty = product.inventory.quantity;
-		const lowThreshold = product.inventory.lowStockThreshold || 10;
+	const hasDiscount = $derived(
+		!!product.compareAtPrice && product.compareAtPrice > product.price
+	);
+	const discountPercent = $derived(
+		hasDiscount
+			? Math.round(((product.compareAtPrice! - product.price) / product.compareAtPrice!) * 100)
+			: 0
+	);
 
-		if (qty === 0) return 'Wyprzedany';
-		if (qty <= lowThreshold) return `Mało sztuk (${qty})`;
-		return 'Dostępny';
-	}
+	const allImages = $derived(
+		[product.mainImage, ...(product.gallery || [])].filter(Boolean) as string[]
+	);
 
-	// Get stock color
-	function getStockColor(product: Product): string {
-		if (!product.inventory?.trackQuantity) return 'text-success';
+	const imageBadges = $derived.by(() => {
+		const badges: Array<{ label: string; class: string }> = [];
+		if (product.featured) badges.push({ label: 'Polecany', class: 'bg-brand-600' });
+		if (hasDiscount) badges.push({ label: `-${discountPercent}%`, class: 'bg-danger' });
+		if (!stock.inStock) badges.push({ label: 'Wyprzedane', class: 'bg-neutral-600' });
+		return badges;
+	});
 
-		const qty = product.inventory.quantity;
-		const lowThreshold = product.inventory.lowStockThreshold || 10;
+	const maxQuantity = $derived(
+		product.inventory?.trackQuantity ? product.inventory.quantity : 99
+	);
 
-		if (qty === 0) return 'text-danger';
-		if (qty <= lowThreshold) return 'text-warning';
-		return 'text-success';
-	}
+	const primaryCategory = $derived(product.expand?.categories?.[0]);
+
+	const breadcrumbItems = $derived.by(() => {
+		const items = [
+			{ label: 'Strona główna', href: '/' },
+			{ label: 'Produkty', href: '/products' }
+		];
+		if (primaryCategory) {
+			items.push({
+				label: primaryCategory.name,
+				href: `/products?category=${primaryCategory.slug}`
+			});
+		}
+		items.push({ label: product.name, href: '#' });
+		return items;
+	});
+
+	// --- Actions ---
 
 	function addToCart() {
 		cart.addItem(
@@ -62,121 +75,17 @@
 				productId: product.id,
 				name: product.name,
 				price: product.price,
-				image: product.mainImage // Use the already processed URL
+				image: product.mainImage
 			},
 			quantity
 		);
-
 		notifications.success(`Dodano ${quantity} ${product.name} do koszyka`);
 	}
 
-	function increaseQuantity() {
-		const maxQuantity = product.inventory?.trackQuantity ? product.inventory.quantity : 99;
-		if (quantity < maxQuantity) {
-			quantity++;
-		}
-	}
-
-	function decreaseQuantity() {
-		if (quantity > 1) {
-			quantity--;
-		}
-	}
-
-	// Computed values - use the already processed URLs from server
-	const inStock = $derived(isInStock(product));
-	const stockStatus = $derived(getStockStatus(product));
-	const stockColor = $derived(getStockColor(product));
-	const hasDiscount = $derived(product.compareAtPrice && product.compareAtPrice > product.price);
-	const discountPercent = $derived(
-		hasDiscount
-			? Math.round(((product.compareAtPrice! - product.price) / product.compareAtPrice!) * 100)
-			: 0
-	);
-	const mainImageUrl = $derived(product.mainImage || '');
-	const galleryImages = $derived(product.gallery || []);
-	const allImages = $derived([mainImageUrl, ...galleryImages].filter(Boolean));
-
-	// Zoom functionality
-	function zoomIn() {
-		zoomLevel = Math.min(zoomLevel * 1.5, 5);
-	}
-
-	function zoomOut() {
-		zoomLevel = Math.max(zoomLevel / 1.5, 0.5);
-	}
-
-	function resetZoom() {
-		zoomLevel = 1;
-		panX = 0;
-		panY = 0;
-	}
-
-	function closeZoom() {
-		imageZoomed = false;
-		resetZoom();
-	}
-
-	function handleWheel(event: WheelEvent) {
-		event.preventDefault();
-		if (event.deltaY < 0) {
-			zoomIn();
-		} else {
-			zoomOut();
-		}
-	}
-
-	function handleMouseDown(event: MouseEvent) {
-		if (zoomLevel > 1) {
-			isDragging = true;
-			dragStartX = event.clientX - panX;
-			dragStartY = event.clientY - panY;
-		}
-	}
-
-	function handleMouseMove(event: MouseEvent) {
-		if (isDragging && zoomLevel > 1) {
-			panX = event.clientX - dragStartX;
-			panY = event.clientY - dragStartY;
-		}
-	}
-
-	function handleMouseUp() {
-		isDragging = false;
-	}
-
-	function handleKeyDown(event: KeyboardEvent) {
-		if (!imageZoomed) return;
-
-		switch (event.key) {
-			case 'Escape':
-				closeZoom();
-				break;
-			case '+':
-			case '=':
-				event.preventDefault();
-				zoomIn();
-				break;
-			case '-':
-				event.preventDefault();
-				zoomOut();
-				break;
-			case '0':
-				event.preventDefault();
-				resetZoom();
-				break;
-			case 'ArrowLeft':
-				if (selectedImageIndex > 0) {
-					selectedImageIndex--;
-					resetZoom();
-				}
-				break;
-			case 'ArrowRight':
-				if (selectedImageIndex < allImages.length - 1) {
-					selectedImageIndex++;
-					resetZoom();
-				}
-				break;
+	function adjustQuantity(delta: number) {
+		const newQty = quantity + delta;
+		if (newQty >= 1 && newQty <= maxQuantity) {
+			quantity = newQty;
 		}
 	}
 </script>
@@ -191,200 +100,28 @@
 	/>
 </svelte:head>
 
-<!-- Background -->
 <div class="min-h-screen">
-	<div class="ft-container py-8">
-		<!-- Enhanced Breadcrumb -->
+	<div class="ft-container ft-section">
+		<!-- Breadcrumb -->
 		<nav class="mb-8">
-			<ol class="flex items-center space-x-2 text-sm">
-				<li>
-					<a href="/" class="hover:text-brand-600 font-medium text-[--ft-text-secondary] transition-colors">
-						Strona główna
-					</a>
-				</li>
-				<li>
-					<svg class="h-4 w-4 text-[--ft-text-faint]" fill="currentColor" viewBox="0 0 20 20">
-						<path
-							fill-rule="evenodd"
-							d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-							clip-rule="evenodd"
-						/>
-					</svg>
-				</li>
-				<li>
-					<a
-						href="/products"
-						class="hover:text-brand-600 font-medium text-[--ft-text-secondary] transition-colors"
-					>
-						Produkty
-					</a>
-				</li>
-				{#if product.expand?.categories && product.expand.categories.length > 0}
-					<li>
-						<svg class="h-4 w-4 text-[--ft-text-faint]" fill="currentColor" viewBox="0 0 20 20">
-							<path
-								fill-rule="evenodd"
-								d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-								clip-rule="evenodd"
-							/>
-						</svg>
-					</li>
-					<li>
-						<a
-							href="/products?category={product.expand.categories[0].slug}"
-							class="hover:text-brand-600 font-medium text-[--ft-text-secondary] transition-colors"
-						>
-							{product.expand.categories[0].name}
-						</a>
-					</li>
-				{/if}
-				<li>
-					<svg class="h-4 w-4 text-[--ft-text-faint]" fill="currentColor" viewBox="0 0 20 20">
-						<path
-							fill-rule="evenodd"
-							d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-							clip-rule="evenodd"
-						/>
-					</svg>
-				</li>
-				<li class="font-medium text-[--ft-text]">{product.name}</li>
-			</ol>
+			<Breadcrumbs items={breadcrumbItems} />
 		</nav>
 
 		<div class="grid grid-cols-1 gap-12 lg:grid-cols-2">
-			<!-- Enhanced Product Images -->
+			<!-- Product Images -->
 			<div class="space-y-6">
-				<Card class="overflow-hidden">
-					{#if allImages.length > 0}
-						<div class="space-y-4">
-							<!-- Main Image with Enhanced Design -->
-							<div class="group relative">
-								<div class="aspect-square w-full overflow-hidden rounded-xl bg-[--ft-surface-tertiary]">
-									<button
-										onclick={() => (imageZoomed = true)}
-										class="focus:ring-brand-500 h-full w-full rounded-xl focus:ring-2 focus:ring-offset-2 focus:outline-none"
-										aria-label="Powiększ zdjęcie produktu"
-									>
-										<img
-											src={allImages[selectedImageIndex]}
-											alt={product.name}
-											class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-											onerror={(e) => {
-												console.error('Image failed to load:', allImages[selectedImageIndex]);
-												console.error('Error event:', e);
-											}}
-											onload={() => {
-												console.log('Image loaded successfully:', allImages[selectedImageIndex]);
-											}}
-										/>
-									</button>
-								</div>
-
-								<!-- Zoom overlay -->
-								<div
-									class="pointer-events-none absolute inset-0 flex items-center justify-center bg-[--ft-surface-overlay] opacity-0 transition-all duration-300 group-hover:opacity-100"
-								>
-									<div
-										class="rounded-lg bg-[--ft-card] px-3 py-2 text-sm font-medium text-[--ft-text] backdrop-blur-sm"
-									>
-										<svg
-											class="mr-1 inline h-4 w-4"
-											fill="none"
-											stroke="currentColor"
-											viewBox="0 0 24 24"
-										>
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												stroke-width="2"
-												d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-											/>
-										</svg>
-										Kliknij aby powiększyć
-									</div>
-								</div>
-
-								<!-- Enhanced Badges -->
-								<div class="pointer-events-none absolute top-4 left-4 flex flex-col gap-2">
-									{#if product.featured}
-										<span
-											class="bg-brand-600 rounded-lg px-3 py-1.5 text-xs font-semibold !text-white shadow-lg"
-										>
-											Polecany
-										</span>
-									{/if}
-									{#if hasDiscount}
-										<span
-											class="bg-danger rounded-lg px-3 py-1.5 text-xs font-semibold !text-white shadow-lg"
-										>
-											-{discountPercent}%
-										</span>
-									{/if}
-									{#if !inStock}
-										<span
-											class="rounded-lg bg-neutral-600 px-3 py-1.5 text-xs font-semibold !text-white shadow-lg"
-										>
-											Wyprzedane
-										</span>
-									{/if}
-								</div>
-							</div>
-
-							<!-- Enhanced Image Thumbnails -->
-							{#if allImages.length > 1}
-								<div class="flex space-x-3 overflow-x-auto pb-2">
-									{#each allImages as image, index (image)}
-										<button
-											onclick={() => (selectedImageIndex = index)}
-											class="h-20 w-20 shrink-0 overflow-hidden rounded-xl border-2 transition-all duration-200 {selectedImageIndex ===
-											index
-												? 'border-brand-500 ring-brand-200 ring-2'
-												: 'border-[--ft-border] hover:border-[--ft-border]'}"
-										>
-											<img
-												src={image}
-												alt={`${product.name} widok ${index + 1}`}
-												class="h-full w-full object-cover"
-											/>
-										</button>
-									{/each}
-								</div>
-							{/if}
-						</div>
-					{:else}
-						<div class="flex h-96 items-center justify-center rounded-xl bg-[--ft-surface-tertiary]">
-							<div class="text-center">
-								<svg
-									class="mx-auto mb-4 h-16 w-16 text-[--ft-text-faint]"
-									fill="none"
-									stroke="currentColor"
-									viewBox="0 0 24 24"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-									/>
-								</svg>
-								<p class="text-[--ft-text-secondary]">Brak zdjęcia produktu</p>
-							</div>
-						</div>
-					{/if}
-				</Card>
+				<ProductGallery images={allImages} productName={product.name} badges={imageBadges} />
 			</div>
 
-			<!-- Enhanced Product Info -->
+			<!-- Product Info -->
 			<div class="space-y-8">
 				<!-- Header -->
 				<div>
-					<div class="mb-4 flex items-start justify-between">
-						<h1 class="text-3xl leading-tight font-bold text-[--ft-text] lg:text-4xl">
-							{product.name}
-						</h1>
-					</div>
+					<h1 class="mb-4 text-3xl leading-tight font-bold text-[--ft-text] lg:text-4xl">
+						{product.name}
+					</h1>
 
-					<!-- Enhanced Price and Stock -->
+					<!-- Price & Stock -->
 					<div class="space-y-4">
 						<div class="flex items-center gap-4">
 							<span class="text-brand-600 text-4xl font-bold">
@@ -395,7 +132,9 @@
 									<span class="text-xl text-[--ft-text-secondary] line-through">
 										{product.compareAtPrice?.toFixed(2)} zł
 									</span>
-									<span class="bg-danger rounded-lg px-2 py-1 text-sm font-semibold !text-white">
+									<span
+										class="bg-danger rounded-lg px-2 py-1 text-sm font-semibold !text-white"
+									>
 										-{discountPercent}%
 									</span>
 								</div>
@@ -404,9 +143,11 @@
 
 						<div class="flex items-center gap-3">
 							<div class="flex items-center gap-2">
-								<div class="h-2 w-2 rounded-full {inStock ? 'bg-success' : 'bg-danger'}"></div>
-								<span class="text-sm font-semibold {stockColor}">
-									{stockStatus}
+								<div
+									class="h-2 w-2 rounded-full {stock.inStock ? 'bg-success' : 'bg-danger'}"
+								></div>
+								<span class="text-sm font-semibold {stock.colorClass}">
+									{stock.label}
 								</span>
 							</div>
 
@@ -419,8 +160,8 @@
 					</div>
 				</div>
 
-				<!-- Enhanced Categories -->
-				{#if product.expand?.categories && product.expand.categories.length > 0}
+				<!-- Categories -->
+				{#if product.expand?.categories?.length}
 					<Card glass={true} class="p-4">
 						<h3 class="mb-3 text-sm font-semibold text-[--ft-text]">Kategorie</h3>
 						<div class="flex flex-wrap gap-2">
@@ -429,7 +170,12 @@
 									href="/products?category={category.slug}"
 									class="bg-brand-50 hover:bg-brand-100 text-brand-700 inline-flex items-center rounded-lg px-3 py-1.5 text-sm font-medium transition-colors"
 								>
-									<svg class="mr-1 h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<svg
+										class="mr-1 h-3 w-3"
+										fill="none"
+										stroke="currentColor"
+										viewBox="0 0 24 24"
+									>
 										<path
 											stroke-linecap="round"
 											stroke-linejoin="round"
@@ -444,7 +190,7 @@
 					</Card>
 				{/if}
 
-				<!-- Enhanced Description -->
+				<!-- Description -->
 				{#if product.description || product.shortDescription}
 					<Card class="p-6">
 						<h3 class="mb-4 text-lg font-semibold text-[--ft-text]">Opis produktu</h3>
@@ -462,27 +208,37 @@
 					</Card>
 				{/if}
 
-				{#if inStock}
-					<!-- Enhanced Purchase Section -->
-					<Card class="from-brand-500/100/8 to-accent-500/100/8 border-brand-500/20 border bg-linear-to-br p-6">
+				<!-- Purchase / Out of Stock -->
+				{#if stock.inStock}
+					<Card
+						class="from-brand-500/100/8 to-accent-500/100/8 border-brand-500/20 border bg-linear-to-br p-6"
+					>
 						<div class="space-y-6">
 							<!-- Quantity Selector -->
 							<div>
-								<label for="quantity" class="mb-3 block text-sm font-semibold text-[--ft-text]">
+								<label
+									for="quantity"
+									class="mb-3 block text-sm font-semibold text-[--ft-text]"
+								>
 									Ilość
 								</label>
 								<div class="flex items-center gap-4">
 									<div
-										class="flex items-center rounded-xl border border-[--ft-border] bg-[--ft-card] shadow-sm"
+										class="flex items-center rounded-xl border border-[--ft-line] bg-[--ft-surface] shadow-sm"
 									>
 										<Button
 											variant="ghost"
 											size="sm"
-											onclick={decreaseQuantity}
+											onclick={() => adjustQuantity(-1)}
 											disabled={quantity <= 1}
 											class="rounded-l-xl rounded-r-none border-0"
 										>
-											<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<svg
+												class="h-4 w-4"
+												fill="none"
+												stroke="currentColor"
+												viewBox="0 0 24 24"
+											>
 												<path
 													stroke-linecap="round"
 													stroke-linejoin="round"
@@ -499,12 +255,16 @@
 										<Button
 											variant="ghost"
 											size="sm"
-											onclick={increaseQuantity}
-											disabled={product.inventory?.trackQuantity &&
-												quantity >= product.inventory.quantity}
+											onclick={() => adjustQuantity(1)}
+											disabled={quantity >= maxQuantity}
 											class="rounded-l-none rounded-r-xl border-0"
 										>
-											<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<svg
+												class="h-4 w-4"
+												fill="none"
+												stroke="currentColor"
+												viewBox="0 0 24 24"
+											>
 												<path
 													stroke-linecap="round"
 													stroke-linejoin="round"
@@ -523,23 +283,28 @@
 								</div>
 							</div>
 
-							<!-- Total Price Display -->
+							<!-- Total Price -->
 							<div
-								class="flex items-center justify-between rounded-xl border border-[--ft-border] bg-[--ft-card] px-4 py-4"
+								class="flex items-center justify-between rounded-xl border border-[--ft-line] bg-[--ft-surface] px-4 py-4"
 							>
-								<span class="text-lg font-semibold text-[--ft-text]"> Łączna cena: </span>
+								<span class="text-lg font-semibold text-[--ft-text]">Łączna cena:</span>
 								<span class="text-brand-600 text-2xl font-bold">
 									{(product.price * quantity).toFixed(2)} zł
 								</span>
 							</div>
 
-							<!-- Add to Cart Button -->
+							<!-- Add to Cart -->
 							<Button
 								onclick={addToCart}
 								class="w-full transform py-4 text-lg font-semibold shadow-lg transition-all duration-200 hover:scale-[1.02] hover:shadow-xl"
 								size="lg"
 							>
-								<svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<svg
+									class="mr-2 h-5 w-5"
+									fill="none"
+									stroke="currentColor"
+									viewBox="0 0 24 24"
+								>
 									<path
 										stroke-linecap="round"
 										stroke-linejoin="round"
@@ -550,8 +315,10 @@
 								Dodaj do koszyka
 							</Button>
 
-							<!-- Additional Info -->
-							<div class="grid grid-cols-1 gap-4 text-sm text-[--ft-text-faint] sm:grid-cols-2">
+							<!-- Perks -->
+							<div
+								class="grid grid-cols-1 gap-4 text-sm text-[--ft-text-faint] sm:grid-cols-2"
+							>
 								<div class="flex items-center gap-2">
 									<svg
 										class="text-success h-4 w-4"
@@ -588,7 +355,6 @@
 						</div>
 					</Card>
 				{:else}
-					<!-- Out of Stock -->
 					<Card class="bg-danger-500/10 border-danger-500/20 border p-6">
 						<div class="text-center">
 							<svg
@@ -604,8 +370,12 @@
 									d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
 								/>
 							</svg>
-							<h3 class="mb-2 text-lg font-semibold text-[--ft-text]">Produkt niedostępny</h3>
-							<p class="mb-4 text-[--ft-text-faint]">Ten produkt jest obecnie wyprzedany</p>
+							<h3 class="mb-2 text-lg font-semibold text-[--ft-text]">
+								Produkt niedostępny
+							</h3>
+							<p class="mb-4 text-[--ft-text-faint]">
+								Ten produkt jest obecnie wyprzedany
+							</p>
 							<Button disabled class="w-full" size="lg">Wyprzedane</Button>
 						</div>
 					</Card>
@@ -613,192 +383,19 @@
 			</div>
 		</div>
 
-		<!-- Enhanced Related Products -->
-		{#if relatedProducts && relatedProducts.length > 0}
-			<div class="mt-20">
-				<Card class="p-8">
-					<div class="mb-10 text-center">
-						<h2 class="mb-4 text-3xl font-bold text-[--ft-text]">Podobne produkty</h2>
-						<p class="mx-auto max-w-2xl text-[--ft-text-faint]">
-							Sprawdź inne produkty, które mogą Cię zainteresować
-						</p>
-					</div>
-					<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-						{#each relatedProducts as relatedProduct (relatedProduct.id)}
-							<ProductCard product={relatedProduct} />
-						{/each}
-					</div>
-				</Card>
-			</div>
+		<!-- Related Products -->
+		{#if relatedProducts?.length > 0}
+			<section class="mt-16 border-t border-[--ft-line] pt-12">
+				<div class="mb-8">
+					<h4 class="ft-label mb-2">Polecane</h4>
+					<h2 class="text-2xl font-bold text-[--ft-text-strong]" style="font-family:var(--font-display);letter-spacing:-0.02em">Podobne produkty</h2>
+				</div>
+				<div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+					{#each relatedProducts as relatedProduct (relatedProduct.id)}
+						<ProductCard product={relatedProduct} />
+					{/each}
+				</div>
+			</section>
 		{/if}
 	</div>
 </div>
-
-<!-- Image Zoom Modal -->
-{#if imageZoomed && allImages.length > 0}
-	<div
-		class="fixed inset-0 z-50 flex items-center justify-center bg-[--ft-surface-overlay]"
-		onkeydown={handleKeyDown}
-		role="dialog"
-		aria-modal="true"
-		aria-label="Podgląd zdjęcia produktu"
-		tabindex="-1"
-	>
-		<!-- Controls Bar -->
-		<div class="absolute top-4 left-1/2 z-10 -translate-x-1/2 transform">
-			<div class="flex items-center gap-2 rounded-lg bg-[--ft-surface-tertiary] p-2 backdrop-blur-sm">
-				<!-- Navigation arrows for multiple images -->
-				{#if allImages.length > 1}
-					<button
-						onclick={() => {
-							selectedImageIndex = Math.max(0, selectedImageIndex - 1);
-							resetZoom();
-						}}
-						disabled={selectedImageIndex === 0}
-						class="p-2 text-[--ft-text] transition-colors hover:text-[--ft-text-muted] disabled:cursor-not-allowed disabled:opacity-50"
-						aria-label="Poprzednie zdjęcie"
-					>
-						<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M15 19l-7-7 7-7"
-							/>
-						</svg>
-					</button>
-				{/if}
-
-				<!-- Zoom controls -->
-				<button
-					onclick={zoomOut}
-					class="p-2 text-[--ft-text] transition-colors hover:text-[--ft-text-muted]"
-					aria-label="Pomniejsz"
-				>
-					<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
-					</svg>
-				</button>
-
-				<span class="min-w-15 px-2 text-center text-sm font-medium text-[--ft-text]">
-					{Math.round(zoomLevel * 100)}%
-				</span>
-
-				<button
-					onclick={zoomIn}
-					class="p-2 text-[--ft-text] transition-colors hover:text-[--ft-text-muted]"
-					aria-label="Powiększ"
-				>
-					<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M12 4v16m8-8H4"
-						/>
-					</svg>
-				</button>
-
-				<button
-					onclick={resetZoom}
-					class="p-2 text-[--ft-text] transition-colors hover:text-[--ft-text-muted]"
-					aria-label="Resetuj powiększenie"
-				>
-					<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-						/>
-					</svg>
-				</button>
-
-				{#if allImages.length > 1}
-					<button
-						onclick={() => {
-							selectedImageIndex = Math.min(allImages.length - 1, selectedImageIndex + 1);
-							resetZoom();
-						}}
-						disabled={selectedImageIndex === allImages.length - 1}
-						class="p-2 text-[--ft-text] transition-colors hover:text-[--ft-text-muted] disabled:cursor-not-allowed disabled:opacity-50"
-						aria-label="Następne zdjęcie"
-					>
-						<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M9 5l7 7-7 7"
-							/>
-						</svg>
-					</button>
-				{/if}
-			</div>
-		</div>
-
-		<!-- Close button -->
-		<button
-			onclick={closeZoom}
-			class="absolute top-4 right-4 z-10 rounded-lg bg-[--ft-surface-tertiary] p-2 text-[--ft-text] backdrop-blur-sm transition-colors hover:text-[--ft-text-muted]"
-			aria-label="Zamknij podgląd"
-		>
-			<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-				<path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					stroke-width="2"
-					d="M6 18L18 6M6 6l12 12"
-				/>
-			</svg>
-		</button>
-
-		<!-- Image container -->
-		<div
-			class="relative flex h-full w-full items-center justify-center overflow-hidden p-4 cursor-{zoomLevel >
-			1
-				? 'grab'
-				: 'zoom-in'} {isDragging ? 'cursor-grabbing' : ''}"
-			role="button"
-			tabindex="0"
-			onwheel={handleWheel}
-			onmousedown={handleMouseDown}
-			onmousemove={handleMouseMove}
-			onmouseup={handleMouseUp}
-			onmouseleave={handleMouseUp}
-			onclick={zoomLevel === 1 ? zoomIn : undefined}
-			onkeydown={(e) => {
-				if (e.key === 'Enter' || e.key === ' ') {
-					e.preventDefault();
-					if (zoomLevel === 1) zoomIn();
-				}
-			}}
-			aria-label="Obraz produktu, kliknij aby powiększyć"
-		>
-			<img
-				src={allImages[selectedImageIndex]}
-				alt={product.name}
-				class="max-w-none transition-transform duration-200 select-none"
-				style="transform: scale({zoomLevel}) translate({panX / zoomLevel}px, {panY / zoomLevel}px)"
-				draggable="false"
-			/>
-		</div>
-
-		<!-- Image counter -->
-		{#if allImages.length > 1}
-			<div class="absolute bottom-4 left-1/2 -translate-x-1/2 transform">
-				<div class="rounded-lg bg-[--ft-surface-tertiary] px-3 py-1 text-sm text-[--ft-text] backdrop-blur-sm">
-					{selectedImageIndex + 1} / {allImages.length}
-				</div>
-			</div>
-		{/if}
-
-		<!-- Instructions -->
-		<div class="absolute right-4 bottom-4 space-y-1 text-xs text-[--ft-text]/70">
-			<div>Kliknij aby powiększyć</div>
-			<div>Przewiń aby zmienić powiększenie</div>
-			<div>Przeciągnij aby przesunąć</div>
-			<div>ESC aby zamknąć</div>
-		</div>
-	</div>
-{/if}

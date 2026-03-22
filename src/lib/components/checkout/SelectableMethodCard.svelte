@@ -1,0 +1,105 @@
+<script lang="ts">
+	import type { Snippet } from 'svelte';
+
+	interface Props {
+		name: string;
+		value: string;
+		selected: boolean;
+		onSelect: () => void;
+		variant?: 'brand' | 'accent';
+		details: Snippet;
+	}
+
+	let { name, value, selected, onSelect, variant = 'brand', details }: Props = $props();
+</script>
+
+<label class="method-card {variant} {selected ? 'selected' : ''}">
+	<input
+		type="radio"
+		{name}
+		{value}
+		checked={selected}
+		onchange={onSelect}
+		class="sr-only"
+	/>
+	<div class="flex items-start p-6">
+		<div class="mt-1 shrink-0">
+			<div
+				class="radio-dot {selected ? 'checked' : ''}"
+			>
+				{#if selected}
+					<div class="dot"></div>
+				{/if}
+			</div>
+		</div>
+		<div class="ml-4 flex-1">
+			{@render details()}
+		</div>
+	</div>
+</label>
+
+<style>
+	.method-card {
+		display: block;
+		border: 2px solid var(--ft-line);
+		border-radius: 1rem;
+		cursor: pointer;
+		transition: all 0.2s;
+		background: var(--ft-surface);
+	}
+
+	.method-card.accent:hover {
+		border-color: var(--color-accent-300);
+		box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+	}
+
+	.method-card.accent.selected {
+		border-color: var(--color-accent-600);
+		background: var(--color-accent-50);
+		box-shadow: 0 0 0 1px var(--color-accent-600 / 0.1);
+	}
+
+	.method-card.brand:hover {
+		border-color: var(--color-brand-400);
+		box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+	}
+
+	.method-card.brand.selected {
+		border-color: var(--color-brand-500);
+		background: var(--color-brand-50);
+		box-shadow: 0 0 0 1px var(--color-brand-500 / 0.1);
+	}
+
+	.radio-dot {
+		position: relative;
+		height: 1rem;
+		width: 1rem;
+		border-radius: 9999px;
+		border: 2px solid var(--ft-line);
+	}
+
+	.method-card.accent .radio-dot.checked {
+		border-color: var(--color-accent-600);
+	}
+
+	.method-card.brand .radio-dot.checked {
+		border-color: var(--color-brand-600);
+	}
+
+	.dot {
+		position: absolute;
+		top: 2px;
+		left: 2px;
+		height: 0.5rem;
+		width: 0.5rem;
+		border-radius: 9999px;
+	}
+
+	.method-card.accent .dot {
+		background-color: var(--color-accent-600);
+	}
+
+	.method-card.brand .dot {
+		background-color: var(--color-brand-600);
+	}
+</style>

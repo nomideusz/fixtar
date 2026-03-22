@@ -52,14 +52,14 @@
 			>
 				<div class="space-y-6">
 					<div>
-						<label for="type" class="mb-2 block text-sm font-medium text-neutral-300">
+						<label for="type" class="mb-2 block text-sm font-medium text-[--ft-text]">
 							Address Type
 						</label>
 						<select
 							id="type"
 							name="type"
 							required
-							class="focus:ring-brand-500 focus:border-brand-500 w-full rounded-md border border-white/15 px-3 py-2 shadow-sm focus:outline-none"
+							class="focus:ring-brand-500 focus:border-brand-500 w-full rounded-md border border-[--ft-line] px-3 py-2 shadow-sm focus:outline-none"
 						>
 							<option value="Home">Home</option>
 							<option value="Work">Work</option>
@@ -68,7 +68,7 @@
 					</div>
 
 					<div>
-						<label for="street" class="mb-2 block text-sm font-medium text-neutral-300">
+						<label for="street" class="mb-2 block text-sm font-medium text-[--ft-text]">
 							Street Address *
 						</label>
 						<input
@@ -77,13 +77,13 @@
 							name="street"
 							required
 							placeholder="123 Main Street"
-							class="focus:ring-brand-500 focus:border-brand-500 w-full rounded-md border border-white/15 px-3 py-2 shadow-sm focus:outline-none"
+							class="focus:ring-brand-500 focus:border-brand-500 w-full rounded-md border border-[--ft-line] px-3 py-2 shadow-sm focus:outline-none"
 						/>
 					</div>
 
 					<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
 						<div>
-							<label for="city" class="mb-2 block text-sm font-medium text-neutral-300">
+							<label for="city" class="mb-2 block text-sm font-medium text-[--ft-text]">
 								City *
 							</label>
 							<input
@@ -92,12 +92,12 @@
 								name="city"
 								required
 								placeholder="Warsaw"
-								class="focus:ring-brand-500 focus:border-brand-500 w-full rounded-md border border-white/15 px-3 py-2 shadow-sm focus:outline-none"
+								class="focus:ring-brand-500 focus:border-brand-500 w-full rounded-md border border-[--ft-line] px-3 py-2 shadow-sm focus:outline-none"
 							/>
 						</div>
 
 						<div>
-							<label for="postalCode" class="mb-2 block text-sm font-medium text-neutral-300">
+							<label for="postalCode" class="mb-2 block text-sm font-medium text-[--ft-text]">
 								Postal Code *
 							</label>
 							<input
@@ -106,20 +106,20 @@
 								name="postalCode"
 								required
 								placeholder="00-001"
-								class="focus:ring-brand-500 focus:border-brand-500 w-full rounded-md border border-white/15 px-3 py-2 shadow-sm focus:outline-none"
+								class="focus:ring-brand-500 focus:border-brand-500 w-full rounded-md border border-[--ft-line] px-3 py-2 shadow-sm focus:outline-none"
 							/>
 						</div>
 					</div>
 
 					<div>
-						<label for="country" class="mb-2 block text-sm font-medium text-neutral-300">
+						<label for="country" class="mb-2 block text-sm font-medium text-[--ft-text]">
 							Country *
 						</label>
 						<select
 							id="country"
 							name="country"
 							required
-							class="focus:ring-brand-500 focus:border-brand-500 w-full rounded-md border border-white/15 px-3 py-2 shadow-sm focus:outline-none"
+							class="focus:ring-brand-500 focus:border-brand-500 w-full rounded-md border border-[--ft-line] px-3 py-2 shadow-sm focus:outline-none"
 						>
 							<option value="">Select Country</option>
 							<option value="Poland">Poland</option>
@@ -139,15 +139,15 @@
 							id="default"
 							name="default"
 							value="true"
-							class="text-brand-600 focus:ring-brand-500 h-4 w-4 rounded border-white/15"
+							class="text-brand-600 focus:ring-brand-500 h-4 w-4 rounded border-[--ft-line]"
 						/>
-						<label for="default" class="ml-2 block text-sm text-neutral-300">
+						<label for="default" class="ml-2 block text-sm text-[--ft-text]">
 							Set as default address
 						</label>
 					</div>
 				</div>
 
-				<div class="mt-6 flex gap-3 border-t border-white/10 pt-6">
+				<div class="mt-6 flex gap-3 border-t border-[--ft-line] pt-6">
 					<Button type="submit" disabled={isSubmitting}>
 						{isSubmitting ? 'Adding Address...' : 'Add Address'}
 					</Button>

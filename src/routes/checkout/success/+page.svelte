@@ -60,7 +60,7 @@
 />
 
 <div class="min-h-screen">
-	<div class="ft-container px-6 py-16 sm:px-8 lg:px-12">
+	<div class="ft-container ft-section-lg">
 		<!-- Enhanced Success Header -->
 		<div class="mb-12 text-center">
 			<div class="relative mb-8 inline-block">
@@ -102,7 +102,7 @@
 						</svg>
 					</div>
 					<div class="text-left">
-						<p class="text-sm font-medium text-neutral-400">Numer zamówienia</p>
+						<p class="text-sm font-medium text-[--ft-text-muted]">Numer zamówienia</p>
 						<p class="text-2xl font-bold text-[--ft-text]">#{orderNumber}</p>
 					</div>
 				</div>
@@ -171,43 +171,43 @@
 
 					<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 						<div>
-							<h4 class="mb-2 text-sm font-semibold text-neutral-300">Nazwa odbiorcy</h4>
+							<h4 class="mb-2 text-sm font-semibold text-[--ft-text]">Nazwa odbiorcy</h4>
 							<p
-								class="rounded-xl border border-white/10 bg-white/5 p-3 text-lg font-bold text-[--ft-text]"
+								class="rounded-xl border border-[--ft-line] bg-[--ft-frost] p-3 text-lg font-bold text-[--ft-text]"
 							>
 								{data.order.metadata.paymentDetails.bankDetails.accountName}
 							</p>
 						</div>
 
 						<div>
-							<h4 class="mb-2 text-sm font-semibold text-neutral-300">Bank</h4>
+							<h4 class="mb-2 text-sm font-semibold text-[--ft-text]">Bank</h4>
 							<p
-								class="rounded-xl border border-white/10 bg-white/5 p-3 text-lg font-bold text-[--ft-text]"
+								class="rounded-xl border border-[--ft-line] bg-[--ft-frost] p-3 text-lg font-bold text-[--ft-text]"
 							>
 								{data.order.metadata.paymentDetails.bankDetails.bankName}
 							</p>
 						</div>
 
 						<div>
-							<h4 class="mb-2 text-sm font-semibold text-neutral-300">Numer konta</h4>
+							<h4 class="mb-2 text-sm font-semibold text-[--ft-text]">Numer konta</h4>
 							<p
-								class="rounded-xl border border-white/10 bg-white/5 p-3 font-mono text-lg font-bold tracking-wider text-[--ft-text]"
+								class="rounded-xl border border-[--ft-line] bg-[--ft-frost] p-3 font-mono text-lg font-bold tracking-wider text-[--ft-text]"
 							>
 								{data.order.metadata.paymentDetails.bankDetails.accountNumber}
 							</p>
 						</div>
 
 						<div>
-							<h4 class="mb-2 text-sm font-semibold text-neutral-300">SWIFT</h4>
+							<h4 class="mb-2 text-sm font-semibold text-[--ft-text]">SWIFT</h4>
 							<p
-								class="rounded-xl border border-white/10 bg-white/5 p-3 font-mono text-lg font-bold text-[--ft-text]"
+								class="rounded-xl border border-[--ft-line] bg-[--ft-frost] p-3 font-mono text-lg font-bold text-[--ft-text]"
 							>
 								{data.order.metadata.paymentDetails.bankDetails.swift}
 							</p>
 						</div>
 
 						<div class="md:col-span-2">
-							<h4 class="mb-2 text-sm font-semibold text-neutral-300">Tytuł przelewu</h4>
+							<h4 class="mb-2 text-sm font-semibold text-[--ft-text]">Tytuł przelewu</h4>
 							<p
 								class="bg-warning/10 border-warning/30 rounded-xl border-2 p-4 text-center text-lg font-bold text-[--ft-text]"
 							>
@@ -216,9 +216,9 @@
 						</div>
 
 						<div class="md:col-span-2">
-							<h4 class="mb-2 text-sm font-semibold text-neutral-300">Kwota do zapłaty</h4>
+							<h4 class="mb-2 text-sm font-semibold text-[--ft-text]">Kwota do zapłaty</h4>
 							<p
-								class="text-brand-600 rounded-xl border border-white/10 bg-white/5 p-4 text-center text-3xl font-bold"
+								class="text-brand-600 rounded-xl border border-[--ft-line] bg-[--ft-frost] p-4 text-center text-3xl font-bold"
 							>
 								{data.order.metadata.paymentDetails.bankDetails.amount}
 							</p>
@@ -256,7 +256,7 @@
 
 		<!-- Action Buttons -->
 		<div class="mb-16 text-center">
-			<p class="mb-8 text-lg text-neutral-400">
+			<p class="mb-8 text-lg text-[--ft-text-muted]">
 				Wysłaliśmy email z potwierdzeniem zamówienia i szczegółami dostawy na podany adres.
 			</p>
 
@@ -278,7 +278,7 @@
 				<Button
 					href="/products"
 					variant="outline"
-					class="hover:border-brand-500 hover:text-brand-600 rounded-2xl border-2 border-white/15 px-8 py-4 text-lg font-bold transition-all duration-300"
+					class="hover:border-brand-500 hover:text-brand-600 rounded-2xl border-2 border-[--ft-line] px-8 py-4 text-lg font-bold transition-all duration-300"
 				>
 					<svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path
@@ -320,7 +320,7 @@
 						<div class="space-y-4">
 							{#each data.order.items as item (item)}
 								<div
-									class="flex items-center space-x-4 rounded-xl bg-white/5 p-4 transition-colors duration-200 hover:bg-white/10"
+									class="flex items-center space-x-4 rounded-xl bg-[--ft-frost] p-4 transition-colors duration-200 hover:bg-[--ft-frost]"
 								>
 									{#if item.image}
 										<div class="h-20 w-20 shrink-0 overflow-hidden rounded-xl">
@@ -328,10 +328,10 @@
 										</div>
 									{:else}
 										<div
-											class="flex h-20 w-20 shrink-0 items-center justify-center rounded-xl bg-white/10"
+											class="flex h-20 w-20 shrink-0 items-center justify-center rounded-xl bg-[--ft-frost]"
 										>
 											<svg
-												class="h-10 w-10 text-neutral-400"
+												class="h-10 w-10 text-[--ft-text-muted]"
 												fill="none"
 												stroke="currentColor"
 												viewBox="0 0 24 24"
@@ -349,10 +349,10 @@
 									<div class="min-w-0 flex-1">
 										<h4 class="truncate text-lg font-bold text-[--ft-text]">{item.name}</h4>
 										<div class="mt-2 flex items-center space-x-4">
-											<span class="text-sm text-neutral-400"
+											<span class="text-sm text-[--ft-text-muted]"
 												>Ilość: <strong>{item.quantity}</strong></span
 											>
-											<span class="text-sm text-neutral-400"
+											<span class="text-sm text-[--ft-text-muted]"
 												>Cena: <strong>{formatCurrency(item.price)}</strong></span
 											>
 										</div>
@@ -369,10 +369,10 @@
 					{:else}
 						<div class="py-8 text-center">
 							<div
-								class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/10"
+								class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-[--ft-frost]"
 							>
 								<svg
-									class="h-8 w-8 text-neutral-400"
+									class="h-8 w-8 text-[--ft-text-muted]"
 									fill="none"
 									stroke="currentColor"
 									viewBox="0 0 24 24"
@@ -385,7 +385,7 @@
 									/>
 								</svg>
 							</div>
-							<p class="text-neutral-400">Brak szczegółów produktów w zamówieniu</p>
+							<p class="text-[--ft-text-muted]">Brak szczegółów produktów w zamówieniu</p>
 						</div>
 					{/if}
 				</Card>
@@ -420,30 +420,30 @@
 						</div>
 
 						{#if data.order.shippingAddress}
-							<div class="rounded-xl bg-white/5 p-6">
+							<div class="rounded-xl bg-[--ft-frost] p-6">
 								<div class="space-y-2">
 									<p class="text-lg font-bold text-[--ft-text]">
 										{data.order.shippingAddress.firstName}
 										{data.order.shippingAddress.lastName}
 									</p>
 									{#if data.order.shippingAddress.company}
-										<p class="font-medium text-neutral-400">{data.order.shippingAddress.company}</p>
+										<p class="font-medium text-[--ft-text-muted]">{data.order.shippingAddress.company}</p>
 									{/if}
-									<p class="text-neutral-400">{data.order.shippingAddress.street}</p>
+									<p class="text-[--ft-text-muted]">{data.order.shippingAddress.street}</p>
 									{#if data.order.shippingAddress.apartment}
-										<p class="text-neutral-400">
+										<p class="text-[--ft-text-muted]">
 											Mieszkanie {data.order.shippingAddress.apartment}
 										</p>
 									{/if}
-									<p class="text-neutral-400">
+									<p class="text-[--ft-text-muted]">
 										{data.order.shippingAddress.postalCode}
 										{data.order.shippingAddress.city}
 									</p>
-									<p class="text-neutral-400">{data.order.shippingAddress.voivodeship}</p>
+									<p class="text-[--ft-text-muted]">{data.order.shippingAddress.voivodeship}</p>
 								</div>
 							</div>
 						{:else}
-							<p class="text-neutral-400">Brak danych adresowych</p>
+							<p class="text-[--ft-text-muted]">Brak danych adresowych</p>
 						{/if}
 					</Card>
 
@@ -469,10 +469,10 @@
 						</div>
 
 						<div class="space-y-6">
-							<div class="flex items-center justify-between rounded-xl bg-white/5 p-4">
+							<div class="flex items-center justify-between rounded-xl bg-[--ft-frost] p-4">
 								<div class="flex items-center">
 									<svg
-										class="mr-3 h-5 w-5 text-neutral-400"
+										class="mr-3 h-5 w-5 text-[--ft-text-muted]"
 										fill="none"
 										stroke="currentColor"
 										viewBox="0 0 24 24"
@@ -484,17 +484,17 @@
 											d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
 										/>
 									</svg>
-									<span class="font-medium text-neutral-300">Płatność</span>
+									<span class="font-medium text-[--ft-text]">Płatność</span>
 								</div>
 								<span class="font-bold text-[--ft-text]">
 									{getPaymentMethodName(data.order.paymentMethod || 'card')}
 								</span>
 							</div>
 
-							<div class="flex items-center justify-between rounded-xl bg-white/5 p-4">
+							<div class="flex items-center justify-between rounded-xl bg-[--ft-frost] p-4">
 								<div class="flex items-center">
 									<svg
-										class="mr-3 h-5 w-5 text-neutral-400"
+										class="mr-3 h-5 w-5 text-[--ft-text-muted]"
 										fill="none"
 										stroke="currentColor"
 										viewBox="0 0 24 24"
@@ -506,7 +506,7 @@
 											d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
 										/>
 									</svg>
-									<span class="font-medium text-neutral-300">Dostawa</span>
+									<span class="font-medium text-[--ft-text]">Dostawa</span>
 								</div>
 								<span class="font-bold text-[--ft-text]">
 									{getShippingMethodName(data.order.shippingMethod || 'standard')}
@@ -546,7 +546,7 @@
 
 		<!-- Next Steps -->
 		<div class="mx-auto mt-16 max-w-4xl">
-			<Card class="from-brand-500/100/8 to-accent-500/100/8 border-2 border-white/10 bg-linear-to-br p-8">
+			<Card class="from-brand-500/100/8 to-accent-500/100/8 border-2 border-[--ft-line] bg-linear-to-br p-8">
 				<div class="text-center">
 					<div
 						class="bg-brand-100 mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl"
@@ -575,7 +575,7 @@
 							</div>
 							<div>
 								<h4 class="mb-1 font-bold text-[--ft-text]">Potwierdzenie email</h4>
-								<p class="text-sm text-neutral-400">
+								<p class="text-sm text-[--ft-text-muted]">
 									Sprawdź swoją skrzynkę pocztową w poszukiwaniu emaila z potwierdzeniem
 								</p>
 							</div>
@@ -588,7 +588,7 @@
 							</div>
 							<div>
 								<h4 class="mb-1 font-bold text-[--ft-text]">Przygotowanie</h4>
-								<p class="text-sm text-neutral-400">Przygotowujemy Twoje zamówienie do wysyłki</p>
+								<p class="text-sm text-[--ft-text-muted]">Przygotowujemy Twoje zamówienie do wysyłki</p>
 							</div>
 						</div>
 						<div class="flex items-start space-x-3">
@@ -599,7 +599,7 @@
 							</div>
 							<div>
 								<h4 class="mb-1 font-bold text-[--ft-text]">Dostawa</h4>
-								<p class="text-sm text-neutral-400">
+								<p class="text-sm text-[--ft-text-muted]">
 									Otrzymasz powiadomienie o wysyłce z numerem do śledzenia
 								</p>
 							</div>

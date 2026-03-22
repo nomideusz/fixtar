@@ -39,7 +39,7 @@
 <style>
 	.features {
 		border-top: 1px solid var(--ft-line);
-		padding: 56px 0;
+		padding: clamp(48px, 6vh, 64px) 0;
 	}
 
 	.features-inner {

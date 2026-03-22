@@ -103,7 +103,7 @@
 			case 5:
 				return 'bg-success';
 			default:
-				return 'bg-white/15';
+				return 'bg-[--ft-line]';
 		}
 	}
 </script>
@@ -113,13 +113,13 @@
 	<meta name="description" content="Utwórz konto w sklepie FixTar" />
 </svelte:head>
 
-<div class="min-h-screen py-12">
-	<div class="mx-auto max-w-md px-6">
+<div class="min-h-screen ft-section-lg">
+	<div class="ft-container"><div class="mx-auto max-w-md">
 		<!-- Simplified Logo Section -->
 		<div class="mb-8 text-center">
 			<img src={FixTarLogo} alt="FixTar" class="mx-auto mb-4 h-12 w-auto" />
 			<h1 class="mb-2 text-2xl font-bold text-[--ft-text]">Rejestracja</h1>
-			<p class="text-neutral-400">Utwórz nowe konto</p>
+			<p class="text-[--ft-text-muted]">Utwórz nowe konto</p>
 		</div>
 
 		<!-- Register Card -->
@@ -215,10 +215,10 @@
 					{#if formData.password}
 						<div class="mt-2">
 							<div class="mb-1 flex items-center justify-between">
-								<span class="text-xs text-neutral-400">Siła hasła</span>
-								<span class="text-xs text-neutral-500">{getPasswordStrengthText()}</span>
+								<span class="text-xs text-[--ft-text-muted]">Siła hasła</span>
+								<span class="text-xs text-[--ft-text-muted]">{getPasswordStrengthText()}</span>
 							</div>
-							<div class="h-1 w-full rounded-full bg-white/10">
+							<div class="h-1 w-full rounded-full bg-[--ft-frost]">
 								<div
 									class="h-1 rounded-full transition-all duration-300 {getPasswordStrengthColor()}"
 									style="width: {(passwordStrength / 5) * 100}%"
@@ -247,9 +247,9 @@
 								type="checkbox"
 								name="acceptTerms"
 								bind:checked={formData.acceptTerms}
-								class="text-brand-600 focus:ring-brand-500 mt-1 h-4 w-4 rounded border-white/15"
+								class="text-brand-600 focus:ring-brand-500 mt-1 h-4 w-4 rounded border-[--ft-line]"
 							/>
-							<span class="ml-2 text-neutral-300">
+							<span class="ml-2 text-[--ft-text]">
 								Akceptuję
 								<a
 									href="/regulamin"
@@ -275,10 +275,10 @@
 								type="checkbox"
 								name="acceptMarketing"
 								bind:checked={formData.acceptMarketing}
-								class="text-brand-600 focus:ring-brand-500 mt-1 h-4 w-4 rounded border-white/15"
+								class="text-brand-600 focus:ring-brand-500 mt-1 h-4 w-4 rounded border-[--ft-line]"
 							/>
-							<span class="ml-2 text-neutral-300">
-								Wyrażam zgodę na otrzymywanie informacji handlowych <span class="text-neutral-500"
+							<span class="ml-2 text-[--ft-text]">
+								Wyrażam zgodę na otrzymywanie informacji handlowych <span class="text-[--ft-text-muted]"
 									>(opcjonalnie)</span
 								>
 							</span>
@@ -314,10 +314,10 @@
 			<div class="mt-6">
 				<div class="relative">
 					<div class="absolute inset-0 flex items-center">
-						<div class="w-full border-t border-white/15"></div>
+						<div class="w-full border-t border-[--ft-line]"></div>
 					</div>
 					<div class="relative flex justify-center text-sm">
-						<span class="bg-white/5 px-2 text-neutral-500">lub</span>
+						<span class="bg-[--ft-frost] px-2 text-[--ft-text-muted]">lub</span>
 					</div>
 				</div>
 
@@ -360,7 +360,7 @@
 
 		<!-- Login Link -->
 		<div class="mt-6 text-center">
-			<p class="text-sm text-neutral-400">
+			<p class="text-sm text-[--ft-text-muted]">
 				Masz już konto?
 				<a href="/auth/login" class="text-brand-600 hover:text-brand-700 font-medium">
 					Zaloguj się
@@ -368,6 +368,7 @@
 			</p>
 		</div>
 	</div>
+</div>
 </div>
 
 <style>
@@ -377,17 +378,17 @@
 		justify-content: center;
 		width: 100%;
 		padding: 0.75rem;
-		border: 1px solid rgb(209 213 219);
+		border: 1px solid var(--ft-line);
 		border-radius: 0.5rem;
-		background: white;
+		background: var(--ft-surface);
 		font-size: 0.875rem;
-		color: rgb(55 65 81);
+		color: var(--ft-text);
 		transition: all 0.2s;
 		cursor: pointer;
 	}
 
 	.social-login-button:hover {
-		border-color: rgb(156 163 175);
-		background-color: rgb(249 250 251);
+		border-color: var(--ft-accent);
+		background-color: var(--ft-frost);
 	}
 </style>

@@ -7,7 +7,11 @@
 	import Input from '$lib/components/ui/Input.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import LoadingSpinner from '$lib/components/ui/LoadingSpinner.svelte';
-	import Hero from '$lib/components/ui/Hero.svelte';
+	import Breadcrumbs from '$lib/components/ui/Breadcrumbs.svelte';
+	import CategoryFilter from '$lib/components/products/CategoryFilter.svelte';
+	import MobileFilterPanel from '$lib/components/products/MobileFilterPanel.svelte';
+	import ProductListItem from '$lib/components/products/ProductListItem.svelte';
+	import ActiveFilters from '$lib/components/products/ActiveFilters.svelte';
 	import type { Product, Category } from '$lib/stores/products.svelte';
 
 	interface CategoryWithCount extends Category {
@@ -37,7 +41,7 @@
 	let selectedCategory = $state('');
 	let sortBy = $state('name');
 
-	// Sync state with data prop changes
+	// Sync state with server data
 	$effect(() => {
 		searchQuery = data.searchQuery;
 		selectedCategory = data.selectedCategory;
@@ -51,86 +55,99 @@
 	let priceRange = $state({ min: '0', max: '1000' });
 	let showInStock = $state(false);
 
-	// Get selected category name for breadcrumbs
+	// Derived values
 	const selectedCategoryName = $derived(
 		data.categories.find((cat) => cat.slug === selectedCategory)?.name ||
 			data.subcategories.find((cat) => cat.slug === selectedCategory)?.name ||
 			''
 	);
 
-	// Group categories by parent for sidebar - with product counts
-	const mainCategoriesWithSubs = $derived(
+	const categoriesWithSubs = $derived(
 		data.categories.map((category) => ({
 			...category,
 			subcategories: data.allSubcategories.filter((sub) => sub.parent === category.id)
 		}))
 	);
 
-	// Auto-expand category if it's selected or if any of its subcategories are selected
+	const hasActiveFilters = $derived(!!searchQuery || !!selectedCategory || showInStock);
+
+	const breadcrumbItems = $derived.by(() => {
+		const items = [{ label: 'Strona główna', href: '/' }];
+		if (selectedCategoryName) {
+			items.push({ label: 'Produkty', href: '/products' });
+			items.push({ label: selectedCategoryName, href: `/products?category=${selectedCategory}` });
+		} else {
+			items.push({ label: 'Produkty', href: '/products' });
+		}
+		return items;
+	});
+
+	const productCountLabel = $derived.by(() => {
+		const count = data.totalItems;
+		if (count === 1) return '1 produkt';
+		if (count < 5) return `${count} produkty`;
+		return `${count} produktów`;
+	});
+
+	// Auto-expand category tree for the selected category
 	$effect(() => {
-		if (selectedCategory) {
-			// Check if selected category is a main category
-			const mainCategory = data.categories.find((cat) => cat.slug === selectedCategory);
-			if (mainCategory) {
-				expandedCategories.add(mainCategory.slug);
-			} else {
-				// Check if selected category is a subcategory, then expand its parent
-				const subcategory = data.allSubcategories.find((cat) => cat.slug === selectedCategory);
-				if (subcategory) {
-					const parentCategory = data.categories.find((cat) => cat.id === subcategory.parent);
-					if (parentCategory) {
-						expandedCategories.add(parentCategory.slug);
-					}
-				}
-			}
+		if (!selectedCategory) return;
+
+		const mainCategory = data.categories.find((cat) => cat.slug === selectedCategory);
+		if (mainCategory) {
+			expandedCategories.add(mainCategory.slug);
+			return;
+		}
+
+		const subcategory = data.allSubcategories.find((cat) => cat.slug === selectedCategory);
+		if (subcategory) {
+			const parent = data.categories.find((cat) => cat.id === subcategory.parent);
+			if (parent) expandedCategories.add(parent.slug);
 		}
 	});
 
-	// Update URL when filters change
-	function updateURL() {
+	// --- URL Navigation ---
+
+	function buildFilterParams(overrides: { page?: number } = {}) {
 		const params = new SvelteURLSearchParams();
 		if (searchQuery) params.set('search', searchQuery);
 		if (selectedCategory) params.set('category', selectedCategory);
 		if (sortBy !== 'name') params.set('sort', sortBy);
-
-		const newUrl = `/products${params.toString() ? '?' + params.toString() : ''}`;
-		goto(newUrl);
+		if (overrides.page && overrides.page > 1) params.set('page', overrides.page.toString());
+		const qs = params.toString();
+		return `/products${qs ? '?' + qs : ''}`;
 	}
 
-	// Use server-sorted products directly
-	let sortedProducts = $derived(data.products);
-
-	// Handle filter changes
-	function handleSearchChange(e: Event) {
-		searchQuery = (e.target as HTMLInputElement).value;
+	function navigateWithFilters(overrides: { page?: number } = {}) {
+		goto(buildFilterParams(overrides));
 	}
+
+	// --- Event Handlers ---
 
 	function handleCategoryChange(categorySlug: string) {
 		selectedCategory = categorySlug;
 
-		// If selecting a main category, auto-expand it
-		const mainCategory = data.categories.find((cat) => cat.slug === categorySlug);
-		if (mainCategory) {
+		// Auto-expand main categories when selected
+		if (data.categories.some((cat) => cat.slug === categorySlug)) {
 			expandedCategories.add(categorySlug);
 		}
 
-		updateURL();
+		navigateWithFilters();
 	}
 
 	function handleSortChange(e: Event) {
 		sortBy = (e.target as HTMLSelectElement).value;
-		updateURL();
+		navigateWithFilters();
 	}
 
-	function handlePageChange(page: number) {
-		const params = new SvelteURLSearchParams();
-		if (searchQuery) params.set('search', searchQuery);
-		if (selectedCategory) params.set('category', selectedCategory);
-		if (sortBy !== 'name') params.set('sort', sortBy);
-		if (page > 1) params.set('page', page.toString());
+	function handleSearchSubmit(e: Event) {
+		e.preventDefault();
+		navigateWithFilters();
+	}
 
-		const newUrl = `/products${params.toString() ? '?' + params.toString() : ''}`;
-		goto(newUrl);
+	function clearSearch() {
+		searchQuery = '';
+		navigateWithFilters();
 	}
 
 	function clearFilters() {
@@ -143,16 +160,11 @@
 		goto('/products');
 	}
 
-	function handleSearchSubmit(e: Event) {
-		e.preventDefault();
-		updateURL();
-	}
-
-	function toggleCategory(categorySlug: string) {
-		if (expandedCategories.has(categorySlug)) {
-			expandedCategories.delete(categorySlug);
+	function toggleCategory(slug: string) {
+		if (expandedCategories.has(slug)) {
+			expandedCategories.delete(slug);
 		} else {
-			expandedCategories.add(categorySlug);
+			expandedCategories.add(slug);
 		}
 	}
 </script>
@@ -167,244 +179,118 @@
 	/>
 </svelte:head>
 
-<!-- Modern Professional Hero Section -->
-<Hero
-	title={selectedCategoryName ? selectedCategoryName : 'Narzędzia i Akcesoria'}
-	subtitle={selectedCategoryName
-		? `Odkryj naszą profesjonalną ofertę produktów z kategorii ${selectedCategoryName}`
-		: 'Odkryj najlepsze narzędzia i akcesoria w jednym miejscu'}
-	centered={true}
-/>
+<!-- Page Header — compact: breadcrumbs, title, search, count -->
+<section class="border-b border-[--ft-line] bg-[--ft-surface]">
+	<div class="ft-container py-6 lg:py-8">
+		<!-- Breadcrumbs -->
+		<div class="mb-4">
+			<Breadcrumbs items={breadcrumbItems} />
+		</div>
 
-<!-- Enhanced Search Section -->
-<section class="border-b border-[--ft-border]">
-	<div class="ft-container py-8">
-		<!-- Breadcrumbs with modern styling -->
-		<nav class="mb-6 flex" aria-label="Breadcrumb">
-			<ol class="inline-flex items-center space-x-1 md:space-x-2">
-				<li class="inline-flex items-center">
-					<a
-						href="/"
-						class="hover:text-brand-600 inline-flex items-center text-sm font-medium text-[--ft-text-faint] transition-colors"
+		<!-- Title row -->
+		<div class="mb-5 flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
+			<h1 class="text-2xl font-bold tracking-tight text-[--ft-text-strong] lg:text-3xl" style="font-family:var(--font-display);letter-spacing:-0.03em">
+				{selectedCategoryName || 'Narzędzia i Akcesoria'}
+			</h1>
+			<span class="text-sm font-medium text-[--ft-text-muted]">{productCountLabel}</span>
+		</div>
+
+		<!-- Search + mobile filter button -->
+		<div class="flex gap-3">
+			<form onsubmit={handleSearchSubmit} class="group relative min-w-0 flex-1" role="search">
+				<label for="product-search" class="sr-only">Szukaj produktów</label>
+				<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+					<svg
+						class="h-4.5 w-4.5 text-[--ft-text-faint] transition-colors group-focus-within:text-[--ft-accent]"
+						fill="none"
+						stroke="currentColor"
+						viewBox="0 0 24 24"
+						aria-hidden="true"
 					>
-						<svg class="mr-2 h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-							<path
-								d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"
-							/>
-						</svg>
-						Strona główna
-					</a>
-				</li>
-				<li>
-					<div class="flex items-center">
-						<svg class="h-5 w-5 text-[--ft-text-faint]" fill="currentColor" viewBox="0 0 20 20">
-							<path
-								fill-rule="evenodd"
-								d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-								clip-rule="evenodd"
-							/>
-						</svg>
-						{#if selectedCategoryName}
-							<a
-								href="/products"
-								class="hover:text-brand-600 ml-1 text-sm font-medium text-[--ft-text-faint] transition-colors md:ml-2"
-								>Produkty</a
-							>
-						{:else}
-							<span class="ml-1 text-sm font-medium text-[--ft-text] md:ml-2">Produkty</span>
-						{/if}
-					</div>
-				</li>
-				{#if selectedCategoryName}
-					<li aria-current="page">
-						<div class="flex items-center">
-							<svg class="h-5 w-5 text-[--ft-text-faint]" fill="currentColor" viewBox="0 0 20 20">
-								<path
-									fill-rule="evenodd"
-									d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-									clip-rule="evenodd"
-								/>
-							</svg>
-							<span class="ml-1 text-sm font-medium text-[--ft-text] md:ml-2"
-								>{selectedCategoryName}</span
-							>
-						</div>
-					</li>
-				{/if}
-			</ol>
-		</nav>
-
-		<!-- Enhanced Search and Filters Bar -->
-		<div class="flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
-			<div class="max-w-2xl flex-1">
-				<form onsubmit={handleSearchSubmit} class="group relative">
-					<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+						/>
+					</svg>
+				</div>
+				<Input
+					id="product-search"
+					type="search"
+					placeholder="Szukaj produktów, kategorii, marek..."
+					value={searchQuery}
+					oninput={(e: Event) => (searchQuery = (e.target as HTMLInputElement).value)}
+					class="rounded-lg border border-[--ft-line] py-2.5 pr-10 pl-10 text-sm shadow-sm focus:border-[--ft-accent] focus:ring-1 focus:ring-[--ft-accent]"
+				/>
+				{#if searchQuery}
+					<button
+						type="button"
+						onclick={clearSearch}
+						class="group/clear absolute inset-y-0 right-0 flex items-center pr-3"
+						aria-label="Wyczyść wyszukiwanie"
+					>
 						<svg
-							class="group-focus-within:text-brand-600 h-5 w-5 text-[--ft-text-faint] transition-colors"
+							class="h-4 w-4 text-[--ft-text-faint] transition-colors group-hover/clear:text-[--ft-text]"
 							fill="none"
 							stroke="currentColor"
 							viewBox="0 0 24 24"
+							aria-hidden="true"
 						>
 							<path
 								stroke-linecap="round"
 								stroke-linejoin="round"
 								stroke-width="2"
-								d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+								d="M6 18L18 6M6 6l12 12"
 							/>
 						</svg>
-					</div>
-					<Input
-						type="search"
-						placeholder="Szukaj produktów, kategorii, marek..."
-						value={searchQuery}
-						oninput={handleSearchChange}
-						class="focus:border-brand-500 rounded-xl border-2 border-transparent py-3 pr-12 pl-12 text-base shadow-sm"
+					</button>
+				{/if}
+			</form>
+			<Button variant="outline" onclick={() => (showMobileFilters = true)} class="shrink-0 lg:hidden">
+				<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z"
 					/>
-					{#if searchQuery}
-						<button
-							type="button"
-							onclick={() => {
-								searchQuery = '';
-								updateURL();
-							}}
-							class="group/clear absolute inset-y-0 right-4 flex items-center"
-							aria-label="Wyczyść wyszukiwanie"
-						>
-							<svg
-								class="h-5 text-[--ft-text-faint] transition-colors group-hover/clear:text-[--ft-text-faint]"
-								fill="none"
-								stroke="currentColor"
-								viewBox="0 0 24 24"
-							>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M6 18L18 6M6 6l12 12"
-								/>
-							</svg>
-						</button>
-					{/if}
-				</form>
-			</div>
-
-			<div class="flex items-center gap-4">
-				<div class="text-sm font-medium text-[--ft-text-faint]">
-					{data.totalItems}
-					{data.totalItems === 1 ? 'produkt' : data.totalItems < 5 ? 'produkty' : 'produktów'}
-				</div>
-				<Button variant="outline" onclick={() => (showMobileFilters = true)} class="lg:hidden">
-					<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z"
-						/>
-					</svg>
-					Filtry
-				</Button>
-			</div>
+				</svg>
+				Filtry
+			</Button>
 		</div>
 	</div>
 </section>
 
-<!-- Main Content with Modern Layout -->
+<!-- Main Content -->
 <div class="min-h-screen">
-	<div class="ft-container py-8">
+	<div class="ft-container ft-section-sm">
 		<div class="lg:grid lg:grid-cols-4 lg:gap-8">
-			<!-- Enhanced Desktop Sidebar -->
+			<!-- Desktop Sidebar -->
 			<div class="hidden lg:col-span-1 lg:block">
-				<Card glass={true} class="sticky top-0 p-6">
+				<Card glass={true} class="sticky top-20 p-6">
 					<div class="mb-6 flex items-center justify-between">
 						<h3 class="text-lg font-bold text-[--ft-text]">Filtry</h3>
-						{#if searchQuery || selectedCategory || showInStock}
+						{#if hasActiveFilters}
 							<Button variant="ghost" size="sm" onclick={clearFilters}>Wyczyść wszystkie</Button>
 						{/if}
 					</div>
 
-					<!-- Enhanced Categories Filter -->
-					<div class="mb-6 border-b border-[--ft-border] pb-6">
+					<!-- Categories -->
+					<div class="mb-6 border-b border-[--ft-line] pb-6">
 						<h4 class="mb-4 text-sm font-semibold text-[--ft-text]">Kategorie</h4>
-						<div class="space-y-1">
-							<button
-								onclick={() => handleCategoryChange('')}
-								disabled={!!$navigating}
-								class="filter-category-button {!selectedCategory ? 'active' : ''}"
-							>
-								<span class="flex-1 text-left">Wszystkie produkty</span>
-								<span class="filter-badge">{data.totalItems}</span>
-								{#if $navigating && !selectedCategory}
-									<LoadingSpinner visible={true} />
-								{/if}
-							</button>
-
-							{#each mainCategoriesWithSubs as category (category)}
-								<div class="space-y-1">
-									<div class="flex items-center">
-										<button
-											onclick={() => handleCategoryChange(category.slug)}
-											disabled={!!$navigating}
-											class="filter-category-button flex-1 {selectedCategory === category.slug
-												? 'active'
-												: ''}"
-										>
-											<span class="flex-1 text-left">{category.name}</span>
-											<span class="filter-badge mr-2">{category.productCount}</span>
-											{#if $navigating && selectedCategory === category.slug}
-												<LoadingSpinner visible={true} />
-											{/if}
-										</button>
-										{#if category.subcategories.length > 0}
-											<button
-												onclick={() => toggleCategory(category.slug)}
-												disabled={!!$navigating}
-												class="category-toggle-button"
-												aria-label={expandedCategories.has(category.slug)
-													? 'Ukryj podkategorie'
-													: 'Pokaż podkategorie'}
-											>
-												<svg
-													class="h-4 w-4 transition-transform {expandedCategories.has(category.slug)
-														? 'rotate-90'
-														: ''}"
-													fill="none"
-													stroke="currentColor"
-													viewBox="0 0 24 24"
-													stroke-width="2"
-												>
-													<path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-												</svg>
-											</button>
-										{/if}
-									</div>
-
-									{#if expandedCategories.has(category.slug) && category.subcategories.length > 0}
-										<div class="ml-4 space-y-1">
-											{#each category.subcategories as subcategory (subcategory)}
-												<button
-													onclick={() => handleCategoryChange(subcategory.slug)}
-													disabled={!!$navigating}
-													class="filter-subcategory-button {selectedCategory === subcategory.slug
-														? 'active'
-														: ''}"
-												>
-													<span class="flex-1 text-left">{subcategory.name}</span>
-													<span class="filter-badge">{subcategory.productCount}</span>
-													{#if $navigating && selectedCategory === subcategory.slug}
-														<LoadingSpinner visible={true} />
-													{/if}
-												</button>
-											{/each}
-										</div>
-									{/if}
-								</div>
-							{/each}
-						</div>
+						<CategoryFilter
+							categories={categoriesWithSubs}
+							{selectedCategory}
+							{expandedCategories}
+							totalItems={data.totalItems}
+							onCategoryChange={handleCategoryChange}
+							onToggleCategory={toggleCategory}
+						/>
 					</div>
 
-					<!-- Enhanced Price Range -->
-					<div class="mb-6 border-b border-[--ft-border] pb-6">
+					<!-- Price Range -->
+					<div class="mb-6 border-b border-[--ft-line] pb-6">
 						<h4 class="mb-4 text-sm font-semibold text-[--ft-text]">Zakres cen</h4>
 						<div class="flex items-center space-x-3">
 							<Input type="number" placeholder="Min" bind:value={priceRange.min} class="text-sm" />
@@ -414,14 +300,14 @@
 						<div class="mt-3 text-xs text-[--ft-text-secondary]">Ceny w PLN</div>
 					</div>
 
-					<!-- Enhanced Availability -->
+					<!-- Availability -->
 					<div class="pb-6">
 						<h4 class="mb-4 text-sm font-semibold text-[--ft-text]">Dostępność</h4>
 						<label class="group flex cursor-pointer items-center">
 							<input
 								type="checkbox"
 								bind:checked={showInStock}
-								class="text-brand-600 focus:ring-brand-500 rounded border-[--ft-border] focus:ring-2"
+								class="text-brand-600 focus:ring-brand-500 rounded border-[--ft-line] focus:ring-2"
 							/>
 							<span
 								class="ml-3 text-sm text-[--ft-text-muted] transition-colors group-hover:text-[--ft-text]"
@@ -432,329 +318,86 @@
 				</Card>
 			</div>
 
-			<!-- Enhanced Mobile Filter Panel -->
+			<!-- Mobile Filter Panel -->
 			{#if showMobileFilters}
-				<div class="fixed inset-0 z-50 lg:hidden">
-					<!-- Backdrop -->
-					<div
-						class="fixed inset-0 bg-black/30 backdrop-blur-sm transition-opacity"
-						onclick={() => (showMobileFilters = false)}
-						onkeydown={(e) => e.key === 'Escape' && (showMobileFilters = false)}
-						tabindex="0"
-						role="button"
-						aria-label="Zamknij filtry"
-					></div>
-
-					<!-- Panel -->
-					<div class="fixed inset-y-0 right-0 w-full max-w-sm bg-[--ft-card] shadow-2xl">
-						<div class="flex h-full flex-col">
-							<!-- Header -->
-							<div
-								class="flex items-center justify-between border-b border-[--ft-border] bg-[--ft-card] p-6"
-							>
-								<h3 class="text-xl font-bold text-[--ft-text]">Filtry</h3>
-								<Button variant="ghost" size="sm" onclick={() => (showMobileFilters = false)}>
-									<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M6 18L18 6M6 6l12 12"
-										/>
-									</svg>
-								</Button>
-							</div>
-
-							<!-- Content -->
-							<div class="flex-1 overflow-y-auto p-6">
-								<!-- Mobile Categories -->
-								<div class="mb-6 border-b border-[--ft-border] pb-6">
-									<h4 class="mb-4 text-sm font-semibold text-[--ft-text]">Kategorie</h4>
-									<div class="space-y-2">
-										<button
-											onclick={() => handleCategoryChange('')}
-											disabled={!!$navigating}
-											class="filter-category-button {!selectedCategory ? 'active' : ''}"
-										>
-											<span class="flex-1 text-left">Wszystkie</span>
-											<span class="filter-badge">{data.totalItems}</span>
-										</button>
-
-										{#each mainCategoriesWithSubs as category (category)}
-											<div class="space-y-1">
-												<div class="flex items-center">
-													<button
-														onclick={() => handleCategoryChange(category.slug)}
-														disabled={!!$navigating}
-														class="filter-category-button flex-1 {selectedCategory === category.slug
-															? 'active'
-															: ''}"
-													>
-														<span class="flex-1 text-left">{category.name}</span>
-														<span class="filter-badge mr-2">{category.productCount}</span>
-													</button>
-													{#if category.subcategories.length > 0}
-														<button
-															onclick={() => toggleCategory(category.slug)}
-															class="category-toggle-button"
-															aria-label={expandedCategories.has(category.slug)
-																? 'Ukryj podkategorie'
-																: 'Pokaż podkategorie'}
-														>
-															<svg
-																class="h-4 w-4 transition-transform {expandedCategories.has(
-																	category.slug
-																)
-																	? 'rotate-90'
-																	: ''}"
-																fill="none"
-																stroke="currentColor"
-																viewBox="0 0 24 24"
-																stroke-width="2"
-															>
-																<path
-																	stroke-linecap="round"
-																	stroke-linejoin="round"
-																	d="M9 5l7 7-7 7"
-																/>
-															</svg>
-														</button>
-													{/if}
-												</div>
-
-												{#if expandedCategories.has(category.slug) && category.subcategories.length > 0}
-													<div class="ml-4 space-y-1">
-														{#each category.subcategories as subcategory (subcategory)}
-															<button
-																onclick={() => handleCategoryChange(subcategory.slug)}
-																class="filter-subcategory-button {selectedCategory ===
-																subcategory.slug
-																	? 'active'
-																	: ''}"
-															>
-																<span class="flex-1 text-left">{subcategory.name}</span>
-																<span class="filter-badge">{subcategory.productCount}</span>
-															</button>
-														{/each}
-													</div>
-												{/if}
-											</div>
-										{/each}
-									</div>
-								</div>
-
-								<!-- Mobile Price Range -->
-								<div class="mb-6 border-b border-[--ft-border] pb-6">
-									<h4 class="mb-4 text-sm font-semibold text-[--ft-text]">Zakres cen</h4>
-									<div class="flex items-center space-x-3">
-										<Input
-											type="number"
-											placeholder="Min"
-											bind:value={priceRange.min}
-											class="text-sm"
-										/>
-										<span class="text-[--ft-text-faint]">-</span>
-										<Input
-											type="number"
-											placeholder="Max"
-											bind:value={priceRange.max}
-											class="text-sm"
-										/>
-									</div>
-								</div>
-
-								<!-- Mobile Availability -->
-								<div>
-									<h4 class="mb-4 text-sm font-semibold text-[--ft-text]">Dostępność</h4>
-									<label class="flex cursor-pointer items-center">
-										<input
-											type="checkbox"
-											bind:checked={showInStock}
-											class="text-brand-600 focus:ring-brand-500 rounded border-[--ft-border]"
-										/>
-										<span class="ml-3 text-sm text-[--ft-text-muted]">Tylko dostępne</span>
-									</label>
-								</div>
-							</div>
-
-							<!-- Footer -->
-							<div class="border-t border-[--ft-border] bg-[--ft-card] p-6">
-								<div class="flex gap-3">
-									<Button variant="outline" onclick={clearFilters} class="flex-1">Wyczyść</Button>
-									<Button onclick={() => (showMobileFilters = false)} class="flex-1">
-										Pokaż produkty
-									</Button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+				<MobileFilterPanel
+					categories={categoriesWithSubs}
+					{selectedCategory}
+					{expandedCategories}
+					totalItems={data.totalItems}
+					bind:priceRange
+					bind:showInStock
+					onCategoryChange={handleCategoryChange}
+					onToggleCategory={toggleCategory}
+					onClearFilters={clearFilters}
+					onClose={() => (showMobileFilters = false)}
+				/>
 			{/if}
 
-			<!-- Enhanced Main Product Area -->
+			<!-- Main Product Area -->
 			<div class="lg:col-span-3">
-				<!-- Modern Toolbar -->
-				<Card class="mb-8 p-6">
-					<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-						<!-- View Mode and Results -->
-						<div class="flex items-center justify-between gap-6 sm:justify-start">
-							<div class="flex items-center gap-2">
-								<span class="text-sm font-medium text-[--ft-text-muted]">Widok:</span>
-								<div class="flex items-center rounded-xl bg-[--ft-frost] p-1">
-									<button
-										onclick={() => (viewMode = 'grid')}
-										class="view-mode-button {viewMode === 'grid' ? 'active' : ''}"
-										aria-label="Widok siatki"
-									>
-										<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												stroke-width="2"
-												d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-											/>
-										</svg>
-									</button>
-									<button
-										onclick={() => (viewMode = 'list')}
-										class="view-mode-button {viewMode === 'list' ? 'active' : ''}"
-										aria-label="Widok listy"
-									>
-										<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												stroke-width="2"
-												d="M4 6h16M4 10h16M4 14h16M4 18h16"
-											/>
-										</svg>
-									</button>
-								</div>
-							</div>
-						</div>
-
-						<!-- Sort Dropdown -->
-						<div class="flex items-center gap-3">
-							<span class="text-sm font-medium text-[--ft-text-muted]">Sortuj:</span>
-							<select
-								value={sortBy}
-								onchange={handleSortChange}
-								class="focus:ring-brand-500 rounded-xl border border-[--ft-border] bg-[--ft-card] px-4 py-2 text-sm focus:border-transparent focus:ring-2 focus:outline-none"
+				<!-- Toolbar -->
+				<div class="mb-6 flex flex-col gap-4 border-b border-[--ft-line] pb-5 sm:flex-row sm:items-center sm:justify-between">
+					<!-- View Mode Toggle -->
+					<div class="flex items-center gap-3">
+						<div class="flex items-center rounded-lg bg-[--ft-frost] p-0.5" role="group" aria-label="Tryb wyświetlania">
+							<button
+								onclick={() => (viewMode = 'grid')}
+								class="view-mode-button {viewMode === 'grid' ? 'active' : ''}"
+								aria-label="Widok siatki"
+								aria-pressed={viewMode === 'grid'}
 							>
-								<option value="name">Nazwa A-Z</option>
-								<option value="price-low">Cena: rosnąco</option>
-								<option value="price-high">Cena: malejąco</option>
-							</select>
+								<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+								</svg>
+							</button>
+							<button
+								onclick={() => (viewMode = 'list')}
+								class="view-mode-button {viewMode === 'list' ? 'active' : ''}"
+								aria-label="Widok listy"
+								aria-pressed={viewMode === 'list'}
+							>
+								<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+								</svg>
+							</button>
 						</div>
 					</div>
 
-					<!-- Active Filters with Enhanced Design -->
-					{#if searchQuery || selectedCategory || showInStock}
-						<div class="mt-6 border-t border-[--ft-border] pt-6">
-							<div class="flex flex-wrap items-center gap-3">
-								<span class="text-sm font-medium text-[--ft-text-muted]">Aktywne filtry:</span>
-								{#if searchQuery}
-									<span class="active-filter">
-										<svg class="mr-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												stroke-width="2"
-												d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-											/>
-										</svg>
-										"{searchQuery}"
-										<button
-											onclick={() => {
-												searchQuery = '';
-												updateURL();
-											}}
-											class="filter-remove-button"
-											aria-label="Usuń filtr wyszukiwania"
-										>
-											<svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													stroke-width="2"
-													d="M6 18L18 6M6 6l12 12"
-												/>
-											</svg>
-										</button>
-									</span>
-								{/if}
-								{#if selectedCategoryName}
-									<span class="active-filter bg-accent-500/15 text-accent-300">
-										<svg class="mr-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												stroke-width="2"
-												d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
-											/>
-										</svg>
-										{selectedCategoryName}
-										<button
-											onclick={() => handleCategoryChange('')}
-											class="filter-remove-button"
-											aria-label="Usuń filtr kategorii"
-										>
-											<svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													stroke-width="2"
-													d="M6 18L18 6M6 6l12 12"
-												/>
-											</svg>
-										</button>
-									</span>
-								{/if}
-								{#if showInStock}
-									<span class="active-filter bg-accent-500/15 text-accent-300">
-										<svg class="mr-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												stroke-width="2"
-												d="M5 13l4 4L19 7"
-											/>
-										</svg>
-										Tylko dostępne
-										<button
-											onclick={() => (showInStock = false)}
-											class="filter-remove-button"
-											aria-label="Usuń filtr dostępności"
-										>
-											<svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													stroke-width="2"
-													d="M6 18L18 6M6 6l12 12"
-												/>
-											</svg>
-										</button>
-									</span>
-								{/if}
-								<Button
-									variant="ghost"
-									size="sm"
-									onclick={clearFilters}
-									class="text-[--ft-text-secondary] hover:text-neutral-700"
-								>
-									Wyczyść wszystkie
-								</Button>
-							</div>
-						</div>
-					{/if}
-				</Card>
+					<!-- Sort Dropdown -->
+					<div class="flex items-center gap-2">
+						<label for="product-sort" class="text-sm text-[--ft-text-muted]">Sortuj:</label>
+						<select
+							id="product-sort"
+							value={sortBy}
+							onchange={handleSortChange}
+							class="rounded-lg border border-[--ft-line] bg-[--ft-surface] px-3 py-2 text-sm text-[--ft-text] transition-colors focus:border-[--ft-accent] focus:ring-1 focus:ring-[--ft-accent] focus:outline-none"
+						>
+							<option value="name">Nazwa A-Z</option>
+							<option value="price-low">Cena: rosnąco</option>
+							<option value="price-high">Cena: malejąco</option>
+						</select>
+					</div>
+				</div>
 
-				<!-- Products Section with Loading State -->
+				<!-- Active Filters -->
+				<ActiveFilters
+					{searchQuery}
+					{selectedCategoryName}
+					{showInStock}
+					onClearSearch={clearSearch}
+					onClearCategory={() => handleCategoryChange('')}
+					onClearInStock={() => (showInStock = false)}
+					onClearAll={clearFilters}
+				/>
+
+				<!-- Products with Loading Overlay -->
 				<div class="relative">
 					{#if $navigating}
 						<div
 							class="absolute inset-0 z-10 flex items-center justify-center rounded-xl bg-black/30 backdrop-blur-sm"
+							role="status"
+							aria-live="polite"
 						>
 							<div class="flex flex-col items-center gap-3">
 								<LoadingSpinner visible={true} />
@@ -784,120 +427,29 @@
 								<Button href="/products" variant="outline">Spróbuj ponownie</Button>
 							</div>
 						</Card>
-					{:else if sortedProducts.length > 0}
-						<!-- Products Grid/List -->
+					{:else if data.products.length > 0}
+						<!-- Grid View -->
 						{#if viewMode === 'grid'}
 							<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
-								{#each sortedProducts as product (product)}
+								{#each data.products as product (product)}
 									<ProductCard {product} />
 								{/each}
 							</div>
 						{:else}
+							<!-- List View -->
 							<div class="space-y-4">
-								{#each sortedProducts as product (product)}
-									<Card class="p-6">
-										<div class="flex items-center gap-6">
-											<div class="shrink-0">
-												<div class="h-24 w-24 overflow-hidden rounded-xl bg-[--ft-frost]">
-													{#if product.mainImage}
-														<img
-															src={product.mainImage}
-															alt={product.name}
-															class="h-full w-full object-cover"
-															loading="lazy"
-															onerror={(e) => {
-																const target = e.target as HTMLImageElement;
-																if (target) {
-																	target.style.display = 'none';
-																	const nextElement = target.nextElementSibling as HTMLElement;
-																	if (nextElement) {
-																		nextElement.style.display = 'flex';
-																	}
-																}
-															}}
-														/>
-														<div class="hidden h-full w-full items-center justify-center">
-															<svg
-																class="h-8 w-8 text-[--ft-text-faint]"
-																fill="none"
-																stroke="currentColor"
-																viewBox="0 0 24 24"
-															>
-																<path
-																	stroke-linecap="round"
-																	stroke-linejoin="round"
-																	stroke-width="2"
-																	d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-																/>
-															</svg>
-														</div>
-													{:else}
-														<div class="flex h-full w-full items-center justify-center">
-															<svg
-																class="h-8 w-8 text-[--ft-text-faint]"
-																fill="none"
-																stroke="currentColor"
-																viewBox="0 0 24 24"
-															>
-																<path
-																	stroke-linecap="round"
-																	stroke-linejoin="round"
-																	stroke-width="2"
-																	d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-																/>
-															</svg>
-														</div>
-													{/if}
-												</div>
-											</div>
-											<div class="min-w-0 flex-1">
-												<h3 class="mb-1 text-lg font-semibold text-[--ft-text]">{product.name}</h3>
-												{#if product.shortDescription}
-													<p class="mb-3 line-clamp-2 text-sm text-[--ft-text-faint]">
-														{product.shortDescription}
-													</p>
-												{/if}
-
-												{#if product.expand?.categories && product.expand.categories.length > 0}
-													<div class="mb-3 flex flex-wrap gap-1">
-														{#each product.expand.categories.slice(0, 3) as category (category)}
-															<span
-																class="bg-brand-50 text-brand-600 rounded-md px-2 py-1 text-xs font-medium"
-															>
-																{category.name}
-															</span>
-														{/each}
-													</div>
-												{/if}
-
-												<div class="flex items-center justify-between">
-													<div class="flex items-center gap-3">
-														<span class="text-brand-600 text-xl font-bold"
-															>{product.price.toFixed(2)} zł</span
-														>
-														{#if product.compareAtPrice && product.compareAtPrice > product.price}
-															<span class="text-sm text-[--ft-text-secondary] line-through"
-																>{product.compareAtPrice.toFixed(2)} zł</span
-															>
-														{/if}
-													</div>
-													<Button href="/products/{product.slug || product.id}" size="sm">
-														Zobacz szczegóły
-													</Button>
-												</div>
-											</div>
-										</div>
-									</Card>
+								{#each data.products as product (product)}
+									<ProductListItem {product} />
 								{/each}
 							</div>
 						{/if}
 
-						<!-- Enhanced Pagination -->
+						<!-- Pagination -->
 						{#if data.totalPages > 1}
 							<div class="mt-12 flex justify-center">
-								<nav class="flex items-center gap-2">
+								<nav class="flex items-center gap-2" aria-label="Paginacja produktów">
 									<Button
-										onclick={() => handlePageChange(data.currentPage - 1)}
+										onclick={() => navigateWithFilters({ page: data.currentPage - 1 })}
 										disabled={data.currentPage <= 1 || !!$navigating}
 										variant="outline"
 										size="sm"
@@ -919,7 +471,7 @@
 									}) as pageNum (pageNum)}
 										{#if pageNum <= data.totalPages}
 											<Button
-												onclick={() => handlePageChange(pageNum)}
+												onclick={() => navigateWithFilters({ page: pageNum })}
 												variant={pageNum === data.currentPage ? 'primary' : 'outline'}
 												size="sm"
 												disabled={!!$navigating}
@@ -931,7 +483,7 @@
 									{/each}
 
 									<Button
-										onclick={() => handlePageChange(data.currentPage + 1)}
+										onclick={() => navigateWithFilters({ page: data.currentPage + 1 })}
 										disabled={data.currentPage >= data.totalPages || !!$navigating}
 										variant="outline"
 										size="sm"
@@ -950,7 +502,7 @@
 							</div>
 						{/if}
 					{:else}
-						<!-- Enhanced Empty State -->
+						<!-- Empty State -->
 						<Card class="p-16 text-center">
 							<div class="mx-auto max-w-lg">
 								<div class="relative">
@@ -997,140 +549,30 @@
 </div>
 
 <style>
-	.filter-category-button {
-		display: flex;
-		align-items: center;
-		width: 100%;
-		text-align: left;
-		padding: 0.75rem 1rem;
-		border-radius: 0.75rem;
-		font-size: 0.875rem;
-		font-weight: 500;
-		transition: all 0.2s;
-	}
-
-	.filter-category-button:disabled {
-		opacity: 0.5;
-		cursor: not-allowed;
-	}
-
-	.filter-category-button:not(.active) {
-		color: var(--ft-text-secondary);
-	}
-
-	.filter-category-button:not(.active):hover {
-		color: var(--ft-primary);
-		background-color: var(--ft-brand-muted);
-	}
-
-	.filter-category-button.active {
-		background-color: var(--ft-brand-light);
-		color: var(--color-brand-400);
-		border: 1px solid var(--ft-brand-border);
-	}
-
-	.filter-subcategory-button {
-		display: flex;
-		align-items: center;
-		width: 100%;
-		text-align: left;
-		padding: 0.5rem 1rem;
-		border-radius: 0.5rem;
-		font-size: 0.875rem;
-		transition: all 0.2s;
-	}
-
-	.filter-subcategory-button:disabled {
-		opacity: 0.5;
-		cursor: not-allowed;
-	}
-
-	.filter-subcategory-button:not(.active) {
-		color: var(--ft-text-muted);
-	}
-
-	.filter-subcategory-button:not(.active):hover {
-		color: var(--ft-primary);
-		background-color: var(--ft-brand-muted);
-	}
-
-	.filter-subcategory-button.active {
-		background-color: var(--ft-brand-light);
-		color: var(--color-brand-400);
-		font-weight: 500;
-	}
-
-	.category-toggle-button {
-		padding: 0.5rem;
-		border-radius: 0.5rem;
-		transition: colors 0.2s;
-		color: var(--ft-text-muted);
-	}
-
-	.category-toggle-button:hover {
-		background-color: var(--ft-border);
-		color: var(--ft-primary);
-	}
-
-	.category-toggle-button:disabled {
-		opacity: 0.5;
-		cursor: not-allowed;
-	}
-
-	.filter-badge {
-		font-size: 0.75rem;
-		background-color: var(--ft-border);
-		color: var(--ft-text-muted);
-		padding: 0.25rem 0.5rem;
-		border-radius: 0.375rem;
-		font-weight: 500;
-	}
-
 	.view-mode-button {
 		display: flex;
 		align-items: center;
-		padding: 0.75rem;
-		border-radius: 0.5rem;
-		font-size: 0.875rem;
-		font-weight: 500;
-		transition: all 0.2s;
+		justify-content: center;
+		min-width: 38px;
+		min-height: 38px;
+		padding: 0.5rem;
+		border-radius: var(--radius-sm);
+		transition: all 0.15s ease;
+		cursor: pointer;
 	}
 
 	.view-mode-button:not(.active) {
-		color: var(--ft-text-secondary);
+		color: var(--ft-text-muted);
 	}
 
 	.view-mode-button:not(.active):hover {
-		color: var(--ft-primary);
-		background-color: var(--ft-border);
+		color: var(--ft-accent);
+		background-color: rgba(55, 138, 146, 0.06);
 	}
 
 	.view-mode-button.active {
-		background-color: var(--ft-brand-medium);
-		color: var(--color-brand-400);
-		box-shadow: none;
-	}
-
-	.active-filter {
-		display: inline-flex;
-		align-items: center;
-		padding: 0.5rem 0.75rem;
-		border-radius: 0.5rem;
-		font-size: 0.875rem;
-		font-weight: 500;
-		background-color: var(--ft-brand-light);
-		color: var(--color-brand-400);
-		gap: 0.25rem;
-	}
-
-	.filter-remove-button {
-		margin-left: 0.5rem;
-		padding: 0.125rem;
-		border-radius: 9999px;
-		transition: colors 0.2s;
-	}
-
-	.filter-remove-button:hover {
-		background-color: var(--ft-text-secondary);
+		background-color: var(--ft-surface);
+		color: var(--ft-accent);
+		box-shadow: var(--ft-shadow-sm);
 	}
 </style>

@@ -71,7 +71,7 @@
 						class="inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium transition-colors {$page
 							.url.pathname === item.href
 							? 'border-brand-500 text-neutral-900'
-							: 'border-transparent text-neutral-500 hover:border-neutral-300 hover:text-neutral-700'}"
+							: 'border-transparent text-[--ft-text-muted] hover:border-neutral-300 hover:text-[--ft-text]'}"
 					>
 						<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={item.icon} />

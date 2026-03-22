@@ -29,7 +29,7 @@
 
 <style>
 	.categories {
-		padding: 48px 0;
+		padding: clamp(40px, 5vh, 56px) 0;
 	}
 
 	.categories-inner {
@@ -79,7 +79,8 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 8px;
-		padding: 8px 16px;
+		padding: 10px 18px;
+		min-height: 44px;
 		background: var(--ft-surface);
 		border: 1px solid var(--ft-line);
 		border-radius: 24px;

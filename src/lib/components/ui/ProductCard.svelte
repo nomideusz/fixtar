@@ -48,7 +48,7 @@
 	<a href={productUrl} class="card-link">
 		<div class="card-img">
 			{#if mainImageUrl}
-				<img src={mainImageUrl} alt={product.name} class="card-img-el" loading="lazy" />
+				<img src={mainImageUrl} alt={product.name} class="card-img-el" loading="lazy" width="320" height="240" />
 			{:else}
 				<div class="card-img-placeholder">
 					<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -244,6 +244,7 @@
 
 	.cart-btn {
 		flex: 1;
+		min-height: 44px;
 		padding: 10px 16px;
 		font-size: 0.72rem;
 		font-weight: 600;

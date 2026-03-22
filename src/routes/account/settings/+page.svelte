@@ -3,22 +3,23 @@
 	import Card from '$lib/components/ui/Card.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
-	import Hero from '$lib/components/ui/Hero.svelte';
+	import SettingsNav from '$lib/components/account/SettingsNav.svelte';
+	import NotificationToggle from '$lib/components/account/NotificationToggle.svelte';
 	import { enhance } from '$app/forms';
 	import type { PageData, ActionData } from './$types';
 
 	const { data, form } = $props<{ data: PageData; form?: ActionData }>();
 
-	// Form states
+	// --- Form Submission State ---
+
 	let isSubmitting = $state(false);
 	let passwordSubmitting = $state(false);
-	let verificationSubmitting = $state(false);
 	let preferencesSubmitting = $state(false);
 
-	// User data - use updated data from form response when available
+	// --- Derived User Data ---
+
 	let currentUser = $derived(data.user);
 
-	// Profile form data
 	let profileForm = $derived.by(() => {
 		const user = data.user;
 		return {
@@ -31,122 +32,134 @@
 		};
 	});
 
-	// Preferences form data
 	let preferencesForm = $derived.by(() => {
-		const user = data.user;
+		const prefs = data.user?.preferences;
 		return {
-			emailNotifications: user?.preferences?.emailNotifications ?? true,
-			smsNotifications: user?.preferences?.smsNotifications ?? false,
-			marketingEmails: user?.preferences?.marketingEmails ?? true,
-			orderUpdates: user?.preferences?.orderUpdates ?? true,
-			newsletter: user?.preferences?.newsletter ?? false,
-			language: user?.preferences?.language || 'pl',
-			currency: user?.preferences?.currency || 'PLN',
-			theme: user?.preferences?.theme || 'light'
+			emailNotifications: prefs?.emailNotifications ?? true,
+			smsNotifications: prefs?.smsNotifications ?? false,
+			marketingEmails: prefs?.marketingEmails ?? true,
+			orderUpdates: prefs?.orderUpdates ?? true,
+			newsletter: prefs?.newsletter ?? false,
+			language: prefs?.language || 'pl',
+			currency: prefs?.currency || 'PLN',
+			theme: prefs?.theme || 'light'
 		};
 	});
 
-	// Password form validation
+	// --- Password State ---
+
 	let currentPassword = $state('');
 	let newPassword = $state('');
 	let confirmPassword = $state('');
 
-	// Password validation states
-	let passwordErrors = $state({
-		currentPassword: '',
-		newPassword: '',
-		confirmPassword: ''
-	});
+	// --- Validation ---
 
-	// Profile validation states
-	let profileErrors = $state({
-		username: '',
-		email: '',
-		firstName: '',
-		lastName: ''
-	});
+	let passwordErrors = $state({ currentPassword: '', newPassword: '', confirmPassword: '' });
+	let profileErrors = $state({ username: '', email: '', firstName: '', lastName: '' });
 
-	// Password validation rules
-	const validatePassword = (password: string) => {
-		const errors = [];
-		if (password.length < 8) {
-			errors.push('Minimum 8 znaków');
-		}
-		if (!/[A-Z]/.test(password)) {
-			errors.push('Zawiera wielką literę');
-		}
-		if (!/[a-z]/.test(password)) {
-			errors.push('Zawiera małą literę');
-		}
-		if (!/[0-9]/.test(password)) {
-			errors.push('Zawiera cyfrę');
-		}
+	function validatePassword(password: string): string[] {
+		const errors: string[] = [];
+		if (password.length < 8) errors.push('Minimum 8 znaków');
+		if (!/[A-Z]/.test(password)) errors.push('Zawiera wielką literę');
+		if (!/[a-z]/.test(password)) errors.push('Zawiera małą literę');
+		if (!/[0-9]/.test(password)) errors.push('Zawiera cyfrę');
 		return errors;
-	};
+	}
 
-	// Email validation
-	const validateEmail = (email: string) => {
-		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		return emailRegex.test(email);
-	};
-
-	// Real-time validation
 	$effect(() => {
 		// Password validation
 		if (newPassword) {
 			const errors = validatePassword(newPassword);
 			passwordErrors.newPassword = errors.length > 0 ? errors.join(', ') : '';
 		}
-
-		if (confirmPassword && newPassword !== confirmPassword) {
-			passwordErrors.confirmPassword = 'Hasła się nie zgadzają';
-		} else {
-			passwordErrors.confirmPassword = '';
-		}
+		passwordErrors.confirmPassword =
+			confirmPassword && newPassword !== confirmPassword ? 'Hasła się nie zgadzają' : '';
 
 		// Profile validation
-		if (profileForm.email && !validateEmail(profileForm.email)) {
-			profileErrors.email = 'Nieprawidłowy format email';
-		} else {
-			profileErrors.email = '';
-		}
-
-		if (profileForm.username && profileForm.username.length < 3) {
-			profileErrors.username = 'Minimum 3 znaki';
-		} else {
-			profileErrors.username = '';
-		}
+		profileErrors.email =
+			profileForm.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(profileForm.email)
+				? 'Nieprawidłowy format email'
+				: '';
+		profileErrors.username =
+			profileForm.username && profileForm.username.length < 3 ? 'Minimum 3 znaki' : '';
 	});
 
-	// Settings sections configuration
+	const canSubmitPassword = $derived(
+		!passwordSubmitting &&
+			!passwordErrors.newPassword &&
+			!passwordErrors.confirmPassword &&
+			!!currentPassword &&
+			!!newPassword &&
+			!!confirmPassword
+	);
+
+	const canSubmitProfile = $derived(
+		!isSubmitting && !profileErrors.username && !profileErrors.email
+	);
+
+	// --- Settings Navigation ---
+
 	const settingsSections = [
 		{
 			id: 'profile',
 			title: 'Informacje osobiste',
 			description: 'Zarządzaj swoimi danymi osobowymi i kontaktowymi',
-			icon: 'profile'
+			iconPath: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z'
 		},
 		{
 			id: 'security',
 			title: 'Bezpieczeństwo',
 			description: 'Zmień hasło i zarządzaj ustawieniami bezpieczeństwa',
-			icon: 'security'
+			iconPath:
+				'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z'
 		},
 		{
 			id: 'notifications',
 			title: 'Powiadomienia',
 			description: 'Dostosuj preferencje powiadomień',
-			icon: 'notifications'
+			iconPath: 'M15 17h5l-5 5v-5zM9 7h6l3 3H6l3-3z'
 		},
 		{
 			id: 'preferences',
 			title: 'Preferencje',
 			description: 'Personalizuj swoje doświadczenie',
-			icon: 'preferences'
+			iconPath:
+				'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z'
 		}
 	];
 
 	let activeSection = $state('profile');
+
+	// --- Form Enhance Helpers ---
+
+	function profileEnhance() {
+		isSubmitting = true;
+		return async ({ result, update }: any) => {
+			isSubmitting = false;
+			if (result.type === 'success') {
+				notifications.success('Profil został zaktualizowany');
+			} else if (result.type === 'failure') {
+				notifications.error(result.data?.message || 'Wystąpił błąd');
+			}
+			await update();
+		};
+	}
+
+	function passwordEnhance() {
+		passwordSubmitting = true;
+		return async ({ result, update }: any) => {
+			passwordSubmitting = false;
+			if (result.type === 'success') {
+				notifications.success('Hasło zostało zmienione');
+				currentPassword = '';
+				newPassword = '';
+				confirmPassword = '';
+			} else if (result.type === 'failure') {
+				notifications.error(result.data?.message || 'Wystąpił błąd');
+			}
+			await update();
+		};
+	}
 </script>
 
 <svelte:head>
@@ -157,210 +170,44 @@
 	/>
 </svelte:head>
 
-<!-- Professional Settings Hero -->
-<Hero
-	title="Ustawienia Konta"
-	subtitle="Zarządzaj swoimi danymi osobowymi, bezpieczeństwem i preferencjami zakupowymi"
-	centered={true}
-/>
-
 <div class="space-y-8">
-	<!-- Settings Navigation -->
+	<!-- Page Header -->
 	<section>
-		<Card class="p-6">
-			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-				{#each settingsSections as section (section)}
-					<button
-						onclick={() => (activeSection = section.id)}
-						class="settings-nav-item {activeSection === section.id
-							? 'settings-nav-active'
-							: 'settings-nav-inactive'}"
-					>
-						<div class="flex items-center">
-							<div
-								class="mr-3 flex h-10 w-10 items-center justify-center rounded-lg {activeSection ===
-								section.id
-									? 'bg-brand-500/20'
-									: 'bg-white/10'} transition-colors duration-200"
-							>
-								{#if section.icon === 'profile'}
-									<svg
-										class="h-5 w-5 {activeSection === section.id
-											? 'text-brand-600'
-											: 'text-neutral-400'}"
-										fill="none"
-										stroke="currentColor"
-										viewBox="0 0 24 24"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-										/>
-									</svg>
-								{:else if section.icon === 'security'}
-									<svg
-										class="h-5 w-5 {activeSection === section.id
-											? 'text-brand-600'
-											: 'text-neutral-400'}"
-										fill="none"
-										stroke="currentColor"
-										viewBox="0 0 24 24"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-										/>
-									</svg>
-								{:else if section.icon === 'notifications'}
-									<svg
-										class="h-5 w-5 {activeSection === section.id
-											? 'text-brand-600'
-											: 'text-neutral-400'}"
-										fill="none"
-										stroke="currentColor"
-										viewBox="0 0 24 24"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M15 17h5l-5 5v-5zM9 7h6l3 3H6l3-3z"
-										/>
-									</svg>
-								{:else if section.icon === 'preferences'}
-									<svg
-										class="h-5 w-5 {activeSection === section.id
-											? 'text-brand-600'
-											: 'text-neutral-400'}"
-										fill="none"
-										stroke="currentColor"
-										viewBox="0 0 24 24"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-										/>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-										/>
-									</svg>
-								{/if}
-							</div>
-							<div class="text-left">
-								<div class="text-sm font-semibold text-[--ft-text]">{section.title}</div>
-								<div class="hidden text-xs text-neutral-500 sm:block">{section.description}</div>
-							</div>
-						</div>
-					</button>
-				{/each}
-			</div>
-		</Card>
+		<h1 class="text-2xl font-bold text-[--ft-text-strong]" style="font-family:var(--font-display);letter-spacing:-0.02em">Ustawienia Konta</h1>
+		<p class="mt-1 text-[--ft-text-muted]">Zarządzaj swoimi danymi osobowymi, bezpieczeństwem i preferencjami zakupowymi</p>
 	</section>
 
-	<!-- Profile Settings -->
+	<div class="space-y-8">
+	<!-- Navigation -->
+	<section>
+		<SettingsNav
+			sections={settingsSections}
+			{activeSection}
+			onSelect={(id) => (activeSection = id)}
+		/>
+	</section>
+
+	<!-- Profile -->
 	{#if activeSection === 'profile'}
 		<section>
 			<Card class="p-8">
 				<div class="mb-8">
 					<h2 class="mb-2 text-2xl font-bold text-[--ft-text]">Informacje osobiste</h2>
-					<p class="text-neutral-400">Zaktualizuj swoje dane osobowe i kontaktowe</p>
+					<p class="text-[--ft-text-muted]">Zaktualizuj swoje dane osobowe i kontaktowe</p>
 				</div>
 
-				<form
-					method="POST"
-					action="?/updateProfile"
-					use:enhance={() => {
-						isSubmitting = true;
-						return async ({ result, update }) => {
-							isSubmitting = false;
-							if (result.type === 'success') {
-								notifications.success('Profil został zaktualizowany');
-							} else if (result.type === 'failure') {
-								notifications.error((result.data?.message as string) || 'Wystąpił błąd');
-							}
-							await update();
-						};
-					}}
-				>
+				<form method="POST" action="?/updateProfile" use:enhance={() => profileEnhance()}>
 					<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-						<div>
-							<Input
-								label="Nazwa użytkownika"
-								name="username"
-								bind:value={profileForm.username}
-								error={profileErrors.username}
-								required
-								placeholder="Wprowadź nazwę użytkownika"
-							/>
-						</div>
-
-						<div>
-							<Input
-								label="Adres email"
-								name="email"
-								type="email"
-								bind:value={profileForm.email}
-								error={profileErrors.email}
-								required
-								placeholder="Wprowadź adres email"
-							/>
-						</div>
-
-						<div>
-							<Input
-								label="Imię"
-								name="firstName"
-								bind:value={profileForm.firstName}
-								error={profileErrors.firstName}
-								placeholder="Wprowadź imię"
-							/>
-						</div>
-
-						<div>
-							<Input
-								label="Nazwisko"
-								name="lastName"
-								bind:value={profileForm.lastName}
-								error={profileErrors.lastName}
-								placeholder="Wprowadź nazwisko"
-							/>
-						</div>
-
-						<div>
-							<Input
-								label="Telefon"
-								name="phone"
-								type="tel"
-								bind:value={profileForm.phone}
-								placeholder="+48 123 456 789"
-							/>
-						</div>
-
-						<div>
-							<Input
-								label="Firma (opcjonalnie)"
-								name="company"
-								bind:value={profileForm.company}
-								placeholder="Nazwa firmy"
-							/>
-						</div>
+						<Input label="Nazwa użytkownika" name="username" bind:value={profileForm.username} error={profileErrors.username} required placeholder="Wprowadź nazwę użytkownika" />
+						<Input label="Adres email" name="email" type="email" bind:value={profileForm.email} error={profileErrors.email} required placeholder="Wprowadź adres email" />
+						<Input label="Imię" name="firstName" bind:value={profileForm.firstName} error={profileErrors.firstName} placeholder="Wprowadź imię" />
+						<Input label="Nazwisko" name="lastName" bind:value={profileForm.lastName} error={profileErrors.lastName} placeholder="Wprowadź nazwisko" />
+						<Input label="Telefon" name="phone" type="tel" bind:value={profileForm.phone} placeholder="+48 123 456 789" />
+						<Input label="Firma (opcjonalnie)" name="company" bind:value={profileForm.company} placeholder="Nazwa firmy" />
 					</div>
 
 					<div class="mt-8 flex justify-end">
-						<Button
-							type="submit"
-							disabled={isSubmitting || !!profileErrors.username || !!profileErrors.email}
-							loading={isSubmitting}
-						>
+						<Button type="submit" disabled={!canSubmitProfile} loading={isSubmitting}>
 							Zapisz zmiany
 						</Button>
 					</div>
@@ -369,87 +216,28 @@
 		</section>
 	{/if}
 
-	<!-- Security Settings -->
+	<!-- Security -->
 	{#if activeSection === 'security'}
 		<section>
 			<Card class="p-8">
 				<div class="mb-8">
 					<h2 class="mb-2 text-2xl font-bold text-[--ft-text]">Bezpieczeństwo konta</h2>
-					<p class="text-neutral-400">Zarządzaj hasłem i ustawieniami bezpieczeństwa</p>
+					<p class="text-[--ft-text-muted]">Zarządzaj hasłem i ustawieniami bezpieczeństwa</p>
 				</div>
 
 				<!-- Change Password -->
 				<div class="mb-8">
 					<h3 class="mb-4 text-lg font-semibold text-[--ft-text]">Zmiana hasła</h3>
 
-					<form
-						method="POST"
-						action="?/changePassword"
-						use:enhance={() => {
-							passwordSubmitting = true;
-							return async ({ result, update }) => {
-								passwordSubmitting = false;
-								if (result.type === 'success') {
-									notifications.success('Hasło zostało zmienione');
-									currentPassword = '';
-									newPassword = '';
-									confirmPassword = '';
-								} else if (result.type === 'failure') {
-									notifications.error((result.data?.message as string) || 'Wystąpił błąd');
-								}
-								await update();
-							};
-						}}
-					>
+					<form method="POST" action="?/changePassword" use:enhance={() => passwordEnhance()}>
 						<div class="grid grid-cols-1 gap-6 md:grid-cols-3">
-							<div>
-								<Input
-									label="Obecne hasło"
-									name="currentPassword"
-									type="password"
-									bind:value={currentPassword}
-									error={passwordErrors.currentPassword}
-									required
-									placeholder="Wprowadź obecne hasło"
-								/>
-							</div>
-
-							<div>
-								<Input
-									label="Nowe hasło"
-									name="newPassword"
-									type="password"
-									bind:value={newPassword}
-									error={passwordErrors.newPassword}
-									required
-									placeholder="Wprowadź nowe hasło"
-								/>
-							</div>
-
-							<div>
-								<Input
-									label="Potwierdź hasło"
-									name="confirmPassword"
-									type="password"
-									bind:value={confirmPassword}
-									error={passwordErrors.confirmPassword}
-									required
-									placeholder="Potwierdź nowe hasło"
-								/>
-							</div>
+							<Input label="Obecne hasło" name="currentPassword" type="password" bind:value={currentPassword} error={passwordErrors.currentPassword} required placeholder="Wprowadź obecne hasło" />
+							<Input label="Nowe hasło" name="newPassword" type="password" bind:value={newPassword} error={passwordErrors.newPassword} required placeholder="Wprowadź nowe hasło" />
+							<Input label="Potwierdź hasło" name="confirmPassword" type="password" bind:value={confirmPassword} error={passwordErrors.confirmPassword} required placeholder="Potwierdź nowe hasło" />
 						</div>
 
 						<div class="mt-6">
-							<Button
-								type="submit"
-								disabled={passwordSubmitting ||
-									!!passwordErrors.newPassword ||
-									!!passwordErrors.confirmPassword ||
-									!currentPassword ||
-									!newPassword ||
-									!confirmPassword}
-								loading={passwordSubmitting}
-							>
+							<Button type="submit" disabled={!canSubmitPassword} loading={passwordSubmitting}>
 								Zmień hasło
 							</Button>
 						</div>
@@ -457,14 +245,14 @@
 				</div>
 
 				<!-- Security Features -->
-				<div class="border-t border-white/10 pt-8">
+				<div class="border-t border-[--ft-line] pt-8">
 					<h3 class="mb-4 text-lg font-semibold text-[--ft-text]">Dodatkowe zabezpieczenia</h3>
 
 					<div class="space-y-4">
-						<div class="flex items-center justify-between rounded-lg bg-white/5 p-4">
+						<div class="flex items-center justify-between rounded-lg bg-[--ft-frost] p-4">
 							<div>
 								<h4 class="font-medium text-[--ft-text]">Weryfikacja dwuetapowa</h4>
-								<p class="text-sm text-neutral-400">
+								<p class="text-sm text-[--ft-text-muted]">
 									Dodatkowa warstwa bezpieczeństwa dla Twojego konta
 								</p>
 							</div>
@@ -473,10 +261,10 @@
 							</Button>
 						</div>
 
-						<div class="flex items-center justify-between rounded-lg bg-white/5 p-4">
+						<div class="flex items-center justify-between rounded-lg bg-[--ft-frost] p-4">
 							<div>
 								<h4 class="font-medium text-[--ft-text]">Aktywne sesje</h4>
-								<p class="text-sm text-neutral-400">
+								<p class="text-sm text-[--ft-text-muted]">
 									Zarządzaj urządzeniami zalogowanymi na Twoje konto
 								</p>
 							</div>
@@ -488,13 +276,13 @@
 		</section>
 	{/if}
 
-	<!-- Notification Settings -->
+	<!-- Notifications -->
 	{#if activeSection === 'notifications'}
 		<section>
 			<Card class="p-8">
 				<div class="mb-8">
 					<h2 class="mb-2 text-2xl font-bold text-[--ft-text]">Preferencje powiadomień</h2>
-					<p class="text-neutral-400">Wybierz rodzaje powiadomień, które chcesz otrzymywać</p>
+					<p class="text-[--ft-text-muted]">Wybierz rodzaje powiadomień, które chcesz otrzymywać</p>
 				</div>
 
 				<form
@@ -509,73 +297,19 @@
 					}}
 				>
 					<div class="space-y-6">
-						<!-- Email Notifications -->
 						<div>
 							<h3 class="mb-4 text-lg font-semibold text-[--ft-text]">Powiadomienia email</h3>
 							<div class="space-y-4">
-								<label class="flex items-center">
-									<input
-										type="checkbox"
-										name="orderUpdates"
-										bind:checked={preferencesForm.orderUpdates}
-										class="text-brand-600 focus:ring-brand-500 h-4 w-4 rounded border-white/15 bg-neutral-100 focus:ring-2"
-									/>
-									<div class="ml-3">
-										<div class="font-medium text-[--ft-text]">Aktualizacje zamówień</div>
-										<div class="text-sm text-neutral-400">
-											Otrzymuj powiadomienia o statusie zamówień
-										</div>
-									</div>
-								</label>
-
-								<label class="flex items-center">
-									<input
-										type="checkbox"
-										name="marketingEmails"
-										bind:checked={preferencesForm.marketingEmails}
-										class="text-brand-600 focus:ring-brand-500 h-4 w-4 rounded border-white/15 bg-neutral-100 focus:ring-2"
-									/>
-									<div class="ml-3">
-										<div class="font-medium text-[--ft-text]">Promocje i oferty</div>
-										<div class="text-sm text-neutral-400">
-											Informacje o promocjach i nowych produktach
-										</div>
-									</div>
-								</label>
-
-								<label class="flex items-center">
-									<input
-										type="checkbox"
-										name="newsletter"
-										bind:checked={preferencesForm.newsletter}
-										class="text-brand-600 focus:ring-brand-500 h-4 w-4 rounded border-white/15 bg-neutral-100 focus:ring-2"
-									/>
-									<div class="ml-3">
-										<div class="font-medium text-[--ft-text]">Newsletter</div>
-										<div class="text-sm text-neutral-400">Miesięczny newsletter z nowościami</div>
-									</div>
-								</label>
+								<NotificationToggle name="orderUpdates" bind:checked={preferencesForm.orderUpdates} title="Aktualizacje zamówień" description="Otrzymuj powiadomienia o statusie zamówień" />
+								<NotificationToggle name="marketingEmails" bind:checked={preferencesForm.marketingEmails} title="Promocje i oferty" description="Informacje o promocjach i nowych produktach" />
+								<NotificationToggle name="newsletter" bind:checked={preferencesForm.newsletter} title="Newsletter" description="Miesięczny newsletter z nowościami" />
 							</div>
 						</div>
 
-						<!-- SMS Notifications -->
-						<div class="border-t border-white/10 pt-6">
+						<div class="border-t border-[--ft-line] pt-6">
 							<h3 class="mb-4 text-lg font-semibold text-[--ft-text]">Powiadomienia SMS</h3>
 							<div class="space-y-4">
-								<label class="flex items-center">
-									<input
-										type="checkbox"
-										name="smsNotifications"
-										bind:checked={preferencesForm.smsNotifications}
-										class="text-brand-600 focus:ring-brand-500 h-4 w-4 rounded border-white/15 bg-neutral-100 focus:ring-2"
-									/>
-									<div class="ml-3">
-										<div class="font-medium text-[--ft-text]">Powiadomienia SMS</div>
-										<div class="text-sm text-neutral-400">
-											Otrzymuj SMS o ważnych aktualizacjach
-										</div>
-									</div>
-								</label>
+								<NotificationToggle name="smsNotifications" bind:checked={preferencesForm.smsNotifications} title="Powiadomienia SMS" description="Otrzymuj SMS o ważnych aktualizacjach" />
 							</div>
 						</div>
 					</div>
@@ -588,13 +322,13 @@
 		</section>
 	{/if}
 
-	<!-- General Preferences -->
+	<!-- Preferences -->
 	{#if activeSection === 'preferences'}
 		<section>
 			<Card class="p-8">
 				<div class="mb-8">
 					<h2 class="mb-2 text-2xl font-bold text-[--ft-text]">Preferencje ogólne</h2>
-					<p class="text-neutral-400">Dostosuj swoje doświadczenie zakupowe</p>
+					<p class="text-[--ft-text-muted]">Dostosuj swoje doświadczenie zakupowe</p>
 				</div>
 
 				<form
@@ -611,36 +345,20 @@
 					}}
 				>
 					<div class="grid grid-cols-1 gap-8 md:grid-cols-2">
-						<!-- Language & Region -->
 						<div>
 							<h3 class="mb-4 text-lg font-semibold text-[--ft-text]">Język i region</h3>
 							<div class="space-y-4">
 								<div>
-									<label for="language" class="mb-2 block text-sm font-medium text-neutral-300"
-										>Język interfejsu</label
-									>
-									<select
-										id="language"
-										name="language"
-										bind:value={preferencesForm.language}
-										class="focus:ring-brand-500 w-full rounded-lg border border-white/15 px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none"
-									>
+									<label for="language" class="mb-2 block text-sm font-medium text-[--ft-text]">Język interfejsu</label>
+									<select id="language" name="language" bind:value={preferencesForm.language} class="focus:ring-brand-500 w-full rounded-lg border border-[--ft-line] px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none">
 										<option value="pl">Polski</option>
 										<option value="en">English</option>
 										<option value="de">Deutsch</option>
 									</select>
 								</div>
-
 								<div>
-									<label for="currency" class="mb-2 block text-sm font-medium text-neutral-300"
-										>Waluta</label
-									>
-									<select
-										id="currency"
-										name="currency"
-										bind:value={preferencesForm.currency}
-										class="focus:ring-brand-500 w-full rounded-lg border border-white/15 px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none"
-									>
+									<label for="currency" class="mb-2 block text-sm font-medium text-[--ft-text]">Waluta</label>
+									<select id="currency" name="currency" bind:value={preferencesForm.currency} class="focus:ring-brand-500 w-full rounded-lg border border-[--ft-line] px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none">
 										<option value="PLN">PLN (złoty)</option>
 										<option value="EUR">EUR (euro)</option>
 										<option value="USD">USD (dolar)</option>
@@ -649,20 +367,12 @@
 							</div>
 						</div>
 
-						<!-- Display -->
 						<div>
 							<h3 class="mb-4 text-lg font-semibold text-[--ft-text]">Wygląd</h3>
 							<div class="space-y-4">
 								<div>
-									<label for="theme" class="mb-2 block text-sm font-medium text-neutral-300"
-										>Motyw</label
-									>
-									<select
-										id="theme"
-										name="theme"
-										bind:value={preferencesForm.theme}
-										class="focus:ring-brand-500 w-full rounded-lg border border-white/15 px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none"
-									>
+									<label for="theme" class="mb-2 block text-sm font-medium text-[--ft-text]">Motyw</label>
+									<select id="theme" name="theme" bind:value={preferencesForm.theme} class="focus:ring-brand-500 w-full rounded-lg border border-[--ft-line] px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none">
 										<option value="light">Jasny</option>
 										<option value="dark">Ciemny</option>
 										<option value="auto">Automatyczny</option>
@@ -687,7 +397,7 @@
 		<Card class="from-danger/5 to-brand-50 border-danger/10 border-2 bg-linear-to-br p-8">
 			<div class="text-center">
 				<h3 class="mb-4 text-xl font-bold text-[--ft-text]">Akcje konta</h3>
-				<p class="mb-6 text-neutral-400">Zarządzaj swoim kontem lub usuń je całkowicie</p>
+				<p class="mb-6 text-[--ft-text-muted]">Zarządzaj swoim kontem lub usuń je całkowicie</p>
 				<div class="flex flex-col justify-center gap-4 sm:flex-row">
 					<Button href="/account/export" variant="outline">Eksportuj dane</Button>
 					<Button variant="secondary">Usuń konto</Button>
@@ -696,32 +406,4 @@
 		</Card>
 	</section>
 </div>
-
-<style>
-	.settings-nav-item {
-		padding: 1rem;
-		border-radius: 0.75rem;
-		border: 1px solid transparent;
-		transition: all 0.2s;
-		cursor: pointer;
-		text-align: left;
-		width: 100%;
-	}
-
-	.settings-nav-active {
-		background-color: rgb(219 234 254);
-		border-color: rgb(147 197 253);
-		color: rgb(29 78 216);
-	}
-
-	.settings-nav-inactive {
-		background-color: rgb(249 250 251);
-		color: rgb(55 65 81);
-	}
-
-	.settings-nav-inactive:hover {
-		background-color: rgb(239 246 255);
-		border-color: rgb(191 219 254);
-		color: rgb(37 99 235);
-	}
-</style>
+</div>

@@ -62,9 +62,9 @@
 	}
 
 	/* Sizes */
-	.btn--sm { padding: 8px 16px; font-size: 0.68rem; }
-	.btn--md { padding: 12px 24px; }
-	.btn--lg { padding: 14px 28px; font-size: 0.75rem; }
+	.btn--sm { padding: 8px 16px; font-size: 0.68rem; min-height: 36px; }
+	.btn--md { padding: 12px 24px; min-height: 44px; }
+	.btn--lg { padding: 14px 28px; font-size: 0.75rem; min-height: 48px; }
 	.btn--full { width: 100%; }
 
 	/* Variants */

@@ -108,7 +108,7 @@
 
 <!-- Main Content -->
 <div>
-	<div class="ft-container px-6 py-16 sm:px-8 lg:px-12">
+	<div class="ft-container ft-section-lg">
 		<!-- Contact Information Grid -->
 		<section class="mb-20">
 			<div class="mb-12 text-center">
@@ -132,7 +132,7 @@
 					Informacje Kontaktowe
 				</div>
 				<h2 class="mb-4 text-3xl font-bold text-[--ft-text]">Skontaktuj Się Z Nami</h2>
-				<p class="mx-auto max-w-2xl text-lg text-neutral-400">
+				<p class="mx-auto max-w-2xl text-lg text-[--ft-text-muted]">
 					Wybierz najwygodniejszy dla Ciebie sposób kontaktu. Nasz zespół jest gotowy do pomocy.
 				</p>
 			</div>
@@ -218,7 +218,7 @@
 							</h3>
 							<div class="mb-4 space-y-1">
 								{#each info.details as detail (detail)}
-									<p class="text-sm text-neutral-400">{detail}</p>
+									<p class="text-sm text-[--ft-text-muted]">{detail}</p>
 								{/each}
 							</div>
 
@@ -258,7 +258,7 @@
 					<Card class="p-8">
 						<div class="mb-8">
 							<h3 class="mb-4 text-2xl font-bold text-[--ft-text]">Napisz Do Nas</h3>
-							<p class="text-neutral-400">
+							<p class="text-[--ft-text-muted]">
 								Wypełnij formularz poniżej, a odpowiemy w ciągu 24 godzin.
 							</p>
 						</div>
@@ -318,7 +318,7 @@
 									required
 									disabled={sending}
 									rows="5"
-									class="focus:ring-brand-500 w-full resize-none rounded-xl border border-white/15 px-4 py-3 focus:border-transparent focus:ring-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+									class="focus:ring-brand-500 w-full resize-none rounded-xl border border-[--ft-line] px-4 py-3 focus:border-transparent focus:ring-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
 								></textarea>
 							</div>
 
@@ -368,7 +368,7 @@
 						>
 							<div class="p-8 text-center">
 								<svg
-									class="mx-auto mb-4 h-16 w-16 text-neutral-400"
+									class="mx-auto mb-4 h-16 w-16 text-[--ft-text-muted]"
 									fill="none"
 									stroke="currentColor"
 									viewBox="0 0 24 24"
@@ -386,8 +386,8 @@
 										d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
 									/>
 								</svg>
-								<p class="font-medium text-neutral-400">Mapa do naszego biura</p>
-								<p class="mt-2 text-sm text-neutral-500">ul. Technologiczna 15, Warszawa</p>
+								<p class="font-medium text-[--ft-text-muted]">Mapa do naszego biura</p>
+								<p class="mt-2 text-sm text-[--ft-text-muted]">ul. Technologiczna 15, Warszawa</p>
 							</div>
 						</div>
 					</Card>
@@ -415,7 +415,7 @@
 										d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
 									/>
 								</svg>
-								<span class="text-neutral-300">ul. Technologiczna 15, 00-001 Warszawa</span>
+								<span class="text-[--ft-text]">ul. Technologiczna 15, 00-001 Warszawa</span>
 							</div>
 							<div class="flex items-center">
 								<svg
@@ -431,7 +431,7 @@
 										d="M8 7V3a1 1 0 011-1h6a1 1 0 011 1v4m-8 0V7a1 1 0 011-1h6a1 1 0 011 1v0m-8 0h8M9 21v-4a1 1 0 011-1h4a1 1 0 011 1v4M9 21H5a1 1 0 01-1-1v-4a1 1 0 011-1h4m0 0h4m0 0h4a1 1 0 011 1v4a1 1 0 01-1 1h-4"
 									/>
 								</svg>
-								<span class="text-neutral-300">2 piętro, pokój 205</span>
+								<span class="text-[--ft-text]">2 piętro, pokój 205</span>
 							</div>
 							<div class="flex items-center">
 								<svg
@@ -447,7 +447,7 @@
 										d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
 									/>
 								</svg>
-								<span class="text-neutral-300">Parking dostępny na terenie budynku</span>
+								<span class="text-[--ft-text]">Parking dostępny na terenie budynku</span>
 							</div>
 						</div>
 					</Card>
@@ -472,7 +472,7 @@
 					Często Zadawane Pytania
 				</div>
 				<h2 class="mb-4 text-3xl font-bold text-[--ft-text]">Masz Pytanie?</h2>
-				<p class="mx-auto max-w-2xl text-lg text-neutral-400">
+				<p class="mx-auto max-w-2xl text-lg text-[--ft-text-muted]">
 					Sprawdź odpowiedzi na najczęściej zadawane pytania lub skontaktuj się z nami bezpośrednio.
 				</p>
 			</div>
@@ -483,7 +483,7 @@
 						<h4 class="mb-3 text-lg font-semibold text-[--ft-text]">
 							{faq.question}
 						</h4>
-						<p class="leading-relaxed text-neutral-400">
+						<p class="leading-relaxed text-[--ft-text-muted]">
 							{faq.answer}
 						</p>
 					</Card>
@@ -491,9 +491,9 @@
 			</div>
 
 			<div class="mt-12 text-center">
-				<Card class="inline-block bg-linear-to-br from-white/5 to-white/3 p-8">
+				<Card class="inline-block bg-linear-to-br from-[--ft-frost] to-[--ft-surface] p-8">
 					<h3 class="mb-4 text-xl font-bold text-[--ft-text]">Nie znalazłeś odpowiedzi?</h3>
-					<p class="mb-6 text-neutral-400">Nasz zespół wsparcia jest gotowy do pomocy</p>
+					<p class="mb-6 text-[--ft-text-muted]">Nasz zespół wsparcia jest gotowy do pomocy</p>
 					<div class="flex flex-col justify-center gap-3 sm:flex-row">
 						<Button href="tel:+48221234567" variant="outline">
 							<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

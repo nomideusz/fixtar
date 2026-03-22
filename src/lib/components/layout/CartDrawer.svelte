@@ -1,35 +1,44 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
-	import { FiniteStateMachine } from 'runed';
-
 	import Button from '$lib/components/ui/Button.svelte';
 	import type { TranslationKey } from '$lib/i18n/translations';
 	import { cart } from '$lib/stores';
-	import type { CartItem as StoreCartItem } from '$lib/stores';
-	import type { CartItem } from '$lib/types';
+	import type { CartItem } from '$lib/stores';
 
-	// Simplified 2-state FSM — Svelte transitions handle opening/closing animations
-	const drawerState = new FiniteStateMachine<'open' | 'closed', 'toggle' | 'open' | 'close'>(
-		'closed',
-		{
-			closed: {
-				toggle: 'open',
-				open: 'open',
-				close: 'closed'
-			},
-			open: {
-				toggle: 'closed',
-				close: 'closed'
-			}
-		}
-	);
+	// --- Props ---
 
-	// Derived from FSM — no $effect anti-pattern
-	let isOpen = $derived(drawerState.current === 'open');
+	const {
+		toggleCart = () => {},
+		t = (key: TranslationKey) => key
+	} = $props();
 
-	// Track CSS transition state
+	// --- Drawer State ---
+
+	let isOpen = $state(false);
 	let isTransitioning = $state(false);
+	let drawerElement = $state<HTMLDivElement | null>(null);
+
+	export function openDrawer() {
+		isOpen = true;
+	}
+
+	export function closeDrawer() {
+		isOpen = false;
+	}
+
+	export function toggleDrawer() {
+		if (!isTransitioning) isOpen = !isOpen;
+	}
+
+	// --- Event Handlers ---
+
+	function close() {
+		toggleCart();
+	}
+
+	function handleKeydown(e: KeyboardEvent) {
+		if (e.key === 'Escape' && isOpen && !isTransitioning) close();
+	}
 
 	function handleTransitionStart() {
 		isTransitioning = true;
@@ -39,122 +48,81 @@
 		isTransitioning = false;
 	}
 
-	// Props
-	const { toggleCart = () => {}, t = (key: TranslationKey) => key } = $props();
-
-	let cartDrawerElement = $state<HTMLDivElement | null>(null);
-
-	onMount(() => {
-		function handleDocumentClick(event: MouseEvent) {
-			if (!isOpen || isTransitioning || !cartDrawerElement) return;
-
-			const target = event.target as HTMLElement;
-
-			if (target.closest('[data-cart-toggle]')) return;
-
-			if (!cartDrawerElement.contains(target)) {
-				closeDrawer();
-				toggleCart();
-			}
-		}
-
-		document.addEventListener('click', handleDocumentClick, true);
-
-		return () => {
-			document.removeEventListener('click', handleDocumentClick, true);
-		};
-	});
-
-	export function openDrawer() {
-		drawerState.send('open');
-	}
-
-	export function closeDrawer() {
-		drawerState.send('close');
-	}
-
-	export function toggleDrawer() {
-		if (!isTransitioning) {
-			drawerState.send('toggle');
-		}
-	}
-
-	// Handle keyboard events
-	function handleKeydown(e: KeyboardEvent) {
-		if (e.key === 'Escape' && isOpen && !isTransitioning) {
-			closeDrawer();
-			toggleCart();
-		}
-	}
-
-	// Sync with external cart state events (no browser guard needed — $effect only runs client-side)
+	// Focus trap
 	$effect(() => {
-		const handleCartStateChange = (e: Event) => {
-			const customEvent = e as CustomEvent<{ isOpen: boolean }>;
+		if (!isOpen || !drawerElement) return;
 
-			if (customEvent.detail && typeof customEvent.detail.isOpen === 'boolean') {
-				if (customEvent.detail.isOpen) {
-					drawerState.send('open');
-				} else {
-					drawerState.send('close');
+		const focusableSelectors = 'a[href], button:not([disabled]), input, [tabindex]:not([tabindex="-1"])';
+
+		// Focus the first focusable element
+		const firstFocusable = drawerElement.querySelector<HTMLElement>(focusableSelectors);
+		firstFocusable?.focus();
+
+		function handleFocusTrap(e: KeyboardEvent) {
+			if (e.key !== 'Tab') return;
+
+			const focusableElements = drawerElement!.querySelectorAll<HTMLElement>(focusableSelectors);
+			const first = focusableElements[0];
+			const last = focusableElements[focusableElements.length - 1];
+
+			if (e.shiftKey) {
+				if (document.activeElement === first) {
+					e.preventDefault();
+					last?.focus();
+				}
+			} else {
+				if (document.activeElement === last) {
+					e.preventDefault();
+					first?.focus();
 				}
 			}
-		};
+		}
 
-		window.addEventListener('cartStateChange', handleCartStateChange);
-
-		return () => {
-			window.removeEventListener('cartStateChange', handleCartStateChange);
-		};
+		document.addEventListener('keydown', handleFocusTrap);
+		return () => document.removeEventListener('keydown', handleFocusTrap);
 	});
 
-	// Helper to convert flat store items to nested CartItem structure
-	function toCartItems(storeItems: StoreCartItem[]): CartItem[] {
-		return storeItems.map((item) => ({
-			id: item.productId,
-			product: {
-				id: item.productId,
-				name: item.name,
-				price: item.price,
-				image: item.image ?? '',
-				category: ''
-			},
-			quantity: item.quantity
-		}));
+	// Close on outside click
+	$effect(() => {
+		if (!isOpen) return;
+
+		function handleOutsideClick(event: MouseEvent) {
+			if (isTransitioning || !drawerElement) return;
+
+			const target = event.target as HTMLElement;
+			if (target.closest('[data-cart-toggle]')) return;
+			if (!drawerElement.contains(target)) close();
+		}
+
+		document.addEventListener('click', handleOutsideClick, true);
+		return () => document.removeEventListener('click', handleOutsideClick, true);
+	});
+
+	// Sync with external cart state events
+	$effect(() => {
+		function handleCartStateChange(e: Event) {
+			const detail = (e as CustomEvent<{ isOpen: boolean }>).detail;
+			if (detail && typeof detail.isOpen === 'boolean') {
+				isOpen = detail.isOpen;
+			}
+		}
+
+		window.addEventListener('cartStateChange', handleCartStateChange);
+		return () => window.removeEventListener('cartStateChange', handleCartStateChange);
+	});
+
+	// --- Cart Helpers ---
+
+	function formatPrice(value: number): string {
+		return '$' + value.toFixed(2);
 	}
 
-	// Use direct rune-based store access — no $store needed
-	let currentItems = $derived(toCartItems(cart.items));
-	let cartTotal = $derived(cart.total);
-	let cartItemCount = $derived(cart.count);
-
-	function clearCart() {
-		cart.clear();
+	function itemTotal(item: CartItem): string {
+		return formatPrice(item.price * item.quantity);
 	}
 
-	function removeItem(productId: string) {
-		cart.removeItem(productId);
-	}
-
-	function updateQuantity(productId: string, quantity: number) {
-		cart.updateQuantity(productId, quantity);
-	}
-
-	function handleButtonClick() {
-		toggleCart();
-	}
-
-	function handleBackdropClick() {
-		toggleCart();
-	}
-
-	function getItemTotal(item: CartItem): string {
-		const price = parseFloat(item.product.price.toString());
-		return (price * item.quantity).toFixed(2);
-	}
-
-	function getProductHref(item: CartItem): string {
-		return `/products/${encodeURIComponent(item.product.id)}`;
+	function productHref(item: CartItem): string {
+		return `/products/${encodeURIComponent(item.productId)}`;
 	}
 </script>
 
@@ -164,7 +132,7 @@
 		role="button"
 		tabindex="0"
 		class="cart-backdrop"
-		onclick={handleBackdropClick}
+		onclick={close}
 		onkeydown={handleKeydown}
 		transition:fade={{ duration: 150 }}
 		onintrostart={handleTransitionStart}
@@ -173,10 +141,12 @@
 		onoutroend={handleTransitionEnd}
 	></div>
 
-	<!-- Cart drawer -->
+	<!-- Drawer -->
 	<div
-		bind:this={cartDrawerElement}
+		bind:this={drawerElement}
 		class="cart-drawer"
+		role="dialog"
+		aria-label={t('yourCart')}
 		in:fly={{ duration: 300, x: 400 }}
 		out:fly={{ duration: 300, x: 400 }}
 		onintrostart={handleTransitionStart}
@@ -184,21 +154,24 @@
 		onoutrostart={handleTransitionStart}
 		onoutroend={handleTransitionEnd}
 	>
+		<!-- Header -->
 		<div class="cart-drawer__header">
 			<h5 class="cart-drawer__title">
-				{t('yourCart')} ({cartItemCount})
+				{t('yourCart')} ({cart.count})
 			</h5>
 			<div class="cart-drawer__actions">
 				<button
-					onclick={clearCart}
+					onclick={() => cart.clear()}
 					class="cart-drawer__icon-btn cart-drawer__icon-btn--clear"
 					title={t('clearCart')}
 					aria-label={t('clearCart')}
 				>
-					🗑️
+					<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+					</svg>
 				</button>
 				<button
-					onclick={handleButtonClick}
+					onclick={close}
 					class="cart-drawer__icon-btn cart-drawer__icon-btn--close"
 					aria-label={t('closeCartDrawer')}
 				>
@@ -207,58 +180,58 @@
 			</div>
 		</div>
 
+		<!-- Body -->
 		<div class="cart-drawer__body">
-			{#if !Array.isArray(currentItems) || currentItems.length === 0}
+			{#if cart.items.length === 0}
 				<div class="cart-drawer__empty">
 					<p class="cart-drawer__empty-text">{t('cartEmpty')}</p>
-					<Button variant="primary" class="cart-drawer__empty-button" onclick={handleButtonClick}
-						>{t('browseProducts')}</Button
-					>
+					<Button variant="primary" class="cart-drawer__empty-button" onclick={close}>
+						{t('browseProducts')}
+					</Button>
 				</div>
 			{:else}
+				<!-- Items -->
 				<div class="cart-drawer__items">
-					{#each currentItems as item (item.product.id)}
+					{#each cart.items as item (item.productId)}
 						<div class="cart-item">
 							<div class="cart-item__content">
 								<a
-									href={getProductHref(item)}
+									href={productHref(item)}
 									class="cart-item__image-link"
-									onclick={handleButtonClick}
-									aria-label={item.product.name}
+									onclick={close}
+									aria-label={item.name}
 								>
-									<img src={item.product.image} alt={item.product.name} class="cart-item__image" />
+									<img src={item.image} alt={item.name} class="cart-item__image" />
 								</a>
 								<div class="cart-item__details">
-									<a
-										href={getProductHref(item)}
-										class="cart-item__name-link"
-										onclick={handleButtonClick}
-									>
-										<p class="cart-item__name">{item.product.name}</p>
+									<a href={productHref(item)} class="cart-item__name-link" onclick={close}>
+										<p class="cart-item__name">{item.name}</p>
 									</a>
 									<p class="cart-item__price">
-										${parseFloat(item.product.price.toString()).toFixed(2)} × {item.quantity} = ${getItemTotal(
-											item
-										)}
+										{formatPrice(item.price)} × {item.quantity} = {itemTotal(item)}
 									</p>
 									<div class="cart-item__quantity">
 										<button
 											class="cart-item__quantity-btn cart-item__quantity-btn--minus"
 											onclick={() =>
-												updateQuantity(item.product.id, Math.max(1, item.quantity - 1))}
-											aria-label={t('decreaseQuantity')}>-</button
+												cart.updateQuantity(item.productId, Math.max(1, item.quantity - 1))}
+											aria-label={t('decreaseQuantity')}
 										>
+											-
+										</button>
 										<span class="cart-item__quantity-display">{item.quantity}</span>
 										<button
 											class="cart-item__quantity-btn cart-item__quantity-btn--plus"
-											onclick={() => updateQuantity(item.product.id, item.quantity + 1)}
-											aria-label={t('increaseQuantity')}>+</button
+											onclick={() => cart.updateQuantity(item.productId, item.quantity + 1)}
+											aria-label={t('increaseQuantity')}
 										>
+											+
+										</button>
 									</div>
 								</div>
 							</div>
 							<button
-								onclick={() => removeItem(item.product.id)}
+								onclick={() => cart.removeItem(item.productId)}
 								class="cart-drawer__icon-btn cart-drawer__icon-btn--remove"
 								aria-label={t('remove')}
 							>
@@ -267,20 +240,28 @@
 						</div>
 					{/each}
 				</div>
+
+				<!-- Footer -->
 				<div class="cart-drawer__footer">
 					<div class="cart-drawer__summary">
 						<span class="cart-drawer__summary-label">{t('subtotal')}</span>
 						<span class="cart-drawer__summary-price">
-							${cartTotal.toFixed(2)}
+							{formatPrice(cart.total)}
 						</span>
 					</div>
 					<p class="cart-drawer__shipping-note">{t('shippingNote')}</p>
-					<Button variant="primary" fullWidth href="/checkout" onclick={handleButtonClick} class="cart-drawer__checkout-btn"
-						>{t('proceedToCheckout')}</Button
+					<Button
+						variant="primary"
+						fullWidth
+						href="/checkout"
+						onclick={close}
+						class="cart-drawer__checkout-btn"
 					>
-					<Button variant="outline" fullWidth onclick={handleButtonClick}
-						>{t('continueShopping')}</Button
-					>
+						{t('proceedToCheckout')}
+					</Button>
+					<Button variant="outline" fullWidth onclick={close}>
+						{t('continueShopping')}
+					</Button>
 				</div>
 			{/if}
 		</div>
@@ -292,7 +273,7 @@
 		position: fixed;
 		inset: 0;
 		z-index: 150;
-		background-color: var(--ft-surface-overlay);
+		background-color: rgba(0, 0, 0, 0.4);
 		backdrop-filter: blur(4px);
 	}
 
@@ -305,9 +286,9 @@
 		height: 100%;
 		width: min(100%, 36rem);
 		flex-direction: column;
-		background-color: var(--ft-surface-elevated);
+		background-color: var(--ft-surface);
 		box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.22);
-		border-left: 1px solid var(--ft-border);
+		border-left: 1px solid var(--ft-line);
 	}
 
 	@media (min-width: 1280px) {
@@ -320,10 +301,10 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		background-color: var(--ft-surface-secondary);
+		background-color: var(--ft-frost);
 		padding: 1rem 1.25rem;
 		color: var(--ft-text);
-		border-bottom: 1px solid var(--ft-border);
+		border-bottom: 1px solid var(--ft-line);
 	}
 
 	.cart-drawer__title {
@@ -350,11 +331,11 @@
 		transition:
 			color 0.2s,
 			background-color 0.2s;
-		color: var(--ft-text-secondary);
+		color: var(--ft-text-muted);
 	}
 
 	.cart-drawer__icon-btn:hover {
-		background-color: var(--ft-surface-tertiary);
+		background-color: var(--ft-frost);
 		transform: translateY(-1px);
 	}
 
@@ -401,7 +382,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		border: 1px solid var(--ft-border);
+		border: 1px solid var(--ft-line);
 		background-color: var(--ft-surface);
 		padding: 0.875rem;
 		border-radius: var(--radius-md);
@@ -418,7 +399,7 @@
 		width: 6rem;
 		border-radius: var(--radius-md);
 		object-fit: cover;
-		border: 1px solid var(--ft-border);
+		border: 1px solid var(--ft-line);
 	}
 
 	.cart-item__image-link {
@@ -428,7 +409,7 @@
 
 	.cart-item__image-link:focus-visible,
 	.cart-item__name-link:focus-visible {
-		outline: 2px solid var(--ft-primary);
+		outline: 2px solid var(--ft-accent);
 		outline-offset: 2px;
 	}
 
@@ -452,20 +433,20 @@
 	}
 
 	.cart-item__name-link:hover .cart-item__name {
-		color: var(--ft-primary);
+		color: var(--ft-accent);
 	}
 
 	.cart-item__price {
 		font-size: 0.875rem;
 		font-weight: 600;
-		color: var(--ft-primary);
+		color: var(--ft-accent);
 	}
 
 	.cart-item__quantity {
 		margin-top: 0.375rem;
 		display: flex;
 		align-items: center;
-		border: 1px solid var(--ft-border);
+		border: 1px solid var(--ft-line);
 		border-radius: var(--radius-sm);
 		overflow: hidden;
 		width: fit-content;
@@ -475,7 +456,7 @@
 		min-width: 2rem;
 		min-height: 2rem;
 		padding: 0 0.5rem;
-		background-color: var(--ft-surface-secondary);
+		background-color: var(--ft-frost);
 		transition:
 			background-color 0.2s,
 			color 0.2s;
@@ -489,9 +470,9 @@
 	}
 
 	.cart-item__quantity-btn:hover {
-		background-color: var(--ft-primary-light);
-		color: var(--ft-primary);
-		box-shadow: inset 0 0 0 1px var(--ft-primary);
+		background-color: rgba(55, 138, 146, 0.1);
+		color: var(--ft-accent);
+		box-shadow: inset 0 0 0 1px var(--ft-accent);
 	}
 
 	:global(.cart-drawer__checkout-btn:hover),
@@ -521,19 +502,19 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		border-left: 1px solid var(--ft-border);
-		border-right: 1px solid var(--ft-border);
+		border-left: 1px solid var(--ft-line);
+		border-right: 1px solid var(--ft-line);
 	}
 
 	.cart-drawer__footer {
 		margin-top: 1rem;
-		border-top: 1px solid var(--ft-border);
+		border-top: 1px solid var(--ft-line);
 		padding-top: 1rem;
 	}
 
 	.cart-drawer__summary-label,
 	.cart-drawer__empty-text {
-		color: var(--ft-text-secondary);
+		color: var(--ft-text-muted);
 		font-size: 0.875rem;
 	}
 

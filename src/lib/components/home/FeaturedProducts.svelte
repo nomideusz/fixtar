@@ -44,7 +44,7 @@
 					>
 						<div class="card-img">
 							{#if product.mainImage}
-								<img src={product.mainImage} alt={product.name} loading="lazy" />
+								<img src={product.mainImage} alt={product.name} loading="lazy" width="320" height="240" />
 							{:else}
 								<div class="card-img-placeholder">
 									<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -100,7 +100,7 @@
 
 <style>
 	.featured {
-		padding: 64px 0 80px;
+		padding: clamp(56px, 7vh, 80px) 0;
 	}
 
 	.featured-inner {
@@ -245,8 +245,8 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 32px;
-		height: 32px;
+		min-width: 44px;
+		min-height: 44px;
 		border-radius: 50%;
 		border: 1px solid var(--ft-line);
 		background: transparent;

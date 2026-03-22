@@ -3,7 +3,6 @@
 	import { browser } from '$app/environment';
 	import { onMount } from 'svelte';
 
-	// Simple error handling without complex language context
 	let showDecorations = $state(false);
 
 	onMount(() => {
@@ -12,16 +11,15 @@
 		}, 100);
 	});
 
-	// Popular categories - simple array
+	// Popular categories with SVG icons
 	const popularCategories = [
-		{ id: 'szlifierki-i-polerki', name: 'Szlifierki i polerki', icon: '⚙️' },
-		{ id: 'wiertarki-i-wkretarki', name: 'Wiertarki i wkrętarki', icon: '🔩' },
-		{ id: 'pily-i-pilarki', name: 'Piły i pilarki', icon: '🪚' },
-		{ id: 'dom-i-ogrod', name: 'Dom i ogród', icon: '🌿' },
-		{ id: 'zestawy-i-akcesoria', name: 'Zestawy i akcesoria', icon: '🧰' }
+		{ id: 'szlifierki-i-polerki', name: 'Szlifierki i polerki', iconPath: 'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z' },
+		{ id: 'wiertarki-i-wkretarki', name: 'Wiertarki i wkrętarki', iconPath: 'M14.121 14.121L19 19m-7-7l7-7m-7 7l-2.879 2.879M12 12L4.939 4.939m7.061 7.061l-2.879-2.879' },
+		{ id: 'pily-i-pilarki', name: 'Piły i pilarki', iconPath: 'M4 6h16M4 10h16M4 14h16M4 18h16' },
+		{ id: 'dom-i-ogrod', name: 'Dom i ogród', iconPath: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' },
+		{ id: 'zestawy-i-akcesoria', name: 'Zestawy i akcesoria', iconPath: 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4' }
 	];
 
-	// Handle search
 	let searchQuery = $state('');
 	function handleSearch() {
 		if (!browser) return;
@@ -32,11 +30,11 @@
 </script>
 
 <svelte:head>
-	<title>Page Not Found - FixTar</title>
-	<meta name="description" content="The page you're looking for doesn't exist" />
+	<title>Nie znaleziono strony - FixTar</title>
+	<meta name="description" content="Strona, której szukasz, nie istnieje" />
 </svelte:head>
 
-<div class="relative mx-auto min-h-[70vh] max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+<div class="ft-container ft-section-lg min-h-[70vh]">
 	<!-- Decorative elements -->
 	{#if browser && showDecorations}
 		<div
@@ -54,45 +52,47 @@
 		<div
 			class="bg-brand-100 text-brand-800 mb-4 inline-block rounded-full px-3 py-1 text-sm font-medium"
 		>
-			Error {$page.status || 404}
+			Błąd {$page.status || 404}
 		</div>
 
 		<h1
 			class="from-brand-600 to-accent-600 mb-4 bg-linear-to-r bg-clip-text text-4xl font-bold text-transparent md:text-5xl lg:text-6xl"
 		>
-			Page Not Found
+			Nie znaleziono strony
 		</h1>
 
-		<p class="mx-auto mb-8 max-w-3xl text-xl text-neutral-400">
-			The page you're looking for doesn't exist or has been moved.
+		<p class="mx-auto mb-8 max-w-3xl text-xl text-[--ft-text-muted]">
+			Strona, której szukasz, nie istnieje lub została przeniesiona.
 		</p>
 
-		<p class="mb-10 text-lg text-neutral-500 italic">Don't worry, let's get you back on track!</p>
+		<p class="mb-10 text-lg text-[--ft-text-muted] italic">Nie martw się, pomożemy Ci wrócić na właściwą ścieżkę!</p>
 
 		<div class="mb-12 flex flex-wrap justify-center gap-4">
-			<a href="/" class="btn-primary px-6 py-3 text-lg"> Back to Home </a>
-			<a href="/contact" class="btn-secondary px-6 py-3 text-lg"> Contact Support </a>
+			<a href="/" class="btn-primary px-6 py-3 text-lg">Wróć na stronę główną</a>
+			<a href="/contact" class="btn-secondary px-6 py-3 text-lg">Skontaktuj się z nami</a>
 		</div>
 	</div>
 
 	<!-- Help section -->
 	<div class="mx-auto max-w-3xl">
-		<div class="card mb-10">
+		<div class="ft-card p-8 mb-10">
 			<div class="mb-4 flex items-center gap-3">
-				<h2 class="text-xl font-bold text-[--ft-text]">Here are some suggestions:</h2>
+				<h2 class="text-xl font-bold text-[--ft-text]">Oto kilka sugestii:</h2>
 			</div>
 
 			<!-- Popular categories -->
 			<div class="mb-6">
-				<h3 class="mb-3 text-lg font-medium text-neutral-200">Popular Categories</h3>
+				<h3 class="mb-3 text-lg font-medium text-[--ft-text-muted]">Popularne kategorie</h3>
 
 				<div class="flex flex-wrap gap-2">
-					{#each popularCategories as category (category)}
+					{#each popularCategories as category (category.id)}
 						<a
 							href="/products?category={category.id}"
-							class="bg-brand-100 text-brand-800 hover:bg-brand-200 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-medium transition-colors"
+							class="inline-flex items-center gap-1.5 rounded-full border border-[--ft-line] bg-[--ft-frost] px-3 py-1.5 text-sm font-medium text-[--ft-text] transition-colors hover:border-[--ft-accent] hover:text-[--ft-accent]"
 						>
-							<span class="text-xl">{category.icon}</span>
+							<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={category.iconPath} />
+							</svg>
 							{category.name}
 						</a>
 					{/each}
@@ -101,7 +101,7 @@
 
 			<!-- Search -->
 			<div>
-				<h3 class="mb-3 text-lg font-medium text-neutral-200">Search our site</h3>
+				<h3 class="mb-3 text-lg font-medium text-[--ft-text-muted]">Przeszukaj nasz sklep</h3>
 
 				<div class="flex gap-2">
 					<input
@@ -111,50 +111,9 @@
 						class="input flex-1"
 						onkeydown={(e) => e.key === 'Enter' && handleSearch()}
 					/>
-					<button type="button" class="btn-primary" onclick={handleSearch}> Search </button>
+					<button type="button" class="btn-primary" onclick={handleSearch}>Szukaj</button>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-
-<style>
-	/* Custom animations */
-	@keyframes float {
-		0% {
-			transform: translateY(0px);
-		}
-		50% {
-			transform: translateY(-15px);
-		}
-		100% {
-			transform: translateY(0px);
-		}
-	}
-
-	@keyframes float-reverse {
-		0% {
-			transform: translateY(0px);
-		}
-		50% {
-			transform: translateY(15px);
-		}
-		100% {
-			transform: translateY(0px);
-		}
-	}
-
-	@keyframes float-slow {
-		0% {
-			transform: translateY(0px);
-		}
-		50% {
-			transform: translateY(-10px);
-		}
-		100% {
-			transform: translateY(0px);
-		}
-	}
-
-	/* Removed unused animations */
-</style>

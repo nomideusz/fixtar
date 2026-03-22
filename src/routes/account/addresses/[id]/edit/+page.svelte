@@ -58,7 +58,7 @@
 
 					<div class="space-y-6">
 						<div>
-							<label for="type" class="mb-2 block text-sm font-medium text-neutral-300">
+							<label for="type" class="mb-2 block text-sm font-medium text-[--ft-text]">
 								Address Type
 							</label>
 							<select
@@ -66,7 +66,7 @@
 								name="type"
 								required
 								value={address.type || 'Home'}
-								class="focus:ring-brand-500 focus:border-brand-500 w-full rounded-md border border-white/15 px-3 py-2 shadow-sm focus:outline-none"
+								class="focus:ring-brand-500 focus:border-brand-500 w-full rounded-md border border-[--ft-line] px-3 py-2 shadow-sm focus:outline-none"
 							>
 								<option value="Home">Home</option>
 								<option value="Work">Work</option>
@@ -75,7 +75,7 @@
 						</div>
 
 						<div>
-							<label for="street" class="mb-2 block text-sm font-medium text-neutral-300">
+							<label for="street" class="mb-2 block text-sm font-medium text-[--ft-text]">
 								Street Address *
 							</label>
 							<input
@@ -85,13 +85,13 @@
 								required
 								value={address.street || ''}
 								placeholder="123 Main Street"
-								class="focus:ring-brand-500 focus:border-brand-500 w-full rounded-md border border-white/15 px-3 py-2 shadow-sm focus:outline-none"
+								class="focus:ring-brand-500 focus:border-brand-500 w-full rounded-md border border-[--ft-line] px-3 py-2 shadow-sm focus:outline-none"
 							/>
 						</div>
 
 						<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
 							<div>
-								<label for="city" class="mb-2 block text-sm font-medium text-neutral-300">
+								<label for="city" class="mb-2 block text-sm font-medium text-[--ft-text]">
 									City *
 								</label>
 								<input
@@ -101,12 +101,12 @@
 									required
 									value={address.city || ''}
 									placeholder="Warsaw"
-									class="focus:ring-brand-500 focus:border-brand-500 w-full rounded-md border border-white/15 px-3 py-2 shadow-sm focus:outline-none"
+									class="focus:ring-brand-500 focus:border-brand-500 w-full rounded-md border border-[--ft-line] px-3 py-2 shadow-sm focus:outline-none"
 								/>
 							</div>
 
 							<div>
-								<label for="postalCode" class="mb-2 block text-sm font-medium text-neutral-300">
+								<label for="postalCode" class="mb-2 block text-sm font-medium text-[--ft-text]">
 									Postal Code *
 								</label>
 								<input
@@ -116,13 +116,13 @@
 									required
 									value={address.postalCode || ''}
 									placeholder="00-001"
-									class="focus:ring-brand-500 focus:border-brand-500 w-full rounded-md border border-white/15 px-3 py-2 shadow-sm focus:outline-none"
+									class="focus:ring-brand-500 focus:border-brand-500 w-full rounded-md border border-[--ft-line] px-3 py-2 shadow-sm focus:outline-none"
 								/>
 							</div>
 						</div>
 
 						<div>
-							<label for="country" class="mb-2 block text-sm font-medium text-neutral-300">
+							<label for="country" class="mb-2 block text-sm font-medium text-[--ft-text]">
 								Country *
 							</label>
 							<select
@@ -130,7 +130,7 @@
 								name="country"
 								required
 								value={address.country || ''}
-								class="focus:ring-brand-500 focus:border-brand-500 w-full rounded-md border border-white/15 px-3 py-2 shadow-sm focus:outline-none"
+								class="focus:ring-brand-500 focus:border-brand-500 w-full rounded-md border border-[--ft-line] px-3 py-2 shadow-sm focus:outline-none"
 							>
 								<option value="">Select Country</option>
 								<option value="Poland">Poland</option>
@@ -151,15 +151,15 @@
 								name="default"
 								value="true"
 								checked={address.default === true}
-								class="text-brand-600 focus:ring-brand-500 h-4 w-4 rounded border-white/15"
+								class="text-brand-600 focus:ring-brand-500 h-4 w-4 rounded border-[--ft-line]"
 							/>
-							<label for="default" class="ml-2 block text-sm text-neutral-300">
+							<label for="default" class="ml-2 block text-sm text-[--ft-text]">
 								Set as default address
 							</label>
 						</div>
 					</div>
 
-					<div class="mt-6 flex gap-3 border-t border-white/10 pt-6">
+					<div class="mt-6 flex gap-3 border-t border-[--ft-line] pt-6">
 						<Button type="submit" disabled={isSubmitting}>
 							{isSubmitting ? 'Updating Address...' : 'Update Address'}
 						</Button>
@@ -185,7 +185,7 @@
 					/>
 				</svg>
 				<h3 class="mb-2 text-lg font-medium text-[--ft-text]">Address not found</h3>
-				<p class="mb-6 text-neutral-400">The address you're trying to edit doesn't exist.</p>
+				<p class="mb-6 text-[--ft-text-muted]">The address you're trying to edit doesn't exist.</p>
 				<Button href="/account/addresses">Back to Addresses</Button>
 			</div>
 		</Card>

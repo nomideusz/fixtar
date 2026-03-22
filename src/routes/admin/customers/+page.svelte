@@ -84,7 +84,7 @@
 	<meta name="description" content="Manage customers" />
 </svelte:head>
 
-<div class="ft-container py-8">
+<div class="ft-container ft-section-sm">
 	<div class="mb-8">
 		<h1 class="text-3xl font-bold text-neutral-900">Customers</h1>
 		<p class="mt-2 text-neutral-600">Manage your customer base</p>
@@ -111,7 +111,7 @@
 						onkeydown={(e) => e.key === 'Enter' && handleSearch()}
 					/>
 					<button
-						class="absolute inset-y-0 right-0 flex items-center px-3 text-neutral-400 hover:text-neutral-600"
+						class="absolute inset-y-0 right-0 flex items-center px-3 text-[--ft-text-muted] hover:text-neutral-600"
 						onclick={handleSearch}
 						aria-label="Search"
 					>
@@ -149,7 +149,7 @@
 		{:else if customers.length === 0}
 			<div class="py-12 text-center">
 				<svg
-					class="mx-auto h-12 w-12 text-neutral-400"
+					class="mx-auto h-12 w-12 text-[--ft-text-muted]"
 					fill="none"
 					viewBox="0 0 24 24"
 					stroke="currentColor"
@@ -162,7 +162,7 @@
 					/>
 				</svg>
 				<h3 class="mt-2 text-sm font-medium text-neutral-900">No customers found</h3>
-				<p class="mt-1 text-sm text-neutral-500">
+				<p class="mt-1 text-sm text-[--ft-text-muted]">
 					{searchTerm ? 'Try adjusting your search criteria.' : 'No customers have registered yet.'}
 				</p>
 			</div>
@@ -172,32 +172,32 @@
 					<thead class="bg-neutral-50">
 						<tr>
 							<th
-								class="px-6 py-3 text-left text-xs font-medium tracking-wider text-neutral-500 uppercase"
+								class="px-6 py-3 text-left text-xs font-medium tracking-wider text-[--ft-text-muted] uppercase"
 							>
 								Customer
 							</th>
 							<th
-								class="px-6 py-3 text-left text-xs font-medium tracking-wider text-neutral-500 uppercase"
+								class="px-6 py-3 text-left text-xs font-medium tracking-wider text-[--ft-text-muted] uppercase"
 							>
 								Email
 							</th>
 							<th
-								class="px-6 py-3 text-left text-xs font-medium tracking-wider text-neutral-500 uppercase"
+								class="px-6 py-3 text-left text-xs font-medium tracking-wider text-[--ft-text-muted] uppercase"
 							>
 								Registration Date
 							</th>
 							<th
-								class="px-6 py-3 text-left text-xs font-medium tracking-wider text-neutral-500 uppercase"
+								class="px-6 py-3 text-left text-xs font-medium tracking-wider text-[--ft-text-muted] uppercase"
 							>
 								Status
 							</th>
 							<th
-								class="px-6 py-3 text-left text-xs font-medium tracking-wider text-neutral-500 uppercase"
+								class="px-6 py-3 text-left text-xs font-medium tracking-wider text-[--ft-text-muted] uppercase"
 							>
 								Orders
 							</th>
 							<th
-								class="px-6 py-3 text-right text-xs font-medium tracking-wider text-neutral-500 uppercase"
+								class="px-6 py-3 text-right text-xs font-medium tracking-wider text-[--ft-text-muted] uppercase"
 							>
 								Actions
 							</th>
@@ -223,7 +223,7 @@
 											<div class="text-sm font-medium text-neutral-900">
 												{customer.name || 'No name provided'}
 											</div>
-											<div class="text-sm text-neutral-500">
+											<div class="text-sm text-[--ft-text-muted]">
 												Customer ID: {customer.id}
 											</div>
 										</div>
@@ -235,7 +235,7 @@
 										<div class="text-brand-500 text-xs">Email hidden</div>
 									{/if}
 								</td>
-								<td class="px-6 py-4 text-sm whitespace-nowrap text-neutral-500">
+								<td class="px-6 py-4 text-sm whitespace-nowrap text-[--ft-text-muted]">
 									{formatDate(customer.created)}
 								</td>
 								<td class="px-6 py-4 whitespace-nowrap">
@@ -247,7 +247,7 @@
 										{customer.verified ? 'Verified' : 'Unverified'}
 									</span>
 								</td>
-								<td class="px-6 py-4 text-sm whitespace-nowrap text-neutral-500">
+								<td class="px-6 py-4 text-sm whitespace-nowrap text-[--ft-text-muted]">
 									{customer.orderCount || 0} orders
 								</td>
 								<td class="px-6 py-4 text-right text-sm font-medium whitespace-nowrap">
@@ -267,14 +267,14 @@
 					<div class="flex items-center justify-between">
 						<div class="flex flex-1 justify-between sm:hidden">
 							<button
-								class="relative inline-flex items-center rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-50"
+								class="relative inline-flex items-center rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-[--ft-text] hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-50"
 								onclick={() => goToPage(currentPage - 1)}
 								disabled={!hasPrevPage}
 							>
 								Previous
 							</button>
 							<button
-								class="relative ml-3 inline-flex items-center rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-50"
+								class="relative ml-3 inline-flex items-center rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-[--ft-text] hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-50"
 								onclick={() => goToPage(currentPage + 1)}
 								disabled={!hasNextPage}
 							>
@@ -283,7 +283,7 @@
 						</div>
 						<div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
 							<div>
-								<p class="text-sm text-neutral-700">
+								<p class="text-sm text-[--ft-text]">
 									Showing <span class="font-medium">{(currentPage - 1) * pageSize + 1}</span>
 									to
 									<span class="font-medium">{Math.min(currentPage * pageSize, totalCustomers)}</span
@@ -294,7 +294,7 @@
 							<div>
 								<nav class="relative z-0 inline-flex -space-x-px rounded-md shadow-sm">
 									<button
-										class="relative inline-flex items-center rounded-l-md border border-neutral-300 bg-white px-2 py-2 text-sm font-medium text-neutral-500 hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-50"
+										class="relative inline-flex items-center rounded-l-md border border-neutral-300 bg-white px-2 py-2 text-sm font-medium text-[--ft-text-muted] hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-50"
 										onclick={() => goToPage(currentPage - 1)}
 										disabled={!hasPrevPage}
 										aria-label="Previous page"
@@ -313,7 +313,7 @@
 											class="relative inline-flex items-center border px-4 py-2 text-sm font-medium {pageNum ===
 											currentPage
 												? 'bg-brand-50 border-brand-500 text-brand-600 z-10'
-												: 'border-neutral-300 bg-white text-neutral-500 hover:bg-neutral-50'}"
+												: 'border-neutral-300 bg-white text-[--ft-text-muted] hover:bg-neutral-50'}"
 											onclick={() => goToPage(pageNum)}
 										>
 											{pageNum}
@@ -321,7 +321,7 @@
 									{/each}
 
 									<button
-										class="relative inline-flex items-center rounded-r-md border border-neutral-300 bg-white px-2 py-2 text-sm font-medium text-neutral-500 hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-50"
+										class="relative inline-flex items-center rounded-r-md border border-neutral-300 bg-white px-2 py-2 text-sm font-medium text-[--ft-text-muted] hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-50"
 										onclick={() => goToPage(currentPage + 1)}
 										disabled={!hasNextPage}
 										aria-label="Next page"

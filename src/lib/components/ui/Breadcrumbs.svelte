@@ -76,7 +76,7 @@
 			<!-- Only show home link if we're not using custom items, or if custom items don't include home -->
 			{#if !items || !items.some((item: { label: string; href: string }) => item.href === '/')}
 				<li>
-					<a href="/" class="hover:text-brand-600 text-sm font-medium text-neutral-400">
+					<a href="/" class="hover:text-brand-600 text-sm font-medium text-[--ft-text-muted]">
 						<span class="flex items-center gap-1.5">
 							<svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
 								<path
@@ -91,7 +91,7 @@
 
 			{#each pathSegments as segment (segment)}
 				<li class="flex items-center">
-					<svg class="mx-2 h-4 w-4 text-neutral-400" fill="currentColor" viewBox="0 0 20 20">
+					<svg class="mx-2 h-4 w-4 text-[--ft-text-muted]" fill="currentColor" viewBox="0 0 20 20">
 						<path
 							fill-rule="evenodd"
 							d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
@@ -101,7 +101,7 @@
 					{#if !segment.isActive}
 						<a
 							href={segment.href}
-							class="hover:text-brand-600 text-sm font-medium text-neutral-400"
+							class="hover:text-brand-600 text-sm font-medium text-[--ft-text-muted]"
 						>
 							{segment.text || segment.href.split('/').pop() || ''}
 						</a>

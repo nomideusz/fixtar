@@ -19,10 +19,10 @@
 	};
 
 	const closeButtonClasses: Record<string, string> = {
-		success: 'bg-white/10 hover:bg-white/20 text-[--ft-text]/70 hover:text-[--ft-text]',
-		error: 'bg-white/10 hover:bg-white/20 text-[--ft-text]/70 hover:text-[--ft-text]',
-		info: 'bg-white/10 hover:bg-white/20 text-[--ft-text]/70 hover:text-[--ft-text]',
-		warning: 'bg-black/5 hover:bg-black/10 text-neutral-700 hover:text-neutral-900'
+		success: 'bg-[--ft-frost] hover:bg-[--ft-line] text-[--ft-text]/70 hover:text-[--ft-text]',
+		error: 'bg-[--ft-frost] hover:bg-[--ft-line] text-[--ft-text]/70 hover:text-[--ft-text]',
+		info: 'bg-[--ft-frost] hover:bg-[--ft-line] text-[--ft-text]/70 hover:text-[--ft-text]',
+		warning: 'bg-black/5 hover:bg-black/10 text-[--ft-text] hover:text-neutral-900'
 	};
 
 	const iconPaths: Record<string, string> = {
@@ -83,7 +83,7 @@
 			<div class="relative flex items-start gap-3 p-4">
 				<!-- Icon -->
 				<div class="relative shrink-0">
-					<div class="relative flex h-8 w-8 items-center justify-center rounded-full bg-white/20">
+					<div class="relative flex h-8 w-8 items-center justify-center rounded-full bg-[--ft-frost]">
 						<svg
 							class="h-4 w-4"
 							fill="none"
@@ -136,7 +136,7 @@
 
 			<!-- Progress bar for auto-dismiss -->
 			{#if notification.duration && notification.duration > 0}
-				<div class="absolute right-0 bottom-0 left-0 h-1 overflow-hidden bg-white/20">
+				<div class="absolute right-0 bottom-0 left-0 h-1 overflow-hidden bg-[--ft-frost]">
 					<div
 						class="animate-notification-progress h-full rounded-full bg-white/60"
 						style="animation-duration: {notification.duration}ms"

@@ -24,7 +24,7 @@
 			<div class="hero-actions">
 				<a href="/products" class="hero-btn-primary">
 					Przeglądaj Produkty
-					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="M12 5l7 7-7 7" /></svg>
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="M12 5l7 7-7 7" /></svg>
 				</a>
 				<a href="/search" class="hero-btn-secondary">Szukaj</a>
 			</div>
@@ -38,6 +38,8 @@
 							src={featuredProduct.mainImage}
 							alt={featuredProduct.name}
 							class="product-img"
+							width="400"
+							height="300"
 						/>
 					{/if}
 				</div>

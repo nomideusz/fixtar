@@ -78,7 +78,7 @@
 	.page-hero__inner {
 		max-width: var(--ft-container);
 		margin: 0 auto;
-		padding: clamp(32px, 5vh, 56px) var(--ft-gutter);
+		padding: clamp(40px, 5vh, 56px) var(--ft-gutter);
 	}
 
 	.page-hero__title {

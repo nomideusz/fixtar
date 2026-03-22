@@ -64,8 +64,8 @@
 </script>
 
 {#if user}
-	<div class="min-h-screen bg-white/5">
-		<div class="ft-container py-8">
+	<div class="min-h-screen">
+		<div class="ft-container ft-section-sm">
 			<div class="flex flex-col gap-8 lg:flex-row">
 				<!-- Enhanced Desktop Sidebar -->
 				<div class="shrink-0 lg:w-80">
@@ -75,7 +75,7 @@
 							<div class="mb-8 text-center">
 								<div class="relative mb-4 inline-block">
 									<div
-										class="from-brand-500/100/20 to-accent-500/100/20 mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-linear-to-br ring-4 ring-white/10"
+										class="from-brand-500/100/20 to-accent-500/100/20 mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-linear-to-br ring-4 ring-[--ft-line]"
 									>
 										<svg
 											class="text-brand-600 h-10 w-10"
@@ -112,7 +112,7 @@
 								<h3 class="mb-1 text-xl font-bold text-[--ft-text]">
 									{user.name || 'Użytkownik'}
 								</h3>
-								<p class="mb-3 text-sm text-neutral-400">{user.email}</p>
+								<p class="mb-3 text-sm text-[--ft-text-muted]">{user.email}</p>
 								<div
 									class="bg-brand-100 text-brand-800 inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold"
 								>
@@ -143,13 +143,13 @@
 													item.href
 												)
 													? 'bg-brand-500/20'
-													: 'group-hover:bg-brand-50 bg-white/10'} transition-colors duration-200"
+													: 'group-hover:bg-brand-50 bg-[--ft-frost]'} transition-colors duration-200"
 											>
 												{#if item.icon === 'overview'}
 													<svg
 														class="h-5 w-5 {isActive(item.href)
 															? 'text-brand-600'
-															: 'group-hover:text-brand-600 text-neutral-400'}"
+															: 'group-hover:text-brand-600 text-[--ft-text-muted]'}"
 														fill="none"
 														stroke="currentColor"
 														viewBox="0 0 24 24"
@@ -171,7 +171,7 @@
 													<svg
 														class="h-5 w-5 {isActive(item.href)
 															? 'text-brand-600'
-															: 'group-hover:text-brand-600 text-neutral-400'}"
+															: 'group-hover:text-brand-600 text-[--ft-text-muted]'}"
 														fill="none"
 														stroke="currentColor"
 														viewBox="0 0 24 24"
@@ -187,7 +187,7 @@
 													<svg
 														class="h-5 w-5 {isActive(item.href)
 															? 'text-brand-600'
-															: 'group-hover:text-brand-600 text-neutral-400'}"
+															: 'group-hover:text-brand-600 text-[--ft-text-muted]'}"
 														fill="none"
 														stroke="currentColor"
 														viewBox="0 0 24 24"
@@ -209,7 +209,7 @@
 													<svg
 														class="h-5 w-5 {isActive(item.href)
 															? 'text-brand-600'
-															: 'group-hover:text-brand-600 text-neutral-400'}"
+															: 'group-hover:text-brand-600 text-[--ft-text-muted]'}"
 														fill="none"
 														stroke="currentColor"
 														viewBox="0 0 24 24"
@@ -225,7 +225,7 @@
 													<svg
 														class="h-5 w-5 {isActive(item.href)
 															? 'text-brand-600'
-															: 'group-hover:text-brand-600 text-neutral-400'}"
+															: 'group-hover:text-brand-600 text-[--ft-text-muted]'}"
 														fill="none"
 														stroke="currentColor"
 														viewBox="0 0 24 24"
@@ -251,7 +251,7 @@
 												>
 													{item.label}
 												</div>
-												<div class="truncate text-xs text-neutral-500">
+												<div class="truncate text-xs text-[--ft-text-muted]">
 													{item.description}
 												</div>
 											</div>
@@ -278,11 +278,11 @@
 							</nav>
 
 							<!-- Account Actions -->
-							<div class="mt-8 border-t border-white/10 pt-6">
+							<div class="mt-8 border-t border-[--ft-line] pt-6">
 								<div class="space-y-2">
 									<a
 										href="/products"
-										class="hover:text-brand-600 hover:bg-brand-50 flex items-center rounded-lg px-3 py-2 text-sm font-medium text-neutral-400 transition-colors duration-200"
+										class="hover:text-brand-600 hover:bg-brand-50 flex items-center rounded-lg px-3 py-2 text-sm font-medium text-[--ft-text-muted] transition-colors duration-200"
 									>
 										<svg class="mr-3 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 											<path
@@ -296,7 +296,7 @@
 									</a>
 									<a
 										href="/contact"
-										class="hover:text-brand-600 hover:bg-brand-50 flex items-center rounded-lg px-3 py-2 text-sm font-medium text-neutral-400 transition-colors duration-200"
+										class="hover:text-brand-600 hover:bg-brand-50 flex items-center rounded-lg px-3 py-2 text-sm font-medium text-[--ft-text-muted] transition-colors duration-200"
 									>
 										<svg class="mr-3 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 											<path
@@ -347,16 +347,16 @@
 						></div>
 
 						<!-- Panel -->
-						<div class="fixed inset-y-0 left-0 w-full max-w-sm bg-white/5 shadow-2xl">
+						<div class="fixed inset-y-0 left-0 w-full max-w-sm bg-[--ft-surface] shadow-2xl">
 							<div class="flex h-full flex-col">
 								<!-- Header -->
 								<div
-									class="flex items-center justify-between border-b border-white/10 bg-white/5 p-6"
+									class="flex items-center justify-between border-b border-[--ft-line] bg-[--ft-surface] p-6"
 								>
 									<h3 class="text-lg font-bold text-[--ft-text]">Menu konta</h3>
 									<button
 										onclick={() => (mobileMenuOpen = false)}
-										class="rounded-lg p-2 transition-colors duration-200 hover:bg-white/10"
+										class="rounded-lg p-2 transition-colors duration-200 hover:bg-[--ft-frost]"
 										aria-label="Zamknij menu konta"
 									>
 										<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -371,7 +371,7 @@
 								</div>
 
 								<!-- User Profile -->
-								<div class="border-b border-white/10 p-6">
+								<div class="border-b border-[--ft-line] p-6">
 									<div class="flex items-center">
 										<div
 											class="from-brand-500/100/20 to-accent-500/100/20 mr-3 flex h-12 w-12 items-center justify-center rounded-full bg-linear-to-br"
@@ -394,7 +394,7 @@
 											<h4 class="font-semibold text-[--ft-text]">
 												{user.name || 'Użytkownik'}
 											</h4>
-											<p class="text-sm text-neutral-400">{user.email}</p>
+											<p class="text-sm text-[--ft-text-muted]">{user.email}</p>
 										</div>
 									</div>
 								</div>
@@ -415,13 +415,13 @@
 														item.href
 													)
 														? 'bg-brand-500/20'
-														: 'bg-white/10'}"
+														: 'bg-[--ft-frost]'}"
 												>
 													{#if item.icon === 'overview'}
 														<svg
 															class="h-4 w-4 {isActive(item.href)
 																? 'text-brand-600'
-																: 'text-neutral-400'}"
+																: 'text-[--ft-text-muted]'}"
 															fill="none"
 															stroke="currentColor"
 															viewBox="0 0 24 24"
@@ -443,7 +443,7 @@
 														<svg
 															class="h-4 w-4 {isActive(item.href)
 																? 'text-brand-600'
-																: 'text-neutral-400'}"
+																: 'text-[--ft-text-muted]'}"
 															fill="none"
 															stroke="currentColor"
 															viewBox="0 0 24 24"
@@ -459,7 +459,7 @@
 														<svg
 															class="h-4 w-4 {isActive(item.href)
 																? 'text-brand-600'
-																: 'text-neutral-400'}"
+																: 'text-[--ft-text-muted]'}"
 															fill="none"
 															stroke="currentColor"
 															viewBox="0 0 24 24"
@@ -481,7 +481,7 @@
 														<svg
 															class="h-4 w-4 {isActive(item.href)
 																? 'text-brand-600'
-																: 'text-neutral-400'}"
+																: 'text-[--ft-text-muted]'}"
 															fill="none"
 															stroke="currentColor"
 															viewBox="0 0 24 24"
@@ -497,7 +497,7 @@
 														<svg
 															class="h-4 w-4 {isActive(item.href)
 																? 'text-brand-600'
-																: 'text-neutral-400'}"
+																: 'text-[--ft-text-muted]'}"
 															fill="none"
 															stroke="currentColor"
 															viewBox="0 0 24 24"
@@ -519,14 +519,14 @@
 												</div>
 												<div>
 													<div class="font-medium">{item.label}</div>
-													<div class="text-xs text-neutral-500">{item.description}</div>
+													<div class="text-xs text-[--ft-text-muted]">{item.description}</div>
 												</div>
 											</a>
 										{/each}
 									</nav>
 
 									<!-- Mobile Quick Actions -->
-									<div class="mt-8 border-t border-white/10 pt-6">
+									<div class="mt-8 border-t border-[--ft-line] pt-6">
 										<div class="space-y-2">
 											<a
 												href="/products"
@@ -534,10 +534,10 @@
 												class="mobile-nav-item mobile-nav-item-inactive"
 											>
 												<div
-													class="mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white/10"
+													class="mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-[--ft-frost]"
 												>
 													<svg
-														class="h-4 w-4 text-neutral-400"
+														class="h-4 w-4 text-[--ft-text-muted]"
 														fill="none"
 														stroke="currentColor"
 														viewBox="0 0 24 24"
@@ -558,10 +558,10 @@
 												class="mobile-nav-item mobile-nav-item-inactive"
 											>
 												<div
-													class="mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white/10"
+													class="mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-[--ft-frost]"
 												>
 													<svg
-														class="h-4 w-4 text-neutral-400"
+														class="h-4 w-4 text-[--ft-text-muted]"
 														fill="none"
 														stroke="currentColor"
 														viewBox="0 0 24 24"
@@ -603,18 +603,18 @@
 	}
 
 	.nav-item-active {
-		background-color: rgb(219 234 254);
-		color: rgb(29 78 216);
-		border: 1px solid rgb(147 197 253);
+		background-color: rgba(55, 138, 146, 0.08);
+		color: var(--ft-accent);
+		border: 1px solid rgba(55, 138, 146, 0.25);
 	}
 
 	.nav-item-inactive {
-		color: rgb(55 65 81);
+		color: var(--ft-text);
 	}
 
 	.nav-item-inactive:hover {
-		background-color: rgb(239 246 255);
-		color: rgb(37 99 235);
+		background-color: rgba(55, 138, 146, 0.06);
+		color: var(--ft-accent);
 	}
 
 	.mobile-nav-item {
@@ -627,16 +627,16 @@
 	}
 
 	.mobile-nav-item-active {
-		background-color: rgb(219 234 254);
-		color: rgb(29 78 216);
+		background-color: rgba(55, 138, 146, 0.08);
+		color: var(--ft-accent);
 	}
 
 	.mobile-nav-item-inactive {
-		color: rgb(55 65 81);
+		color: var(--ft-text);
 	}
 
 	.mobile-nav-item-inactive:hover {
-		background-color: rgb(239 246 255);
-		color: rgb(37 99 235);
+		background-color: rgba(55, 138, 146, 0.06);
+		color: var(--ft-accent);
 	}
 </style>

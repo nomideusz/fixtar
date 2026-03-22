@@ -101,7 +101,7 @@
 
 <!-- Main Content -->
 <div>
-	<div class="ft-container px-6 py-16 sm:px-8 lg:px-12">
+	<div class="ft-container ft-section-lg">
 		<!-- Company Story Section -->
 		<section class="mb-20">
 			<div class="grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
@@ -125,7 +125,7 @@
 							Pasja do Narzędzi Od 2024 Roku
 						</h2>
 
-						<div class="space-y-4 text-lg leading-relaxed text-neutral-400">
+						<div class="space-y-4 text-lg leading-relaxed text-[--ft-text-muted]">
 							<p>
 								FixTar narodziło się z prostej idei: dostarczanie najlepszych profesjonalnych
 								narzędzi z profesjonalną obsługą i ekspercką wiedzą. Założyliśmy firmę, aby ułatwić
@@ -163,7 +163,7 @@
 									</div>
 									<div class="ml-4">
 										<span class="font-semibold text-[--ft-text]">{item.title}:</span>
-										<span class="text-neutral-400"> {item.desc}</span>
+										<span class="text-[--ft-text-muted]"> {item.desc}</span>
 									</div>
 								</div>
 							{/each}
@@ -190,10 +190,10 @@
 
 		<!-- Stats Section -->
 		<section class="mb-20">
-			<Card class="border-2 border-white/10 bg-linear-to-br from-white/5 to-white/3 p-12">
+			<Card class="border-2 border-[--ft-line] bg-linear-to-br from-[--ft-frost] to-[--ft-surface] p-12">
 				<div class="mb-12 text-center">
 					<h2 class="mb-4 text-3xl font-bold text-[--ft-text]">FixTar w Liczbach</h2>
-					<p class="text-lg text-neutral-400">Nasze osiągnięcia mówią same za siebie</p>
+					<p class="text-lg text-[--ft-text-muted]">Nasze osiągnięcia mówią same za siebie</p>
 				</div>
 				<div class="grid grid-cols-2 gap-8 lg:grid-cols-4">
 					{#each stats as stat (stat)}
@@ -204,7 +204,7 @@
 								>
 									{stat.value}
 								</div>
-								<p class="text-sm font-medium tracking-wide text-neutral-400 uppercase">
+								<p class="text-sm font-medium tracking-wide text-[--ft-text-muted] uppercase">
 									{stat.label}
 								</p>
 							</div>
@@ -231,7 +231,7 @@
 					Nasze Wartości
 				</div>
 				<h2 class="mb-6 text-4xl font-bold text-[--ft-text]">Co Nas Motywuje</h2>
-				<p class="mx-auto max-w-3xl text-xl text-neutral-400">
+				<p class="mx-auto max-w-3xl text-xl text-[--ft-text-muted]">
 					Nasze podstawowe wartości kształtują sposób, w jaki prowadzimy biznes i budujemy relacje z
 					klientami
 				</p>
@@ -256,7 +256,7 @@
 								>
 									{value.title}
 								</h3>
-								<p class="leading-relaxed text-neutral-400">
+								<p class="leading-relaxed text-[--ft-text-muted]">
 									{value.description}
 								</p>
 							</div>
@@ -283,7 +283,7 @@
 					Nasz Zespół
 				</div>
 				<h2 class="mb-6 text-4xl font-bold text-[--ft-text]">Poznaj Ludzi Za FixTar</h2>
-				<p class="mx-auto max-w-3xl text-xl text-neutral-400">
+				<p class="mx-auto max-w-3xl text-xl text-[--ft-text-muted]">
 					Nasz zespół składa się z pasjonatów narzędzi, którzy codziennie pracują nad tym, aby
 					dostarczać najlepsze doświadczenia naszym klientom
 				</p>
@@ -294,7 +294,7 @@
 						<div class="text-center">
 							<div class="relative mb-6 inline-block">
 								<div
-									class="group-hover:ring-brand-200 mx-auto h-32 w-32 overflow-hidden rounded-full ring-4 ring-white/10 transition-all duration-300"
+									class="group-hover:ring-brand-200 mx-auto h-32 w-32 overflow-hidden rounded-full ring-4 ring-[--ft-line] transition-all duration-300"
 								>
 									<img
 										src={member.image}
@@ -326,7 +326,7 @@
 								{member.name}
 							</h3>
 							<p class="text-brand-600 mb-4 font-semibold">{member.role}</p>
-							<p class="mb-6 leading-relaxed text-neutral-400">{member.bio}</p>
+							<p class="mb-6 leading-relaxed text-[--ft-text-muted]">{member.bio}</p>
 
 							<!-- Contact buttons -->
 							<div class="flex justify-center gap-3">
@@ -346,7 +346,7 @@
 								</a>
 								<a
 									href={member.linkedin}
-									class="inline-flex items-center rounded-lg bg-neutral-100 px-4 py-2 text-sm font-medium text-neutral-300 transition-colors duration-200 hover:bg-white/10"
+									class="inline-flex items-center rounded-lg bg-[--ft-frost] px-4 py-2 text-sm font-medium text-[--ft-text] transition-colors duration-200 hover:bg-[--ft-frost]"
 								>
 									<svg class="mr-2 h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
 										<path
@@ -374,13 +374,13 @@
 					<div class="flex flex-col justify-center gap-4 sm:flex-row">
 						<Button
 							href="/products"
-							class="text-brand-600 bg-white/5 px-8 py-4 text-lg font-bold shadow-lg hover:bg-white/10"
+							class="text-brand-600 bg-[--ft-frost] px-8 py-4 text-lg font-bold shadow-lg hover:bg-[--ft-frost]"
 						>
 							Przeglądaj Produkty
 						</Button>
 						<Button
 							href="/contact"
-							class="border-2 border-white/30 px-8 py-4 text-lg font-bold text-[--ft-text] backdrop-blur-sm hover:border-white hover:bg-white/10"
+							class="border-2 border-[--ft-line] px-8 py-4 text-lg font-bold text-[--ft-text] backdrop-blur-sm hover:border-[--ft-accent] hover:bg-[--ft-frost]"
 						>
 							Skontaktuj Się
 						</Button>

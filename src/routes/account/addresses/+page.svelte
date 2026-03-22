@@ -103,7 +103,7 @@
 					/>
 				</svg>
 				<h3 class="mb-2 text-lg font-medium text-[--ft-text]">Error loading addresses</h3>
-				<p class="mb-6 text-neutral-400">{errorMessage}</p>
+				<p class="mb-6 text-[--ft-text-muted]">{errorMessage}</p>
 				<Button onclick={() => window.location.reload()}>Try Again</Button>
 			</div>
 		</Card>
@@ -111,7 +111,7 @@
 		<Card>
 			<div class="py-12 text-center">
 				<svg
-					class="mx-auto mb-4 h-16 w-16 text-neutral-400"
+					class="mx-auto mb-4 h-16 w-16 text-[--ft-text-muted]"
 					fill="none"
 					stroke="currentColor"
 					viewBox="0 0 24 24"
@@ -130,7 +130,7 @@
 					/>
 				</svg>
 				<h3 class="mb-2 text-lg font-medium text-[--ft-text]">No addresses saved</h3>
-				<p class="mb-6 text-neutral-400">Add an address to make checkout faster.</p>
+				<p class="mb-6 text-[--ft-text-muted]">Add an address to make checkout faster.</p>
 				<Button href="/account/addresses/new">Add Your First Address</Button>
 			</div>
 		</Card>
@@ -165,7 +165,7 @@
 							<button
 								onclick={() => handleDelete(address.id)}
 								disabled={isSubmitting}
-								class="hover:text-danger p-1 text-neutral-400 transition-colors disabled:cursor-not-allowed disabled:opacity-50"
+								class="hover:text-danger p-1 text-[--ft-text-muted] transition-colors disabled:cursor-not-allowed disabled:opacity-50"
 								aria-label="Delete address"
 							>
 								<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -197,7 +197,7 @@
 						</div>
 					</div>
 
-					<div class="mb-4 space-y-1 text-sm text-neutral-400">
+					<div class="mb-4 space-y-1 text-sm text-[--ft-text-muted]">
 						<p>{address.street}</p>
 						<p>{address.city} {address.postalCode}</p>
 						<p>{address.country}</p>

@@ -65,7 +65,7 @@
 			case 'cancelled':
 				return 'bg-danger/10 text-danger-dark';
 			default:
-				return 'bg-neutral-100 text-neutral-800';
+				return 'bg-[--ft-frost] text-neutral-800';
 		}
 	}
 
@@ -83,7 +83,7 @@
 	<meta name="description" content="Manage customer orders" />
 </svelte:head>
 
-<div class="ft-container py-8">
+<div class="ft-container ft-section-sm">
 	<!-- Header -->
 	<div class="mb-8">
 		<h1 class="text-3xl font-bold text-neutral-900">Manage Orders</h1>
@@ -148,7 +148,7 @@
 			</table>
 
 			{#if filteredOrders.length === 0}
-				<div class="py-8 text-center text-neutral-500">No orders found matching your search.</div>
+				<div class="py-8 text-center text-[--ft-text-muted]">No orders found matching your search.</div>
 			{/if}
 		</div>
 	</Card>
@@ -164,7 +164,7 @@
 					</div>
 					<button
 						onclick={() => (selectedOrder = null)}
-						class="text-neutral-400 hover:text-neutral-600"
+						class="text-[--ft-text-muted] hover:text-neutral-600"
 						aria-label="Close modal"
 					>
 						<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

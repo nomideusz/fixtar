@@ -55,7 +55,7 @@
 	<meta name="description" content="Admin dashboard for managing the store" />
 </svelte:head>
 
-<div class="ft-container py-8">
+<div class="ft-container ft-section-sm">
 	<div class="mb-8">
 		<h1 class="text-3xl font-bold text-neutral-900">Admin Dashboard</h1>
 		<p class="mt-2 text-neutral-600">Manage your store from one place</p>
@@ -73,7 +73,7 @@
 				<div>
 					<p class="text-sm text-neutral-600">Total Products</p>
 					<p class="text-2xl font-bold text-neutral-900">{data.stats.totalProducts}</p>
-					<p class="mt-1 text-xs text-neutral-500">All products in system</p>
+					<p class="mt-1 text-xs text-[--ft-text-muted]">All products in system</p>
 				</div>
 				<div class="bg-accent-100 rounded-full p-3">
 					<svg
@@ -98,7 +98,7 @@
 				<div>
 					<p class="text-sm text-neutral-600">Active Products</p>
 					<p class="text-success text-2xl font-bold">{data.stats.activeProducts}</p>
-					<p class="mt-1 text-xs text-neutral-500">{activePercentage}% of total products</p>
+					<p class="mt-1 text-xs text-[--ft-text-muted]">{activePercentage}% of total products</p>
 				</div>
 				<div class="bg-success/10 rounded-full p-3">
 					<svg class="text-success h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -118,7 +118,7 @@
 				<div>
 					<p class="text-sm text-neutral-600">Draft Products</p>
 					<p class="text-brand-600 text-2xl font-bold">{data.stats.draftProducts}</p>
-					<p class="mt-1 text-xs text-neutral-500">{draftPercentage}% waiting for review</p>
+					<p class="mt-1 text-xs text-[--ft-text-muted]">{draftPercentage}% waiting for review</p>
 				</div>
 				<div class="bg-brand-100 rounded-full p-3">
 					<svg class="text-brand-600 h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -138,7 +138,7 @@
 				<div>
 					<p class="text-sm text-neutral-600">Categories</p>
 					<p class="text-brand-600 text-2xl font-bold">{data.stats.totalCategories}</p>
-					<p class="mt-1 text-xs text-neutral-500">Product categories</p>
+					<p class="mt-1 text-xs text-[--ft-text-muted]">Product categories</p>
 				</div>
 				<div class="bg-brand-100 rounded-full p-3">
 					<svg class="text-brand-600 h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -180,11 +180,11 @@
 						</svg>
 						<div>
 							<span class="font-medium">Manage Products</span>
-							<p class="text-sm text-neutral-500">View and edit all products</p>
+							<p class="text-sm text-[--ft-text-muted]">View and edit all products</p>
 						</div>
 					</div>
 					<svg
-						class="h-5 w-5 text-neutral-400"
+						class="h-5 w-5 text-[--ft-text-muted]"
 						fill="none"
 						stroke="currentColor"
 						viewBox="0 0 24 24"
@@ -260,11 +260,11 @@
 						</svg>
 						<div>
 							<span class="font-medium">BaseLinker Integration</span>
-							<p class="text-sm text-neutral-500">Sync products and manage orders</p>
+							<p class="text-sm text-[--ft-text-muted]">Sync products and manage orders</p>
 						</div>
 					</div>
 					<svg
-						class="h-5 w-5 text-neutral-400"
+						class="h-5 w-5 text-[--ft-text-muted]"
 						fill="none"
 						stroke="currentColor"
 						viewBox="0 0 24 24"
@@ -299,14 +299,14 @@
 									? 'bg-success/10 text-success-dark'
 									: product.status === 'draft'
 										? 'bg-brand-100 text-brand-800'
-										: 'bg-neutral-100 text-neutral-800'}"
+										: 'bg-[--ft-frost] text-neutral-800'}"
 							>
 								{product.status}
 							</span>
 						</div>
 					</div>
 				{:else}
-					<div class="text-center py-4 text-neutral-500">No recent products found</div>
+					<div class="text-center py-4 text-[--ft-text-muted]">No recent products found</div>
 				{/each}
 			</div>
 
