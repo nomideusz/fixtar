@@ -131,22 +131,22 @@
 </svelte:head>
 
 <div class="min-h-screen">
-	<div class="ft-container ft-section">
+	<div class="ft-container ft-section-sm">
 		<!-- Breadcrumb -->
-		<nav class="mb-12">
+		<nav class="mb-6">
 			<Breadcrumbs items={breadcrumbItems} />
 		</nav>
 
-		<div class="grid grid-cols-1 gap-12 lg:grid-cols-2">
+		<div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
 			<!-- Product Images -->
-			<div class="space-y-6">
+			<div>
 				<ProductGallery images={allImages} productName={product.name} badges={imageBadges} />
 			</div>
 
 			<!-- Product Info -->
-			<div class="flex flex-col gap-6">
+			<div class="flex flex-col gap-5">
 				<!-- Header -->
-				<div class="pb-6 border-b border-[--ft-line]">
+				<div class="pb-5 border-b border-[--ft-line]">
 					<h1 class="mb-4 text-3xl leading-tight font-bold text-[--ft-text] lg:text-4xl">
 						{product.name}
 					</h1>
@@ -185,7 +185,7 @@
 
 				<!-- Categories -->
 				{#if product.expand?.categories?.length}
-					<div class="pb-6 border-b border-[--ft-line]">
+					<div class="pb-5 border-b border-[--ft-line]">
 						<h3 class="mb-3 text-sm font-semibold uppercase tracking-wider text-[--ft-text-muted]">Kategorie</h3>
 						<div class="flex flex-wrap gap-2">
 							{#each product.expand.categories as category (category.id)}
@@ -205,7 +205,7 @@
 
 				<!-- Description -->
 				{#if product.description || product.shortDescription}
-					<div class="pb-6 border-b border-[--ft-line]">
+					<div class="pb-5 border-b border-[--ft-line]">
 						<h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-[--ft-text-muted]">Opis produktu</h3>
 						<div class="product-description text-sm leading-relaxed text-[--ft-text]">
 							{#if product.description}
