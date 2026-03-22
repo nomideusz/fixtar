@@ -21,8 +21,6 @@
 		closeDrawer: () => void;
 	} | null>(null);
 
-	// Always use 'en' on the server to match SSR output; on the client use persisted value.
-	// This prevents hydration mismatches caused by localStorage differing from SSR.
 	const layoutT = (key: TranslationKey) => {
 		const lang = browser ? languageStore.current : 'en';
 		return translations[lang]?.[key] || translations.en[key] || key;
@@ -37,27 +35,24 @@
 		}
 	});
 
-	// Sync server-side user to client store
 	$effect(() => {
 		if (data?.user) userStore.login(data.user);
 	});
-
-	// Products are loaded server-side via +page.server.ts loaders
 </script>
 
 <Notifications />
 <Navbar onCartOpen={() => (cartOpen = true)} />
 <CartDrawer bind:this={cartDrawerRef} toggleCart={() => (cartOpen = false)} t={layoutT} />
 
-<main class="layout-main min-h-screen pt-20 md:pt-24">
+<main>
 	{@render children?.()}
 </main>
 
 <Footer />
 
 <style>
-	.layout-main {
-		background: var(--ft-surface);
-		color: var(--ft-dark-text, #ffffff);
+	main {
+		min-height: 100vh;
+		padding-top: 68px; /* navbar height */
 	}
 </style>

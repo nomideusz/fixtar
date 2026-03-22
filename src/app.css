@@ -1,405 +1,357 @@
 /* ==========================================================================
-   FixTar Design System — Global Styles
-   Tailwind CSS v4 (CSS-first configuration)
+   FixTar — Scandinavian Industrial Design System
+   Inspired by szkolyjogi.pl aesthetic: editorial, refined, lots of air.
+   Warm slate + teal accent. DM Serif Display headlines + Inter body.
    ========================================================================== */
 
 @import 'tailwindcss';
 
 /* ==========================================================================
-   1. DESIGN TOKENS — @theme block
-   These generate Tailwind utility classes automatically.
-   e.g. --color-brand-600 → bg-brand-600, text-brand-600, border-brand-600
+   1. THEME TOKENS
    ========================================================================== */
 
 @theme {
-	--color-brand-50: #ecf3f4;
-	--color-brand-100: #d8e7e8;
-	--color-brand-200: #b2cfd2;
-	--color-brand-300: #8cb8bc;
-	--color-brand-400: #64a1a7;
 	--color-brand-500: #378a92;
 	--color-brand-600: #2f6d73;
 	--color-brand-700: #275155;
-	--color-brand-800: #1e373a;
-	--color-brand-900: #141f20;
-	--color-brand-950: #0c1313;
 
-	--color-accent-50: #f0fdfa;
-	--color-accent-100: #ccfbf1;
-	--color-accent-200: #99f6e4;
-	--color-accent-300: #5eead4;
-	--color-accent-400: #2dd4bf;
-	--color-accent-500: #14b8a6;
-	--color-accent-600: #0d9488;
-	--color-accent-700: #0f766e;
-	--color-accent-800: #115e59;
-	--color-accent-900: #134e4a;
-	--color-accent-950: #042f2e;
-
-	--color-neutral-50: #f8fafc;
-	--color-neutral-100: #f1f5f9;
-	--color-neutral-200: #e2e8f0;
-	--color-neutral-300: #cbd5e1;
-	--color-neutral-400: #94a3b8;
-	--color-neutral-500: #64748b;
-	--color-neutral-600: #475569;
-	--color-neutral-700: #334155;
-	--color-neutral-800: #1e293b;
-	--color-neutral-900: #0f172a;
-	--color-neutral-950: #020617;
+	--color-warm: #c49a6c;
+	--color-warm-bg: #f5ede4;
 
 	--color-success: #16a34a;
-	--color-success-light: #dcfce7;
 	--color-warning: #f59e0b;
-	--color-warning-light: #fef3c7;
 	--color-danger: #dc2626;
-	--color-danger-dark: #7f1d1d;
-	--color-danger-light: #fee2e2;
-	--color-info: #2563eb;
-	--color-info-light: #dbeafe;
 
-	--font-sans: 'Barlow', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-	--font-heading:
-		'Chakra Petch', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-	--font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', monospace;
+	--font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+	--font-display: 'DM Serif Display', Georgia, serif;
+	--font-mono: 'Inter', system-ui, sans-serif;
 
-	--radius-xs: 0;
-	--radius-sm: 0;
-	--radius-md: 0.125rem;
-	--radius-lg: 0.25rem;
-	--radius-xl: 0.25rem;
-	--radius-2xl: 0.375rem;
-	--radius-3xl: 0.5rem;
+	--radius-sm: 6px;
+	--radius-md: 10px;
+	--radius-lg: 14px;
+	--radius-xl: 14px;
+	--radius-2xl: 16px;
 	--radius-full: 9999px;
 }
 
 /* ==========================================================================
-   2. SEMANTIC TOKENS — CSS Custom Properties
-   These map design intent to palette values. Use in component CSS.
-   Enables future dark mode and theme switching by changing :root vars.
+   2. SEMANTIC TOKENS — Light by default (like yoga site)
    ========================================================================== */
 
 :root {
-	/* -- Surface / Background -- */
-	--ft-surface: #0c1118;
-	--ft-surface-alt: #090e13;
-	--ft-surface-secondary: rgba(255, 255, 255, 0.02);
-	--ft-surface-tertiary: rgba(255, 255, 255, 0.04);
-	--ft-surface-elevated: #0f1722;
-	--ft-surface-overlay: rgba(0, 0, 0, 0.6);
+	--ft-bg: #f7f9fc;
+	--ft-surface: #ffffff;
+	--ft-dark: #1a2233;
+	--ft-text: #3a4558;
+	--ft-text-strong: #1a2233;
+	--ft-text-muted: #8a95a8;
+	--ft-text-faint: #b0bac8;
 
-	/* -- Card -- */
-	--ft-card: rgba(255, 255, 255, 0.02);
-	--ft-card-hover: rgba(255, 255, 255, 0.04);
-	--ft-card-solid: #0f1722;
+	--ft-accent: #378a92;
+	--ft-accent-hover: #2f6d73;
+	--ft-warm: #c49a6c;
+	--ft-warm-bg: #f5ede4;
 
-	/* -- Text -- */
-	--ft-text: #ffffff;
-	--ft-text-strong: rgba(255, 255, 255, 0.85);
-	--ft-text-secondary: rgba(255, 255, 255, 0.55);
-	--ft-text-muted: rgba(255, 255, 255, 0.35);
-	--ft-text-faint: rgba(255, 255, 255, 0.2);
-	--ft-text-inverse: var(--color-neutral-900);
-	--ft-text-brand: var(--color-brand-400);
+	--ft-line: #dce4ee;
+	--ft-frost: #e8f0fa;
 
-	/* -- Border -- */
-	--ft-border: rgba(255, 255, 255, 0.06);
-	--ft-border-subtle: rgba(255, 255, 255, 0.04);
-	--ft-border-hover: rgba(255, 255, 255, 0.12);
-	--ft-border-focus: var(--color-brand-500);
+	--ft-shadow-sm: 0 1px 3px rgba(21, 29, 43, 0.04);
+	--ft-shadow-md: 0 4px 20px rgba(74, 127, 181, 0.07);
+	--ft-shadow-lg: 0 8px 36px rgba(74, 127, 181, 0.1);
 
-	/* -- Brand overlays (tinted surfaces) -- */
+	--ft-container: 1280px;
+	--ft-gutter: clamp(24px, 5vw, 80px);
+
+	--dur-fast: 0.15s;
+	--dur-med: 0.25s;
+	--ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+	/* Legacy aliases for components that still reference old tokens */
+	--ft-primary: var(--ft-accent);
+	--ft-primary-hover: var(--ft-accent-hover);
+	--ft-primary-light: rgba(55, 138, 146, 0.1);
+	--ft-primary-active: var(--ft-accent-hover);
+	--ft-primary-ring: var(--ft-accent);
+	--ft-border: var(--ft-line);
+	--ft-border-hover: var(--ft-accent);
+	--ft-card: var(--ft-surface);
+	--ft-card-hover: var(--ft-frost);
+	--ft-card-solid: var(--ft-surface);
+	--ft-surface: var(--ft-surface);
+	--ft-surface-alt: var(--ft-bg);
+	--ft-surface-secondary: var(--ft-frost);
+	--ft-surface-tertiary: var(--ft-frost);
+	--ft-surface-elevated: var(--ft-surface);
+	--ft-surface-overlay: rgba(0, 0, 0, 0.4);
+	--ft-text-secondary: var(--ft-text-muted);
+	--ft-text-inverse: #ffffff;
+	--ft-text-brand: var(--ft-accent);
+	--ft-border-subtle: var(--ft-frost);
+	--ft-focus-ring: var(--ft-accent);
+	--ft-focus-offset: 2px;
+	--ft-border-focus: var(--ft-accent);
+
+	/* Old brand overlay tokens */
 	--ft-brand-subtle: rgba(55, 138, 146, 0.03);
 	--ft-brand-muted: rgba(55, 138, 146, 0.08);
 	--ft-brand-light: rgba(55, 138, 146, 0.12);
 	--ft-brand-medium: rgba(55, 138, 146, 0.15);
 	--ft-brand-border: rgba(55, 138, 146, 0.15);
 	--ft-brand-glow: rgba(55, 138, 146, 0.1);
-
-	/* -- Interactive / Primary action -- */
-	--ft-primary: var(--color-brand-500);
-	--ft-primary-hover: var(--color-brand-400);
-	--ft-primary-active: var(--color-brand-600);
-	--ft-primary-light: rgba(55, 138, 146, 0.15);
-	--ft-primary-ring: var(--color-brand-500);
-
-	/* -- Interactive / Secondary action -- */
-	--ft-secondary: var(--color-accent-500);
-	--ft-secondary-hover: var(--color-accent-400);
-	--ft-secondary-light: rgba(55, 138, 146, 0.15);
-
-	/* -- Semantic status -- */
-	--ft-success: var(--color-success);
-	--ft-warning: var(--color-warning);
-	--ft-danger: var(--color-danger);
-	--ft-info: var(--color-info);
-
-	/* -- Focus ring -- */
-	--ft-focus-ring: var(--color-brand-500);
-	--ft-focus-offset: 2px;
-
-	/* -- Grid / decorative -- */
 	--ft-grid-line: rgba(55, 138, 146, 0.04);
 	--ft-grid-line-subtle: rgba(55, 138, 146, 0.03);
 	--ft-divider: rgba(55, 138, 146, 0.2);
-	--ft-shadow: rgba(0, 0, 0, 0.3);
-	--ft-shadow-heavy: rgba(0, 0, 0, 0.5);
-
-	/* -- Footer -- */
-	--ft-footer-bg: var(--color-neutral-900);
-	--ft-footer-text: var(--color-neutral-300);
-
-	/* -- Typography scale (Major Third — 1.25) -- */
-	--ft-text-xs: 0.75rem;
-	--ft-text-sm: 0.875rem;
-	--ft-text-base: 1rem;
-	--ft-text-lg: 1.125rem;
-	--ft-text-xl: 1.25rem;
-	--ft-text-2xl: 1.5rem;
-	--ft-text-3xl: 1.875rem;
-	--ft-text-4xl: 2.25rem;
-	--ft-text-5xl: 3rem;
-	--ft-text-display: clamp(3rem, 7vw, 5.5rem);
-
-	/* -- Line-heights -- */
-	--ft-leading-none: 0.95;
-	--ft-leading-tight: 1.15;
-	--ft-leading-snug: 1.3;
-	--ft-leading-normal: 1.5;
-	--ft-leading-relaxed: 1.7;
-
-	/* -- Letter-spacing -- */
-	--ft-tracking-tighter: -0.03em;
-	--ft-tracking-tight: -0.015em;
-	--ft-tracking-normal: 0;
-	--ft-tracking-wide: 0.05em;
-	--ft-tracking-wider: 0.1em;
-
-	/* ── Legacy aliases (used in some components) ── */
-	--ft-dark: var(--ft-surface);
-	--ft-dark-deeper: var(--ft-surface-alt);
-	--ft-dark-card: var(--ft-card);
-	--ft-dark-card-hover: var(--ft-card-hover);
-	--ft-dark-border: var(--ft-border);
-	--ft-dark-border-hover: var(--ft-brand-border);
-	--ft-dark-text: var(--ft-text);
-	--ft-dark-text-secondary: var(--ft-text-muted);
-	--ft-dark-text-muted: var(--ft-text-faint);
-}
-
-/* ==========================================================================
-   LIGHT THEME — swap surfaces, text, borders
-   Apply via <html class="light"> or media query
-   ========================================================================== */
-.light {
-	--ft-surface: #ffffff;
-	--ft-surface-alt: #f8fafc;
-	--ft-surface-secondary: #f1f5f9;
-	--ft-surface-tertiary: #e2e8f0;
-	--ft-surface-elevated: #ffffff;
-	--ft-surface-overlay: rgba(0, 0, 0, 0.4);
-
-	--ft-card: #ffffff;
-	--ft-card-hover: #f8fafc;
-	--ft-card-solid: #ffffff;
-
-	--ft-text: #0f172a;
-	--ft-text-strong: #1e293b;
-	--ft-text-secondary: #475569;
-	--ft-text-muted: #64748b;
-	--ft-text-faint: #94a3b8;
-	--ft-text-inverse: #ffffff;
-
-	--ft-border: #e2e8f0;
-	--ft-border-subtle: #f1f5f9;
-	--ft-border-hover: #cbd5e1;
-
-	--ft-brand-subtle: rgba(55, 138, 146, 0.04);
-	--ft-brand-muted: rgba(55, 138, 146, 0.08);
-	--ft-brand-light: rgba(55, 138, 146, 0.12);
-	--ft-brand-medium: rgba(55, 138, 146, 0.15);
-	--ft-brand-border: rgba(55, 138, 146, 0.2);
-	--ft-brand-glow: rgba(55, 138, 146, 0.08);
-
-	--ft-grid-line: rgba(55, 138, 146, 0.06);
-	--ft-grid-line-subtle: rgba(55, 138, 146, 0.04);
-	--ft-divider: rgba(55, 138, 146, 0.15);
 	--ft-shadow: rgba(0, 0, 0, 0.08);
 	--ft-shadow-heavy: rgba(0, 0, 0, 0.15);
 
-	--ft-text-brand: var(--color-brand-600);
-	--ft-primary-light: rgba(55, 138, 146, 0.1);
-
-	--ft-footer-bg: #0f172a;
-	--ft-footer-text: #cbd5e1;
-
-	/* Legacy aliases */
-	--ft-dark: var(--ft-surface);
-	--ft-dark-deeper: var(--ft-surface-alt);
-	--ft-dark-card: var(--ft-card);
-	--ft-dark-card-hover: var(--ft-card-hover);
-	--ft-dark-border: var(--ft-border);
-	--ft-dark-border-hover: var(--ft-brand-border);
-	--ft-dark-text: var(--ft-text);
+	/* Old dark theme aliases */
+	--ft-dark: var(--ft-text-strong);
+	--ft-dark-deeper: var(--ft-bg);
+	--ft-dark-card: var(--ft-surface);
+	--ft-dark-card-hover: var(--ft-frost);
+	--ft-dark-border: var(--ft-line);
+	--ft-dark-border-hover: var(--ft-accent);
+	--ft-dark-text: var(--ft-text-strong);
 	--ft-dark-text-secondary: var(--ft-text-muted);
 	--ft-dark-text-muted: var(--ft-text-faint);
+
+	/* Old footer tokens */
+	--ft-footer-bg: var(--ft-bg);
+	--ft-footer-text: var(--ft-text-muted);
+
+	/* Old font alias */
+	--font-heading: var(--font-display);
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+	:root {
+		--ft-bg: #0f1521;
+		--ft-surface: #1a2233;
+		--ft-dark: #e8edf4;
+		--ft-text: #b0bac8;
+		--ft-text-strong: #e8edf4;
+		--ft-text-muted: #6b7a8d;
+		--ft-text-faint: #4a5568;
+
+		--ft-accent: #6a9fd8;
+		--ft-accent-hover: #85b4e4;
+		--ft-warm: #d4a87a;
+		--ft-warm-bg: #2a2218;
+
+		--ft-line: #253044;
+		--ft-frost: #1e2d42;
+
+		--ft-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
+		--ft-shadow-md: 0 4px 20px rgba(0, 0, 0, 0.25);
+		--ft-shadow-lg: 0 8px 36px rgba(0, 0, 0, 0.3);
+	}
 }
 
 /* ==========================================================================
    3. BASE STYLES
    ========================================================================== */
 
-@layer base {
-	body {
-		font-family: var(--font-sans);
-		color: var(--ft-text);
-		background-color: var(--ft-surface);
-		-webkit-font-smoothing: antialiased;
-		-moz-osx-font-smoothing: grayscale;
-	}
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
 
-	/* Accessible focus ring using brand color */
-	:focus-visible {
-		outline: 2px solid var(--ft-focus-ring);
-		outline-offset: var(--ft-focus-offset);
-	}
+html {
+	scroll-behavior: smooth;
+}
 
-	/* Remove default focus for mouse users */
-	:focus:not(:focus-visible) {
-		outline: none;
-	}
+body {
+	font-family: var(--font-sans);
+	background-color: var(--ft-bg);
+	color: var(--ft-text);
+	line-height: 1.7;
+	font-size: 15px;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
 
-	/* Dark-themed selects & options */
-	select {
-		background-color: var(--ft-surface-elevated, #0f1722);
-		color: var(--ft-text, #ffffff);
-		border-color: var(--ft-border-hover, rgba(255, 255, 255, 0.15));
-	}
+::selection {
+	background: var(--ft-frost);
+	color: var(--ft-dark);
+}
 
-	select option {
-		background-color: var(--ft-surface-elevated, #0f1722);
-		color: var(--ft-text, #ffffff);
-	}
+:focus-visible {
+	outline: 2px solid var(--ft-warm);
+	outline-offset: 2px;
+}
 
-	/* Headings inherit font-heading */
-	h1,
-	h2,
-	h3,
-	h4,
-	h5,
-	h6 {
-		font-family: var(--font-heading);
+input[type="text"]:focus-visible,
+input[type="search"]:focus-visible,
+input[type="email"]:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+	outline: none;
+}
+
+a {
+	color: var(--ft-dark);
+	text-decoration: none;
+	transition: color var(--dur-fast) ease;
+}
+
+a:hover {
+	color: var(--ft-accent);
+}
+
+/* ── Typography ── */
+h1, h2, h3, h4 {
+	font-family: var(--font-display);
+	font-weight: 400;
+	color: var(--ft-dark);
+	letter-spacing: -0.025em;
+}
+
+h1 {
+	font-size: clamp(2.4rem, 5vw, 3.8rem);
+	line-height: 1.08;
+}
+
+h2 {
+	font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+h3 {
+	font-family: var(--font-sans);
+	font-size: 1.1rem;
+	font-weight: 600;
+	line-height: 1.35;
+	letter-spacing: -0.01em;
+}
+
+h4 {
+	font-family: var(--font-mono);
+	font-size: 0.68rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.12em;
+	color: var(--ft-accent);
+}
+
+/* ── Section label (uppercase kicker) ── */
+.ft-label {
+	font-family: var(--font-mono);
+	font-size: 0.68rem;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	color: var(--ft-accent);
+	font-weight: 600;
+}
+
+/* ── Card base ── */
+.ft-card {
+	background: var(--ft-surface);
+	border: 1px solid var(--ft-line);
+	border-radius: var(--radius-md);
+	transition:
+		border-color var(--dur-med) ease,
+		box-shadow var(--dur-med) ease;
+}
+
+.ft-card:hover {
+	border-color: var(--ft-accent);
+}
+
+/* ── Staggered fade-in ── */
+@keyframes ft-fade-up {
+	from {
+		opacity: 0;
+		transform: translateY(6px);
 	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.ft-animate {
+	animation: ft-fade-up 0.35s var(--ease-out) both;
 }
 
 /* ==========================================================================
    4. COMPONENT CLASSES
-   Use semantic tokens so they adapt to theme changes.
    ========================================================================== */
 
 @layer components {
-	/* Primary button */
 	.btn-primary {
-		padding: 0.75rem 1.5rem;
-		background-color: var(--ft-primary);
-		color: var(--ft-text-inverse);
-		border-radius: var(--radius-lg);
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		background-color: var(--ft-accent);
+		color: #ffffff;
+		font-family: var(--font-mono);
 		font-weight: 600;
-		transition:
-			background-color 0.2s,
-			box-shadow 0.2s;
-		border: none;
+		font-size: 0.72rem;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		padding: 13px 28px;
+		border: 1px solid var(--ft-accent);
+		border-radius: var(--radius-sm);
 		cursor: pointer;
+		transition: all var(--dur-fast) ease;
 	}
+
 	.btn-primary:hover {
-		background-color: var(--ft-primary-hover);
-	}
-	.btn-primary:active {
-		background-color: var(--ft-primary-active);
-	}
-	.btn-primary:disabled {
-		opacity: 0.5;
-		cursor: not-allowed;
+		background-color: var(--ft-accent-hover);
+		border-color: var(--ft-accent-hover);
+		box-shadow: var(--ft-shadow-md);
 	}
 
-	/* Secondary button */
 	.btn-secondary {
-		padding: 0.75rem 1.5rem;
-		background-color: var(--ft-surface-tertiary);
-		color: var(--ft-text);
-		border-radius: var(--radius-lg);
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		background: transparent;
+		color: var(--ft-accent);
+		font-family: var(--font-mono);
 		font-weight: 600;
-		transition: background-color 0.2s;
-		border: none;
+		font-size: 0.72rem;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		padding: 13px 28px;
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-sm);
 		cursor: pointer;
+		transition: all var(--dur-fast) ease;
 	}
+
 	.btn-secondary:hover {
-		background-color: var(--color-neutral-200);
-	}
-	.btn-secondary:disabled {
-		opacity: 0.5;
-		cursor: not-allowed;
+		border-color: var(--ft-accent);
 	}
 
-	/* Outline button */
-	.btn-outline {
-		padding: 0.75rem 1.5rem;
-		background-color: transparent;
-		color: var(--ft-primary);
-		border: 2px solid var(--ft-primary);
-		border-radius: var(--radius-lg);
-		font-weight: 600;
-		transition: all 0.2s;
-		cursor: pointer;
-	}
-	.btn-outline:hover {
-		background-color: var(--ft-primary);
-		color: var(--ft-text-inverse);
-	}
-	.btn-outline:disabled {
-		opacity: 0.5;
-		cursor: not-allowed;
-	}
-
-	/* Card */
-	.card {
-		background-color: var(--ft-surface);
-		border-radius: var(--radius-xl);
-		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-		padding: 1.5rem;
-		transition: box-shadow 0.2s;
-	}
-	.card:hover {
-		box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-	}
-
-	/* Form input */
 	.input {
 		width: 100%;
 		padding: 0.75rem;
-		border: 1px solid var(--ft-border);
-		border-radius: var(--radius-lg);
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-sm);
 		background-color: var(--ft-surface);
-		color: var(--ft-text);
+		color: var(--ft-dark);
+		font-family: var(--font-sans);
+		font-size: 1rem;
 		transition:
-			border-color 0.2s,
-			box-shadow 0.2s;
+			border-color var(--dur-fast) ease,
+			box-shadow var(--dur-fast) ease;
 	}
-	.input:hover {
-		border-color: var(--ft-border-hover);
-	}
+
 	.input:focus {
-		border-color: var(--ft-border-focus);
-		box-shadow: 0 0 0 3px color-mix(in srgb, var(--ft-primary) 20%, transparent);
+		border-color: var(--ft-accent);
+		box-shadow: 0 0 0 3px rgba(55, 138, 146, 0.1);
 	}
 }
 
 /* ==========================================================================
-   5. UTILITY CLASSES
+   5. UTILITIES
    ========================================================================== */
 
 @layer utilities {
-	/* Hide scrollbar but keep functionality */
 	.no-scrollbar::-webkit-scrollbar {
 		display: none;
 	}
@@ -407,42 +359,28 @@
 		-ms-overflow-style: none;
 		scrollbar-width: none;
 	}
-}
 
-/* ==========================================================================
-   6. CUSTOM ANIMATIONS
-   These are used by the Notifications component and other animated elements.
-   ========================================================================== */
-
-@layer utilities {
-	/* Notification progress bar animation */
 	.animate-notification-progress {
 		animation: notification-progress linear forwards;
-	}
-
-	/* Floating particle animation for success notifications */
-	.animate-float-particle {
-		animation: float-particle ease-in-out infinite;
 	}
 }
 
 @keyframes notification-progress {
-	from {
-		transform: translateX(-100%);
-	}
-	to {
-		transform: translateX(0%);
-	}
+	from { transform: translateX(-100%); }
+	to { transform: translateX(0%); }
 }
 
-@keyframes float-particle {
-	0%,
-	100% {
-		transform: translateY(0px) scale(1);
-		opacity: 0.4;
-	}
-	50% {
-		transform: translateY(-10px) scale(1.2);
-		opacity: 0.8;
+/* ==========================================================================
+   6. REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
 	}
 }

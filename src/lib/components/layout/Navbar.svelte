@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { cart, userStore } from '$lib/stores';
-	import FixTarLogoWhite from '$lib/img/logo-FixTar-white.webp';
-	import FixTarLogo from '$lib/img/logo-FixTar.webp';
 
 	interface Props {
 		onCartOpen?: () => void;
@@ -11,7 +9,6 @@
 	let { onCartOpen }: Props = $props();
 
 	let mobileMenuOpen = $state(false);
-	let userMenuOpen = $state(false);
 	let scrolled = $state(false);
 
 	function closeMobileMenu() {
@@ -40,249 +37,94 @@
 	const cartCount = $derived(cart.count);
 
 	async function handleLogout() {
-		userMenuOpen = false;
 		userStore.logout();
 		try {
 			await fetch('/auth/logout', { method: 'POST', credentials: 'include' });
-		} catch {
-			// Logout request failed, but user is already logged out locally
-		}
+		} catch {}
 		window.location.href = '/';
 	}
 </script>
 
-{#if userMenuOpen}
-	<div
-		class="fixed inset-0 z-30"
-		role="button"
-		tabindex="0"
-		aria-label="Zamknij menu"
-		onclick={() => (userMenuOpen = false)}
-		onkeydown={(e) => e.key === 'Escape' && (userMenuOpen = false)}
-	></div>
-{/if}
+{#snippet navLinks(mobile = false)}
+	<a href="/products" class={mobile ? 'mobile-link' : 'nav-link'} onclick={mobile ? closeMobileMenu : undefined}>Produkty</a>
+	<a href="/deals" class={mobile ? 'mobile-link' : 'nav-link'} onclick={mobile ? closeMobileMenu : undefined}>Promocje</a>
+	<a href="/about" class={mobile ? 'mobile-link' : 'nav-link'} onclick={mobile ? closeMobileMenu : undefined}>O Nas</a>
+	<a href="/contact" class={mobile ? 'mobile-link' : 'nav-link'} onclick={mobile ? closeMobileMenu : undefined}>Kontakt</a>
+{/snippet}
 
-<nav class="fixed top-0 right-0 left-0 z-50" class:is-scrolled={scrolled}>
-	<!-- Precision accent line -->
-	<div class="nav-accent"></div>
+<nav class="nav" class:is-scrolled={scrolled}>
+	<div class="nav-inner">
+		<!-- Logo -->
+		<a href="/" class="nav-logo">
+			<span class="logo-dot"></span>
+			<span class="logo-text">FixTar</span>
+		</a>
 
-	<!-- Nav body -->
-	<div class="nav-body">
-		<div class="mx-auto max-w-screen-2xl px-3 sm:px-8 lg:px-12">
-			<div class="flex items-center justify-between">
-				<!-- Logo -->
-				<a href="/" class="group shrink-0">
-					<img
-						src={FixTarLogoWhite}
-						alt="FixTar"
-						class="logo-dark h-9 w-auto transition-all duration-300 group-hover:brightness-125 md:h-10"
-					/>
-					<img
-						src={FixTarLogo}
-						alt="FixTar"
-						class="logo-light h-9 w-auto transition-all duration-300 group-hover:brightness-125 md:h-10"
-					/>
+		<!-- Desktop links -->
+		<div class="nav-links">
+			{@render navLinks()}
+		</div>
+
+		<!-- Actions -->
+		<div class="nav-actions">
+			<a href="/search" class="nav-icon" aria-label="Szukaj">
+				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+				</svg>
+			</a>
+
+			<button onclick={() => onCartOpen?.()} class="nav-icon cart-icon" aria-label="Koszyk">
+				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" /><line x1="3" y1="6" x2="21" y2="6" /><path d="M16 10a4 4 0 01-8 0" />
+				</svg>
+				{#if cartCount > 0}
+					<span class="cart-count">{cartCount}</span>
+				{/if}
+			</button>
+
+			{#if userStore.current}
+				<a href="/account" class="nav-icon" aria-label="Konto">
+					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" />
+					</svg>
 				</a>
+			{:else}
+				<a href="/auth/login" class="login-link">Zaloguj</a>
+			{/if}
 
-				<!-- Desktop nav -->
-				<div class="hidden items-center gap-0.5 lg:flex">
-					<a href="/products" class="nav-link">Produkty</a>
-					<a href="/deals" class="nav-link">Promocje</a>
-					<a href="/about" class="nav-link">O Nas</a>
-					<a href="/contact" class="nav-link">Kontakt</a>
+			<!-- Mobile toggle -->
+			<button onclick={() => (mobileMenuOpen = !mobileMenuOpen)} class="nav-icon burger" aria-label="Menu">
+				<div class="burger-lines" class:is-open={mobileMenuOpen}>
+					<span></span>
+					<span></span>
+					<span></span>
 				</div>
-
-				<!-- Actions -->
-				<div class="flex items-center gap-1 sm:gap-1.5 md:gap-2.5">
-					<a href="/search" class="nav-icon" aria-label="Szukaj">
-						<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-							/>
-						</svg>
-					</a>
-
-					<button onclick={() => onCartOpen?.()} class="nav-icon relative" aria-label="Koszyk">
-						<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-							/>
-						</svg>
-						{#if cartCount > 0}
-							<span class="cart-badge">{cartCount}</span>
-						{/if}
-					</button>
-
-					{#if userStore.current}
-						<div class="relative">
-							<button
-								onclick={() => (userMenuOpen = !userMenuOpen)}
-								class="nav-icon"
-								aria-label="Menu użytkownika"
-							>
-								<div class="flex items-center gap-1.5">
-									<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-										/>
-									</svg>
-									<svg
-										class="h-3 w-3 transition-transform duration-300 {userMenuOpen
-											? 'rotate-180'
-											: ''}"
-										fill="none"
-										stroke="currentColor"
-										viewBox="0 0 24 24"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M19 9l-7 7-7-7"
-										/>
-									</svg>
-								</div>
-							</button>
-
-							{#if userMenuOpen}
-								<div
-									class="user-dropdown animate-drop-in absolute right-0 mt-3 w-64 overflow-hidden"
-								>
-									<div class="user-dropdown-header px-5 py-4">
-										<p
-											class="font-heading text-xs tracking-wider uppercase"
-											style="color: var(--ft-text-muted)"
-										>
-											Zalogowany jako
-										</p>
-										<p class="mt-1 truncate font-semibold text-[--ft-text]">{userStore.current.email}</p>
-									</div>
-									<div class="p-2">
-										<a href="/account" onclick={() => (userMenuOpen = false)} class="dropdown-item">
-											<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-												><path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													stroke-width="2"
-													d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-												/></svg
-											>
-											Moje Konto
-										</a>
-										{#if userStore.current.isAdmin}
-											<a href="/admin" onclick={() => (userMenuOpen = false)} class="dropdown-item">
-												<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-													><path
-														stroke-linecap="round"
-														stroke-linejoin="round"
-														stroke-width="2"
-														d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-													/></svg
-												>
-												Panel Administratora
-											</a>
-										{/if}
-										<div class="dropdown-separator my-1"></div>
-										<button
-											onclick={handleLogout}
-											class="dropdown-item dropdown-item--danger w-full"
-										>
-											<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-												><path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													stroke-width="2"
-													d="M17 16l4-8m0 0l-4-8m4 8H3"
-												/></svg
-											>
-											Wyloguj
-										</button>
-									</div>
-								</div>
-							{/if}
-						</div>
-					{:else}
-						<a href="/auth/login" class="nav-icon lg:hidden" aria-label="Zaloguj">
-							<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-									d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-							</svg>
-						</a>
-						<a href="/auth/login" class="login-btn hidden lg:inline-flex">Zaloguj</a>
-					{/if}
-
-					<!-- Mobile toggle -->
-					<button
-						onclick={() => (mobileMenuOpen = !mobileMenuOpen)}
-						class="nav-icon lg:hidden"
-						aria-label="Menu"
-					>
-						<div class="flex h-5 w-5 flex-col justify-center gap-1.5">
-							<span
-								class="block h-0.5 w-full bg-current transition-all duration-300 {mobileMenuOpen
-									? 'translate-y-2 rotate-45'
-									: ''}"
-							></span>
-							<span
-								class="block h-0.5 w-full bg-current transition-all duration-300 {mobileMenuOpen
-									? 'opacity-0'
-									: ''}"
-							></span>
-							<span
-								class="block h-0.5 w-full bg-current transition-all duration-300 {mobileMenuOpen
-									? '-translate-y-2 -rotate-45'
-									: ''}"
-							></span>
-						</div>
-					</button>
-				</div>
-			</div>
+			</button>
 		</div>
 	</div>
 
-	<!-- Mobile menu — full-screen overlay -->
+	<!-- Mobile menu -->
 	{#if mobileMenuOpen}
-		<div class="mobile-overlay fixed inset-x-0 bottom-0 lg:hidden" style="top: calc(2px + 4.25rem)">
-			<div class="mobile-menu animate-slide-down">
-				<a href="/search" class="mobile-link" style="animation-delay: 0.03s" onclick={closeMobileMenu}>
-					<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-						><path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-						/></svg
-					>
+		<div class="mobile-overlay">
+			<div class="mobile-menu">
+				<a href="/search" class="mobile-link" onclick={closeMobileMenu}>
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+					</svg>
 					Szukaj
 				</a>
-				<a href="/products" class="mobile-link" style="animation-delay: 0.06s" onclick={closeMobileMenu}>Produkty</a>
-				<a href="/deals" class="mobile-link" style="animation-delay: 0.09s" onclick={closeMobileMenu}>Promocje</a>
-				<a href="/about" class="mobile-link" style="animation-delay: 0.12s" onclick={closeMobileMenu}>O Nas</a>
-				<a href="/contact" class="mobile-link" style="animation-delay: 0.15s" onclick={closeMobileMenu}>Kontakt</a>
+				{@render navLinks(true)}
+
+				<div class="mobile-sep"></div>
 
 				{#if userStore.current}
-					<div class="mobile-separator">
-						<a href="/account" class="mobile-link" onclick={closeMobileMenu}>Moje Konto</a>
-						{#if userStore.current.isAdmin}
-							<a href="/admin" class="mobile-link" onclick={closeMobileMenu}>Panel Administratora</a>
-						{/if}
-						<button onclick={handleLogout} class="mobile-link mobile-link--danger w-full"
-							>Wyloguj</button
-						>
-					</div>
+					<a href="/account" class="mobile-link" onclick={closeMobileMenu}>Moje Konto</a>
+					{#if userStore.current.isAdmin}
+						<a href="/admin" class="mobile-link" onclick={closeMobileMenu}>Admin</a>
+					{/if}
+					<button onclick={handleLogout} class="mobile-link mobile-link--danger">Wyloguj</button>
 				{:else}
-					<div class="mobile-separator">
-						<a href="/auth/login" class="mobile-login-btn" onclick={closeMobileMenu}>Zaloguj</a>
-					</div>
+					<a href="/auth/login" class="mobile-login" onclick={closeMobileMenu}>Zaloguj</a>
 				{/if}
 			</div>
 		</div>
@@ -290,330 +132,269 @@
 </nav>
 
 <style>
-	/* ── Logo theme switching ── */
-	.logo-light { display: none; }
-	.logo-dark { display: block; }
-	:global(.light) .logo-light { display: block; }
-	:global(.light) .logo-dark { display: none; }
-
-	/* ── Accent line — precision brand stripe ── */
-	.nav-accent {
-		height: 2px;
-		background: linear-gradient(
-			90deg,
-			transparent 0%,
-			rgba(55, 138, 146, 0.8) 22%,
-			var(--ft-brand-border) 50%,
-			rgba(55, 138, 146, 0.8) 78%,
-			transparent 100%
-		);
-		opacity: 0.65;
-		transition: opacity 0.4s ease;
+	.nav {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: 50;
+		background: var(--ft-bg);
+		border-bottom: 1px solid transparent;
+		transition: all 0.3s ease;
 	}
 
-	nav.is-scrolled .nav-accent {
-		opacity: 1;
-	}
-
-	:global(.light) .nav-accent {
-		height: 0;
-	}
-
-	/* ── Nav body — transparent glass over hero ── */
-	.nav-body {
-		position: relative;
+	.nav.is-scrolled {
 		background: var(--ft-surface);
-		backdrop-filter: blur(10px);
-		-webkit-backdrop-filter: blur(10px);
-		padding: 0.95rem 0;
-		transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-		border-bottom: 1px solid var(--ft-card-hover);
+		border-bottom-color: var(--ft-line);
+		box-shadow: var(--ft-shadow-sm);
 	}
 
-	.nav-body::after {
-		content: '';
-		position: absolute;
-		inset: 0;
-		pointer-events: none;
-		background: linear-gradient(
-			90deg,
-			rgba(55, 138, 146, 0) 0%,
-			var(--ft-brand-subtle) 35%,
-			rgba(55, 138, 146, 0) 70%
-		);
-		opacity: 0.7;
+	.nav-inner {
+		max-width: var(--ft-container);
+		margin: 0 auto;
+		padding: 16px var(--ft-gutter);
+		display: flex;
+		align-items: center;
+		gap: 32px;
 	}
 
-	nav.is-scrolled .nav-body {
-		padding: 0.6rem 0;
-		background: var(--ft-surface);
-		backdrop-filter: blur(16px);
-		-webkit-backdrop-filter: blur(16px);
-		border-bottom-color: var(--ft-border);
-		box-shadow:
-			0 6px 24px var(--ft-shadow-heavy),
-			0 1px 0 var(--ft-brand-glow);
+	/* ── Logo ── */
+	.nav-logo {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		text-decoration: none;
+		flex-shrink: 0;
 	}
 
-	/* ── Nav links — industrial uppercase ── */
-	.nav-link {
-		font-family: var(--font-heading);
-		text-transform: uppercase;
-		font-size: 0.74rem;
-		font-weight: 600;
-		letter-spacing: 0.12em;
-		color: var(--ft-text-muted);
-		padding: 0.5rem 1.05rem;
-		position: relative;
-		transition: color 0.3s;
+	.logo-dot {
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		background: var(--ft-accent);
+		transition: transform var(--dur-fast) ease;
 	}
 
-	.nav-link::after {
-		content: '';
-		position: absolute;
-		bottom: -0.1rem;
-		left: 1.05rem;
-		right: 1.05rem;
-		height: 1px;
-		background: var(--ft-primary);
-		transform: scaleX(0);
-		transform-origin: left;
-		transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-		box-shadow: 0 0 10px var(--ft-brand-border);
+	.nav-logo:hover .logo-dot {
+		transform: scale(1.3);
 	}
 
-	.nav-link:hover {
-		color: var(--ft-text);
-	}
-	.nav-link:hover::after {
-		transform: scaleX(1);
-	}
-
-	/* ── Icon buttons ── */
-	.nav-icon {
-		padding: 0.45rem;
-		color: var(--ft-text-secondary);
-		transition: color 0.2s, background-color 0.2s, border-color 0.2s;
-		cursor: pointer;
-		border: 1px solid var(--ft-border-subtle);
-		background: var(--ft-card);
+	.logo-text {
+		font-family: var(--font-display);
+		font-size: 1.3rem;
+		color: var(--ft-dark);
+		letter-spacing: -0.02em;
 	}
 
-	@media (min-width: 640px) {
-		.nav-icon {
-			padding: 0.57rem;
+	/* ── Desktop links ── */
+	.nav-links {
+		display: none;
+		align-items: center;
+		gap: 4px;
+		flex: 1;
+	}
+
+	@media (min-width: 768px) {
+		.nav-links {
+			display: flex;
 		}
 	}
 
-	.nav-icon:hover {
-		color: var(--ft-text);
-		border-color: var(--ft-brand-border);
-		background: var(--ft-brand-muted);
-	}
-
-	/* ── Cart badge — sharp, no radius ── */
-	.cart-badge {
-		position: absolute;
-		top: -0.2rem;
-		right: -0.25rem;
-		background: var(--ft-primary);
-		color: var(--ft-text);
-		font-size: 0.58rem;
-		font-weight: 700;
-		min-width: 1rem;
-		height: 1rem;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		padding: 0 0.2rem;
-		font-variant-numeric: tabular-nums;
-	}
-
-	/* ── Login button — precision outlined ── */
-	.login-btn {
-		font-family: var(--font-heading);
-		text-transform: uppercase;
-		font-size: 0.68rem;
+	.nav-link {
+		font-size: 0.72rem;
 		font-weight: 600;
-		letter-spacing: 0.12em;
-		color: var(--ft-primary);
-		border: 1px solid var(--ft-brand-border);
-		align-items: center;
-		justify-content: center;
-		height: 2.5rem;
-		padding: 0 1.2rem;
-		transition: all 0.25s ease;
-		background: transparent;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: var(--ft-text-muted);
+		padding: 8px 14px;
+		transition: color var(--dur-fast) ease;
 	}
 
-	.login-btn:hover {
-		background: var(--ft-primary);
-		color: white;
-		border-color: var(--ft-primary);
-		box-shadow: 0 0 16px var(--ft-brand-border);
+	.nav-link:hover {
+		color: var(--ft-dark);
 	}
 
-	/* ── User dropdown — glass-morphism ── */
-	.user-dropdown {
-		background: var(--ft-surface);
-		backdrop-filter: blur(20px);
-		-webkit-backdrop-filter: blur(20px);
-		border: 1px solid var(--ft-border);
-		box-shadow: 0 8px 32px var(--ft-shadow-heavy);
-	}
-
-	.user-dropdown-header {
-		background: var(--ft-card);
-		border-bottom: 1px solid var(--ft-border-subtle);
-	}
-
-	.dropdown-item {
+	/* ── Actions ── */
+	.nav-actions {
 		display: flex;
 		align-items: center;
-		gap: 0.75rem;
-		padding: 0.625rem 1rem;
-		color: var(--ft-text-secondary);
-		font-size: 0.875rem;
-		transition: all 0.2s;
+		gap: 4px;
+		margin-left: auto;
+	}
+
+	.nav-icon {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 36px;
+		height: 36px;
+		border-radius: 50%;
+		color: var(--ft-text-muted);
+		background: transparent;
+		border: none;
 		cursor: pointer;
+		transition: all var(--dur-fast) ease;
 	}
 
-	.dropdown-item:hover {
-		color: var(--ft-text);
-		background-color: var(--ft-border-subtle);
+	.nav-icon:hover {
+		color: var(--ft-dark);
+		background: var(--ft-frost);
 	}
 
-	.dropdown-item--danger {
-		color: var(--color-danger);
-	}
-	.dropdown-item--danger:hover {
-		color: var(--color-danger);
-		background-color: rgba(220, 38, 38, 0.1);
+	.cart-icon {
+		position: relative;
 	}
 
-	.dropdown-separator {
-		border-top: 1px solid var(--ft-border);
+	.cart-count {
+		position: absolute;
+		top: 2px;
+		right: 2px;
+		min-width: 16px;
+		height: 16px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: var(--ft-accent);
+		color: white;
+		font-size: 0.55rem;
+		font-weight: 700;
+		border-radius: 50%;
+		padding: 0 3px;
 	}
 
-	/* ── Mobile menu — full-screen dark overlay ── */
+	.login-link {
+		display: none;
+		font-size: 0.72rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: var(--ft-accent);
+		padding: 8px 16px;
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-full);
+		transition: all var(--dur-fast) ease;
+	}
+
+	@media (min-width: 768px) {
+		.login-link {
+			display: inline-flex;
+		}
+	}
+
+	.login-link:hover {
+		border-color: var(--ft-accent);
+		background: var(--ft-frost);
+	}
+
+	/* ── Burger ── */
+	.burger {
+		display: flex;
+	}
+
+	@media (min-width: 768px) {
+		.burger {
+			display: none;
+		}
+	}
+
+	.burger-lines {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		width: 16px;
+	}
+
+	.burger-lines span {
+		display: block;
+		height: 1.5px;
+		background: currentColor;
+		transition: all 0.25s ease;
+	}
+
+	.burger-lines.is-open span:nth-child(1) {
+		transform: translateY(5.5px) rotate(45deg);
+	}
+	.burger-lines.is-open span:nth-child(2) {
+		opacity: 0;
+	}
+	.burger-lines.is-open span:nth-child(3) {
+		transform: translateY(-5.5px) rotate(-45deg);
+	}
+
+	/* ── Mobile menu ── */
 	.mobile-overlay {
-		background: var(--ft-surface);
+		position: fixed;
+		inset: 0;
+		top: 68px;
+		background: var(--ft-bg);
 		z-index: 40;
 		overflow-y: auto;
 	}
 
+	@media (min-width: 768px) {
+		.mobile-overlay {
+			display: none;
+		}
+	}
+
 	.mobile-menu {
-		padding: 1.5rem;
+		padding: 24px var(--ft-gutter);
 		display: flex;
 		flex-direction: column;
-		gap: 0.125rem;
+		gap: 2px;
 	}
 
 	.mobile-link {
 		display: flex;
 		align-items: center;
-		gap: 0.75rem;
-		padding: 1rem 1.25rem;
-		color: var(--ft-text-secondary);
-		font-family: var(--font-heading);
-		font-weight: 500;
-		font-size: 0.9rem;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-		transition: all 0.2s ease;
-		cursor: pointer;
-		animation: slideIn 0.25s ease-out both;
-		-webkit-tap-highlight-color: transparent;
-		min-height: 3rem;
-	}
-
-	.mobile-link:hover,
-	.mobile-link:active {
-		color: var(--ft-text);
-		background: var(--ft-border-subtle);
-	}
-
-	.mobile-login-btn {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 100%;
-		padding: 0.875rem 1.25rem;
-		min-height: 3rem;
-		font-family: var(--font-heading);
-		text-transform: uppercase;
+		gap: 10px;
+		padding: 14px 16px;
 		font-size: 0.85rem;
-		font-weight: 600;
-		letter-spacing: 0.12em;
-		color: var(--ft-primary);
-		border: 1px solid var(--ft-brand-border);
-		background: var(--ft-surface-overlay);
-		transition: all 0.25s ease;
-		-webkit-tap-highlight-color: transparent;
+		font-weight: 500;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--ft-text-muted);
+		transition: all var(--dur-fast) ease;
+		border-radius: var(--radius-sm);
+		border: none;
+		background: none;
 		cursor: pointer;
+		width: 100%;
+		text-align: left;
 	}
 
-	.mobile-login-btn:hover,
-	.mobile-login-btn:active {
-		background: var(--ft-primary-hover);
-		color: var(--ft-text);
-		border-color: var(--ft-primary-hover);
+	.mobile-link:hover {
+		color: var(--ft-dark);
+		background: var(--ft-frost);
 	}
 
 	.mobile-link--danger {
 		color: var(--color-danger);
 	}
-	.mobile-link--danger:hover {
-		color: var(--color-danger);
-		background-color: rgba(220, 38, 38, 0.08);
+
+	.mobile-sep {
+		height: 1px;
+		background: var(--ft-line);
+		margin: 12px 0;
 	}
 
-	.mobile-separator {
-		border-top: 1px solid var(--ft-border);
-		padding-top: 0.75rem;
-		margin-top: 0.5rem;
+	.mobile-login {
 		display: flex;
-		flex-direction: column;
-		gap: 0.125rem;
+		align-items: center;
+		justify-content: center;
+		padding: 14px;
+		font-size: 0.8rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: var(--ft-accent);
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-sm);
+		transition: all var(--dur-fast) ease;
 	}
 
-	/* ── Animations ── */
-	.animate-drop-in {
-		animation: dropIn 0.2s ease-out;
-	}
-	@keyframes dropIn {
-		from {
-			opacity: 0;
-			transform: translateY(-6px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
-
-	@keyframes slideIn {
-		from {
-			opacity: 0;
-			transform: translateX(-8px);
-		}
-		to {
-			opacity: 1;
-			transform: translateX(0);
-		}
-	}
-
-	.animate-slide-down {
-		animation: slideDown 0.25s ease-out;
-	}
-	@keyframes slideDown {
-		from {
-			opacity: 0;
-			transform: translateY(-12px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
+	.mobile-login:hover {
+		border-color: var(--ft-accent);
+		background: var(--ft-frost);
 	}
 </style>
