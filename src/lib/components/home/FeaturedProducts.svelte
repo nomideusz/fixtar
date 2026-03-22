@@ -149,7 +149,7 @@
 
 	.card-img {
 		position: relative;
-		background: var(--ft-frost);
+		background: #ffffff;
 		border-radius: var(--radius-md) var(--radius-md) 0 0;
 		padding: 24px;
 		display: flex;

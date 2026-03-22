@@ -9,234 +9,260 @@
 
 	let { product, onQuickView }: Props = $props();
 
-	// Check if product is in stock
 	function isInStock(product: Product): boolean {
 		if (!product.inventory?.trackQuantity) return true;
 		return product.inventory.quantity > 0;
 	}
 
-	// Get stock status text
 	function getStockStatus(product: Product): string {
 		if (!product.inventory?.trackQuantity) return 'Dostępny';
-
 		const quantity = product.inventory.quantity;
 		const lowThreshold = product.inventory.lowStockThreshold || 10;
-
 		if (quantity === 0) return 'Wyprzedany';
 		if (quantity <= lowThreshold) return `Mało sztuk (${quantity})`;
 		return 'Dostępny';
 	}
 
-	// Get stock status color
-	function getStockColor(product: Product): string {
-		if (!product.inventory?.trackQuantity) return 'text-success';
-
-		const quantity = product.inventory.quantity;
-		const lowThreshold = product.inventory.lowStockThreshold || 10;
-
-		if (quantity === 0) return 'text-danger';
-		if (quantity <= lowThreshold) return 'text-warning';
-		return 'text-success';
-	}
-
 	function addToCart() {
 		if (!isInStock(product)) return;
-
 		cart.addItem({
 			productId: product.id,
 			name: product.name,
 			price: product.price,
 			image: product.mainImage || undefined
 		});
-
 		notifications.success(`Dodano ${product.name} do koszyka`);
 	}
 
-	// Get main image URL - now it's already processed on the server
 	const mainImageUrl = $derived(product.mainImage || '');
 	const inStock = $derived(isInStock(product));
 	const stockStatus = $derived(getStockStatus(product));
-	const stockColor = $derived(getStockColor(product));
 	const hasDiscount = $derived(product.compareAtPrice && product.compareAtPrice > product.price);
 	const discountPercent = $derived(
-		hasDiscount
-			? Math.round(((product.compareAtPrice! - product.price) / product.compareAtPrice!) * 100)
-			: 0
+		hasDiscount ? Math.round(((product.compareAtPrice! - product.price) / product.compareAtPrice!) * 100) : 0
 	);
-
-	// Generate product link with better slug handling
-	const productLink = $derived(
-		// Use slug if it exists and is not empty, otherwise fall back to ID
-		product.slug && product.slug.trim() ? product.slug : product.id
-	);
-
-	// Create the full URL
-	const productUrl = $derived(`/products/${productLink}`);
+	const productUrl = $derived(`/products/${product.slug?.trim() || product.id}`);
 </script>
 
-<div
-	class="group relative overflow-hidden border border-[var(--ft-border)] bg-[var(--ft-surface-secondary)] transition-all duration-300 hover:border-[var(--ft-brand-border)] hover:bg-[var(--ft-card-hover)] hover:shadow-[0_8px_32px_var(--ft-shadow)]"
->
-	<!-- Product Link -->
-	<a href={productUrl} class="block cursor-pointer">
-		<div class="relative w-full overflow-hidden bg-[--ft-card]" style="aspect-ratio: 4/3;">
+<div class="product-card">
+	<a href={productUrl} class="card-link">
+		<div class="card-img">
 			{#if mainImageUrl}
-				<img
-					src={mainImageUrl}
-					alt={product.name}
-					class="h-full w-full object-contain p-4 transition-transform duration-300 group-hover:scale-105"
-					loading="lazy"
-					onerror={(e) => {
-						console.warn('Image failed to load:', mainImageUrl);
-						const target = e.target as HTMLImageElement;
-						if (target) {
-							target.style.display = 'none';
-							const nextElement = target.nextElementSibling as HTMLElement;
-							if (nextElement) {
-								nextElement.style.display = 'flex';
-							}
-						}
-					}}
-				/>
-				<!-- Fallback placeholder shown when image fails to load -->
-				<div class="hidden h-full items-center justify-center bg-[--ft-card]">
-					<div class="text-center">
-						<svg
-							class="mx-auto mb-2 h-12 w-12 text-neutral-400"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-							/>
-						</svg>
-						<p class="text-sm text-neutral-500">Zdjęcie niedostępne</p>
-					</div>
-				</div>
+				<img src={mainImageUrl} alt={product.name} class="card-img-el" loading="lazy" />
 			{:else}
-				<!-- Show placeholder when no image URL -->
-				<div class="flex h-full items-center justify-center bg-[--ft-card]">
-					<div class="text-center">
-						<svg
-							class="mx-auto mb-2 h-12 w-12 text-neutral-400"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-							/>
-						</svg>
-						<p class="text-sm text-neutral-500">Brak zdjęcia</p>
-					</div>
+				<div class="card-img-placeholder">
+					<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+						<rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="M21 15l-5-5L5 21" />
+					</svg>
 				</div>
 			{/if}
 
-			<!-- Professional Badges -->
-			<div class="absolute top-3 left-3 flex flex-col gap-2">
+			<!-- Badges -->
+			<div class="card-badges">
 				{#if product.featured}
-					<span class="bg-brand-600 px-2.5 py-1 text-xs font-semibold !text-white shadow-sm"
-						>Polecany</span
-					>
+					<span class="badge badge--warm">Polecany</span>
 				{/if}
 				{#if hasDiscount}
-					<span class="bg-danger px-2.5 py-1 text-xs font-semibold !text-white shadow-sm"
-						>-{discountPercent}%</span
-					>
+					<span class="badge badge--sale">-{discountPercent}%</span>
 				{/if}
 				{#if !inStock}
-					<span class="bg-neutral-600 px-2.5 py-1 text-xs font-semibold !text-white shadow-sm"
-						>Wyprzedane</span
-					>
+					<span class="badge badge--out">Wyprzedane</span>
 				{/if}
 			</div>
 		</div>
 	</a>
 
-	<div class="p-5">
-		<!-- Product Info -->
-		<a href={productUrl} class="block">
-			<h3
-				class="group-hover:text-brand-400 mb-1 line-clamp-2 text-base font-semibold text-[--ft-text] transition-colors"
-			>
-				{product.name}
-			</h3>
-			{#if product.shortDescription}
-				<p class="line-clamp-2 text-sm text-neutral-400">{product.shortDescription}</p>
-			{/if}
+	<div class="card-body">
+		<a href={productUrl}>
+			<h3 class="card-name">{product.name}</h3>
 		</a>
 
-		<!-- Categories -->
-		{#if product.expand?.categories && product.expand.categories.length > 0}
-			<div class="mt-3 flex flex-wrap gap-1">
-				{#each product.expand.categories.slice(0, 2) as category (category)}
-					<span class="bg-white/10 px-2 py-0.5 text-xs text-[--ft-text-muted]">
-						{category.name}
-					</span>
-				{/each}
-			</div>
-		{/if}
-
-		<!-- Price and Stock -->
-		<div class="mt-3 flex items-center justify-between">
-			<div class="flex items-center gap-2">
-				<span class="text-lg font-bold text-[--ft-text]">{product.price.toFixed(2)} zł</span>
+		<div class="card-footer">
+			<div class="card-prices">
+				<span class="card-price">{product.price.toFixed(2)} zł</span>
 				{#if hasDiscount}
-					<span class="text-sm text-neutral-500 line-through"
-						>{product.compareAtPrice?.toFixed(2)} zł</span
-					>
+					<span class="card-old-price">{product.compareAtPrice?.toFixed(2)} zł</span>
 				{/if}
 			</div>
-			<span class="text-xs font-medium {stockColor}">
+			<span class="card-stock" class:in-stock={inStock} class:out-of-stock={!inStock}>
 				{stockStatus}
 			</span>
 		</div>
 
-		<!-- SKU -->
-		{#if product.sku}
-			<div class="mt-1">
-				<span class="text-xs text-neutral-400">SKU: {product.sku}</span>
-			</div>
-		{/if}
-
-		<!-- Professional Actions -->
-		<div class="mt-4 flex gap-2">
-			<button
-				onclick={addToCart}
-				disabled={!inStock}
-				class="bg-brand-600 hover:bg-brand-700 flex-1 px-4 py-2 text-sm font-medium !text-white transition-colors duration-200 disabled:cursor-not-allowed disabled:bg-neutral-300"
-			>
-				{inStock ? 'Dodaj do Koszyka' : 'Wyprzedane'}
+		<div class="card-actions">
+			<button class="cart-btn" onclick={addToCart} disabled={!inStock}>
+				{inStock ? 'Dodaj do koszyka' : 'Wyprzedane'}
 			</button>
-			{#if onQuickView}
-				<button
-					onclick={() => onQuickView?.(product)}
-					aria-label="Szybki podgląd"
-					class="border border-[--ft-border] bg-[--ft-card] px-3 py-2 text-[--ft-text-muted] transition-colors duration-200 hover:border-[--ft-border-hover] hover:text-[--ft-text]"
-				>
-					<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-						/>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-						/>
-					</svg>
-				</button>
-			{/if}
 		</div>
 	</div>
 </div>
+
+<style>
+	.product-card {
+		background: var(--ft-surface);
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-md, 10px);
+		overflow: hidden;
+		transition: border-color 0.25s ease, box-shadow 0.25s ease;
+	}
+
+	.product-card:hover {
+		border-color: var(--ft-accent);
+		box-shadow: var(--ft-shadow-md);
+	}
+
+	.card-link {
+		display: block;
+		text-decoration: none;
+		color: inherit;
+	}
+
+	.card-img {
+		position: relative;
+		aspect-ratio: 4 / 3;
+		background: #ffffff;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		overflow: hidden;
+	}
+
+	.card-img-el {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		padding: 16px;
+		transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.product-card:hover .card-img-el {
+		transform: scale(1.04);
+	}
+
+	.card-img-placeholder {
+		color: var(--ft-text-faint);
+	}
+
+	/* Badges */
+	.card-badges {
+		position: absolute;
+		top: 10px;
+		left: 10px;
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+	}
+
+	.badge {
+		font-size: 0.6rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		padding: 3px 8px;
+		border-radius: var(--radius-full);
+	}
+
+	.badge--warm {
+		background: var(--ft-warm-bg);
+		color: var(--ft-warm);
+		border: 1px solid var(--ft-warm);
+	}
+
+	.badge--sale {
+		background: var(--color-danger);
+		color: white;
+	}
+
+	.badge--out {
+		background: var(--ft-text-faint);
+		color: white;
+	}
+
+	/* Body */
+	.card-body {
+		padding: 16px;
+	}
+
+	.card-name {
+		font-family: var(--font-sans);
+		font-size: 0.9rem;
+		font-weight: 600;
+		color: var(--ft-dark);
+		line-height: 1.35;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		margin-bottom: 10px;
+		transition: color 0.15s ease;
+	}
+
+	.product-card:hover .card-name {
+		color: var(--ft-accent);
+	}
+
+	.card-footer {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 12px;
+	}
+
+	.card-prices {
+		display: flex;
+		align-items: baseline;
+		gap: 6px;
+	}
+
+	.card-price {
+		font-weight: 700;
+		font-size: 1.05rem;
+		color: var(--ft-dark);
+		font-variant-numeric: tabular-nums;
+	}
+
+	.card-old-price {
+		font-size: 0.78rem;
+		color: var(--ft-text-muted);
+		text-decoration: line-through;
+	}
+
+	.card-stock {
+		font-size: 0.68rem;
+		font-weight: 600;
+	}
+
+	.card-stock.in-stock { color: var(--color-success); }
+	.card-stock.out-of-stock { color: var(--color-danger); }
+
+	/* Actions */
+	.card-actions {
+		display: flex;
+		gap: 8px;
+	}
+
+	.cart-btn {
+		flex: 1;
+		padding: 10px 16px;
+		font-size: 0.72rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		background: var(--ft-accent);
+		color: white;
+		border: none;
+		border-radius: var(--radius-sm);
+		cursor: pointer;
+		transition: background 0.15s ease;
+	}
+
+	.cart-btn:hover:not(:disabled) {
+		background: var(--ft-accent-hover);
+	}
+
+	.cart-btn:disabled {
+		opacity: 0.4;
+		cursor: not-allowed;
+	}
+</style>

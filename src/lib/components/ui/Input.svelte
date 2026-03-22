@@ -8,8 +8,6 @@
 		value?: string;
 		variant?: 'default' | 'glass' | 'outline' | 'filled';
 		size?: 'sm' | 'md' | 'lg';
-		icon?: string;
-		floating?: boolean;
 	}
 
 	let {
@@ -18,153 +16,90 @@
 		helperText,
 		variant = 'default',
 		size = 'md',
-		icon,
-		floating = false,
 		class: className = '',
 		id,
 		value = $bindable(''),
 		...restProps
 	}: Props = $props();
 
-	// Generate a unique ID if not provided
 	const inputId = $derived(id || `input-${Math.random().toString(36).substr(2, 9)}`);
-
-	const hasValue = $derived(value && value.length > 0);
-	const isFloating = $derived(floating && label);
-
-	const sizeClasses = {
-		sm: 'px-3 py-2 text-sm',
-		md: 'px-4 py-3 text-base',
-		lg: 'px-6 py-4 text-lg'
-	};
-
-	const variantClasses = {
-		default: `
-			bg-white/5 border border-white/15 text-[--ft-text] placeholder:text-neutral-500
-			focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20
-			hover:border-white/25
-		`,
-		glass: `
-			bg-white/80 backdrop-blur-md border border-white/30 
-			focus:border-white/60 focus:ring-2 focus:ring-white/30
-			hover:border-white/50
-		`,
-		outline: `
-			bg-transparent border-2 border-white/15 text-[--ft-text] placeholder:text-neutral-500
-			focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20
-			hover:border-white/25
-		`,
-		filled: `
-			bg-white/5 border border-transparent text-[--ft-text] placeholder:text-neutral-500
-			focus:bg-white/8 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20
-			hover:bg-white/8
-		`
-	};
-
-	const inputClasses = $derived(
-		`
-		w-full rounded-2xl transition-all duration-300 focus:outline-none
-		${isFloating ? 'pt-6 pb-2' : ''}
-		${sizeClasses[size]}
-		${variantClasses[variant]}
-		${error ? 'border-danger focus:border-danger focus:ring-danger/20' : ''}
-		${icon ? 'pl-12' : ''}
-		${className}
-	`
-			.replace(/\s+/g, ' ')
-			.trim()
-	);
-
-	const labelClasses = $derived(`
-		absolute left-4 transition-all duration-300 cursor-text pointer-events-none
-		${
-			isFloating && (hasValue || restProps.placeholder)
-				? 'top-2 text-xs text-neutral-500 font-medium'
-				: 'top-1/2 -translate-y-1/2 text-neutral-400'
-		}
-		${error ? 'text-danger' : ''}
-	`);
 </script>
 
-<div class="group relative w-full">
-	{#if label && !isFloating}
-		<label for={inputId} class="mb-2 block text-sm font-medium text-neutral-300">
+<div class="w-full">
+	{#if label}
+		<label for={inputId} class="input-label">
 			{label}
 			{#if restProps.required}
-				<span class="text-danger ml-1">*</span>
+				<span class="text-[var(--color-danger)]">*</span>
 			{/if}
 		</label>
 	{/if}
 
-	<div class="relative">
-		<!-- Icon -->
-		{#if icon}
-			<div
-				class="group-focus-within:text-brand-500 absolute top-1/2 left-4 -translate-y-1/2 text-neutral-400 transition-colors"
-			>
-				<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={icon} />
-				</svg>
-			</div>
-		{/if}
+	<input
+		{id}
+		bind:value
+		class="input-field input--{size} {error ? 'input--error' : ''} {className}"
+		aria-invalid={!!error}
+		{...restProps}
+	/>
 
-		<!-- Input -->
-		<input
-			{id}
-			bind:value
-			class={inputClasses}
-			aria-invalid={!!error}
-			aria-describedby={error ? `${inputId}-error` : helperText ? `${inputId}-helper` : undefined}
-			{...restProps}
-		/>
-
-		<!-- Floating Label -->
-		{#if isFloating}
-			<label for={inputId} class={labelClasses}>
-				{label}
-				{#if restProps.required}
-					<span class="text-danger ml-1">*</span>
-				{/if}
-			</label>
-		{/if}
-
-		<!-- Focus ring effect -->
-		<div
-			class="group-focus-within:ring-brand-500/20 pointer-events-none absolute inset-0 rounded-2xl transition-all duration-300 group-focus-within:ring-2 group-focus-within:ring-offset-1"
-		></div>
-	</div>
-
-	<!-- Error or Helper Text -->
 	{#if error}
-		<div class="mt-2 flex items-center">
-			<svg
-				class="text-danger mr-2 h-4 w-4 shrink-0"
-				fill="none"
-				stroke="currentColor"
-				viewBox="0 0 24 24"
-			>
-				<path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					stroke-width="2"
-					d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-				/>
-			</svg>
-			<p id="{inputId}-error" class="text-danger text-sm">
-				{error}
-			</p>
-		</div>
+		<p class="input-error">{error}</p>
 	{:else if helperText}
-		<p id="{inputId}-helper" class="mt-2 flex items-center text-sm text-neutral-500">
-			<svg class="mr-2 h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-				<path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					stroke-width="2"
-					d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-				/>
-			</svg>
-			{helperText}
-		</p>
+		<p class="input-helper">{helperText}</p>
 	{/if}
 </div>
+
+<style>
+	.input-label {
+		display: block;
+		margin-bottom: 6px;
+		font-size: 0.8rem;
+		font-weight: 600;
+		color: var(--ft-dark);
+	}
+
+	.input-field {
+		width: 100%;
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-sm, 6px);
+		background: var(--ft-surface);
+		color: var(--ft-dark);
+		font-family: var(--font-sans);
+		transition: border-color 0.15s ease, box-shadow 0.15s ease;
+	}
+
+	.input-field::placeholder {
+		color: var(--ft-text-faint);
+	}
+
+	.input-field:focus {
+		outline: none;
+		border-color: var(--ft-accent);
+		box-shadow: 0 0 0 3px rgba(55, 138, 146, 0.1);
+	}
+
+	.input-field:hover {
+		border-color: var(--ft-text-faint);
+	}
+
+	.input--sm { padding: 8px 12px; font-size: 0.85rem; }
+	.input--md { padding: 10px 14px; font-size: 0.95rem; }
+	.input--lg { padding: 14px 18px; font-size: 1rem; }
+
+	.input--error {
+		border-color: var(--color-danger);
+	}
+
+	.input-error {
+		margin-top: 4px;
+		font-size: 0.78rem;
+		color: var(--color-danger);
+	}
+
+	.input-helper {
+		margin-top: 4px;
+		font-size: 0.78rem;
+		color: var(--ft-text-muted);
+	}
+</style>

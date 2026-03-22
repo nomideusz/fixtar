@@ -437,7 +437,7 @@
 				<div class="fixed inset-0 z-50 lg:hidden">
 					<!-- Backdrop -->
 					<div
-						class="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity"
+						class="fixed inset-0 bg-black/30 backdrop-blur-sm transition-opacity"
 						onclick={() => (showMobileFilters = false)}
 						onkeydown={(e) => e.key === 'Escape' && (showMobileFilters = false)}
 						tabindex="0"
@@ -600,7 +600,7 @@
 						<div class="flex items-center justify-between gap-6 sm:justify-start">
 							<div class="flex items-center gap-2">
 								<span class="text-sm font-medium text-[--ft-text-muted]">Widok:</span>
-								<div class="flex items-center rounded-xl bg-white/8 p-1">
+								<div class="flex items-center rounded-xl bg-[--ft-frost] p-1">
 									<button
 										onclick={() => (viewMode = 'grid')}
 										class="view-mode-button {viewMode === 'grid' ? 'active' : ''}"
@@ -754,7 +754,7 @@
 				<div class="relative">
 					{#if $navigating}
 						<div
-							class="absolute inset-0 z-10 flex items-center justify-center rounded-xl bg-black/60 backdrop-blur-sm"
+							class="absolute inset-0 z-10 flex items-center justify-center rounded-xl bg-black/30 backdrop-blur-sm"
 						>
 							<div class="flex flex-col items-center gap-3">
 								<LoadingSpinner visible={true} />
@@ -798,7 +798,7 @@
 									<Card class="p-6">
 										<div class="flex items-center gap-6">
 											<div class="shrink-0">
-												<div class="h-24 w-24 overflow-hidden rounded-xl bg-white/10">
+												<div class="h-24 w-24 overflow-hidden rounded-xl bg-[--ft-frost]">
 													{#if product.mainImage}
 														<img
 															src={product.mainImage}
@@ -956,7 +956,7 @@
 								<div class="relative">
 									<div class="absolute inset-0 flex items-center justify-center">
 										<div
-											class="h-32 w-32 rounded-full bg-white/10 opacity-20 blur-3xl filter"
+											class="h-32 w-32 rounded-full bg-[--ft-frost] opacity-20 blur-3xl filter"
 										></div>
 									</div>
 									<svg

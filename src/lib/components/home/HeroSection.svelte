@@ -202,7 +202,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background: var(--ft-frost);
+		background: #ffffff;
 		min-height: 280px;
 	}
 

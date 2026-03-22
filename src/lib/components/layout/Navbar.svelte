@@ -138,14 +138,12 @@
 		left: 0;
 		right: 0;
 		z-index: 50;
-		background: var(--ft-bg);
-		border-bottom: 1px solid transparent;
+		background: var(--ft-surface);
+		border-bottom: 1px solid var(--ft-line);
 		transition: all 0.3s ease;
 	}
 
 	.nav.is-scrolled {
-		background: var(--ft-surface);
-		border-bottom-color: var(--ft-line);
 		box-shadow: var(--ft-shadow-sm);
 	}
 
