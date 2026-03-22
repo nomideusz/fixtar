@@ -5,23 +5,23 @@
 	import type { Notification } from '$lib/stores/notifications.svelte';
 
 	const typeClasses: Record<string, string> = {
-		success: 'bg-success text-white border-success/40',
-		error: 'bg-danger text-white border-danger/40',
-		info: 'bg-info text-white border-info/40',
+		success: 'bg-success text-[--ft-text] border-success/40',
+		error: 'bg-danger !text-white border-danger/40',
+		info: 'bg-info text-[--ft-text] border-info/40',
 		warning: 'bg-warning text-neutral-900 border-warning/60'
 	};
 
 	const messageClasses: Record<string, string> = {
-		success: 'text-white/90',
-		error: 'text-white/90',
-		info: 'text-white/90',
+		success: 'text-[--ft-text]/90',
+		error: 'text-[--ft-text]/90',
+		info: 'text-[--ft-text]/90',
 		warning: 'text-neutral-900/90'
 	};
 
 	const closeButtonClasses: Record<string, string> = {
-		success: 'bg-white/10 hover:bg-white/20 text-white/70 hover:text-white',
-		error: 'bg-white/10 hover:bg-white/20 text-white/70 hover:text-white',
-		info: 'bg-white/10 hover:bg-white/20 text-white/70 hover:text-white',
+		success: 'bg-white/10 hover:bg-white/20 text-[--ft-text]/70 hover:text-[--ft-text]',
+		error: 'bg-white/10 hover:bg-white/20 text-[--ft-text]/70 hover:text-[--ft-text]',
+		info: 'bg-white/10 hover:bg-white/20 text-[--ft-text]/70 hover:text-[--ft-text]',
 		warning: 'bg-black/5 hover:bg-black/10 text-neutral-700 hover:text-neutral-900'
 	};
 

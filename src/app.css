@@ -80,24 +80,41 @@
    ========================================================================== */
 
 :root {
-	/* -- Surface / Background (Dark Industrial) -- */
-	--ft-surface: var(--ft-dark, #0c1118);
-	--ft-surface-secondary: rgba(255, 255, 255, 0.03);
-	--ft-surface-tertiary: rgba(255, 255, 255, 0.06);
+	/* -- Surface / Background -- */
+	--ft-surface: #0c1118;
+	--ft-surface-alt: #090e13;
+	--ft-surface-secondary: rgba(255, 255, 255, 0.02);
+	--ft-surface-tertiary: rgba(255, 255, 255, 0.04);
 	--ft-surface-elevated: #0f1722;
 	--ft-surface-overlay: rgba(0, 0, 0, 0.6);
 
+	/* -- Card -- */
+	--ft-card: rgba(255, 255, 255, 0.02);
+	--ft-card-hover: rgba(255, 255, 255, 0.04);
+	--ft-card-solid: #0f1722;
+
 	/* -- Text -- */
 	--ft-text: #ffffff;
+	--ft-text-strong: rgba(255, 255, 255, 0.85);
 	--ft-text-secondary: rgba(255, 255, 255, 0.55);
 	--ft-text-muted: rgba(255, 255, 255, 0.35);
+	--ft-text-faint: rgba(255, 255, 255, 0.2);
 	--ft-text-inverse: var(--color-neutral-900);
 	--ft-text-brand: var(--color-brand-400);
 
 	/* -- Border -- */
-	--ft-border: rgba(255, 255, 255, 0.08);
-	--ft-border-hover: rgba(255, 255, 255, 0.15);
+	--ft-border: rgba(255, 255, 255, 0.06);
+	--ft-border-subtle: rgba(255, 255, 255, 0.04);
+	--ft-border-hover: rgba(255, 255, 255, 0.12);
 	--ft-border-focus: var(--color-brand-500);
+
+	/* -- Brand overlays (tinted surfaces) -- */
+	--ft-brand-subtle: rgba(55, 138, 146, 0.03);
+	--ft-brand-muted: rgba(55, 138, 146, 0.08);
+	--ft-brand-light: rgba(55, 138, 146, 0.12);
+	--ft-brand-medium: rgba(55, 138, 146, 0.15);
+	--ft-brand-border: rgba(55, 138, 146, 0.15);
+	--ft-brand-glow: rgba(55, 138, 146, 0.1);
 
 	/* -- Interactive / Primary action -- */
 	--ft-primary: var(--color-brand-500);
@@ -120,6 +137,13 @@
 	/* -- Focus ring -- */
 	--ft-focus-ring: var(--color-brand-500);
 	--ft-focus-offset: 2px;
+
+	/* -- Grid / decorative -- */
+	--ft-grid-line: rgba(55, 138, 146, 0.04);
+	--ft-grid-line-subtle: rgba(55, 138, 146, 0.03);
+	--ft-divider: rgba(55, 138, 146, 0.2);
+	--ft-shadow: rgba(0, 0, 0, 0.3);
+	--ft-shadow-heavy: rgba(0, 0, 0, 0.5);
 
 	/* -- Footer -- */
 	--ft-footer-bg: var(--color-neutral-900);
@@ -151,33 +175,75 @@
 	--ft-tracking-wide: 0.05em;
 	--ft-tracking-wider: 0.1em;
 
-	/* -- Dark section surfaces (industrial theme) -- */
-	--ft-dark: #0c1118;
-	--ft-dark-deeper: #090e13;
-	--ft-dark-card: rgba(255, 255, 255, 0.02);
-	--ft-dark-card-hover: rgba(255, 255, 255, 0.04);
-	--ft-dark-border: rgba(255, 255, 255, 0.06);
-	--ft-dark-border-hover: rgba(55, 138, 146, 0.15);
-	--ft-dark-text: #ffffff;
-	--ft-dark-text-secondary: rgba(255, 255, 255, 0.35);
-	--ft-dark-text-muted: rgba(255, 255, 255, 0.2);
+	/* ── Legacy aliases (used in some components) ── */
+	--ft-dark: var(--ft-surface);
+	--ft-dark-deeper: var(--ft-surface-alt);
+	--ft-dark-card: var(--ft-card);
+	--ft-dark-card-hover: var(--ft-card-hover);
+	--ft-dark-border: var(--ft-border);
+	--ft-dark-border-hover: var(--ft-brand-border);
+	--ft-dark-text: var(--ft-text);
+	--ft-dark-text-secondary: var(--ft-text-muted);
+	--ft-dark-text-muted: var(--ft-text-faint);
 }
 
-/* Future dark mode (uncomment & customize when ready)
-@media (prefers-color-scheme: dark) {
-  :root {
-    --ft-surface:           var(--color-neutral-900);
-    --ft-surface-secondary: var(--color-neutral-800);
-    --ft-surface-tertiary:  var(--color-neutral-700);
-    --ft-surface-elevated:  var(--color-neutral-800);
-    --ft-text:              var(--color-neutral-50);
-    --ft-text-secondary:    var(--color-neutral-300);
-    --ft-text-muted:        var(--color-neutral-500);
-    --ft-border:            var(--color-neutral-700);
-    --ft-border-hover:      var(--color-neutral-600);
-  }
+/* ==========================================================================
+   LIGHT THEME — swap surfaces, text, borders
+   Apply via <html class="light"> or media query
+   ========================================================================== */
+.light {
+	--ft-surface: #ffffff;
+	--ft-surface-alt: #f8fafc;
+	--ft-surface-secondary: #f1f5f9;
+	--ft-surface-tertiary: #e2e8f0;
+	--ft-surface-elevated: #ffffff;
+	--ft-surface-overlay: rgba(0, 0, 0, 0.4);
+
+	--ft-card: #ffffff;
+	--ft-card-hover: #f8fafc;
+	--ft-card-solid: #ffffff;
+
+	--ft-text: #0f172a;
+	--ft-text-strong: #1e293b;
+	--ft-text-secondary: #475569;
+	--ft-text-muted: #64748b;
+	--ft-text-faint: #94a3b8;
+	--ft-text-inverse: #ffffff;
+
+	--ft-border: #e2e8f0;
+	--ft-border-subtle: #f1f5f9;
+	--ft-border-hover: #cbd5e1;
+
+	--ft-brand-subtle: rgba(55, 138, 146, 0.04);
+	--ft-brand-muted: rgba(55, 138, 146, 0.08);
+	--ft-brand-light: rgba(55, 138, 146, 0.12);
+	--ft-brand-medium: rgba(55, 138, 146, 0.15);
+	--ft-brand-border: rgba(55, 138, 146, 0.2);
+	--ft-brand-glow: rgba(55, 138, 146, 0.08);
+
+	--ft-grid-line: rgba(55, 138, 146, 0.06);
+	--ft-grid-line-subtle: rgba(55, 138, 146, 0.04);
+	--ft-divider: rgba(55, 138, 146, 0.15);
+	--ft-shadow: rgba(0, 0, 0, 0.08);
+	--ft-shadow-heavy: rgba(0, 0, 0, 0.15);
+
+	--ft-text-brand: var(--color-brand-600);
+	--ft-primary-light: rgba(55, 138, 146, 0.1);
+
+	--ft-footer-bg: #0f172a;
+	--ft-footer-text: #cbd5e1;
+
+	/* Legacy aliases */
+	--ft-dark: var(--ft-surface);
+	--ft-dark-deeper: var(--ft-surface-alt);
+	--ft-dark-card: var(--ft-card);
+	--ft-dark-card-hover: var(--ft-card-hover);
+	--ft-dark-border: var(--ft-border);
+	--ft-dark-border-hover: var(--ft-brand-border);
+	--ft-dark-text: var(--ft-text);
+	--ft-dark-text-secondary: var(--ft-text-muted);
+	--ft-dark-text-muted: var(--ft-text-faint);
 }
-*/
 
 /* ==========================================================================
    3. BASE STYLES

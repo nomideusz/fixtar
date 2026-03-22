@@ -51,10 +51,10 @@
 	onclick={handleBackdropClick}
 	onkeydown={handleEscape}
 >
-	<div class="rounded-lg bg-[#0f1722] border border-white/10">
+	<div class="rounded-lg bg-[var(--ft-surface-elevated)] border border-white/10">
 		{#if title}
 			<div class="flex items-center justify-between border-b border-white/10 p-4">
-				<h3 class="text-lg font-semibold text-white">{title}</h3>
+				<h3 class="text-lg font-semibold text-[--ft-text]">{title}</h3>
 				<button
 					type="button"
 					onclick={onClose}

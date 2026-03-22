@@ -97,7 +97,7 @@
 	.page-hero {
 		position: relative;
 		overflow: hidden;
-		background: var(--ft-dark-deeper, #090e13);
+		background: var(--ft-dark-deeper, var(--ft-surface-alt));
 		color: var(--ft-dark-text, #ffffff);
 	}
 
@@ -154,7 +154,7 @@
 	.page-hero__subtitle {
 		font-size: 1.1rem;
 		line-height: 1.7;
-		color: var(--ft-dark-text-secondary, rgba(255, 255, 255, 0.35));
+		color: var(--ft-dark-text-secondary, var(--ft-text-muted));
 		margin-bottom: 2rem;
 	}
 </style>

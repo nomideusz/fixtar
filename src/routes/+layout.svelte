@@ -1,9 +1,8 @@
 <script lang="ts">
 	import '../app.css';
-	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 	import type { Snippet } from 'svelte';
-	import { userStore, productsStore, languageStore } from '$lib/stores';
+	import { userStore, languageStore } from '$lib/stores';
 	import Navbar from '$lib/components/layout/Navbar.svelte';
 	import CartDrawer from '$lib/components/layout/CartDrawer.svelte';
 	import Footer from '$lib/components/layout/Footer.svelte';
@@ -43,10 +42,7 @@
 		if (data?.user) userStore.login(data.user);
 	});
 
-	// Prefetch product catalog
-	onMount(() => {
-		productsStore.fetchProducts();
-	});
+	// Products are loaded server-side via +page.server.ts loaders
 </script>
 
 <Notifications />
@@ -61,7 +57,7 @@
 
 <style>
 	.layout-main {
-		background: var(--ft-dark, #0c1118);
+		background: var(--ft-surface);
 		color: var(--ft-dark-text, #ffffff);
 	}
 </style>

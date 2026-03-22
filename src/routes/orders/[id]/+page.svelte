@@ -82,7 +82,7 @@
 		<div class="mb-8">
 			<div class="flex items-center justify-between">
 				<div>
-					<h1 class="text-3xl font-bold text-white">
+					<h1 class="text-3xl font-bold text-[--ft-text]">
 						Zamówienie {data.order.orderNumber}
 					</h1>
 					<p class="mt-1 text-neutral-400">
@@ -108,7 +108,7 @@
 			<div class="space-y-6 lg:col-span-2">
 				<!-- Order Items -->
 				<Card class="p-6">
-					<h2 class="mb-6 text-xl font-semibold text-white">Produkty w zamówieniu</h2>
+					<h2 class="mb-6 text-xl font-semibold text-[--ft-text]">Produkty w zamówieniu</h2>
 
 					<div class="space-y-4">
 						{#each data.order.items as item}
@@ -144,7 +144,7 @@
 
 								<!-- Product Details -->
 								<div class="flex-1">
-									<h3 class="font-medium text-white">
+									<h3 class="font-medium text-[--ft-text]">
 										{item.product?.name || `Produkt ID: ${item.productId}`}
 									</h3>
 									{#if item.product?.sku}
@@ -160,7 +160,7 @@
 
 								<!-- Item Total -->
 								<div class="text-right">
-									<p class="font-semibold text-white">
+									<p class="font-semibold text-[--ft-text]">
 										{formatPrice(item.price * item.quantity, 'PLN')}
 									</p>
 								</div>
@@ -171,7 +171,7 @@
 
 				<!-- Order Timeline -->
 				<Card class="p-6">
-					<h2 class="mb-6 text-xl font-semibold text-white">Historia zamówienia</h2>
+					<h2 class="mb-6 text-xl font-semibold text-[--ft-text]">Historia zamówienia</h2>
 
 					<div class="space-y-4">
 						<div class="flex items-center space-x-4">
@@ -187,7 +187,7 @@
 								</svg>
 							</div>
 							<div>
-								<p class="font-medium text-white">Zamówienie złożone</p>
+								<p class="font-medium text-[--ft-text]">Zamówienie złożone</p>
 								<p class="text-sm text-neutral-500">{formatDate(data.order.created)}</p>
 							</div>
 						</div>
@@ -206,7 +206,7 @@
 									</svg>
 								</div>
 								<div>
-									<p class="font-medium text-white">Płatność potwierdzona</p>
+									<p class="font-medium text-[--ft-text]">Płatność potwierdzona</p>
 									<p class="text-sm text-neutral-500">Zamówienie w realizacji</p>
 								</div>
 							</div>
@@ -226,7 +226,7 @@
 									</svg>
 								</div>
 								<div>
-									<p class="font-medium text-white">Zamówienie wysłane</p>
+									<p class="font-medium text-[--ft-text]">Zamówienie wysłane</p>
 									<p class="text-sm text-neutral-500">Paczka w drodze do Ciebie</p>
 								</div>
 							</div>
@@ -246,7 +246,7 @@
 									</svg>
 								</div>
 								<div>
-									<p class="font-medium text-white">Zamówienie dostarczone</p>
+									<p class="font-medium text-[--ft-text]">Zamówienie dostarczone</p>
 									<p class="text-sm text-neutral-500">Paczka została dostarczona</p>
 								</div>
 							</div>
@@ -259,7 +259,7 @@
 			<div class="space-y-6">
 				<!-- Order Summary -->
 				<Card class="p-6">
-					<h2 class="mb-6 text-xl font-semibold text-white">Podsumowanie</h2>
+					<h2 class="mb-6 text-xl font-semibold text-[--ft-text]">Podsumowanie</h2>
 
 					<div class="space-y-3">
 						<div class="flex justify-between">
@@ -281,8 +281,8 @@
 
 						<div class="border-t pt-3">
 							<div class="flex justify-between">
-								<span class="text-lg font-semibold text-white">Razem:</span>
-								<span class="text-lg font-bold text-white"
+								<span class="text-lg font-semibold text-[--ft-text]">Razem:</span>
+								<span class="text-lg font-bold text-[--ft-text]"
 									>{formatPrice(data.order.total, 'PLN')}</span
 								>
 							</div>
@@ -292,20 +292,20 @@
 
 				<!-- Payment & Shipping Info -->
 				<Card class="p-6">
-					<h2 class="mb-6 text-xl font-semibold text-white">
+					<h2 class="mb-6 text-xl font-semibold text-[--ft-text]">
 						Informacje o płatności i dostawie
 					</h2>
 
 					<div class="space-y-4">
 						<div>
-							<h3 class="mb-2 font-medium text-white">Metoda płatności</h3>
+							<h3 class="mb-2 font-medium text-[--ft-text]">Metoda płatności</h3>
 							<p class="text-neutral-400">
 								{paymentMethodLabels[data.order.paymentMethod] || data.order.paymentMethod}
 							</p>
 						</div>
 
 						<div>
-							<h3 class="mb-2 font-medium text-white">Metoda dostawy</h3>
+							<h3 class="mb-2 font-medium text-[--ft-text]">Metoda dostawy</h3>
 							<p class="text-neutral-400">
 								{shippingMethodLabels[data.order.shippingMethod] || data.order.shippingMethod}
 							</p>
@@ -315,10 +315,10 @@
 
 				<!-- Shipping Address -->
 				<Card class="p-6">
-					<h2 class="mb-6 text-xl font-semibold text-white">Adres dostawy</h2>
+					<h2 class="mb-6 text-xl font-semibold text-[--ft-text]">Adres dostawy</h2>
 
 					<div class="text-neutral-400">
-						<p class="font-medium text-white">
+						<p class="font-medium text-[--ft-text]">
 							{data.order.shippingAddress.firstName}
 							{data.order.shippingAddress.lastName}
 						</p>
@@ -344,7 +344,7 @@
 
 				<!-- Actions -->
 				<Card class="p-6">
-					<h2 class="mb-6 text-xl font-semibold text-white">Akcje</h2>
+					<h2 class="mb-6 text-xl font-semibold text-[--ft-text]">Akcje</h2>
 
 					<div class="space-y-3">
 						<Button onclick={downloadInvoice} variant="outline" class="w-full">

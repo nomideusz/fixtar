@@ -118,7 +118,7 @@
 		<!-- Simplified Logo Section -->
 		<div class="mb-8 text-center">
 			<img src={FixTarLogo} alt="FixTar" class="mx-auto mb-4 h-12 w-auto" />
-			<h1 class="mb-2 text-2xl font-bold text-white">Rejestracja</h1>
+			<h1 class="mb-2 text-2xl font-bold text-[--ft-text]">Rejestracja</h1>
 			<p class="text-neutral-400">Utwórz nowe konto</p>
 		</div>
 

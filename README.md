@@ -1,76 +1,97 @@
-# E-Commerce Web Application
+# FixTar — Elektronarzędzia Online
 
-This is an e-commerce web application built with SvelteKit, Svelte 5 Runes, and the Runed package for state management.
+E-commerce store for power tools (elektronarzędzia). Built with SvelteKit 2 + Svelte 5, Turso (libSQL), and BaseLinker integration.
 
-## Project Overview
+## Tech Stack
 
-This application provides a modern e-commerce experience with features such as:
+- **Frontend:** SvelteKit 2, Svelte 5 (runes), Tailwind CSS v4
+- **Database:** Turso (libSQL/SQLite edge DB)
+- **Search:** FTS5 + trigram fuzzy via `@nomideusz/svelte-search`
+- **Product Source:** BaseLinker API (read-only sync from inventory "Elektronarzędzia")
+- **Auth:** Better Auth (email/password, OAuth) → Turso
+- **Fonts:** Chakra Petch (headings) + Barlow (body)
 
-- Product browsing and searching
-- Shopping cart functionality
-- User authentication
-- Checkout process
-- Order management
-- Admin dashboard
+## Architecture
 
-## Technology Stack
-
-- **Frontend**: SvelteKit + Svelte 5 Runes
-- **State Management**: Runed package
-- **Styling**: TailwindCSS
-- **Database**: PocketBase
-- **Authentication**: PocketBase Auth
-
-## Development Tasks
-
-The development process is organized into tasks located in the `tasks/` directory. Each task has detailed information about what needs to be implemented.
-
-### Task Structure
-
-- Each task is represented by a JSON object in `tasks/tasks.json`
-- Individual task files are generated in markdown format as `tasks/task-{id}.md`
-- Tasks include priority, dependencies, and detailed implementation notes
-
-### Working with Tasks
-
-1. Review the task list to identify the next task to work on
-2. Check task dependencies to ensure prerequisites are completed
-3. Implement the task according to the details and test strategy
-4. Update the task status when completed
-
-### Generate Task Files
-
-To regenerate task files from `tasks.json`, run:
-
-```bash
-node scripts/generate-task-files.js
+```
+BaseLinker (source of truth) ──read-only sync──▶ Turso (products, FTS5, trigrams)
+                                                      │
+Allegro ◀──managed by BaseLinker                      ▼
+                                               SvelteKit app ──▶ User
 ```
 
-## Development Setup
+- **Products:** Synced from BaseLinker inventory 9392 → Turso `products` table
+- **Search:** FTS5 full-text + trigram fuzzy matching with Polish locale support
+- **Categories:** 8 merged categories (Szlifierki i polerki, Wiertarki i wkrętarki, Piły i pilarki, etc.)
+- **Orders:** Write methods disabled during development (live Allegro connection)
 
-1. Clone the repository
-2. Install dependencies:
-   ```bash
-   pnpm install
-   ```
-3. Set up environment variables:
-   ```bash
-   cp .env.example .env
-   ```
-4. Start the development server:
-   ```bash
-   pnpm dev
-   ```
+## Setup
 
-## Directory Structure
+```bash
+pnpm install
+```
 
-- `src/` - Application source code
-  - `routes/` - SvelteKit routes
-  - `lib/` - Shared components and utilities
-- `static/` - Static assets
-- `tasks/` - Development tasks
-- `pb_migrations/` - PocketBase migrations and schemas
+### Environment Variables
 
-## License
+Create `.env`:
 
-MIT
+```env
+TURSO_DATABASE_URL=libsql://your-db.turso.io
+TURSO_AUTH_TOKEN=your-token
+BASELINKER_API_TOKEN=your-baselinker-token
+BETTER_AUTH_SECRET=your-auth-secret
+```
+
+### Database
+
+Search tables (products, FTS5, trigrams, synonyms):
+
+```bash
+pnpm tsx scripts/db/setup-search.ts
+```
+
+Auth tables are managed by Better Auth + Drizzle (`src/lib/server/schema.ts`).
+
+### Sync Products from BaseLinker
+
+Products sync via `POST /api/baselinker/sync` with `{ inventoryId: 9392 }`.
+
+## Development
+
+```bash
+pnpm dev
+```
+
+## Key Directories
+
+```
+src/
+├── lib/
+│   ├── components/     # UI components (home/, layout/, ui/)
+│   ├── server/
+│   │   ├── products.ts # Turso product queries
+│   │   ├── search/     # svelte-search adapter (FTS5 + trigram)
+│   │   ├── db.ts       # Drizzle + libsql client
+│   │   └── schema.ts   # Auth tables (Drizzle)
+│   ├── services/
+│   │   └── baselinker.ts  # BaseLinker API (read-only)
+│   ├── stores/         # Svelte 5 rune stores (cart, user, products)
+│   └── i18n/           # Translations (EN + PL)
+├── routes/
+│   ├── +page           # Homepage (hero, categories, featured)
+│   ├── products/       # Product listing + detail
+│   ├── categories/     # Category browser
+│   ├── search/         # Full-text search
+│   ├── admin/          # Admin dashboard + product management
+│   ├── api/            # API endpoints (search, sync, orders)
+│   └── cart/           # Shopping cart
+packages/
+└── svelte-search/      # @nomideusz/svelte-search (FTS5 + trigram engine)
+```
+
+## Design System
+
+- Semantic tokens: `--ft-*` family in `src/app.css`
+- Dark industrial theme with teal accent (`--color-brand-500: #378a92`)
+- Typography: Chakra Petch headings (max weight 700), Barlow body
+- Component primitives: `Button`, `Card`, `Input`, `Hero`, `ProductCard`

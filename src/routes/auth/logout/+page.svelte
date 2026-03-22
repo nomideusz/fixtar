@@ -99,7 +99,7 @@
 							<div
 								class="bg-brand-600 relative mx-auto flex h-20 w-20 items-center justify-center rounded-full shadow-xl"
 							>
-								<svg class="h-10 w-10 animate-spin text-white" fill="none" viewBox="0 0 24 24">
+								<svg class="h-10 w-10 animate-spin text-[--ft-text]" fill="none" viewBox="0 0 24 24">
 									<circle
 										class="opacity-25"
 										cx="12"
@@ -125,7 +125,7 @@
 								class="bg-success relative mx-auto flex h-20 w-20 items-center justify-center rounded-full shadow-xl"
 							>
 								<svg
-									class="h-10 w-10 text-white"
+									class="h-10 w-10 text-[--ft-text]"
 									fill="none"
 									stroke="currentColor"
 									viewBox="0 0 24 24"
@@ -148,7 +148,7 @@
 								class="bg-danger relative mx-auto flex h-20 w-20 items-center justify-center rounded-full shadow-xl"
 							>
 								<svg
-									class="h-10 w-10 text-white"
+									class="h-10 w-10 text-[--ft-text]"
 									fill="none"
 									stroke="currentColor"
 									viewBox="0 0 24 24"
@@ -167,7 +167,7 @@
 
 				<div class="mb-8">
 					{#if logoutStage === 'processing'}
-						<h1 class="mb-4 text-3xl font-bold text-white">Wylogowywanie...</h1>
+						<h1 class="mb-4 text-3xl font-bold text-[--ft-text]">Wylogowywanie...</h1>
 						<p class="mb-6 text-lg text-neutral-400">Prosimy czekać, kończymy sesję</p>
 						<div class="flex items-center justify-center space-x-2">
 							<div class="bg-brand-600 h-2 w-2 animate-bounce rounded-full"></div>
@@ -181,7 +181,7 @@
 							></div>
 						</div>
 					{:else if logoutStage === 'complete'}
-						<h1 class="mb-4 text-3xl font-bold text-white">Zostałeś wylogowany</h1>
+						<h1 class="mb-4 text-3xl font-bold text-[--ft-text]">Zostałeś wylogowany</h1>
 						<p class="mb-6 text-lg text-neutral-400">Dziękujemy za skorzystanie z FixTar</p>
 						<div class="bg-success/5 border-success-light mb-6 rounded-xl border-2 p-4">
 							<p class="text-success-dark text-sm font-medium">
@@ -190,7 +190,7 @@
 							</p>
 						</div>
 					{:else}
-						<h1 class="mb-4 text-3xl font-bold text-white">Wystąpił błąd</h1>
+						<h1 class="mb-4 text-3xl font-bold text-[--ft-text]">Wystąpił błąd</h1>
 						<p class="mb-6 text-lg text-neutral-400">Nie udało się zakończyć sesji</p>
 						<div class="bg-danger/5 border-danger-light mb-6 rounded-xl border-2 p-4">
 							<p class="text-danger-dark text-sm font-medium">
@@ -204,7 +204,7 @@
 					<div class="space-y-4">
 						<Button
 							onclick={redirectNow}
-							class="from-brand-600 to-accent-600 hover:from-brand-700 hover:to-accent-700 transform rounded-2xl bg-linear-to-r px-8 py-3 font-bold text-white shadow-lg transition-all duration-300 hover:scale-105"
+							class="from-brand-600 to-accent-600 hover:from-brand-700 hover:to-accent-700 transform rounded-2xl bg-linear-to-r px-8 py-3 font-bold text-[--ft-text] shadow-lg transition-all duration-300 hover:scale-105"
 						>
 							<svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path
@@ -254,7 +254,7 @@
 				{:else if logoutStage === 'error'}
 					<Button
 						onclick={redirectNow}
-						class="from-danger to-brand-600 hover:from-danger-dark hover:to-brand-700 transform rounded-2xl bg-linear-to-r px-8 py-3 font-bold text-white shadow-lg transition-all duration-300 hover:scale-105"
+						class="from-danger to-brand-600 hover:from-danger-dark hover:to-brand-700 transform rounded-2xl bg-linear-to-r px-8 py-3 font-bold text-[--ft-text] shadow-lg transition-all duration-300 hover:scale-105"
 					>
 						<svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path

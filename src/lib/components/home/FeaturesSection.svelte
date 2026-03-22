@@ -70,7 +70,7 @@
 	.features-section {
 		position: relative;
 		padding: 6rem 0 7rem;
-		background: var(--ft-dark-deeper, #090e13);
+		background: var(--ft-dark-deeper, var(--ft-surface-alt));
 		overflow: hidden;
 	}
 
@@ -94,7 +94,7 @@
 		left: 10%;
 		right: 10%;
 		height: 1px;
-		background: linear-gradient(90deg, transparent, rgba(55, 138, 146, 0.2), transparent);
+		background: linear-gradient(90deg, transparent, var(--ft-brand-border), transparent);
 		pointer-events: none;
 	}
 
@@ -130,7 +130,7 @@
 
 	.features-subtitle {
 		font-size: 1.15rem;
-		color: var(--ft-dark-text-secondary, rgba(255, 255, 255, 0.35));
+		color: var(--ft-dark-text-secondary, var(--ft-text-muted));
 		max-width: 36rem;
 		margin: 0 auto;
 		line-height: 1.6;
@@ -154,18 +154,18 @@
 	.feature-card {
 		position: relative;
 		padding: 2.5rem 2rem;
-		background: var(--ft-dark-card, rgba(255, 255, 255, 0.02));
-		border: 1px solid var(--ft-dark-border, rgba(255, 255, 255, 0.06));
+		background: var(--ft-dark-card, var(--ft-card));
+		border: 1px solid var(--ft-dark-border, var(--ft-border));
 		border-radius: 0.25rem;
 		overflow: hidden;
 		transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 	}
 
 	.feature-card:hover {
-		background: var(--ft-dark-card-hover, rgba(255, 255, 255, 0.04));
+		background: var(--ft-dark-card-hover, var(--ft-card-hover));
 		border-color: rgba(var(--fc-rgb), 0.15);
 		transform: translateY(-3px);
-		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+		box-shadow: 0 8px 32px var(--ft-shadow);
 	}
 
 	/* ── Icon ── */
@@ -206,7 +206,7 @@
 	.feature-desc {
 		font-size: 0.95rem;
 		line-height: 1.65;
-		color: var(--ft-dark-text-secondary, rgba(255, 255, 255, 0.35));
+		color: var(--ft-dark-text-secondary, var(--ft-text-muted));
 	}
 
 	/* ── Bottom accent line ── */

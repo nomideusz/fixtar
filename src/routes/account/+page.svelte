@@ -176,7 +176,7 @@
 							/>
 						</svg>
 					</div>
-					<h2 class="mb-4 text-3xl font-bold text-white">Witaj w Swoim Koncie</h2>
+					<h2 class="mb-4 text-3xl font-bold text-[--ft-text]">Witaj w Swoim Koncie</h2>
 					<p class="mx-auto mb-8 max-w-md text-lg text-neutral-400">
 						Zaloguj się, aby uzyskać dostęp do panelu konta i zarządzać swoimi zamówieniami
 					</p>
@@ -215,7 +215,7 @@
 										</svg>
 									</div>
 									<div>
-										<h1 class="text-3xl font-bold text-white">
+										<h1 class="text-3xl font-bold text-[--ft-text]">
 											Witaj ponownie, {userStore.current?.username || 'Użytkowniku'}!
 										</h1>
 										<p class="mt-1 text-lg text-neutral-400">
@@ -241,7 +241,7 @@
 							</div>
 							<div class="text-center lg:text-right">
 								<p class="mb-1 text-sm text-neutral-500">Członek od</p>
-								<p class="text-xl font-bold text-white">{memberSince}</p>
+								<p class="text-xl font-bold text-[--ft-text]">{memberSince}</p>
 							</div>
 						</div>
 					</Card>
@@ -359,7 +359,7 @@
 				<!-- Quick Actions Grid -->
 				<section>
 					<div class="mb-8">
-						<h2 class="mb-4 text-2xl font-bold text-white">Szybkie akcje</h2>
+						<h2 class="mb-4 text-2xl font-bold text-[--ft-text]">Szybkie akcje</h2>
 						<p class="text-neutral-400">Zarządzaj swoim kontem i zamówieniami</p>
 					</div>
 
@@ -376,7 +376,7 @@
 										>
 											{#if action.icon === 'orders'}
 												<svg
-													class="h-6 w-6 text-white"
+													class="h-6 w-6 text-[--ft-text]"
 													fill="none"
 													stroke="currentColor"
 													viewBox="0 0 24 24"
@@ -390,7 +390,7 @@
 												</svg>
 											{:else if action.icon === 'addresses'}
 												<svg
-													class="h-6 w-6 text-white"
+													class="h-6 w-6 text-[--ft-text]"
 													fill="none"
 													stroke="currentColor"
 													viewBox="0 0 24 24"
@@ -410,7 +410,7 @@
 												</svg>
 											{:else if action.icon === 'favorites'}
 												<svg
-													class="h-6 w-6 text-white"
+													class="h-6 w-6 text-[--ft-text]"
 													fill="none"
 													stroke="currentColor"
 													viewBox="0 0 24 24"
@@ -424,7 +424,7 @@
 												</svg>
 											{:else if action.icon === 'settings'}
 												<svg
-													class="h-6 w-6 text-white"
+													class="h-6 w-6 text-[--ft-text]"
 													fill="none"
 													stroke="currentColor"
 													viewBox="0 0 24 24"
@@ -445,7 +445,7 @@
 											{/if}
 										</div>
 										<h3
-											class="group-hover:text-brand-600 mb-2 text-lg font-bold text-white transition-colors duration-200"
+											class="group-hover:text-brand-600 mb-2 text-lg font-bold text-[--ft-text] transition-colors duration-200"
 										>
 											{action.title}
 										</h3>
@@ -470,7 +470,7 @@
 				<!-- Account Features -->
 				<section>
 					<div class="mb-8">
-						<h2 class="mb-4 text-2xl font-bold text-white">Funkcje konta</h2>
+						<h2 class="mb-4 text-2xl font-bold text-[--ft-text]">Funkcje konta</h2>
 						<p class="text-neutral-400">Odblokuj dodatkowe korzyści</p>
 					</div>
 
@@ -517,7 +517,7 @@
 									</div>
 									<div class="ml-4">
 										<h4
-											class="font-semibold text-white {feature.completed ? '' : 'opacity-75'}"
+											class="font-semibold text-[--ft-text] {feature.completed ? '' : 'opacity-75'}"
 										>
 											{feature.title}
 										</h4>
@@ -538,7 +538,7 @@
 					<Card class="p-8">
 						<div class="mb-8 flex items-center justify-between">
 							<div>
-								<h2 class="mb-2 text-2xl font-bold text-white">Ostatnie zamówienia</h2>
+								<h2 class="mb-2 text-2xl font-bold text-[--ft-text]">Ostatnie zamówienia</h2>
 								<p class="text-neutral-400">Śledź status swoich zamówień</p>
 							</div>
 							<Button href="/account/orders" variant="outline">Zobacz wszystkie</Button>
@@ -563,7 +563,7 @@
 										/>
 									</svg>
 								</div>
-								<h3 class="mb-2 text-lg font-semibold text-white">Brak zamówień</h3>
+								<h3 class="mb-2 text-lg font-semibold text-[--ft-text]">Brak zamówień</h3>
 								<p class="mb-6 text-neutral-400">
 									Rozpocznij zakupy i zobacz swoje zamówienia tutaj
 								</p>
@@ -574,14 +574,14 @@
 								<table class="w-full">
 									<thead>
 										<tr class="border-b border-white/10">
-											<th class="px-4 py-4 text-left font-semibold text-white"
+											<th class="px-4 py-4 text-left font-semibold text-[--ft-text]"
 												>Numer zamówienia</th
 											>
-											<th class="px-4 py-4 text-left font-semibold text-white">Data</th>
-											<th class="px-4 py-4 text-left font-semibold text-white">Produkty</th>
-											<th class="px-4 py-4 text-left font-semibold text-white">Suma</th>
-											<th class="px-4 py-4 text-left font-semibold text-white">Status</th>
-											<th class="px-4 py-4 text-right font-semibold text-white">Akcja</th>
+											<th class="px-4 py-4 text-left font-semibold text-[--ft-text]">Data</th>
+											<th class="px-4 py-4 text-left font-semibold text-[--ft-text]">Produkty</th>
+											<th class="px-4 py-4 text-left font-semibold text-[--ft-text]">Suma</th>
+											<th class="px-4 py-4 text-left font-semibold text-[--ft-text]">Status</th>
+											<th class="px-4 py-4 text-right font-semibold text-[--ft-text]">Akcja</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -596,7 +596,7 @@
 												<td class="px-4 py-4 text-neutral-400"
 													>{order.items} {order.items === 1 ? 'produkt' : 'produkty'}</td
 												>
-												<td class="px-4 py-4 font-semibold text-white"
+												<td class="px-4 py-4 font-semibold text-[--ft-text]"
 													>{order.total.toFixed(2)} zł</td
 												>
 												<td class="px-4 py-4">
@@ -631,7 +631,7 @@
 				<section>
 					<Card class="from-brand-500/100/8 to-accent-500/100/8 border-2 border-white/10 bg-linear-to-br p-8">
 						<div class="text-center">
-							<h3 class="mb-4 text-xl font-bold text-white">Potrzebujesz pomocy?</h3>
+							<h3 class="mb-4 text-xl font-bold text-[--ft-text]">Potrzebujesz pomocy?</h3>
 							<p class="mx-auto mb-6 max-w-md text-neutral-400">
 								Nasz zespół wsparcia jest gotowy do pomocy w każdej kwestii dotyczącej Twojego konta
 							</p>

@@ -14,11 +14,11 @@
 
 	// Popular categories - simple array
 	const popularCategories = [
-		{ id: 'chainsaws', name: 'Pilarki łańcuchowe', icon: '🪚' },
-		{ id: 'drills', name: 'Wiertarki i wkrętarki', icon: '🔩' },
-		{ id: 'grinders', name: 'Szlifierki', icon: '⚙️' },
-		{ id: 'garden-tools', name: 'Narzędzia ogrodowe', icon: '🌿' },
-		{ id: 'welding', name: 'Spawarki', icon: '🔥' }
+		{ id: 'szlifierki-i-polerki', name: 'Szlifierki i polerki', icon: '⚙️' },
+		{ id: 'wiertarki-i-wkretarki', name: 'Wiertarki i wkrętarki', icon: '🔩' },
+		{ id: 'pily-i-pilarki', name: 'Piły i pilarki', icon: '🪚' },
+		{ id: 'dom-i-ogrod', name: 'Dom i ogród', icon: '🌿' },
+		{ id: 'zestawy-i-akcesoria', name: 'Zestawy i akcesoria', icon: '🧰' }
 	];
 
 	// Handle search
@@ -79,7 +79,7 @@
 	<div class="mx-auto max-w-3xl">
 		<div class="card mb-10">
 			<div class="mb-4 flex items-center gap-3">
-				<h2 class="text-xl font-bold text-white">Here are some suggestions:</h2>
+				<h2 class="text-xl font-bold text-[--ft-text]">Here are some suggestions:</h2>
 			</div>
 
 			<!-- Popular categories -->

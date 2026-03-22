@@ -21,7 +21,7 @@ export const POST: RequestHandler = async ({ request, url }) => {
 			const orderId = data.sessionId || data.orderId || data.order_id;
 
 			if (orderId) {
-				// TODO: Update order status in Turso DB (replace PocketBase collection call)
+				// TODO: Update order status in Turso DB
 				console.warn('[TODO] webhooks/payment: update order', orderId, 'status in DB');
 				// TODO: Send confirmation email
 				// TODO: Clear cart (if we have user session)

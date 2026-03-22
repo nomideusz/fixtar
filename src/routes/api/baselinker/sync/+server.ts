@@ -1,20 +1,16 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { getBaseLinkerService } from '$lib/services/baselinker';
+import { getClient } from '$lib/server/products';
 
 /**
  * POST /api/baselinker/sync
- * Trigger product sync from BaseLinker
- * Requires admin authentication
- * TODO: Wire up destination persistence (Turso DB) once BaseLinker service is updated
+ * Trigger product sync from BaseLinker → Turso
  */
 export const POST: RequestHandler = async ({ locals, request }) => {
 	if (!locals.user) {
 		return json({ error: 'Unauthorized' }, { status: 401 });
 	}
-
-	// TODO: Check admin role once Better Auth roles are configured
-	// if (locals.user.role !== 'admin') return json({ error: 'Forbidden' }, { status: 403 });
 
 	try {
 		const body = await request.json().catch(() => ({}));
@@ -25,8 +21,8 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 		}
 
 		const service = getBaseLinkerService();
-		// TODO: Update BaseLinkerService.syncProducts signature to accept DB client instead of pb
-		const result = await service.syncProducts(null as any, inventoryId, { dryRun });
+		const db = getClient();
+		const result = await service.syncProducts(db, inventoryId, { dryRun });
 
 		return json(result);
 	} catch (err: any) {

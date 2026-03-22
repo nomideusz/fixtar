@@ -69,13 +69,17 @@ export interface Category {
 	metadata?: Record<string, any>;
 }
 
+/**
+ * Client-side products store.
+ * Products are loaded server-side via +page.server.ts loaders.
+ * This store is only used for client-side state management (e.g. admin).
+ */
 function createProductsStore() {
 	let products = $state<Product[]>([]);
 	const loading = $state(false);
 	let error = $state<string | null>(null);
 
 	const featured = $derived(products.filter((p) => p.featured && p.status === 'active'));
-
 	const inStock = $derived(
 		products.filter((p) => {
 			if (!p.inventory?.trackQuantity) return true;
@@ -84,67 +88,14 @@ function createProductsStore() {
 	);
 
 	return {
-		get items() {
-			return products;
-		},
-		get loading() {
-			return loading;
-		},
-		get error() {
-			return error;
-		},
-		get featured() {
-			return featured;
-		},
-		get inStock() {
-			return inStock;
-		},
+		get items() { return products; },
+		get loading() { return loading; },
+		get error() { return error; },
+		get featured() { return featured; },
+		get inStock() { return inStock; },
 
-		// TODO: Implement with BaseLinker API
-		async fetchProducts() {
-			if (!browser) return;
-			console.warn(
-				'[productsStore] fetchProducts: PocketBase removed, implement with BaseLinker API'
-			);
-			return null;
-		},
-
-		async fetchProduct(_: string): Promise<Product | null> {
-			void _;
-			console.warn(
-				'[productsStore] fetchProduct: PocketBase removed, implement with BaseLinker API'
-			);
-			return null;
-		},
-
-		async fetchFeaturedProducts() {
-			console.warn(
-				'[productsStore] fetchFeaturedProducts: PocketBase removed, implement with BaseLinker API'
-			);
-			return [];
-		},
-
-		async addProduct(_?: any) {
-			void _;
-			console.warn('[productsStore] addProduct: PocketBase removed, implement with BaseLinker API');
-			return null;
-		},
-
-		async updateProduct(_id: string, _data: any) {
-			void _id;
-			void _data;
-			console.warn(
-				'[productsStore] updateProduct: PocketBase removed, implement with BaseLinker API'
-			);
-			return null;
-		},
-
-		async removeProduct(_id: string) {
-			void _id;
-			console.warn(
-				'[productsStore] removeProduct: PocketBase removed, implement with BaseLinker API'
-			);
-			return false;
+		setProducts(items: Product[]) {
+			products = items;
 		},
 
 		clear() {
@@ -159,27 +110,8 @@ function createCategoriesStore() {
 	const loading = $state(false);
 
 	return {
-		get items() {
-			return categories;
-		},
-		get loading() {
-			return loading;
-		},
-
-		// TODO: Implement with BaseLinker API
-		async fetchCategories() {
-			console.warn(
-				'[categoriesStore] fetchCategories: PocketBase removed, implement with BaseLinker API'
-			);
-			return [];
-		},
-
-		async fetchFeaturedCategories() {
-			console.warn(
-				'[categoriesStore] fetchFeaturedCategories: PocketBase removed, implement with BaseLinker API'
-			);
-			return [];
-		}
+		get items() { return categories; },
+		get loading() { return loading; }
 	};
 }
 

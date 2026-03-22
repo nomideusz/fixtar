@@ -175,7 +175,7 @@
 							d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
 						/>
 					</svg>
-					<h3 class="mb-3 text-xl font-semibold text-white">Brak wyników</h3>
+					<h3 class="mb-3 text-xl font-semibold text-[--ft-text]">Brak wyników</h3>
 					<p class="mb-6 text-neutral-400">
 						Nie znaleźliśmy produktów pasujących do "{searchQuery}"
 					</p>
@@ -233,7 +233,7 @@
 			<div>
 				<!-- Results Header -->
 				<div class="mb-8">
-					<h2 class="text-2xl font-bold text-white">
+					<h2 class="text-2xl font-bold text-[--ft-text]">
 						Znaleziono {data.products.length}
 						{data.products.length === 1
 							? 'produkt'
@@ -274,7 +274,7 @@
 							/>
 						</svg>
 					</div>
-					<h3 class="mb-3 text-2xl font-bold text-white">Rozpocznij wyszukiwanie</h3>
+					<h3 class="mb-3 text-2xl font-bold text-[--ft-text]">Rozpocznij wyszukiwanie</h3>
 					<p class="mx-auto mb-8 max-w-md text-neutral-400">
 						Wpisz nazwę produktu, kategorię lub słowo kluczowe w polu wyszukiwania powyżej
 					</p>

@@ -198,12 +198,12 @@
 		<nav class="mb-8">
 			<ol class="flex items-center space-x-2 text-sm">
 				<li>
-					<a href="/" class="hover:text-brand-600 font-medium text-neutral-500 transition-colors">
+					<a href="/" class="hover:text-brand-600 font-medium text-[--ft-text-secondary] transition-colors">
 						Strona główna
 					</a>
 				</li>
 				<li>
-					<svg class="h-4 w-4 text-neutral-400" fill="currentColor" viewBox="0 0 20 20">
+					<svg class="h-4 w-4 text-[--ft-text-faint]" fill="currentColor" viewBox="0 0 20 20">
 						<path
 							fill-rule="evenodd"
 							d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
@@ -214,14 +214,14 @@
 				<li>
 					<a
 						href="/products"
-						class="hover:text-brand-600 font-medium text-neutral-500 transition-colors"
+						class="hover:text-brand-600 font-medium text-[--ft-text-secondary] transition-colors"
 					>
 						Produkty
 					</a>
 				</li>
 				{#if product.expand?.categories && product.expand.categories.length > 0}
 					<li>
-						<svg class="h-4 w-4 text-neutral-400" fill="currentColor" viewBox="0 0 20 20">
+						<svg class="h-4 w-4 text-[--ft-text-faint]" fill="currentColor" viewBox="0 0 20 20">
 							<path
 								fill-rule="evenodd"
 								d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
@@ -232,14 +232,14 @@
 					<li>
 						<a
 							href="/products?category={product.expand.categories[0].slug}"
-							class="hover:text-brand-600 font-medium text-neutral-500 transition-colors"
+							class="hover:text-brand-600 font-medium text-[--ft-text-secondary] transition-colors"
 						>
 							{product.expand.categories[0].name}
 						</a>
 					</li>
 				{/if}
 				<li>
-					<svg class="h-4 w-4 text-neutral-400" fill="currentColor" viewBox="0 0 20 20">
+					<svg class="h-4 w-4 text-[--ft-text-faint]" fill="currentColor" viewBox="0 0 20 20">
 						<path
 							fill-rule="evenodd"
 							d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
@@ -247,7 +247,7 @@
 						/>
 					</svg>
 				</li>
-				<li class="font-medium text-white">{product.name}</li>
+				<li class="font-medium text-[--ft-text]">{product.name}</li>
 			</ol>
 		</nav>
 
@@ -259,7 +259,7 @@
 						<div class="space-y-4">
 							<!-- Main Image with Enhanced Design -->
 							<div class="group relative">
-								<div class="aspect-square w-full overflow-hidden rounded-xl bg-white/10">
+								<div class="aspect-square w-full overflow-hidden rounded-xl bg-[--ft-surface-tertiary]">
 									<button
 										onclick={() => (imageZoomed = true)}
 										class="focus:ring-brand-500 h-full w-full rounded-xl focus:ring-2 focus:ring-offset-2 focus:outline-none"
@@ -282,10 +282,10 @@
 
 								<!-- Zoom overlay -->
 								<div
-									class="bg-opacity-0 group-hover:bg-opacity-10 pointer-events-none absolute inset-0 flex items-center justify-center bg-black opacity-0 transition-all duration-300 group-hover:opacity-100"
+									class="pointer-events-none absolute inset-0 flex items-center justify-center bg-[--ft-surface-overlay] opacity-0 transition-all duration-300 group-hover:opacity-100"
 								>
 									<div
-										class="rounded-lg bg-white/90 px-3 py-2 text-sm font-medium text-white backdrop-blur-sm"
+										class="rounded-lg bg-[--ft-card] px-3 py-2 text-sm font-medium text-[--ft-text] backdrop-blur-sm"
 									>
 										<svg
 											class="mr-1 inline h-4 w-4"
@@ -308,21 +308,21 @@
 								<div class="pointer-events-none absolute top-4 left-4 flex flex-col gap-2">
 									{#if product.featured}
 										<span
-											class="bg-brand-600 rounded-lg px-3 py-1.5 text-xs font-semibold text-white shadow-lg"
+											class="bg-brand-600 rounded-lg px-3 py-1.5 text-xs font-semibold !text-white shadow-lg"
 										>
 											Polecany
 										</span>
 									{/if}
 									{#if hasDiscount}
 										<span
-											class="bg-danger rounded-lg px-3 py-1.5 text-xs font-semibold text-white shadow-lg"
+											class="bg-danger rounded-lg px-3 py-1.5 text-xs font-semibold !text-white shadow-lg"
 										>
 											-{discountPercent}%
 										</span>
 									{/if}
 									{#if !inStock}
 										<span
-											class="rounded-lg bg-neutral-600 px-3 py-1.5 text-xs font-semibold text-white shadow-lg"
+											class="rounded-lg bg-neutral-600 px-3 py-1.5 text-xs font-semibold !text-white shadow-lg"
 										>
 											Wyprzedane
 										</span>
@@ -339,7 +339,7 @@
 											class="h-20 w-20 shrink-0 overflow-hidden rounded-xl border-2 transition-all duration-200 {selectedImageIndex ===
 											index
 												? 'border-brand-500 ring-brand-200 ring-2'
-												: 'border-white/10 hover:border-white/15'}"
+												: 'border-[--ft-border] hover:border-[--ft-border]'}"
 										>
 											<img
 												src={image}
@@ -352,10 +352,10 @@
 							{/if}
 						</div>
 					{:else}
-						<div class="flex h-96 items-center justify-center rounded-xl bg-white/10">
+						<div class="flex h-96 items-center justify-center rounded-xl bg-[--ft-surface-tertiary]">
 							<div class="text-center">
 								<svg
-									class="mx-auto mb-4 h-16 w-16 text-neutral-400"
+									class="mx-auto mb-4 h-16 w-16 text-[--ft-text-faint]"
 									fill="none"
 									stroke="currentColor"
 									viewBox="0 0 24 24"
@@ -367,7 +367,7 @@
 										d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
 									/>
 								</svg>
-								<p class="text-neutral-500">Brak zdjęcia produktu</p>
+								<p class="text-[--ft-text-secondary]">Brak zdjęcia produktu</p>
 							</div>
 						</div>
 					{/if}
@@ -379,7 +379,7 @@
 				<!-- Header -->
 				<div>
 					<div class="mb-4 flex items-start justify-between">
-						<h1 class="text-3xl leading-tight font-bold text-white lg:text-4xl">
+						<h1 class="text-3xl leading-tight font-bold text-[--ft-text] lg:text-4xl">
 							{product.name}
 						</h1>
 					</div>
@@ -392,10 +392,10 @@
 							</span>
 							{#if hasDiscount}
 								<div class="flex items-center gap-2">
-									<span class="text-xl text-neutral-500 line-through">
+									<span class="text-xl text-[--ft-text-secondary] line-through">
 										{product.compareAtPrice?.toFixed(2)} zł
 									</span>
-									<span class="bg-danger rounded-lg px-2 py-1 text-sm font-semibold text-white">
+									<span class="bg-danger rounded-lg px-2 py-1 text-sm font-semibold !text-white">
 										-{discountPercent}%
 									</span>
 								</div>
@@ -411,7 +411,7 @@
 							</div>
 
 							{#if product.sku}
-								<div class="text-sm text-neutral-500">
+								<div class="text-sm text-[--ft-text-secondary]">
 									SKU: <span class="font-mono">{product.sku}</span>
 								</div>
 							{/if}
@@ -422,7 +422,7 @@
 				<!-- Enhanced Categories -->
 				{#if product.expand?.categories && product.expand.categories.length > 0}
 					<Card glass={true} class="p-4">
-						<h3 class="mb-3 text-sm font-semibold text-white">Kategorie</h3>
+						<h3 class="mb-3 text-sm font-semibold text-[--ft-text]">Kategorie</h3>
 						<div class="flex flex-wrap gap-2">
 							{#each product.expand.categories as category (category.id)}
 								<a
@@ -447,12 +447,13 @@
 				<!-- Enhanced Description -->
 				{#if product.description || product.shortDescription}
 					<Card class="p-6">
-						<h3 class="mb-4 text-lg font-semibold text-white">Opis produktu</h3>
-						<div class="leading-relaxed text-neutral-300">
+						<h3 class="mb-4 text-lg font-semibold text-[--ft-text]">Opis produktu</h3>
+						<div class="product-description leading-relaxed text-[--ft-text-secondary]">
 							{#if product.description}
-								<div class="prose prose-sm max-w-none">
-									<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-									{@html product.description.replace(/\n/g, '<br>')}
+								<div class="max-w-none space-y-2">
+									{#each product.description.split(/\n+/).filter(Boolean) as paragraph}
+										<p>{paragraph}</p>
+									{/each}
 								</div>
 							{:else}
 								<p>{product.shortDescription}</p>
@@ -467,12 +468,12 @@
 						<div class="space-y-6">
 							<!-- Quantity Selector -->
 							<div>
-								<label for="quantity" class="mb-3 block text-sm font-semibold text-white">
+								<label for="quantity" class="mb-3 block text-sm font-semibold text-[--ft-text]">
 									Ilość
 								</label>
 								<div class="flex items-center gap-4">
 									<div
-										class="flex items-center rounded-xl border border-white/15 bg-white/5 shadow-sm"
+										class="flex items-center rounded-xl border border-[--ft-border] bg-[--ft-card] shadow-sm"
 									>
 										<Button
 											variant="ghost"
@@ -491,7 +492,7 @@
 											</svg>
 										</Button>
 										<div
-											class="min-w-15 px-4 py-2 text-center text-lg font-semibold text-white"
+											class="min-w-15 px-4 py-2 text-center text-lg font-semibold text-[--ft-text]"
 										>
 											{quantity}
 										</div>
@@ -524,9 +525,9 @@
 
 							<!-- Total Price Display -->
 							<div
-								class="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-4 py-4"
+								class="flex items-center justify-between rounded-xl border border-[--ft-border] bg-[--ft-card] px-4 py-4"
 							>
-								<span class="text-lg font-semibold text-white"> Łączna cena: </span>
+								<span class="text-lg font-semibold text-[--ft-text]"> Łączna cena: </span>
 								<span class="text-brand-600 text-2xl font-bold">
 									{(product.price * quantity).toFixed(2)} zł
 								</span>
@@ -550,7 +551,7 @@
 							</Button>
 
 							<!-- Additional Info -->
-							<div class="grid grid-cols-1 gap-4 text-sm text-neutral-400 sm:grid-cols-2">
+							<div class="grid grid-cols-1 gap-4 text-sm text-[--ft-text-faint] sm:grid-cols-2">
 								<div class="flex items-center gap-2">
 									<svg
 										class="text-success h-4 w-4"
@@ -603,8 +604,8 @@
 									d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
 								/>
 							</svg>
-							<h3 class="mb-2 text-lg font-semibold text-white">Produkt niedostępny</h3>
-							<p class="mb-4 text-neutral-400">Ten produkt jest obecnie wyprzedany</p>
+							<h3 class="mb-2 text-lg font-semibold text-[--ft-text]">Produkt niedostępny</h3>
+							<p class="mb-4 text-[--ft-text-faint]">Ten produkt jest obecnie wyprzedany</p>
 							<Button disabled class="w-full" size="lg">Wyprzedane</Button>
 						</div>
 					</Card>
@@ -617,8 +618,8 @@
 			<div class="mt-20">
 				<Card class="p-8">
 					<div class="mb-10 text-center">
-						<h2 class="mb-4 text-3xl font-bold text-white">Podobne produkty</h2>
-						<p class="mx-auto max-w-2xl text-neutral-400">
+						<h2 class="mb-4 text-3xl font-bold text-[--ft-text]">Podobne produkty</h2>
+						<p class="mx-auto max-w-2xl text-[--ft-text-faint]">
 							Sprawdź inne produkty, które mogą Cię zainteresować
 						</p>
 					</div>
@@ -636,7 +637,7 @@
 <!-- Image Zoom Modal -->
 {#if imageZoomed && allImages.length > 0}
 	<div
-		class="bg-opacity-95 fixed inset-0 z-50 flex items-center justify-center bg-black"
+		class="fixed inset-0 z-50 flex items-center justify-center bg-[--ft-surface-overlay]"
 		onkeydown={handleKeyDown}
 		role="dialog"
 		aria-modal="true"
@@ -645,7 +646,7 @@
 	>
 		<!-- Controls Bar -->
 		<div class="absolute top-4 left-1/2 z-10 -translate-x-1/2 transform">
-			<div class="flex items-center gap-2 rounded-lg bg-white/10 p-2 backdrop-blur-sm">
+			<div class="flex items-center gap-2 rounded-lg bg-[--ft-surface-tertiary] p-2 backdrop-blur-sm">
 				<!-- Navigation arrows for multiple images -->
 				{#if allImages.length > 1}
 					<button
@@ -654,7 +655,7 @@
 							resetZoom();
 						}}
 						disabled={selectedImageIndex === 0}
-						class="p-2 text-white transition-colors hover:text-neutral-300 disabled:cursor-not-allowed disabled:opacity-50"
+						class="p-2 text-[--ft-text] transition-colors hover:text-[--ft-text-muted] disabled:cursor-not-allowed disabled:opacity-50"
 						aria-label="Poprzednie zdjęcie"
 					>
 						<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -671,7 +672,7 @@
 				<!-- Zoom controls -->
 				<button
 					onclick={zoomOut}
-					class="p-2 text-white transition-colors hover:text-neutral-300"
+					class="p-2 text-[--ft-text] transition-colors hover:text-[--ft-text-muted]"
 					aria-label="Pomniejsz"
 				>
 					<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -679,13 +680,13 @@
 					</svg>
 				</button>
 
-				<span class="min-w-15 px-2 text-center text-sm font-medium text-white">
+				<span class="min-w-15 px-2 text-center text-sm font-medium text-[--ft-text]">
 					{Math.round(zoomLevel * 100)}%
 				</span>
 
 				<button
 					onclick={zoomIn}
-					class="p-2 text-white transition-colors hover:text-neutral-300"
+					class="p-2 text-[--ft-text] transition-colors hover:text-[--ft-text-muted]"
 					aria-label="Powiększ"
 				>
 					<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -700,7 +701,7 @@
 
 				<button
 					onclick={resetZoom}
-					class="p-2 text-white transition-colors hover:text-neutral-300"
+					class="p-2 text-[--ft-text] transition-colors hover:text-[--ft-text-muted]"
 					aria-label="Resetuj powiększenie"
 				>
 					<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -720,7 +721,7 @@
 							resetZoom();
 						}}
 						disabled={selectedImageIndex === allImages.length - 1}
-						class="p-2 text-white transition-colors hover:text-neutral-300 disabled:cursor-not-allowed disabled:opacity-50"
+						class="p-2 text-[--ft-text] transition-colors hover:text-[--ft-text-muted] disabled:cursor-not-allowed disabled:opacity-50"
 						aria-label="Następne zdjęcie"
 					>
 						<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -739,7 +740,7 @@
 		<!-- Close button -->
 		<button
 			onclick={closeZoom}
-			class="absolute top-4 right-4 z-10 rounded-lg bg-white/10 p-2 text-white backdrop-blur-sm transition-colors hover:text-neutral-300"
+			class="absolute top-4 right-4 z-10 rounded-lg bg-[--ft-surface-tertiary] p-2 text-[--ft-text] backdrop-blur-sm transition-colors hover:text-[--ft-text-muted]"
 			aria-label="Zamknij podgląd"
 		>
 			<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -786,14 +787,14 @@
 		<!-- Image counter -->
 		{#if allImages.length > 1}
 			<div class="absolute bottom-4 left-1/2 -translate-x-1/2 transform">
-				<div class="rounded-lg bg-white/10 px-3 py-1 text-sm text-white backdrop-blur-sm">
+				<div class="rounded-lg bg-[--ft-surface-tertiary] px-3 py-1 text-sm text-[--ft-text] backdrop-blur-sm">
 					{selectedImageIndex + 1} / {allImages.length}
 				</div>
 			</div>
 		{/if}
 
 		<!-- Instructions -->
-		<div class="absolute right-4 bottom-4 space-y-1 text-xs text-white/70">
+		<div class="absolute right-4 bottom-4 space-y-1 text-xs text-[--ft-text]/70">
 			<div>Kliknij aby powiększyć</div>
 			<div>Przewiń aby zmienić powiększenie</div>
 			<div>Przeciągnij aby przesunąć</div>

@@ -38,9 +38,10 @@ export const POST: RequestHandler = async ({ locals, request }) => {
  * Get orders from BaseLinker (for admin sync)
  */
 export const GET: RequestHandler = async ({ locals, url }) => {
-	if (!locals.user?.isAdmin) {
+	if (!locals.user) {
 		return json({ error: 'Unauthorized' }, { status: 401 });
 	}
+	// TODO: Add admin role check once Better Auth roles are configured
 
 	try {
 		const statusId = url.searchParams.get('status_id');

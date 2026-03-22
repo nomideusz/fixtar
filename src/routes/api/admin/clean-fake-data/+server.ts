@@ -1,42 +1,32 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { dev } from '$app/environment';
+import { getClient } from '$lib/server/products';
 
 export const POST: RequestHandler = async ({ request, locals }) => {
-	// Check admin access
-	if (!dev) {
-		if (!locals.user) {
-			return json(
-				{ success: false, message: 'Unauthorized. Admin access required.' },
-				{ status: 403 }
-			);
-		}
-		// TODO: Verify admin role once Better Auth roles are configured
-	} else {
-		console.log('[DEV MODE] Bypassing admin authentication for development');
+	if (!dev && !locals.user) {
+		return json({ success: false, message: 'Unauthorized' }, { status: 403 });
 	}
 
 	try {
 		const requestData = await request.json();
-		const confirmClean = requestData.confirm === true;
-
-		if (!confirmClean) {
+		if (requestData.confirm !== true) {
 			return json(
-				{
-					success: false,
-					message: 'You must confirm the cleanup by sending { "confirm": true }'
-				},
+				{ success: false, message: 'Send { "confirm": true } to proceed' },
 				{ status: 400 }
 			);
 		}
 
-		// TODO: Implement fake data cleanup against Turso DB (previously used PocketBase collections)
-		console.warn('[TODO] api/admin/clean-fake-data: implement DB cleanup logic');
+		const db = getClient();
+
+		// Delete all products and related search data
+		await db.execute('DELETE FROM product_trigrams');
+		await db.execute('DELETE FROM products');
+		await db.execute("INSERT INTO products_fts(products_fts) VALUES('rebuild')");
 
 		return json({
 			success: true,
-			message: 'Clean-fake-data endpoint is a stub. TODO: implement against Turso DB.',
-			deleted: { categories: 0, products: 0, orders: 0 }
+			message: 'All product data cleared. Re-sync from BaseLinker to repopulate.'
 		});
 	} catch (err: any) {
 		console.error('[CLEAN] Error:', err);

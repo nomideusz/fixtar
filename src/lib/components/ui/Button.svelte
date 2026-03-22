@@ -32,17 +32,17 @@
 
 	const variantClasses = {
 		primary:
-			'bg-brand-600 text-white hover:bg-brand-700 focus:ring-brand-500 shadow-lg hover:shadow-xl',
+			'bg-brand-600 !text-white hover:bg-brand-700 focus:ring-brand-500 shadow-lg hover:shadow-xl',
 		secondary:
-			'bg-white/5 text-white border border-white/10 hover:bg-white/10 focus:ring-white/30 shadow-md hover:shadow-lg hover:border-white/20',
+			'bg-[--ft-card] text-[--ft-text] border border-[--ft-border] hover:bg-[--ft-card-hover] focus:ring-brand-500/30 shadow-md hover:shadow-lg hover:border-[--ft-border-hover]',
 		ghost:
-			'bg-transparent text-neutral-300 hover:bg-white/10 focus:ring-white/30 hover:text-white',
+			'bg-transparent text-[--ft-text-muted] hover:bg-[--ft-card-hover] focus:ring-brand-500/30 hover:text-[--ft-text]',
 		gradient:
-			'bg-linear-to-r from-brand-600 to-accent-600 text-white hover:from-brand-700 hover:to-accent-700 focus:ring-brand-500 shadow-lg hover:shadow-xl',
+			'bg-linear-to-r from-brand-600 to-accent-600 !text-white hover:from-brand-700 hover:to-accent-700 focus:ring-brand-500 shadow-lg hover:shadow-xl',
 		outline:
-			'border-2 border-brand-600 text-brand-600 hover:bg-brand-600 hover:text-white focus:ring-brand-500 bg-transparent',
+			'border-2 border-brand-600 text-brand-600 hover:bg-brand-600 hover:!text-white focus:ring-brand-500 bg-transparent',
 		glass:
-			'bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 focus:ring-white/50 shadow-lg'
+			'bg-[--ft-card] backdrop-blur-md border border-[--ft-border] text-[--ft-text] hover:bg-[--ft-card-hover] focus:ring-brand-500/50 shadow-lg'
 	};
 
 	const sizeClasses = $derived({

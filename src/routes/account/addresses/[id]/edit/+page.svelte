@@ -37,7 +37,7 @@
 			</svg>
 			Back to Addresses
 		</Button>
-		<h1 class="text-2xl font-bold text-white">Edit Address</h1>
+		<h1 class="text-2xl font-bold text-[--ft-text]">Edit Address</h1>
 	</div>
 
 	{#if address}
@@ -184,7 +184,7 @@
 						d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
 					/>
 				</svg>
-				<h3 class="mb-2 text-lg font-medium text-white">Address not found</h3>
+				<h3 class="mb-2 text-lg font-medium text-[--ft-text]">Address not found</h3>
 				<p class="mb-6 text-neutral-400">The address you're trying to edit doesn't exist.</p>
 				<Button href="/account/addresses">Back to Addresses</Button>
 			</div>

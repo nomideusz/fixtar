@@ -27,22 +27,22 @@
 
 	// Gradient badge variants — use design system palette tokens
 	const gradientClasses: Record<VariantType, string> = {
-		primary: 'bg-linear-to-r from-brand-600 to-brand-400 text-white',
-		secondary: 'bg-linear-to-r from-accent-600 to-accent-400 text-white',
-		success: 'bg-linear-to-r from-success to-success-light text-white',
-		danger: 'bg-linear-to-r from-danger to-danger-light text-white',
+		primary: 'bg-linear-to-r from-brand-600 to-brand-400 !text-white',
+		secondary: 'bg-linear-to-r from-accent-600 to-accent-400 !text-white',
+		success: 'bg-linear-to-r from-success to-success-light !text-white',
+		danger: 'bg-linear-to-r from-danger to-danger-light !text-white',
 		warning: 'bg-linear-to-r from-warning to-warning-light text-neutral-900',
-		info: 'bg-linear-to-r from-info to-info-light text-white'
+		info: 'bg-linear-to-r from-info to-info-light !text-white'
 	};
 
 	// Solid badge variants
 	const solidClasses: Record<VariantType, string> = {
-		primary: 'bg-brand-600 text-white',
-		secondary: 'bg-accent-600 text-white',
-		success: 'bg-success text-white',
-		danger: 'bg-danger text-white',
+		primary: 'bg-brand-600 !text-white',
+		secondary: 'bg-accent-600 !text-white',
+		success: 'bg-success !text-white',
+		danger: 'bg-danger !text-white',
 		warning: 'bg-warning text-neutral-900',
-		info: 'bg-info text-white'
+		info: 'bg-info !text-white'
 	};
 
 	// Outline badge variants

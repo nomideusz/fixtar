@@ -63,7 +63,7 @@
 <div class="mx-auto max-w-screen-2xl px-6 py-8 sm:px-8 lg:px-12">
 	<!-- Header -->
 	<div class="mb-12 text-center">
-		<h1 class="mb-4 text-4xl font-bold text-white">Product Categories</h1>
+		<h1 class="mb-4 text-4xl font-bold text-[--ft-text]">Product Categories</h1>
 		<p class="mx-auto max-w-2xl text-xl text-neutral-400">
 			Explore our wide range of products organized by category
 		</p>
@@ -125,7 +125,7 @@
 					/>
 				</svg>
 			</div>
-			<h3 class="mb-2 text-lg font-medium text-white">Error Loading Categories</h3>
+			<h3 class="mb-2 text-lg font-medium text-[--ft-text]">Error Loading Categories</h3>
 			<p class="mb-4 text-neutral-400">{data.error}</p>
 			<Button onclick={() => window.location.reload()}>Try Again</Button>
 		</Card>
@@ -141,7 +141,7 @@
 					/>
 				</svg>
 			</div>
-			<h3 class="mb-2 text-lg font-medium text-white">
+			<h3 class="mb-2 text-lg font-medium text-[--ft-text]">
 				{searchQuery ? 'No categories found' : 'No categories available'}
 			</h3>
 			<p class="mb-6 text-neutral-400">
@@ -186,7 +186,7 @@
 							{#if category.featured}
 								<div class="absolute top-3 left-3">
 									<span
-										class="bg-warning rounded-full px-2 py-1 text-xs font-medium text-white"
+										class="bg-warning rounded-full px-2 py-1 text-xs font-medium text-[--ft-text]"
 									>
 										Featured
 									</span>
@@ -206,7 +206,7 @@
 						<!-- Category Info -->
 						<div class="p-4">
 							<h3
-								class="group-hover:text-brand-600 mb-2 text-xl font-semibold text-white transition-colors"
+								class="group-hover:text-brand-600 mb-2 text-xl font-semibold text-[--ft-text] transition-colors"
 							>
 								{category.name}
 							</h3>

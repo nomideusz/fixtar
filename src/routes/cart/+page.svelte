@@ -28,7 +28,7 @@
 </svelte:head>
 
 <div class="mx-auto max-w-screen-2xl px-6 py-8 sm:px-8 lg:px-12">
-	<h1 class="mb-8 text-3xl font-bold text-white">Shopping Cart</h1>
+	<h1 class="mb-8 text-3xl font-bold text-[--ft-text]">Shopping Cart</h1>
 
 	{#if cart.items.length === 0}
 		<div class="py-16 text-center">
@@ -45,7 +45,7 @@
 					d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
 				/>
 			</svg>
-			<h2 class="mt-4 text-xl font-semibold text-white">Your cart is empty</h2>
+			<h2 class="mt-4 text-xl font-semibold text-[--ft-text]">Your cart is empty</h2>
 			<p class="mt-2 text-neutral-400">Start shopping to add items to your cart</p>
 			<Button href="/products" class="mt-6">Browse Products</Button>
 		</div>
@@ -79,7 +79,7 @@
 								{/if}
 
 								<div class="flex-1">
-									<h3 class="font-medium text-white">{item.name}</h3>
+									<h3 class="font-medium text-[--ft-text]">{item.name}</h3>
 									<p class="text-neutral-400">${item.price.toFixed(2)}</p>
 								</div>
 
@@ -116,7 +116,7 @@
 								</div>
 
 								<div class="text-right">
-									<p class="font-medium text-white">
+									<p class="font-medium text-[--ft-text]">
 										${(item.price * item.quantity).toFixed(2)}
 									</p>
 									<button

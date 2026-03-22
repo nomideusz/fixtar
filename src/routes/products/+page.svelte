@@ -177,7 +177,7 @@
 />
 
 <!-- Enhanced Search Section -->
-<section class="border-b border-white/10">
+<section class="border-b border-[--ft-border]">
 	<div class="mx-auto max-w-screen-2xl px-6 py-8 sm:px-8 lg:px-12">
 		<!-- Breadcrumbs with modern styling -->
 		<nav class="mb-6 flex" aria-label="Breadcrumb">
@@ -185,7 +185,7 @@
 				<li class="inline-flex items-center">
 					<a
 						href="/"
-						class="hover:text-brand-600 inline-flex items-center text-sm font-medium text-neutral-400 transition-colors"
+						class="hover:text-brand-600 inline-flex items-center text-sm font-medium text-[--ft-text-faint] transition-colors"
 					>
 						<svg class="mr-2 h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
 							<path
@@ -197,7 +197,7 @@
 				</li>
 				<li>
 					<div class="flex items-center">
-						<svg class="h-5 w-5 text-neutral-400" fill="currentColor" viewBox="0 0 20 20">
+						<svg class="h-5 w-5 text-[--ft-text-faint]" fill="currentColor" viewBox="0 0 20 20">
 							<path
 								fill-rule="evenodd"
 								d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
@@ -207,25 +207,25 @@
 						{#if selectedCategoryName}
 							<a
 								href="/products"
-								class="hover:text-brand-600 ml-1 text-sm font-medium text-neutral-400 transition-colors md:ml-2"
+								class="hover:text-brand-600 ml-1 text-sm font-medium text-[--ft-text-faint] transition-colors md:ml-2"
 								>Produkty</a
 							>
 						{:else}
-							<span class="ml-1 text-sm font-medium text-white md:ml-2">Produkty</span>
+							<span class="ml-1 text-sm font-medium text-[--ft-text] md:ml-2">Produkty</span>
 						{/if}
 					</div>
 				</li>
 				{#if selectedCategoryName}
 					<li aria-current="page">
 						<div class="flex items-center">
-							<svg class="h-5 w-5 text-neutral-400" fill="currentColor" viewBox="0 0 20 20">
+							<svg class="h-5 w-5 text-[--ft-text-faint]" fill="currentColor" viewBox="0 0 20 20">
 								<path
 									fill-rule="evenodd"
 									d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
 									clip-rule="evenodd"
 								/>
 							</svg>
-							<span class="ml-1 text-sm font-medium text-white md:ml-2"
+							<span class="ml-1 text-sm font-medium text-[--ft-text] md:ml-2"
 								>{selectedCategoryName}</span
 							>
 						</div>
@@ -240,7 +240,7 @@
 				<form onsubmit={handleSearchSubmit} class="group relative">
 					<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
 						<svg
-							class="group-focus-within:text-brand-600 h-5 w-5 text-neutral-400 transition-colors"
+							class="group-focus-within:text-brand-600 h-5 w-5 text-[--ft-text-faint] transition-colors"
 							fill="none"
 							stroke="currentColor"
 							viewBox="0 0 24 24"
@@ -271,7 +271,7 @@
 							aria-label="Wyczyść wyszukiwanie"
 						>
 							<svg
-								class="h-5 text-neutral-400 transition-colors group-hover/clear:text-neutral-400"
+								class="h-5 text-[--ft-text-faint] transition-colors group-hover/clear:text-[--ft-text-faint]"
 								fill="none"
 								stroke="currentColor"
 								viewBox="0 0 24 24"
@@ -289,7 +289,7 @@
 			</div>
 
 			<div class="flex items-center gap-4">
-				<div class="text-sm font-medium text-neutral-400">
+				<div class="text-sm font-medium text-[--ft-text-faint]">
 					{data.totalItems}
 					{data.totalItems === 1 ? 'produkt' : data.totalItems < 5 ? 'produkty' : 'produktów'}
 				</div>
@@ -317,15 +317,15 @@
 			<div class="hidden lg:col-span-1 lg:block">
 				<Card glass={true} class="sticky top-0 p-6">
 					<div class="mb-6 flex items-center justify-between">
-						<h3 class="text-lg font-bold text-white">Filtry</h3>
+						<h3 class="text-lg font-bold text-[--ft-text]">Filtry</h3>
 						{#if searchQuery || selectedCategory || showInStock}
 							<Button variant="ghost" size="sm" onclick={clearFilters}>Wyczyść wszystkie</Button>
 						{/if}
 					</div>
 
 					<!-- Enhanced Categories Filter -->
-					<div class="mb-6 border-b border-white/10 pb-6">
-						<h4 class="mb-4 text-sm font-semibold text-white">Kategorie</h4>
+					<div class="mb-6 border-b border-[--ft-border] pb-6">
+						<h4 class="mb-4 text-sm font-semibold text-[--ft-text]">Kategorie</h4>
 						<div class="space-y-1">
 							<button
 								onclick={() => handleCategoryChange('')}
@@ -404,27 +404,27 @@
 					</div>
 
 					<!-- Enhanced Price Range -->
-					<div class="mb-6 border-b border-white/10 pb-6">
-						<h4 class="mb-4 text-sm font-semibold text-white">Zakres cen</h4>
+					<div class="mb-6 border-b border-[--ft-border] pb-6">
+						<h4 class="mb-4 text-sm font-semibold text-[--ft-text]">Zakres cen</h4>
 						<div class="flex items-center space-x-3">
 							<Input type="number" placeholder="Min" bind:value={priceRange.min} class="text-sm" />
-							<span class="font-medium text-neutral-400">-</span>
+							<span class="font-medium text-[--ft-text-faint]">-</span>
 							<Input type="number" placeholder="Max" bind:value={priceRange.max} class="text-sm" />
 						</div>
-						<div class="mt-3 text-xs text-neutral-500">Ceny w PLN</div>
+						<div class="mt-3 text-xs text-[--ft-text-secondary]">Ceny w PLN</div>
 					</div>
 
 					<!-- Enhanced Availability -->
 					<div class="pb-6">
-						<h4 class="mb-4 text-sm font-semibold text-white">Dostępność</h4>
+						<h4 class="mb-4 text-sm font-semibold text-[--ft-text]">Dostępność</h4>
 						<label class="group flex cursor-pointer items-center">
 							<input
 								type="checkbox"
 								bind:checked={showInStock}
-								class="text-brand-600 focus:ring-brand-500 rounded border-white/15 focus:ring-2"
+								class="text-brand-600 focus:ring-brand-500 rounded border-[--ft-border] focus:ring-2"
 							/>
 							<span
-								class="ml-3 text-sm text-neutral-300 transition-colors group-hover:text-white"
+								class="ml-3 text-sm text-[--ft-text-muted] transition-colors group-hover:text-[--ft-text]"
 								>Tylko dostępne</span
 							>
 						</label>
@@ -446,13 +446,13 @@
 					></div>
 
 					<!-- Panel -->
-					<div class="fixed inset-y-0 right-0 w-full max-w-sm bg-white/5 shadow-2xl">
+					<div class="fixed inset-y-0 right-0 w-full max-w-sm bg-[--ft-card] shadow-2xl">
 						<div class="flex h-full flex-col">
 							<!-- Header -->
 							<div
-								class="flex items-center justify-between border-b border-white/10 bg-white/5 p-6"
+								class="flex items-center justify-between border-b border-[--ft-border] bg-[--ft-card] p-6"
 							>
-								<h3 class="text-xl font-bold text-white">Filtry</h3>
+								<h3 class="text-xl font-bold text-[--ft-text]">Filtry</h3>
 								<Button variant="ghost" size="sm" onclick={() => (showMobileFilters = false)}>
 									<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 										<path
@@ -468,8 +468,8 @@
 							<!-- Content -->
 							<div class="flex-1 overflow-y-auto p-6">
 								<!-- Mobile Categories -->
-								<div class="mb-6 border-b border-white/10 pb-6">
-									<h4 class="mb-4 text-sm font-semibold text-white">Kategorie</h4>
+								<div class="mb-6 border-b border-[--ft-border] pb-6">
+									<h4 class="mb-4 text-sm font-semibold text-[--ft-text]">Kategorie</h4>
 									<div class="space-y-2">
 										<button
 											onclick={() => handleCategoryChange('')}
@@ -544,8 +544,8 @@
 								</div>
 
 								<!-- Mobile Price Range -->
-								<div class="mb-6 border-b border-white/10 pb-6">
-									<h4 class="mb-4 text-sm font-semibold text-white">Zakres cen</h4>
+								<div class="mb-6 border-b border-[--ft-border] pb-6">
+									<h4 class="mb-4 text-sm font-semibold text-[--ft-text]">Zakres cen</h4>
 									<div class="flex items-center space-x-3">
 										<Input
 											type="number"
@@ -553,7 +553,7 @@
 											bind:value={priceRange.min}
 											class="text-sm"
 										/>
-										<span class="text-neutral-400">-</span>
+										<span class="text-[--ft-text-faint]">-</span>
 										<Input
 											type="number"
 											placeholder="Max"
@@ -565,20 +565,20 @@
 
 								<!-- Mobile Availability -->
 								<div>
-									<h4 class="mb-4 text-sm font-semibold text-white">Dostępność</h4>
+									<h4 class="mb-4 text-sm font-semibold text-[--ft-text]">Dostępność</h4>
 									<label class="flex cursor-pointer items-center">
 										<input
 											type="checkbox"
 											bind:checked={showInStock}
-											class="text-brand-600 focus:ring-brand-500 rounded border-white/15"
+											class="text-brand-600 focus:ring-brand-500 rounded border-[--ft-border]"
 										/>
-										<span class="ml-3 text-sm text-neutral-300">Tylko dostępne</span>
+										<span class="ml-3 text-sm text-[--ft-text-muted]">Tylko dostępne</span>
 									</label>
 								</div>
 							</div>
 
 							<!-- Footer -->
-							<div class="border-t border-white/10 bg-white/5 p-6">
+							<div class="border-t border-[--ft-border] bg-[--ft-card] p-6">
 								<div class="flex gap-3">
 									<Button variant="outline" onclick={clearFilters} class="flex-1">Wyczyść</Button>
 									<Button onclick={() => (showMobileFilters = false)} class="flex-1">
@@ -599,7 +599,7 @@
 						<!-- View Mode and Results -->
 						<div class="flex items-center justify-between gap-6 sm:justify-start">
 							<div class="flex items-center gap-2">
-								<span class="text-sm font-medium text-neutral-300">Widok:</span>
+								<span class="text-sm font-medium text-[--ft-text-muted]">Widok:</span>
 								<div class="flex items-center rounded-xl bg-white/8 p-1">
 									<button
 										onclick={() => (viewMode = 'grid')}
@@ -635,11 +635,11 @@
 
 						<!-- Sort Dropdown -->
 						<div class="flex items-center gap-3">
-							<span class="text-sm font-medium text-neutral-300">Sortuj:</span>
+							<span class="text-sm font-medium text-[--ft-text-muted]">Sortuj:</span>
 							<select
 								value={sortBy}
 								onchange={handleSortChange}
-								class="focus:ring-brand-500 rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-sm focus:border-transparent focus:ring-2 focus:outline-none"
+								class="focus:ring-brand-500 rounded-xl border border-[--ft-border] bg-[--ft-card] px-4 py-2 text-sm focus:border-transparent focus:ring-2 focus:outline-none"
 							>
 								<option value="name">Nazwa A-Z</option>
 								<option value="price-low">Cena: rosnąco</option>
@@ -650,9 +650,9 @@
 
 					<!-- Active Filters with Enhanced Design -->
 					{#if searchQuery || selectedCategory || showInStock}
-						<div class="mt-6 border-t border-white/10 pt-6">
+						<div class="mt-6 border-t border-[--ft-border] pt-6">
 							<div class="flex flex-wrap items-center gap-3">
-								<span class="text-sm font-medium text-neutral-300">Aktywne filtry:</span>
+								<span class="text-sm font-medium text-[--ft-text-muted]">Aktywne filtry:</span>
 								{#if searchQuery}
 									<span class="active-filter">
 										<svg class="mr-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -741,7 +741,7 @@
 									variant="ghost"
 									size="sm"
 									onclick={clearFilters}
-									class="text-neutral-500 hover:text-neutral-700"
+									class="text-[--ft-text-secondary] hover:text-neutral-700"
 								>
 									Wyczyść wszystkie
 								</Button>
@@ -758,7 +758,7 @@
 						>
 							<div class="flex flex-col items-center gap-3">
 								<LoadingSpinner visible={true} />
-								<p class="text-sm font-medium text-neutral-300">Ładowanie produktów...</p>
+								<p class="text-sm font-medium text-[--ft-text-muted]">Ładowanie produktów...</p>
 							</div>
 						</div>
 					{/if}
@@ -779,8 +779,8 @@
 										d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
 									/>
 								</svg>
-								<h3 class="mb-2 text-lg font-semibold text-white">Wystąpił błąd</h3>
-								<p class="mb-4 text-neutral-400">{data.error}</p>
+								<h3 class="mb-2 text-lg font-semibold text-[--ft-text]">Wystąpił błąd</h3>
+								<p class="mb-4 text-[--ft-text-faint]">{data.error}</p>
 								<Button href="/products" variant="outline">Spróbuj ponownie</Button>
 							</div>
 						</Card>
@@ -818,7 +818,7 @@
 														/>
 														<div class="hidden h-full w-full items-center justify-center">
 															<svg
-																class="h-8 w-8 text-neutral-400"
+																class="h-8 w-8 text-[--ft-text-faint]"
 																fill="none"
 																stroke="currentColor"
 																viewBox="0 0 24 24"
@@ -834,7 +834,7 @@
 													{:else}
 														<div class="flex h-full w-full items-center justify-center">
 															<svg
-																class="h-8 w-8 text-neutral-400"
+																class="h-8 w-8 text-[--ft-text-faint]"
 																fill="none"
 																stroke="currentColor"
 																viewBox="0 0 24 24"
@@ -851,9 +851,9 @@
 												</div>
 											</div>
 											<div class="min-w-0 flex-1">
-												<h3 class="mb-1 text-lg font-semibold text-white">{product.name}</h3>
+												<h3 class="mb-1 text-lg font-semibold text-[--ft-text]">{product.name}</h3>
 												{#if product.shortDescription}
-													<p class="mb-3 line-clamp-2 text-sm text-neutral-400">
+													<p class="mb-3 line-clamp-2 text-sm text-[--ft-text-faint]">
 														{product.shortDescription}
 													</p>
 												{/if}
@@ -876,7 +876,7 @@
 															>{product.price.toFixed(2)} zł</span
 														>
 														{#if product.compareAtPrice && product.compareAtPrice > product.price}
-															<span class="text-sm text-neutral-500 line-through"
+															<span class="text-sm text-[--ft-text-secondary] line-through"
 																>{product.compareAtPrice.toFixed(2)} zł</span
 															>
 														{/if}
@@ -960,7 +960,7 @@
 										></div>
 									</div>
 									<svg
-										class="relative mx-auto mb-6 h-20 w-20 text-neutral-400"
+										class="relative mx-auto mb-6 h-20 w-20 text-[--ft-text-faint]"
 										fill="none"
 										stroke="currentColor"
 										viewBox="0 0 24 24"
@@ -973,8 +973,8 @@
 										/>
 									</svg>
 								</div>
-								<h3 class="mb-3 text-2xl font-bold text-white">Brak produktów</h3>
-								<p class="mb-6 text-neutral-400">
+								<h3 class="mb-3 text-2xl font-bold text-[--ft-text]">Brak produktów</h3>
+								<p class="mb-6 text-[--ft-text-faint]">
 									{searchQuery || selectedCategoryName
 										? 'Nie znaleźliśmy produktów odpowiadających Twoim kryteriom wyszukiwania'
 										: 'W tej chwili nie ma dostępnych produktów'}
@@ -1020,13 +1020,13 @@
 
 	.filter-category-button:not(.active):hover {
 		color: var(--ft-primary);
-		background-color: rgba(55, 138, 146, 0.08);
+		background-color: var(--ft-brand-muted);
 	}
 
 	.filter-category-button.active {
-		background-color: rgba(55, 138, 146, 0.12);
+		background-color: var(--ft-brand-light);
 		color: var(--color-brand-400);
-		border: 1px solid rgba(55, 138, 146, 0.25);
+		border: 1px solid var(--ft-brand-border);
 	}
 
 	.filter-subcategory-button {
@@ -1051,11 +1051,11 @@
 
 	.filter-subcategory-button:not(.active):hover {
 		color: var(--ft-primary);
-		background-color: rgba(55, 138, 146, 0.08);
+		background-color: var(--ft-brand-muted);
 	}
 
 	.filter-subcategory-button.active {
-		background-color: rgba(55, 138, 146, 0.12);
+		background-color: var(--ft-brand-light);
 		color: var(--color-brand-400);
 		font-weight: 500;
 	}
@@ -1064,11 +1064,11 @@
 		padding: 0.5rem;
 		border-radius: 0.5rem;
 		transition: colors 0.2s;
-		color: rgba(255, 255, 255, 0.4);
+		color: var(--ft-text-muted);
 	}
 
 	.category-toggle-button:hover {
-		background-color: rgba(255, 255, 255, 0.06);
+		background-color: var(--ft-border);
 		color: var(--ft-primary);
 	}
 
@@ -1079,8 +1079,8 @@
 
 	.filter-badge {
 		font-size: 0.75rem;
-		background-color: rgba(255, 255, 255, 0.08);
-		color: rgba(255, 255, 255, 0.4);
+		background-color: var(--ft-border);
+		color: var(--ft-text-muted);
 		padding: 0.25rem 0.5rem;
 		border-radius: 0.375rem;
 		font-weight: 500;
@@ -1102,11 +1102,11 @@
 
 	.view-mode-button:not(.active):hover {
 		color: var(--ft-primary);
-		background-color: rgba(255, 255, 255, 0.06);
+		background-color: var(--ft-border);
 	}
 
 	.view-mode-button.active {
-		background-color: rgba(55, 138, 146, 0.15);
+		background-color: var(--ft-brand-medium);
 		color: var(--color-brand-400);
 		box-shadow: none;
 	}
@@ -1118,7 +1118,7 @@
 		border-radius: 0.5rem;
 		font-size: 0.875rem;
 		font-weight: 500;
-		background-color: rgba(55, 138, 146, 0.12);
+		background-color: var(--ft-brand-light);
 		color: var(--color-brand-400);
 		gap: 0.25rem;
 	}
@@ -1131,6 +1131,6 @@
 	}
 
 	.filter-remove-button:hover {
-		background-color: rgba(255, 255, 255, 0.5);
+		background-color: var(--ft-text-secondary);
 	}
 </style>

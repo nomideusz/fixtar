@@ -4,11 +4,12 @@
 
 	interface Props {
 		featuredProduct?: Product;
+		totalProducts?: number;
 	}
 
-	let { featuredProduct }: Props = $props();
+	let { featuredProduct, totalProducts = 0 }: Props = $props();
 
-	const brands = ['Stihl', 'Makita', 'Bosch', 'DeWalt', 'Milwaukee'] as const;
+	const brands = ['Bavaria', 'Magnum', 'Eurotec', 'Sterling'] as const;
 </script>
 
 <section class="hero">
@@ -38,8 +39,8 @@
 			</h1>
 
 			<p class="hero-subtitle">
-				Pilarki, wiertarki, szlifierki i spawarki.<br class="hidden sm:block" />
-				Najwyższa jakość w&nbsp;konkurencyjnych cenach.
+				Szlifierki, wiertarki, młotowiertarki, piły i więcej.<br class="hidden sm:block" />
+				Profesjonalne elektronarzędzia w&nbsp;konkurencyjnych cenach.
 			</p>
 
 			<div class="hero-actions">
@@ -50,16 +51,16 @@
 			<!-- Stats -->
 			<div class="hero-stats">
 				<div class="stat-cell">
-					<span class="stat-value">5000+</span>
-					<span class="stat-label">Klientów</span>
-				</div>
-				<div class="stat-cell">
-					<span class="stat-value">1200+</span>
+					<span class="stat-value">{totalProducts}+</span>
 					<span class="stat-label">Produktów</span>
 				</div>
 				<div class="stat-cell">
-					<span class="stat-value">99%</span>
-					<span class="stat-label">Opinii ★</span>
+					<span class="stat-value">4</span>
+					<span class="stat-label">Marki</span>
+				</div>
+				<div class="stat-cell">
+					<span class="stat-value">24h</span>
+					<span class="stat-label">Wysyłka</span>
 				</div>
 			</div>
 		</div>
@@ -152,7 +153,7 @@
 		min-height: 100dvh;
 		display: flex;
 		align-items: stretch;
-		background: #090e13;
+		background: var(--ft-surface);
 		overflow: hidden;
 		margin-top: -5rem;
 	}
@@ -169,8 +170,8 @@
 		inset: 0;
 		z-index: 0;
 		background-image:
-			linear-gradient(rgba(55, 138, 146, 0.04) 1px, transparent 1px),
-			linear-gradient(90deg, rgba(55, 138, 146, 0.04) 1px, transparent 1px);
+			linear-gradient(var(--ft-grid-line) 1px, transparent 1px),
+			linear-gradient(90deg, var(--ft-grid-line) 1px, transparent 1px);
 		background-size: 60px 60px;
 		mask-image: radial-gradient(ellipse 80% 70% at 60% 50%, black 20%, transparent 75%);
 		-webkit-mask-image: radial-gradient(ellipse 80% 70% at 60% 50%, black 20%, transparent 75%);
@@ -197,7 +198,7 @@
 		right: 12%;
 		width: 40vw;
 		height: 40vw;
-		background: radial-gradient(circle, rgba(55, 138, 146, 0.07) 0%, transparent 70%);
+		background: radial-gradient(circle, var(--ft-brand-glow) 0%, transparent 70%);
 		pointer-events: none;
 		animation: glow-drift 8s ease-in-out infinite;
 	}
@@ -220,7 +221,7 @@
 		right: 0;
 		width: 55%;
 		height: 100%;
-		background: linear-gradient(160deg, rgba(55, 138, 146, 0.08) 0%, rgba(20, 40, 45, 0.12) 40%, rgba(9, 14, 19, 0) 100%);
+		background: linear-gradient(160deg, var(--ft-brand-muted) 0%, var(--ft-brand-subtle) 40%, transparent 100%);
 		clip-path: polygon(18% 0, 100% 0, 100% 100%, 0% 100%);
 		z-index: 0;
 	}
@@ -234,8 +235,8 @@
 			-45deg,
 			transparent,
 			transparent 20px,
-			rgba(55, 138, 146, 0.015) 20px,
-			rgba(55, 138, 146, 0.015) 21px
+			var(--ft-brand-subtle) 20px,
+			var(--ft-brand-subtle) 21px
 		);
 	}
 
@@ -247,7 +248,7 @@
 		left: -4rem;
 		width: 4rem;
 		height: 100%;
-		background: linear-gradient(90deg, transparent, rgba(55, 138, 146, 0.06));
+		background: linear-gradient(90deg, transparent, var(--ft-brand-muted));
 		pointer-events: none;
 	}
 
@@ -305,7 +306,7 @@
 		flex-direction: column;
 		justify-content: center;
 		padding: 8rem 0 2rem;
-		color: white;
+		color: var(--ft-text);
 		position: relative;
 		z-index: 2;
 	}
@@ -346,17 +347,17 @@
 		font-weight: 600;
 		text-transform: uppercase;
 		letter-spacing: 0.18em;
-		color: rgba(255, 255, 255, 0.2);
+		color: var(--ft-text-faint);
 		transition: color 0.3s;
 		white-space: nowrap;
 	}
 
 	.brand-name:hover {
-		color: rgba(255, 255, 255, 0.45);
+		color: var(--ft-text-secondary);
 	}
 
 	.brand-sep {
-		color: rgba(255, 255, 255, 0.08);
+		color: var(--ft-border);
 		font-size: 0.5rem;
 		user-select: none;
 	}
@@ -373,7 +374,7 @@
 		font-size: clamp(3.25rem, 8vw, 6rem);
 		font-weight: 700;
 		letter-spacing: -0.03em;
-		color: white;
+		color: var(--ft-text);
 		text-transform: uppercase;
 	}
 
@@ -390,7 +391,7 @@
 	.hero-subtitle {
 		font-size: 1rem;
 		line-height: 1.7;
-		color: rgba(255, 255, 255, 0.35);
+		color: var(--ft-text-muted);
 		max-width: 24rem;
 		margin-bottom: 2.5rem;
 	}
@@ -437,7 +438,7 @@
 		display: flex;
 		flex-direction: column;
 		padding: 0.75rem 1rem;
-		border: 1px solid rgba(255, 255, 255, 0.05);
+		border: 1px solid var(--ft-border-subtle);
 		border-right: none;
 		flex: 1;
 	}
@@ -450,7 +451,7 @@
 	}
 
 	.stat-cell:last-child {
-		border-right: 1px solid rgba(255, 255, 255, 0.05);
+		border-right: 1px solid var(--ft-border-subtle);
 	}
 
 	.stat-value {
@@ -458,7 +459,7 @@
 		font-size: 1.375rem;
 		font-weight: 700;
 		font-variant-numeric: tabular-nums;
-		color: white;
+		color: var(--ft-text);
 		letter-spacing: -0.02em;
 	}
 
@@ -472,7 +473,7 @@
 		font-size: 0.575rem;
 		text-transform: uppercase;
 		letter-spacing: 0.14em;
-		color: rgba(255, 255, 255, 0.2);
+		color: var(--ft-text-faint);
 		margin-top: 0.125rem;
 	}
 
@@ -542,8 +543,8 @@
 		border-radius: 50%;
 		background: radial-gradient(
 			circle,
-			rgba(55, 138, 146, 0.1) 0%,
-			rgba(55, 138, 146, 0.03) 50%,
+			var(--ft-brand-glow) 0%,
+			var(--ft-grid-line-subtle) 50%,
 			transparent 70%
 		);
 		pointer-events: none;
@@ -570,7 +571,7 @@
 		height: auto;
 		max-height: 22rem;
 		object-fit: contain;
-		filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.5)) drop-shadow(0 6px 12px rgba(0, 0, 0, 0.3));
+		filter: drop-shadow(0 20px 40px var(--ft-shadow-heavy)) drop-shadow(0 6px 12px var(--ft-shadow));
 		transition:
 			transform 0.5s cubic-bezier(0.23, 1, 0.32, 1),
 			filter 0.5s ease;
@@ -603,8 +604,8 @@
 
 	.product-showcase:hover .showcase-img {
 		transform: scale(1.03) translateY(-8px);
-		filter: drop-shadow(0 28px 50px rgba(55, 138, 146, 0.12))
-			drop-shadow(0 10px 20px rgba(0, 0, 0, 0.4));
+		filter: drop-shadow(0 28px 50px var(--ft-brand-light))
+			drop-shadow(0 10px 20px var(--ft-shadow-heavy));
 	}
 
 	/* ── Info panel — overlaps image bottom ── */
@@ -632,8 +633,8 @@
 		content: '';
 		position: absolute;
 		inset: 0;
-		background: rgba(9, 14, 19, 0.55);
-		border: 1px solid rgba(255, 255, 255, 0.05);
+		background: var(--ft-card);
+		border: 1px solid var(--ft-border-subtle);
 		border-radius: 0.25rem;
 		backdrop-filter: blur(24px);
 		-webkit-backdrop-filter: blur(24px);
@@ -656,7 +657,7 @@
 		padding: 0.2rem 0.7rem;
 		border-radius: 0;
 		margin-bottom: 0.5rem;
-		background: var(--color-brand-600, #2f6d73);
+		background: var(--color-brand-600);
 	}
 
 	/* ── Product name ── */
@@ -664,7 +665,7 @@
 		font-family: var(--font-heading);
 		font-size: 1.15rem;
 		font-weight: 600;
-		color: white;
+		color: var(--ft-text);
 		line-height: 1.3;
 		margin-bottom: 0.5rem;
 	}
@@ -687,7 +688,7 @@
 		font-family: var(--font-heading);
 		font-size: 1.75rem;
 		font-weight: 700;
-		color: white;
+		color: var(--ft-text);
 		font-variant-numeric: tabular-nums;
 	}
 
@@ -699,7 +700,7 @@
 
 	.showcase-old-price {
 		font-size: 0.9rem;
-		color: rgba(255, 255, 255, 0.3);
+		color: var(--ft-text-muted);
 		text-decoration: line-through;
 		font-variant-numeric: tabular-nums;
 	}
@@ -714,17 +715,17 @@
 		font-weight: 600;
 		text-transform: uppercase;
 		letter-spacing: 0.08em;
-		color: rgba(255, 255, 255, 0.4);
+		color: var(--ft-text-muted);
 		transition: all 0.3s ease;
 		padding: 0.4rem 1rem;
-		border: 1px solid rgba(255, 255, 255, 0.08);
+		border: 1px solid var(--ft-border);
 		border-radius: 0;
 	}
 
 	.product-showcase:hover .showcase-cta {
-		color: white;
+		color: var(--ft-text);
 		border-color: var(--color-brand-500, #378a92);
-		background: rgba(55, 138, 146, 0.08);
+		background: var(--ft-brand-muted);
 		gap: 0.5rem;
 	}
 
@@ -757,7 +758,7 @@
 	.scroll-line {
 		width: 1px;
 		height: 3rem;
-		background: linear-gradient(to bottom, rgba(55, 138, 146, 0.4), transparent);
+		background: linear-gradient(to bottom, var(--ft-primary), transparent);
 		animation: scroll-pulse 2s ease-in-out infinite;
 	}
 

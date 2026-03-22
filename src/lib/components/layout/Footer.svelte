@@ -1,5 +1,6 @@
 <script lang="ts">
 	import FixTarLogoWhite from '$lib/img/logo-FixTar-white.webp';
+	import FixTarLogo from '$lib/img/logo-FixTar.webp';
 
 	const year = new Date().getFullYear();
 
@@ -46,7 +47,8 @@
 		<!-- Top: logo + newsletter -->
 		<div class="footer__top">
 			<div class="footer__brand">
-				<img src={FixTarLogoWhite} alt="FixTar" class="footer__logo" />
+				<img src={FixTarLogoWhite} alt="FixTar" class="footer__logo logo-dark" />
+				<img src={FixTarLogo} alt="FixTar" class="footer__logo logo-light" />
 				<p class="footer__tagline">
 					Dostarczamy wysokiej jakości produkty z pasją i zaangażowaniem. Twoja satysfakcja jest
 					naszym priorytetem.
@@ -124,6 +126,11 @@
 </footer>
 
 <style>
+	/* Logo theme switching */
+	.logo-light { display: none; }
+	.logo-dark { display: block; }
+	:global(.light) .logo-light { display: block; }
+	:global(.light) .logo-dark { display: none; }
 	/* ══════════════════════════════════════
 	   FOOTER — Dark Industrial
 	   Matches precision workshop aesthetic
@@ -133,7 +140,7 @@
 	.footer {
 		position: relative;
 		overflow: hidden;
-		background: var(--ft-dark-deeper, #090e13);
+		background: var(--ft-dark-deeper, var(--ft-surface-alt));
 		color: var(--ft-dark-text, #ffffff);
 	}
 
@@ -225,7 +232,7 @@
 	.footer__tagline {
 		font-size: 1rem;
 		line-height: 1.7;
-		color: var(--ft-dark-text-secondary, rgba(255, 255, 255, 0.35));
+		color: var(--ft-dark-text-secondary, var(--ft-text-muted));
 		max-width: 26rem;
 		margin-bottom: 2rem;
 	}
@@ -242,23 +249,23 @@
 		justify-content: center;
 		width: 2.5rem;
 		height: 2.5rem;
-		border: 1px solid var(--ft-dark-border, rgba(255, 255, 255, 0.06));
-		color: var(--ft-dark-text-secondary, rgba(255, 255, 255, 0.35));
+		border: 1px solid var(--ft-dark-border, var(--ft-border));
+		color: var(--ft-dark-text-secondary, var(--ft-text-muted));
 		transition: all 0.25s ease;
 		cursor: pointer;
 	}
 
 	.footer__social-icon:hover {
-		border-color: var(--ft-dark-border-hover, rgba(55, 138, 146, 0.15));
+		border-color: var(--ft-dark-border-hover, var(--ft-brand-medium));
 		color: var(--ft-dark-text, #ffffff);
-		background: var(--ft-dark-card-hover, rgba(255, 255, 255, 0.04));
-		box-shadow: 0 0 12px rgba(55, 138, 146, 0.1);
+		background: var(--ft-dark-card-hover, var(--ft-card-hover));
+		box-shadow: 0 0 12px var(--ft-brand-glow);
 	}
 
 	/* ── Newsletter ── */
 	.footer__newsletter {
-		background: var(--ft-dark-card, rgba(255, 255, 255, 0.02));
-		border: 1px solid var(--ft-dark-border, rgba(255, 255, 255, 0.06));
+		background: var(--ft-dark-card, var(--ft-card));
+		border: 1px solid var(--ft-dark-border, var(--ft-border));
 		padding: 2rem;
 	}
 
@@ -272,7 +279,7 @@
 
 	.footer__newsletter-desc {
 		font-size: 0.95rem;
-		color: var(--ft-dark-text-secondary, rgba(255, 255, 255, 0.35));
+		color: var(--ft-dark-text-secondary, var(--ft-text-muted));
 		margin-bottom: 1.5rem;
 		line-height: 1.5;
 	}
@@ -284,8 +291,8 @@
 
 	.footer__newsletter-input {
 		flex: 1;
-		background: rgba(255, 255, 255, 0.04);
-		border: 1px solid var(--ft-dark-border, rgba(255, 255, 255, 0.06));
+		background: var(--ft-card-hover);
+		border: 1px solid var(--ft-dark-border, var(--ft-border));
 		padding: 0.75rem 1.25rem;
 		color: var(--ft-dark-text, #ffffff);
 		font-size: 0.95rem;
@@ -293,13 +300,13 @@
 	}
 
 	.footer__newsletter-input::placeholder {
-		color: var(--ft-dark-text-muted, rgba(255, 255, 255, 0.2));
+		color: var(--ft-dark-text-muted, var(--ft-text-faint));
 	}
 
 	.footer__newsletter-input:focus {
 		outline: none;
-		border-color: var(--ft-dark-border-hover, rgba(55, 138, 146, 0.15));
-		box-shadow: 0 0 0 1px rgba(55, 138, 146, 0.08);
+		border-color: var(--ft-dark-border-hover, var(--ft-brand-medium));
+		box-shadow: 0 0 0 1px var(--ft-brand-muted);
 	}
 
 	.footer__newsletter-btn {
@@ -309,7 +316,7 @@
 		font-size: 0.85rem;
 		text-transform: uppercase;
 		letter-spacing: 0.06em;
-		color: #ffffff;
+		color: var(--ft-text-inverse);
 		background: var(--color-brand-600, #2f6d73);
 		border: none;
 		cursor: pointer;
@@ -318,7 +325,7 @@
 
 	.footer__newsletter-btn:hover {
 		background: var(--color-brand-700, #256066);
-		box-shadow: 0 4px 16px rgba(55, 138, 146, 0.2);
+		box-shadow: 0 4px 16px var(--ft-brand-border);
 	}
 
 	/* ── Link columns ── */
@@ -369,7 +376,7 @@
 
 	.footer__link {
 		font-size: 0.9rem;
-		color: var(--ft-dark-text-secondary, rgba(255, 255, 255, 0.35));
+		color: var(--ft-dark-text-secondary, var(--ft-text-muted));
 		text-decoration: none;
 		transition: color 0.2s;
 	}
@@ -386,7 +393,7 @@
 		justify-content: space-between;
 		gap: 1rem;
 		padding-top: 2rem;
-		border-top: 1px solid var(--ft-dark-border, rgba(255, 255, 255, 0.06));
+		border-top: 1px solid var(--ft-dark-border, var(--ft-border));
 	}
 
 	@media (min-width: 768px) {
@@ -395,7 +402,7 @@
 
 	.footer__copyright {
 		font-size: 0.85rem;
-		color: var(--ft-dark-text-muted, rgba(255, 255, 255, 0.2));
+		color: var(--ft-dark-text-muted, var(--ft-text-faint));
 	}
 
 	.footer__payments {

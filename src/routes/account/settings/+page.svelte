@@ -256,7 +256,7 @@
 								{/if}
 							</div>
 							<div class="text-left">
-								<div class="text-sm font-semibold text-white">{section.title}</div>
+								<div class="text-sm font-semibold text-[--ft-text]">{section.title}</div>
 								<div class="hidden text-xs text-neutral-500 sm:block">{section.description}</div>
 							</div>
 						</div>
@@ -271,7 +271,7 @@
 		<section>
 			<Card class="p-8">
 				<div class="mb-8">
-					<h2 class="mb-2 text-2xl font-bold text-white">Informacje osobiste</h2>
+					<h2 class="mb-2 text-2xl font-bold text-[--ft-text]">Informacje osobiste</h2>
 					<p class="text-neutral-400">Zaktualizuj swoje dane osobowe i kontaktowe</p>
 				</div>
 
@@ -374,13 +374,13 @@
 		<section>
 			<Card class="p-8">
 				<div class="mb-8">
-					<h2 class="mb-2 text-2xl font-bold text-white">Bezpieczeństwo konta</h2>
+					<h2 class="mb-2 text-2xl font-bold text-[--ft-text]">Bezpieczeństwo konta</h2>
 					<p class="text-neutral-400">Zarządzaj hasłem i ustawieniami bezpieczeństwa</p>
 				</div>
 
 				<!-- Change Password -->
 				<div class="mb-8">
-					<h3 class="mb-4 text-lg font-semibold text-white">Zmiana hasła</h3>
+					<h3 class="mb-4 text-lg font-semibold text-[--ft-text]">Zmiana hasła</h3>
 
 					<form
 						method="POST"
@@ -458,12 +458,12 @@
 
 				<!-- Security Features -->
 				<div class="border-t border-white/10 pt-8">
-					<h3 class="mb-4 text-lg font-semibold text-white">Dodatkowe zabezpieczenia</h3>
+					<h3 class="mb-4 text-lg font-semibold text-[--ft-text]">Dodatkowe zabezpieczenia</h3>
 
 					<div class="space-y-4">
 						<div class="flex items-center justify-between rounded-lg bg-white/5 p-4">
 							<div>
-								<h4 class="font-medium text-white">Weryfikacja dwuetapowa</h4>
+								<h4 class="font-medium text-[--ft-text]">Weryfikacja dwuetapowa</h4>
 								<p class="text-sm text-neutral-400">
 									Dodatkowa warstwa bezpieczeństwa dla Twojego konta
 								</p>
@@ -475,7 +475,7 @@
 
 						<div class="flex items-center justify-between rounded-lg bg-white/5 p-4">
 							<div>
-								<h4 class="font-medium text-white">Aktywne sesje</h4>
+								<h4 class="font-medium text-[--ft-text]">Aktywne sesje</h4>
 								<p class="text-sm text-neutral-400">
 									Zarządzaj urządzeniami zalogowanymi na Twoje konto
 								</p>
@@ -493,7 +493,7 @@
 		<section>
 			<Card class="p-8">
 				<div class="mb-8">
-					<h2 class="mb-2 text-2xl font-bold text-white">Preferencje powiadomień</h2>
+					<h2 class="mb-2 text-2xl font-bold text-[--ft-text]">Preferencje powiadomień</h2>
 					<p class="text-neutral-400">Wybierz rodzaje powiadomień, które chcesz otrzymywać</p>
 				</div>
 
@@ -511,7 +511,7 @@
 					<div class="space-y-6">
 						<!-- Email Notifications -->
 						<div>
-							<h3 class="mb-4 text-lg font-semibold text-white">Powiadomienia email</h3>
+							<h3 class="mb-4 text-lg font-semibold text-[--ft-text]">Powiadomienia email</h3>
 							<div class="space-y-4">
 								<label class="flex items-center">
 									<input
@@ -521,7 +521,7 @@
 										class="text-brand-600 focus:ring-brand-500 h-4 w-4 rounded border-white/15 bg-neutral-100 focus:ring-2"
 									/>
 									<div class="ml-3">
-										<div class="font-medium text-white">Aktualizacje zamówień</div>
+										<div class="font-medium text-[--ft-text]">Aktualizacje zamówień</div>
 										<div class="text-sm text-neutral-400">
 											Otrzymuj powiadomienia o statusie zamówień
 										</div>
@@ -536,7 +536,7 @@
 										class="text-brand-600 focus:ring-brand-500 h-4 w-4 rounded border-white/15 bg-neutral-100 focus:ring-2"
 									/>
 									<div class="ml-3">
-										<div class="font-medium text-white">Promocje i oferty</div>
+										<div class="font-medium text-[--ft-text]">Promocje i oferty</div>
 										<div class="text-sm text-neutral-400">
 											Informacje o promocjach i nowych produktach
 										</div>
@@ -551,7 +551,7 @@
 										class="text-brand-600 focus:ring-brand-500 h-4 w-4 rounded border-white/15 bg-neutral-100 focus:ring-2"
 									/>
 									<div class="ml-3">
-										<div class="font-medium text-white">Newsletter</div>
+										<div class="font-medium text-[--ft-text]">Newsletter</div>
 										<div class="text-sm text-neutral-400">Miesięczny newsletter z nowościami</div>
 									</div>
 								</label>
@@ -560,7 +560,7 @@
 
 						<!-- SMS Notifications -->
 						<div class="border-t border-white/10 pt-6">
-							<h3 class="mb-4 text-lg font-semibold text-white">Powiadomienia SMS</h3>
+							<h3 class="mb-4 text-lg font-semibold text-[--ft-text]">Powiadomienia SMS</h3>
 							<div class="space-y-4">
 								<label class="flex items-center">
 									<input
@@ -570,7 +570,7 @@
 										class="text-brand-600 focus:ring-brand-500 h-4 w-4 rounded border-white/15 bg-neutral-100 focus:ring-2"
 									/>
 									<div class="ml-3">
-										<div class="font-medium text-white">Powiadomienia SMS</div>
+										<div class="font-medium text-[--ft-text]">Powiadomienia SMS</div>
 										<div class="text-sm text-neutral-400">
 											Otrzymuj SMS o ważnych aktualizacjach
 										</div>
@@ -593,7 +593,7 @@
 		<section>
 			<Card class="p-8">
 				<div class="mb-8">
-					<h2 class="mb-2 text-2xl font-bold text-white">Preferencje ogólne</h2>
+					<h2 class="mb-2 text-2xl font-bold text-[--ft-text]">Preferencje ogólne</h2>
 					<p class="text-neutral-400">Dostosuj swoje doświadczenie zakupowe</p>
 				</div>
 
@@ -613,7 +613,7 @@
 					<div class="grid grid-cols-1 gap-8 md:grid-cols-2">
 						<!-- Language & Region -->
 						<div>
-							<h3 class="mb-4 text-lg font-semibold text-white">Język i region</h3>
+							<h3 class="mb-4 text-lg font-semibold text-[--ft-text]">Język i region</h3>
 							<div class="space-y-4">
 								<div>
 									<label for="language" class="mb-2 block text-sm font-medium text-neutral-300"
@@ -651,7 +651,7 @@
 
 						<!-- Display -->
 						<div>
-							<h3 class="mb-4 text-lg font-semibold text-white">Wygląd</h3>
+							<h3 class="mb-4 text-lg font-semibold text-[--ft-text]">Wygląd</h3>
 							<div class="space-y-4">
 								<div>
 									<label for="theme" class="mb-2 block text-sm font-medium text-neutral-300"
@@ -686,7 +686,7 @@
 	<section>
 		<Card class="from-danger/5 to-brand-50 border-danger/10 border-2 bg-linear-to-br p-8">
 			<div class="text-center">
-				<h3 class="mb-4 text-xl font-bold text-white">Akcje konta</h3>
+				<h3 class="mb-4 text-xl font-bold text-[--ft-text]">Akcje konta</h3>
 				<p class="mb-6 text-neutral-400">Zarządzaj swoim kontem lub usuń je całkowicie</p>
 				<div class="flex flex-col justify-center gap-4 sm:flex-row">
 					<Button href="/account/export" variant="outline">Eksportuj dane</Button>

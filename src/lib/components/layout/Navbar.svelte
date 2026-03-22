@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { cart, userStore } from '$lib/stores';
 	import FixTarLogoWhite from '$lib/img/logo-FixTar-white.webp';
+	import FixTarLogo from '$lib/img/logo-FixTar.webp';
 
 	interface Props {
 		onCartOpen?: () => void;
@@ -74,7 +75,12 @@
 					<img
 						src={FixTarLogoWhite}
 						alt="FixTar"
-						class="h-9 w-auto transition-all duration-300 group-hover:brightness-125 md:h-10"
+						class="logo-dark h-9 w-auto transition-all duration-300 group-hover:brightness-125 md:h-10"
+					/>
+					<img
+						src={FixTarLogo}
+						alt="FixTar"
+						class="logo-light h-9 w-auto transition-all duration-300 group-hover:brightness-125 md:h-10"
 					/>
 				</a>
 
@@ -155,11 +161,11 @@
 									<div class="user-dropdown-header px-5 py-4">
 										<p
 											class="font-heading text-xs tracking-wider uppercase"
-											style="color: rgba(255,255,255,0.4)"
+											style="color: var(--ft-text-muted)"
 										>
 											Zalogowany jako
 										</p>
-										<p class="mt-1 truncate font-semibold text-white">{userStore.current.email}</p>
+										<p class="mt-1 truncate font-semibold text-[--ft-text]">{userStore.current.email}</p>
 									</div>
 									<div class="p-2">
 										<a href="/account" onclick={() => (userMenuOpen = false)} class="dropdown-item">
@@ -286,6 +292,12 @@
 </nav>
 
 <style>
+	/* ── Logo theme switching ── */
+	.logo-light { display: none; }
+	.logo-dark { display: block; }
+	:global(.light) .logo-light { display: block; }
+	:global(.light) .logo-dark { display: none; }
+
 	/* ── Accent line — precision brand stripe ── */
 	.nav-accent {
 		height: 2px;
@@ -293,7 +305,7 @@
 			90deg,
 			transparent 0%,
 			rgba(55, 138, 146, 0.8) 22%,
-			rgba(55, 138, 146, 0.25) 50%,
+			var(--ft-brand-border) 50%,
 			rgba(55, 138, 146, 0.8) 78%,
 			transparent 100%
 		);
@@ -305,15 +317,19 @@
 		opacity: 1;
 	}
 
+	:global(.light) .nav-accent {
+		height: 0;
+	}
+
 	/* ── Nav body — transparent glass over hero ── */
 	.nav-body {
 		position: relative;
-		background: linear-gradient(180deg, rgba(9, 14, 19, 0.82) 0%, rgba(9, 14, 19, 0.55) 100%);
+		background: var(--ft-surface);
 		backdrop-filter: blur(10px);
 		-webkit-backdrop-filter: blur(10px);
 		padding: 0.95rem 0;
 		transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-		border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+		border-bottom: 1px solid var(--ft-card-hover);
 	}
 
 	.nav-body::after {
@@ -324,7 +340,7 @@
 		background: linear-gradient(
 			90deg,
 			rgba(55, 138, 146, 0) 0%,
-			rgba(55, 138, 146, 0.05) 35%,
+			var(--ft-brand-subtle) 35%,
 			rgba(55, 138, 146, 0) 70%
 		);
 		opacity: 0.7;
@@ -332,13 +348,13 @@
 
 	nav.is-scrolled .nav-body {
 		padding: 0.6rem 0;
-		background: rgba(9, 14, 19, 0.96);
+		background: var(--ft-surface);
 		backdrop-filter: blur(16px);
 		-webkit-backdrop-filter: blur(16px);
-		border-bottom-color: rgba(255, 255, 255, 0.08);
+		border-bottom-color: var(--ft-border);
 		box-shadow:
-			0 6px 24px rgba(0, 0, 0, 0.45),
-			0 1px 0 rgba(55, 138, 146, 0.1);
+			0 6px 24px var(--ft-shadow-heavy),
+			0 1px 0 var(--ft-brand-glow);
 	}
 
 	/* ── Nav links — industrial uppercase ── */
@@ -348,7 +364,7 @@
 		font-size: 0.74rem;
 		font-weight: 600;
 		letter-spacing: 0.12em;
-		color: rgba(255, 255, 255, 0.46);
+		color: var(--ft-text-muted);
 		padding: 0.5rem 1.05rem;
 		position: relative;
 		transition: color 0.3s;
@@ -361,15 +377,15 @@
 		left: 1.05rem;
 		right: 1.05rem;
 		height: 1px;
-		background: rgba(55, 138, 146, 0.9);
+		background: var(--ft-primary);
 		transform: scaleX(0);
 		transform-origin: left;
 		transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-		box-shadow: 0 0 10px rgba(55, 138, 146, 0.25);
+		box-shadow: 0 0 10px var(--ft-brand-border);
 	}
 
 	.nav-link:hover {
-		color: white;
+		color: var(--ft-text);
 	}
 	.nav-link:hover::after {
 		transform: scaleX(1);
@@ -378,11 +394,11 @@
 	/* ── Icon buttons ── */
 	.nav-icon {
 		padding: 0.45rem;
-		color: rgba(255, 255, 255, 0.5);
+		color: var(--ft-text-secondary);
 		transition: color 0.2s, background-color 0.2s, border-color 0.2s;
 		cursor: pointer;
-		border: 1px solid rgba(255, 255, 255, 0.05);
-		background: rgba(255, 255, 255, 0.02);
+		border: 1px solid var(--ft-border-subtle);
+		background: var(--ft-card);
 	}
 
 	@media (min-width: 640px) {
@@ -392,9 +408,9 @@
 	}
 
 	.nav-icon:hover {
-		color: white;
-		border-color: rgba(55, 138, 146, 0.35);
-		background: rgba(55, 138, 146, 0.08);
+		color: var(--ft-text);
+		border-color: var(--ft-brand-border);
+		background: var(--ft-brand-muted);
 	}
 
 	/* ── Cart badge — sharp, no radius ── */
@@ -402,8 +418,8 @@
 		position: absolute;
 		top: -0.2rem;
 		right: -0.25rem;
-		background: rgba(55, 138, 146, 0.95);
-		color: white;
+		background: var(--ft-primary);
+		color: var(--ft-text);
 		font-size: 0.58rem;
 		font-weight: 700;
 		min-width: 1rem;
@@ -422,35 +438,35 @@
 		font-size: 0.68rem;
 		font-weight: 600;
 		letter-spacing: 0.12em;
-		color: rgba(55, 138, 146, 0.95);
-		border: 1px solid rgba(55, 138, 146, 0.35);
+		color: var(--ft-primary);
+		border: 1px solid var(--ft-brand-border);
 		align-items: center;
 		justify-content: center;
 		height: 2.5rem;
 		padding: 0 1.2rem;
 		transition: all 0.25s ease;
-		background: rgba(9, 14, 19, 0.4);
+		background: transparent;
 	}
 
 	.login-btn:hover {
-		background: rgba(55, 138, 146, 0.85);
+		background: var(--ft-primary);
 		color: white;
-		border-color: rgba(55, 138, 146, 0.85);
-		box-shadow: 0 0 16px rgba(55, 138, 146, 0.25);
+		border-color: var(--ft-primary);
+		box-shadow: 0 0 16px var(--ft-brand-border);
 	}
 
 	/* ── User dropdown — glass-morphism ── */
 	.user-dropdown {
-		background: rgba(14, 20, 28, 0.95);
+		background: var(--ft-surface);
 		backdrop-filter: blur(20px);
 		-webkit-backdrop-filter: blur(20px);
-		border: 1px solid rgba(255, 255, 255, 0.07);
-		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+		border: 1px solid var(--ft-border);
+		box-shadow: 0 8px 32px var(--ft-shadow-heavy);
 	}
 
 	.user-dropdown-header {
-		background: rgba(255, 255, 255, 0.02);
-		border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+		background: var(--ft-card);
+		border-bottom: 1px solid var(--ft-border-subtle);
 	}
 
 	.dropdown-item {
@@ -458,15 +474,15 @@
 		align-items: center;
 		gap: 0.75rem;
 		padding: 0.625rem 1rem;
-		color: rgba(255, 255, 255, 0.55);
+		color: var(--ft-text-secondary);
 		font-size: 0.875rem;
 		transition: all 0.2s;
 		cursor: pointer;
 	}
 
 	.dropdown-item:hover {
-		color: white;
-		background-color: rgba(255, 255, 255, 0.05);
+		color: var(--ft-text);
+		background-color: var(--ft-border-subtle);
 	}
 
 	.dropdown-item--danger {
@@ -478,12 +494,12 @@
 	}
 
 	.dropdown-separator {
-		border-top: 1px solid rgba(255, 255, 255, 0.06);
+		border-top: 1px solid var(--ft-border);
 	}
 
 	/* ── Mobile menu — full-screen dark overlay ── */
 	.mobile-overlay {
-		background: rgba(9, 14, 19, 0.98);
+		background: var(--ft-surface);
 		z-index: 40;
 		overflow-y: auto;
 	}
@@ -500,7 +516,7 @@
 		align-items: center;
 		gap: 0.75rem;
 		padding: 1rem 1.25rem;
-		color: rgba(255, 255, 255, 0.5);
+		color: var(--ft-text-secondary);
 		font-family: var(--font-heading);
 		font-weight: 500;
 		font-size: 0.9rem;
@@ -515,8 +531,8 @@
 
 	.mobile-link:hover,
 	.mobile-link:active {
-		color: white;
-		background: rgba(255, 255, 255, 0.05);
+		color: var(--ft-text);
+		background: var(--ft-border-subtle);
 	}
 
 	.mobile-login-btn {
@@ -531,9 +547,9 @@
 		font-size: 0.85rem;
 		font-weight: 600;
 		letter-spacing: 0.12em;
-		color: rgba(55, 138, 146, 0.95);
-		border: 1px solid rgba(55, 138, 146, 0.35);
-		background: rgba(9, 14, 19, 0.4);
+		color: var(--ft-primary);
+		border: 1px solid var(--ft-brand-border);
+		background: var(--ft-surface-overlay);
 		transition: all 0.25s ease;
 		-webkit-tap-highlight-color: transparent;
 		cursor: pointer;
@@ -541,9 +557,9 @@
 
 	.mobile-login-btn:hover,
 	.mobile-login-btn:active {
-		background: rgba(55, 138, 146, 0.85);
-		color: white;
-		border-color: rgba(55, 138, 146, 0.85);
+		background: var(--ft-primary-hover);
+		color: var(--ft-text);
+		border-color: var(--ft-primary-hover);
 	}
 
 	.mobile-link--danger {
@@ -555,7 +571,7 @@
 	}
 
 	.mobile-separator {
-		border-top: 1px solid rgba(255, 255, 255, 0.06);
+		border-top: 1px solid var(--ft-border);
 		padding-top: 0.75rem;
 		margin-top: 0.5rem;
 		display: flex;

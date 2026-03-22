@@ -38,7 +38,7 @@
 
 <div class="mx-auto max-w-screen-2xl px-6 py-8 sm:px-8 lg:px-12">
 	<div class="mb-8">
-		<h1 class="text-3xl font-bold text-white">Special Deals</h1>
+		<h1 class="text-3xl font-bold text-[--ft-text]">Special Deals</h1>
 		<p class="mt-2 text-neutral-400">Don't miss out on these amazing offers!</p>
 	</div>
 
@@ -50,7 +50,7 @@
 				{/if}
 				<div class="p-6">
 					<div class="mb-2 flex items-start justify-between">
-						<h3 class="text-xl font-semibold text-white">{deal.title}</h3>
+						<h3 class="text-xl font-semibold text-[--ft-text]">{deal.title}</h3>
 						<span class="bg-danger/10 text-danger-dark rounded-full px-3 py-1 text-sm font-bold">
 							{deal.discount}
 						</span>
@@ -64,7 +64,7 @@
 	</div>
 
 	<div class="border-brand-600/20 mt-12 border bg-neutral-900 p-8 text-center">
-		<h2 class="mb-4 text-2xl font-bold text-white">Newsletter Exclusive Deals</h2>
+		<h2 class="mb-4 text-2xl font-bold text-[--ft-text]">Newsletter Exclusive Deals</h2>
 		<p class="mb-6 text-neutral-400">
 			Subscribe to our newsletter and get exclusive deals delivered to your inbox!
 		</p>
@@ -72,7 +72,7 @@
 			<input
 				type="email"
 				placeholder="Enter your email"
-				class="flex-1 border border-neutral-700 bg-neutral-800 px-4 py-2 text-white placeholder-neutral-500 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none"
+				class="flex-1 border border-neutral-700 bg-neutral-800 px-4 py-2 text-[--ft-text] placeholder-neutral-500 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none"
 			/>
 			<Button>Subscribe</Button>
 		</div>

@@ -137,7 +137,7 @@
 					/>
 				</svg>
 			</div>
-			<h3 class="mb-2 text-xl font-bold text-white">Wystąpił błąd</h3>
+			<h3 class="mb-2 text-xl font-bold text-[--ft-text]">Wystąpił błąd</h3>
 			<p class="mb-6 text-neutral-400">{errorMessage}</p>
 			<Button href="/account">Wróć do konta</Button>
 		</Card>
@@ -302,7 +302,7 @@
 							/>
 						</svg>
 					</div>
-					<h3 class="mb-2 text-xl font-bold text-white">
+					<h3 class="mb-2 text-xl font-bold text-[--ft-text]">
 						{statusFilter === 'all' ? 'Brak zamówień' : 'Brak zamówień z wybranym statusem'}
 					</h3>
 					<p class="mb-6 text-neutral-400">
@@ -329,7 +329,7 @@
 										<div class="mb-3 flex items-center gap-4">
 											<div>
 												<h3
-													class="group-hover:text-brand-600 text-lg font-bold text-white transition-colors"
+													class="group-hover:text-brand-600 text-lg font-bold text-[--ft-text] transition-colors"
 												>
 													Zamówienie #{order.orderNumber || order.id}
 												</h3>
@@ -349,19 +349,19 @@
 										<div class="grid grid-cols-1 gap-4 text-sm sm:grid-cols-3">
 											<div>
 												<span class="text-neutral-500">Suma zamówienia:</span>
-												<span class="ml-1 font-semibold text-white"
+												<span class="ml-1 font-semibold text-[--ft-text]"
 													>{(order.total || 0).toFixed(2)} zł</span
 												>
 											</div>
 											<div>
 												<span class="text-neutral-500">Metoda płatności:</span>
-												<span class="ml-1 font-semibold text-white"
+												<span class="ml-1 font-semibold text-[--ft-text]"
 													>{order.paymentMethod || 'Karta'}</span
 												>
 											</div>
 											<div>
 												<span class="text-neutral-500">Dostawa:</span>
-												<span class="ml-1 font-semibold text-white"
+												<span class="ml-1 font-semibold text-[--ft-text]"
 													>{order.shippingMethod || 'Standardowa'}</span
 												>
 											</div>
@@ -393,7 +393,7 @@
 		<section>
 			<Card class="from-brand-500/100/8 to-accent-500/100/8 border-2 border-white/10 bg-linear-to-br p-8">
 				<div class="text-center">
-					<h3 class="mb-4 text-xl font-bold text-white">
+					<h3 class="mb-4 text-xl font-bold text-[--ft-text]">
 						Potrzebujesz pomocy z zamówieniem?
 					</h3>
 					<p class="mb-6 text-neutral-400">

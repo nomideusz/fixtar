@@ -15,7 +15,8 @@
 		{
 			closed: {
 				toggle: 'open',
-				open: 'open'
+				open: 'open',
+				close: 'closed'
 			},
 			open: {
 				toggle: 'closed',

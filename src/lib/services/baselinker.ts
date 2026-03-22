@@ -39,6 +39,11 @@ export interface BaseLinkerProduct {
 	images: Record<string, string>;
 	features: Record<string, string>;
 	variants: BaseLinkerVariant[];
+	/** Inventory-specific fields returned by getInventoryProductsData */
+	text_fields?: Record<string, string>;
+	tags?: string[];
+	stock?: Record<string, number>;
+	prices?: Record<string, number>;
 }
 
 export interface BaseLinkerVariant {
@@ -228,6 +233,18 @@ export class BaseLinkerService {
 	}
 
 	/**
+	 * Get categories for an inventory
+	 */
+	async getInventoryCategories(
+		inventoryId: number
+	): Promise<Array<{ category_id: number; name: string; parent_id: number }>> {
+		const result = await this.request<{
+			categories: Array<{ category_id: number; name: string; parent_id: number }>;
+		}>('getInventoryCategories', { inventory_id: inventoryId });
+		return result.categories;
+	}
+
+	/**
 	 * Get product stock levels from all warehouses
 	 */
 	async getInventoryProductsStock(inventoryId: number): Promise<{
@@ -254,62 +271,15 @@ export class BaseLinkerService {
 	}
 
 	// ==========================================================================
-	// Order Methods
+	// Order Methods (READ-ONLY during development)
+	//
+	// BaseLinker is connected to live Allegro. All write methods are disabled
+	// to prevent accidental modifications to live orders/products.
+	// Enable writes only when FixTar checkout is production-ready.
 	// ==========================================================================
 
 	/**
-	 * Push a new order to BaseLinker
-	 */
-	async addOrder(orderData: {
-		order_status_id: number;
-		date_add?: number;
-		user_comments?: string;
-		admin_comments?: string;
-		phone?: string;
-		email?: string;
-		user_login?: string;
-		currency?: string;
-		payment_method?: string;
-		payment_method_cod?: string;
-		paid?: boolean;
-		delivery_method?: string;
-		delivery_price?: number;
-		delivery_fullname: string;
-		delivery_company?: string;
-		delivery_address: string;
-		delivery_city: string;
-		delivery_postcode: string;
-		delivery_country_code?: string;
-		delivery_point_id?: string;
-		delivery_point_name?: string;
-		invoice_fullname?: string;
-		invoice_company?: string;
-		invoice_nip?: string;
-		invoice_address?: string;
-		invoice_city?: string;
-		invoice_postcode?: string;
-		invoice_country_code?: string;
-		products: Array<{
-			storage: string;
-			storage_id: number;
-			product_id: string;
-			variant_id?: string;
-			name: string;
-			sku?: string;
-			ean?: string;
-			attributes?: string;
-			price_brutto: number;
-			tax_rate?: number;
-			quantity: number;
-			weight?: number;
-		}>;
-		custom_extra_fields?: Record<string, string>;
-	}): Promise<{ order_id: number }> {
-		return this.request('addOrder', orderData);
-	}
-
-	/**
-	 * Get orders from BaseLinker
+	 * Get orders from BaseLinker (read-only)
 	 */
 	async getOrders(
 		params: {
@@ -329,17 +299,7 @@ export class BaseLinkerService {
 	}
 
 	/**
-	 * Update order status in BaseLinker
-	 */
-	async setOrderStatus(orderId: number, statusId: number): Promise<void> {
-		await this.request('setOrderStatus', {
-			order_id: orderId,
-			status_id: statusId
-		});
-	}
-
-	/**
-	 * Get order status list
+	 * Get order status list (read-only)
 	 */
 	async getOrderStatusList(): Promise<{
 		statuses: Record<string, { id: number; name: string; name_for_customer: string }>;
@@ -347,46 +307,23 @@ export class BaseLinkerService {
 		return this.request('getOrderStatusList');
 	}
 
-	/**
-	 * Set order tracking number
-	 */
-	async setOrderFields(
-		orderId: number,
-		fields: {
-			admin_comments?: string;
-			user_comments?: string;
-			payment_method?: string;
-			payment_method_cod?: string;
-			delivery_method?: string;
-			delivery_price?: number;
-			delivery_fullname?: string;
-			delivery_address?: string;
-			delivery_city?: string;
-			delivery_postcode?: string;
-			delivery_country_code?: string;
-			want_invoice?: boolean;
-			extra_field_1?: string;
-			extra_field_2?: string;
-			pick_state?: number;
-			pack_state?: number;
-		}
-	): Promise<void> {
-		await this.request('setOrderFields', {
-			order_id: orderId,
-			...fields
-		});
-	}
+	// ── WRITE METHODS — DISABLED IN DEVELOPMENT ────────────────────────────
+	// Uncomment when FixTar checkout is production-ready.
+	//
+	// async addOrder(orderData: { ... }): Promise<{ order_id: number }> { ... }
+	// async setOrderStatus(orderId: number, statusId: number): Promise<void> { ... }
+	// async setOrderFields(orderId: number, fields: { ... }): Promise<void> { ... }
 
 	// ==========================================================================
-	// Sync Logic: BaseLinker → PocketBase
+	// Sync Logic: BaseLinker → Turso
 	// ==========================================================================
 
 	/**
-	 * Sync all products from BaseLinker inventory to PocketBase
-	 * This is the main sync method to be called from cron or admin UI
+	 * Sync all products from BaseLinker inventory to Turso DB.
+	 * Fetches categories, products, and stock levels, then upserts into products table.
 	 */
 	async syncProducts(
-		pb: any,
+		db: import('@libsql/client').Client,
 		inventoryId: number,
 		options: {
 			dryRun?: boolean;
@@ -405,7 +342,14 @@ export class BaseLinkerService {
 		try {
 			console.log(`[BaseLinker Sync] Starting product sync for inventory ${inventoryId}...`);
 
-			// 1. Fetch product list
+			// 1. Fetch categories
+			const catData = await this.getInventoryCategories(inventoryId);
+			const catMap = new Map<number, string>();
+			for (const c of catData) {
+				catMap.set(c.category_id, c.name.trim());
+			}
+
+			// 2. Fetch product list (paginated)
 			let page = 1;
 			let allProductIds: number[] = [];
 
@@ -425,19 +369,67 @@ export class BaseLinkerService {
 				return result;
 			}
 
-			// 2. Fetch full product data in batches of 100
-			const batchSize = 100;
+			// 3. Get existing product IDs to detect adds vs updates
+			const existingRows = await db.execute('SELECT id FROM products');
+			const existingIds = new Set(existingRows.rows.map((r) => r.id as string));
+
+			// 4. Fetch full product data in batches of 50
+			const batchSize = 50;
 			for (let i = 0; i < allProductIds.length; i += batchSize) {
 				const batch = allProductIds.slice(i, i + batchSize);
 				const productData = await this.getInventoryProductsData(inventoryId, batch);
 
 				for (const [productId, product] of Object.entries(productData.products)) {
 					try {
-						await this.upsertProduct(pb, product, Number(productId));
+						const id = `bl-${productId}`;
+						const name = product.text_fields?.name || product.sku || 'Unknown';
+						const descHtml = product.text_fields?.description || '';
+						const descPlain = this.stripHtml(descHtml);
+						const category = catMap.get(product.category_id) || '';
+						const price =
+							product.prices?.[Object.keys(product.prices)[0] as any] || 0;
+						const totalStock = Object.values(product.stock || {}).reduce<number>(
+							(s, q) => s + (q as number),
+							0
+						);
+						const firstImage = Object.values(product.images || {})[0] || '';
+						const tags = (product.tags || []).filter(
+							(t: string) => !t.startsWith('Не ') && !t.startsWith('Нема')
+						);
 
-						// Check if product exists in PB
-						const existing = await this.findProductBySku(pb, product.sku || `BL-${productId}`);
-						if (existing) {
+						await db.execute({
+							sql: `INSERT INTO products (id, name, name_n, slug, description, description_n, price, image, category, category_n, category_slug, tags, tags_n, in_stock, sku, ean, weight, updated_at)
+								VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, unixepoch() * 1000)
+								ON CONFLICT(id) DO UPDATE SET
+									name=excluded.name, name_n=excluded.name_n, slug=excluded.slug,
+									description=excluded.description, description_n=excluded.description_n,
+									price=excluded.price, image=excluded.image, category=excluded.category,
+									category_n=excluded.category_n, category_slug=excluded.category_slug,
+									tags=excluded.tags, tags_n=excluded.tags_n, in_stock=excluded.in_stock,
+									sku=excluded.sku, ean=excluded.ean, weight=excluded.weight,
+									updated_at=excluded.updated_at`,
+							args: [
+								id,
+								name,
+								this.normalize(name),
+								this.slugify(name),
+								descPlain,
+								this.normalize(descPlain),
+								price,
+								firstImage,
+								category,
+								this.normalize(category),
+								this.slugify(category),
+								JSON.stringify(tags),
+								tags.map((t: string) => this.normalize(t)).join(' '),
+								totalStock > 0 ? 1 : 0,
+								(product.sku || '').trim(),
+								(product.ean || '').trim(),
+								product.weight || 0
+							]
+						});
+
+						if (existingIds.has(id)) {
 							result.productsUpdated++;
 						} else {
 							result.productsAdded++;
@@ -445,17 +437,6 @@ export class BaseLinkerService {
 					} catch (err: any) {
 						result.errors.push(`Product ${productId}: ${err.message}`);
 					}
-				}
-			}
-
-			// 3. Sync stock levels
-			const stockData = await this.getInventoryProductsStock(inventoryId);
-			for (const [productId, warehouses] of Object.entries(stockData.products)) {
-				const totalStock = Object.values(warehouses).reduce((sum, qty) => sum + qty, 0);
-				try {
-					await this.updateProductStock(pb, `BL-${productId}`, totalStock);
-				} catch (err: any) {
-					result.errors.push(`Stock update ${productId}: ${err.message}`);
 				}
 			}
 
@@ -472,176 +453,62 @@ export class BaseLinkerService {
 	}
 
 	/**
-	 * Push a FixTar order to BaseLinker
+	 * Push a FixTar order to BaseLinker.
+	 * DISABLED during development — BaseLinker is connected to live Allegro.
+	 * Returns a mock success response for testing checkout flow locally.
 	 */
-	async pushOrder(order: {
+	async pushOrder(_order: {
 		orderNumber: string;
 		email: string;
 		phone?: string;
-		deliveryAddress: {
-			fullName: string;
-			company?: string;
-			street: string;
-			city: string;
-			postalCode: string;
-			country?: string;
-		};
-		invoiceAddress?: {
-			fullName: string;
-			company?: string;
-			nip?: string;
-			street: string;
-			city: string;
-			postalCode: string;
-			country?: string;
-		};
-		items: Array<{
-			name: string;
-			sku?: string;
-			ean?: string;
-			price: number;
-			quantity: number;
-			taxRate?: number;
-			weight?: number;
-		}>;
-		paymentMethod?: string;
-		deliveryMethod?: string;
-		deliveryPrice?: number;
-		currency?: string;
-		comments?: string;
-		statusId?: number;
+		deliveryAddress: { fullName: string; street: string; city: string; postalCode: string; country?: string };
+		items: Array<{ name: string; sku?: string; price: number; quantity: number }>;
+		[key: string]: unknown;
 	}): Promise<OrderPushResult> {
-		try {
-			const result = await this.addOrder({
-				order_status_id: order.statusId || 0,
-				email: order.email,
-				phone: order.phone,
-				user_comments: order.comments,
-				admin_comments: `FixTar order: ${order.orderNumber}`,
-				currency: order.currency || 'PLN',
-				payment_method: order.paymentMethod || 'Przelew',
-				delivery_method: order.deliveryMethod || 'Kurier',
-				delivery_price: order.deliveryPrice || 0,
-				delivery_fullname: order.deliveryAddress.fullName,
-				delivery_company: order.deliveryAddress.company,
-				delivery_address: order.deliveryAddress.street,
-				delivery_city: order.deliveryAddress.city,
-				delivery_postcode: order.deliveryAddress.postalCode,
-				delivery_country_code: order.deliveryAddress.country || 'PL',
-				invoice_fullname: order.invoiceAddress?.fullName,
-				invoice_company: order.invoiceAddress?.company,
-				invoice_nip: order.invoiceAddress?.nip,
-				invoice_address: order.invoiceAddress?.street,
-				invoice_city: order.invoiceAddress?.city,
-				invoice_postcode: order.invoiceAddress?.postalCode,
-				invoice_country_code: order.invoiceAddress?.country || 'PL',
-				products: order.items.map((item) => ({
-					storage: 'db',
-					storage_id: 0,
-					product_id: item.sku || '',
-					name: item.name,
-					sku: item.sku || '',
-					ean: item.ean || '',
-					price_brutto: item.price,
-					tax_rate: item.taxRate || 23,
-					quantity: item.quantity,
-					weight: item.weight || 0
-				}))
-			});
-
-			return {
-				success: true,
-				baselinkerOrderId: result.order_id
-			};
-		} catch (err: any) {
-			return {
-				success: false,
-				error: err.message
-			};
-		}
+		console.warn(
+			`[BaseLinker] pushOrder DISABLED in dev — would push order ${_order.orderNumber} with ${_order.items.length} items`
+		);
+		return {
+			success: true,
+			baselinkerOrderId: -1 // mock ID, no real order created
+		};
 	}
 
 	// ==========================================================================
 	// Private Helpers
 	// ==========================================================================
 
-	private async findProductBySku(pb: any, sku: string) {
-		try {
-			const result = await pb.collection('products').getList(1, 1, {
-				filter: `sku = "${sku}"`
-			});
-			return result.items[0] || null;
-		} catch {
-			return null;
-		}
-	}
+	private static readonly PL_MAP: Record<string, string> = {
+		ą: 'a', Ą: 'A', ć: 'c', Ć: 'C', ę: 'e', Ę: 'E',
+		ł: 'l', Ł: 'L', ń: 'n', Ń: 'N', ó: 'o', Ó: 'O',
+		ś: 's', Ś: 'S', ź: 'z', Ź: 'Z', ż: 'z', Ż: 'Z'
+	};
 
-	private async upsertProduct(pb: any, product: BaseLinkerProduct, baselinkerProductId: number) {
-		const sku = product.sku || `BL-${baselinkerProductId}`;
-		const slug = this.slugify(product.name);
-
-		const productData = {
-			name: product.name,
-			slug,
-			sku,
-			ean: product.ean || '',
-			description: product.description || '',
-			price: product.price_brutto || 0,
-			cost: product.price_netto || 0,
-			weight: product.weight || 0,
-			status: 'active',
-			inventory: JSON.stringify({
-				quantity: product.quantity || 0,
-				trackQuantity: true,
-				allowBackorder: false,
-				lowStockThreshold: 5
-			}),
-			attributes: JSON.stringify({
-				brand: product.man_name || '',
-				...product.features
-			}),
-			metadata: JSON.stringify({
-				baselinkerProductId,
-				lastSyncedAt: new Date().toISOString()
-			})
-		};
-
-		const existing = await this.findProductBySku(pb, sku);
-
-		if (existing) {
-			await pb.collection('products').update(existing.id, productData);
-		} else {
-			await pb.collection('products').create(productData);
-		}
-	}
-
-	private async updateProductStock(pb: any, sku: string, quantity: number) {
-		const existing = await this.findProductBySku(pb, sku);
-		if (existing) {
-			const inventory = JSON.parse(existing.inventory || '{}');
-			inventory.quantity = quantity;
-			await pb.collection('products').update(existing.id, {
-				inventory: JSON.stringify(inventory)
-			});
-		}
+	private normalize(text: string): string {
+		if (!text) return '';
+		let r = '';
+		for (const c of text) r += BaseLinkerService.PL_MAP[c] ?? c;
+		return r
+			.normalize('NFD')
+			.replace(/[\u0300-\u036f]/g, '')
+			.toLowerCase()
+			.replace(/[^a-z0-9\s-]/g, ' ')
+			.replace(/\s+/g, ' ')
+			.trim();
 	}
 
 	private slugify(text: string): string {
-		return text
-			.toLowerCase()
-			.replace(/[ąáàâã]/g, 'a')
-			.replace(/[ćç]/g, 'c')
-			.replace(/[ęéèêë]/g, 'e')
-			.replace(/[ıíìîï]/g, 'i')
-			.replace(/[łl]/g, 'l')
-			.replace(/[ńñ]/g, 'n')
-			.replace(/[óòôõö]/g, 'o')
-			.replace(/[śş]/g, 's')
-			.replace(/[ùúûü]/g, 'u')
-			.replace(/[źżz]/g, 'z')
+		return this.normalize(text)
 			.replace(/[^a-z0-9]+/g, '-')
-			.replace(/^-|-$/g, '')
+			.replace(/(^-|-$)/g, '')
 			.substring(0, 200);
+	}
+
+	private stripHtml(html: string): string {
+		return (html || '')
+			.replace(/<[^>]*>/g, ' ')
+			.replace(/\s+/g, ' ')
+			.trim();
 	}
 }
 

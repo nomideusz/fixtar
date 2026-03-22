@@ -131,7 +131,7 @@
 					</svg>
 					Informacje Kontaktowe
 				</div>
-				<h2 class="mb-4 text-3xl font-bold text-white">Skontaktuj Się Z Nami</h2>
+				<h2 class="mb-4 text-3xl font-bold text-[--ft-text]">Skontaktuj Się Z Nami</h2>
 				<p class="mx-auto max-w-2xl text-lg text-neutral-400">
 					Wybierz najwygodniejszy dla Ciebie sposób kontaktu. Nasz zespół jest gotowy do pomocy.
 				</p>
@@ -212,7 +212,7 @@
 
 							<!-- Content -->
 							<h3
-								class="group-hover:text-brand-600 mb-3 text-lg font-bold text-white transition-colors duration-200"
+								class="group-hover:text-brand-600 mb-3 text-lg font-bold text-[--ft-text] transition-colors duration-200"
 							>
 								{info.title}
 							</h3>
@@ -257,7 +257,7 @@
 				<div>
 					<Card class="p-8">
 						<div class="mb-8">
-							<h3 class="mb-4 text-2xl font-bold text-white">Napisz Do Nas</h3>
+							<h3 class="mb-4 text-2xl font-bold text-[--ft-text]">Napisz Do Nas</h3>
 							<p class="text-neutral-400">
 								Wypełnij formularz poniżej, a odpowiemy w ciągu 24 godzin.
 							</p>
@@ -266,7 +266,7 @@
 						<form onsubmit={handleSubmit} class="space-y-6">
 							<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 								<div>
-									<label for="name" class="mb-2 block text-sm font-semibold text-white">
+									<label for="name" class="mb-2 block text-sm font-semibold text-[--ft-text]">
 										Imię i nazwisko *
 									</label>
 									<Input
@@ -279,7 +279,7 @@
 									/>
 								</div>
 								<div>
-									<label for="email" class="mb-2 block text-sm font-semibold text-white">
+									<label for="email" class="mb-2 block text-sm font-semibold text-[--ft-text]">
 										Adres email *
 									</label>
 									<Input
@@ -294,7 +294,7 @@
 							</div>
 
 							<div>
-								<label for="subject" class="mb-2 block text-sm font-semibold text-white">
+								<label for="subject" class="mb-2 block text-sm font-semibold text-[--ft-text]">
 									Temat *
 								</label>
 								<Input
@@ -308,7 +308,7 @@
 							</div>
 
 							<div>
-								<label for="message" class="mb-2 block text-sm font-semibold text-white">
+								<label for="message" class="mb-2 block text-sm font-semibold text-[--ft-text]">
 									Wiadomość *
 								</label>
 								<textarea
@@ -325,7 +325,7 @@
 							<Button type="submit" disabled={sending} class="w-full py-4 text-lg">
 								{#if sending}
 									<svg
-										class="mr-3 -ml-1 h-5 w-5 animate-spin text-white"
+										class="mr-3 -ml-1 h-5 w-5 animate-spin text-[--ft-text]"
 										fill="none"
 										viewBox="0 0 24 24"
 									>
@@ -393,7 +393,7 @@
 					</Card>
 
 					<Card class="from-brand-500/100/8 to-accent-500/100/8 bg-linear-to-br p-6">
-						<h4 class="mb-4 text-lg font-bold text-white">Odwiedź Nas</h4>
+						<h4 class="mb-4 text-lg font-bold text-[--ft-text]">Odwiedź Nas</h4>
 						<div class="space-y-3 text-sm">
 							<div class="flex items-center">
 								<svg
@@ -471,7 +471,7 @@
 					</svg>
 					Często Zadawane Pytania
 				</div>
-				<h2 class="mb-4 text-3xl font-bold text-white">Masz Pytanie?</h2>
+				<h2 class="mb-4 text-3xl font-bold text-[--ft-text]">Masz Pytanie?</h2>
 				<p class="mx-auto max-w-2xl text-lg text-neutral-400">
 					Sprawdź odpowiedzi na najczęściej zadawane pytania lub skontaktuj się z nami bezpośrednio.
 				</p>
@@ -480,7 +480,7 @@
 			<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 				{#each faqItems as faq (faq)}
 					<Card class="p-6 transition-shadow duration-200 hover:shadow-lg">
-						<h4 class="mb-3 text-lg font-semibold text-white">
+						<h4 class="mb-3 text-lg font-semibold text-[--ft-text]">
 							{faq.question}
 						</h4>
 						<p class="leading-relaxed text-neutral-400">
@@ -492,7 +492,7 @@
 
 			<div class="mt-12 text-center">
 				<Card class="inline-block bg-linear-to-br from-white/5 to-white/3 p-8">
-					<h3 class="mb-4 text-xl font-bold text-white">Nie znalazłeś odpowiedzi?</h3>
+					<h3 class="mb-4 text-xl font-bold text-[--ft-text]">Nie znalazłeś odpowiedzi?</h3>
 					<p class="mb-6 text-neutral-400">Nasz zespół wsparcia jest gotowy do pomocy</p>
 					<div class="flex flex-col justify-center gap-3 sm:flex-row">
 						<Button href="tel:+48221234567" variant="outline">

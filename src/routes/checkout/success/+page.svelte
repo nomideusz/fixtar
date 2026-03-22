@@ -70,7 +70,7 @@
 				<div
 					class="bg-success relative mx-auto flex h-24 w-24 items-center justify-center rounded-full shadow-xl"
 				>
-					<svg class="h-12 w-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<svg class="h-12 w-12 text-[--ft-text]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path
 							stroke-linecap="round"
 							stroke-linejoin="round"
@@ -103,7 +103,7 @@
 					</div>
 					<div class="text-left">
 						<p class="text-sm font-medium text-neutral-400">Numer zamówienia</p>
-						<p class="text-2xl font-bold text-white">#{orderNumber}</p>
+						<p class="text-2xl font-bold text-[--ft-text]">#{orderNumber}</p>
 					</div>
 				</div>
 			</Card>
@@ -173,7 +173,7 @@
 						<div>
 							<h4 class="mb-2 text-sm font-semibold text-neutral-300">Nazwa odbiorcy</h4>
 							<p
-								class="rounded-xl border border-white/10 bg-white/5 p-3 text-lg font-bold text-white"
+								class="rounded-xl border border-white/10 bg-white/5 p-3 text-lg font-bold text-[--ft-text]"
 							>
 								{data.order.metadata.paymentDetails.bankDetails.accountName}
 							</p>
@@ -182,7 +182,7 @@
 						<div>
 							<h4 class="mb-2 text-sm font-semibold text-neutral-300">Bank</h4>
 							<p
-								class="rounded-xl border border-white/10 bg-white/5 p-3 text-lg font-bold text-white"
+								class="rounded-xl border border-white/10 bg-white/5 p-3 text-lg font-bold text-[--ft-text]"
 							>
 								{data.order.metadata.paymentDetails.bankDetails.bankName}
 							</p>
@@ -191,7 +191,7 @@
 						<div>
 							<h4 class="mb-2 text-sm font-semibold text-neutral-300">Numer konta</h4>
 							<p
-								class="rounded-xl border border-white/10 bg-white/5 p-3 font-mono text-lg font-bold tracking-wider text-white"
+								class="rounded-xl border border-white/10 bg-white/5 p-3 font-mono text-lg font-bold tracking-wider text-[--ft-text]"
 							>
 								{data.order.metadata.paymentDetails.bankDetails.accountNumber}
 							</p>
@@ -200,7 +200,7 @@
 						<div>
 							<h4 class="mb-2 text-sm font-semibold text-neutral-300">SWIFT</h4>
 							<p
-								class="rounded-xl border border-white/10 bg-white/5 p-3 font-mono text-lg font-bold text-white"
+								class="rounded-xl border border-white/10 bg-white/5 p-3 font-mono text-lg font-bold text-[--ft-text]"
 							>
 								{data.order.metadata.paymentDetails.bankDetails.swift}
 							</p>
@@ -209,7 +209,7 @@
 						<div class="md:col-span-2">
 							<h4 class="mb-2 text-sm font-semibold text-neutral-300">Tytuł przelewu</h4>
 							<p
-								class="bg-warning/10 border-warning/30 rounded-xl border-2 p-4 text-center text-lg font-bold text-white"
+								class="bg-warning/10 border-warning/30 rounded-xl border-2 p-4 text-center text-lg font-bold text-[--ft-text]"
 							>
 								{data.order.metadata.paymentDetails.bankDetails.reference}
 							</p>
@@ -263,7 +263,7 @@
 			<div class="flex flex-col justify-center gap-4 sm:flex-row">
 				<Button
 					href="/account/orders"
-					class="from-brand-600 to-accent-600 hover:from-brand-700 hover:to-accent-700 transform rounded-2xl bg-linear-to-r px-8 py-4 text-lg font-bold text-white shadow-lg transition-all duration-300 hover:scale-105"
+					class="from-brand-600 to-accent-600 hover:from-brand-700 hover:to-accent-700 transform rounded-2xl bg-linear-to-r px-8 py-4 text-lg font-bold text-[--ft-text] shadow-lg transition-all duration-300 hover:scale-105"
 				>
 					<svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path
@@ -313,7 +313,7 @@
 								/>
 							</svg>
 						</div>
-						<h3 class="text-2xl font-bold text-white">Zamówione produkty</h3>
+						<h3 class="text-2xl font-bold text-[--ft-text]">Zamówione produkty</h3>
 					</div>
 
 					{#if data.order.items && data.order.items.length > 0}
@@ -347,7 +347,7 @@
 									{/if}
 
 									<div class="min-w-0 flex-1">
-										<h4 class="truncate text-lg font-bold text-white">{item.name}</h4>
+										<h4 class="truncate text-lg font-bold text-[--ft-text]">{item.name}</h4>
 										<div class="mt-2 flex items-center space-x-4">
 											<span class="text-sm text-neutral-400"
 												>Ilość: <strong>{item.quantity}</strong></span
@@ -416,13 +416,13 @@
 									/>
 								</svg>
 							</div>
-							<h3 class="text-2xl font-bold text-white">Adres dostawy</h3>
+							<h3 class="text-2xl font-bold text-[--ft-text]">Adres dostawy</h3>
 						</div>
 
 						{#if data.order.shippingAddress}
 							<div class="rounded-xl bg-white/5 p-6">
 								<div class="space-y-2">
-									<p class="text-lg font-bold text-white">
+									<p class="text-lg font-bold text-[--ft-text]">
 										{data.order.shippingAddress.firstName}
 										{data.order.shippingAddress.lastName}
 									</p>
@@ -465,7 +465,7 @@
 									/>
 								</svg>
 							</div>
-							<h3 class="text-2xl font-bold text-white">Szczegóły zamówienia</h3>
+							<h3 class="text-2xl font-bold text-[--ft-text]">Szczegóły zamówienia</h3>
 						</div>
 
 						<div class="space-y-6">
@@ -486,7 +486,7 @@
 									</svg>
 									<span class="font-medium text-neutral-300">Płatność</span>
 								</div>
-								<span class="font-bold text-white">
+								<span class="font-bold text-[--ft-text]">
 									{getPaymentMethodName(data.order.paymentMethod || 'card')}
 								</span>
 							</div>
@@ -508,7 +508,7 @@
 									</svg>
 									<span class="font-medium text-neutral-300">Dostawa</span>
 								</div>
-								<span class="font-bold text-white">
+								<span class="font-bold text-[--ft-text]">
 									{getShippingMethodName(data.order.shippingMethod || 'standard')}
 								</span>
 							</div>
@@ -565,7 +565,7 @@
 							/>
 						</svg>
 					</div>
-					<h3 class="mb-4 text-2xl font-bold text-white">Co dalej?</h3>
+					<h3 class="mb-4 text-2xl font-bold text-[--ft-text]">Co dalej?</h3>
 					<div class="grid grid-cols-1 gap-6 text-left md:grid-cols-3">
 						<div class="flex items-start space-x-3">
 							<div
@@ -574,7 +574,7 @@
 								<span class="text-success text-sm font-bold">1</span>
 							</div>
 							<div>
-								<h4 class="mb-1 font-bold text-white">Potwierdzenie email</h4>
+								<h4 class="mb-1 font-bold text-[--ft-text]">Potwierdzenie email</h4>
 								<p class="text-sm text-neutral-400">
 									Sprawdź swoją skrzynkę pocztową w poszukiwaniu emaila z potwierdzeniem
 								</p>
@@ -587,7 +587,7 @@
 								<span class="text-brand-600 text-sm font-bold">2</span>
 							</div>
 							<div>
-								<h4 class="mb-1 font-bold text-white">Przygotowanie</h4>
+								<h4 class="mb-1 font-bold text-[--ft-text]">Przygotowanie</h4>
 								<p class="text-sm text-neutral-400">Przygotowujemy Twoje zamówienie do wysyłki</p>
 							</div>
 						</div>
@@ -598,7 +598,7 @@
 								<span class="text-accent-600 text-sm font-bold">3</span>
 							</div>
 							<div>
-								<h4 class="mb-1 font-bold text-white">Dostawa</h4>
+								<h4 class="mb-1 font-bold text-[--ft-text]">Dostawa</h4>
 								<p class="text-sm text-neutral-400">
 									Otrzymasz powiadomienie o wysyłce z numerem do śledzenia
 								</p>

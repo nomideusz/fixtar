@@ -139,7 +139,7 @@
 	.featured-section {
 		position: relative;
 		padding: 6rem 0 7rem;
-		background: var(--ft-dark, #0c1118);
+		background: var(--ft-dark, var(--ft-surface));
 		overflow: hidden;
 	}
 
@@ -149,8 +149,8 @@
 		position: absolute;
 		inset: 0;
 		background-image:
-			linear-gradient(rgba(55, 138, 146, 0.03) 1px, transparent 1px),
-			linear-gradient(90deg, rgba(55, 138, 146, 0.03) 1px, transparent 1px);
+			linear-gradient(var(--ft-grid-line-subtle) 1px, transparent 1px),
+			linear-gradient(90deg, var(--ft-grid-line-subtle) 1px, transparent 1px);
 		background-size: 60px 60px;
 		mask-image: radial-gradient(ellipse 90% 80% at 50% 30%, black 10%, transparent 70%);
 		-webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 30%, black 10%, transparent 70%);
@@ -165,7 +165,7 @@
 		left: 0;
 		right: 0;
 		height: 8rem;
-		background: linear-gradient(to bottom, var(--ft-dark-deeper, #090e13), transparent);
+		background: linear-gradient(to bottom, var(--ft-surface-alt), transparent);
 		pointer-events: none;
 		z-index: 1;
 	}
@@ -220,7 +220,7 @@
 
 	.featured-desc {
 		font-size: 1.05rem;
-		color: var(--ft-dark-text-secondary, rgba(255, 255, 255, 0.35));
+		color: var(--ft-dark-text-secondary, var(--ft-text-muted));
 		max-width: 36rem;
 		margin: 0 auto;
 		line-height: 1.6;
@@ -251,8 +251,8 @@
 		position: relative;
 		display: flex;
 		flex-direction: column;
-		background: var(--ft-dark-card, rgba(255, 255, 255, 0.02));
-		border: 1px solid var(--ft-dark-border, rgba(255, 255, 255, 0.06));
+		background: var(--ft-dark-card, var(--ft-card));
+		border: 1px solid var(--ft-dark-border, var(--ft-border));
 		border-radius: 0.25rem;
 		overflow: hidden;
 		text-decoration: none;
@@ -275,9 +275,9 @@
 	}
 
 	.fcard:hover {
-		background: var(--ft-dark-card-hover, rgba(255, 255, 255, 0.04));
-		border-color: var(--ft-dark-border-hover, rgba(55, 138, 146, 0.15));
-		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(55, 138, 146, 0.06);
+		background: var(--ft-dark-card-hover, var(--ft-card-hover));
+		border-color: var(--ft-dark-border-hover, var(--ft-brand-medium));
+		box-shadow: 0 8px 32px var(--ft-shadow), 0 0 0 1px var(--ft-brand-muted);
 		transform: translateY(-3px);
 	}
 
@@ -301,7 +301,7 @@
 	/* ── Image area ── */
 	.fcard-img-wrap {
 		position: relative;
-		background: rgba(255, 255, 255, 0.01);
+		background: var(--ft-card);
 		overflow: hidden;
 	}
 
@@ -322,7 +322,7 @@
 		object-fit: contain;
 		padding: 1rem;
 		transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-		filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+		filter: drop-shadow(0 4px 12px var(--ft-shadow));
 	}
 
 	.fcard:hover .fcard-img {
@@ -336,7 +336,7 @@
 		width: 100%;
 		height: 100%;
 		min-height: 10rem;
-		color: rgba(255, 255, 255, 0.1);
+		color: var(--ft-border-hover);
 	}
 
 	/* ── Badges ── */
@@ -363,20 +363,19 @@
 	}
 
 	.fcard-badge--hot {
-		background: var(--color-brand-600, #2f6d73);
-		color: #fff;
+		background: var(--color-brand-600);
+		color: white;
 	}
 
 	.fcard-badge--featured {
-		background: rgba(55, 138, 146, 0.15);
-		color: var(--color-brand-400, #64a1a7);
-		border: 1px solid rgba(55, 138, 146, 0.2);
+		background: var(--ft-brand-medium);
+		color: var(--color-brand-700);
+		border: 1px solid var(--ft-brand-border);
 	}
 
 	.fcard-badge--sale {
-		background: rgba(220, 38, 38, 0.15);
-		color: #fca5a5;
-		border: 1px solid rgba(220, 38, 38, 0.2);
+		background: var(--color-danger);
+		color: white;
 	}
 
 	/* ── Card body ── */
@@ -385,14 +384,14 @@
 		flex-direction: column;
 		padding: 1.25rem;
 		gap: 0.5rem;
-		border-top: 1px solid rgba(255, 255, 255, 0.04);
+		border-top: 1px solid var(--ft-card-hover);
 	}
 
 	.fcard-name {
 		font-family: var(--font-heading);
 		font-size: 0.95rem;
 		font-weight: 600;
-		color: rgba(255, 255, 255, 0.85);
+		color: var(--ft-text-strong);
 		line-height: 1.35;
 		display: -webkit-box;
 		-webkit-line-clamp: 2;
@@ -403,7 +402,7 @@
 	}
 
 	.fcard:hover .fcard-name {
-		color: white;
+		color: var(--ft-text);
 	}
 
 	.fcard--hero .fcard-name {
@@ -412,7 +411,7 @@
 
 	.fcard-desc {
 		font-size: 0.85rem;
-		color: var(--ft-dark-text-secondary, rgba(255, 255, 255, 0.3));
+		color: var(--ft-dark-text-secondary, var(--ft-text-muted));
 		line-height: 1.5;
 		display: -webkit-box;
 		-webkit-line-clamp: 2;
@@ -449,7 +448,7 @@
 
 	.fcard-old-price {
 		font-size: 0.8rem;
-		color: var(--ft-dark-text-muted, rgba(255, 255, 255, 0.25));
+		color: var(--ft-dark-text-muted, var(--ft-text-faint));
 		text-decoration: line-through;
 	}
 
@@ -460,9 +459,9 @@
 		width: 2.25rem;
 		height: 2.25rem;
 		border-radius: 0;
-		border: 1px solid var(--ft-dark-border, rgba(255, 255, 255, 0.08));
+		border: 1px solid var(--ft-dark-border, var(--ft-border));
 		background: transparent;
-		color: rgba(255, 255, 255, 0.4);
+		color: var(--ft-text-muted);
 		cursor: pointer;
 		transition: all 0.25s ease;
 		flex-shrink: 0;
@@ -471,8 +470,8 @@
 	.fcard-cart-btn:hover {
 		border-color: var(--color-brand-500, #378a92);
 		background: var(--color-brand-600, #2f6d73);
-		color: #fff;
-		box-shadow: 0 0 12px rgba(55, 138, 146, 0.2);
+		color: var(--ft-text);
+		box-shadow: 0 0 12px var(--ft-brand-border);
 	}
 
 	/* ── CTA ── */
@@ -485,8 +484,8 @@
 	.featured-error,
 	.featured-empty {
 		text-align: center;
-		background: var(--ft-dark-card, rgba(255, 255, 255, 0.02));
-		border: 1px solid var(--ft-dark-border, rgba(255, 255, 255, 0.06));
+		background: var(--ft-dark-card, var(--ft-card));
+		border: 1px solid var(--ft-dark-border, var(--ft-border));
 		border-radius: 0.25rem;
 		padding: 4rem 2rem;
 	}
@@ -509,7 +508,7 @@
 
 	.featured-error-msg,
 	.featured-empty-msg {
-		color: var(--ft-dark-text-secondary, rgba(255, 255, 255, 0.35));
+		color: var(--ft-dark-text-secondary, var(--ft-text-muted));
 		margin-bottom: 2rem;
 		max-width: 24rem;
 		margin-inline: auto;
@@ -518,7 +517,7 @@
 	.featured-empty-icon {
 		width: 4rem;
 		height: 4rem;
-		color: var(--ft-dark-text-muted, rgba(255, 255, 255, 0.15));
+		color: var(--ft-dark-text-muted, var(--ft-text-faint));
 		margin: 0 auto 1.5rem;
 	}
 </style>

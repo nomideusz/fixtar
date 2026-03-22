@@ -1,25 +1,28 @@
 import type { PageServerLoad } from './$types';
-import type { Product } from '$lib/stores/products.svelte';
-import { mockProducts } from '$lib/data/mockData';
+import {
+	getFeaturedProducts,
+	getTotalProducts,
+	getCategories,
+	toStoreProduct
+} from '$lib/server/products';
 
 export const load: PageServerLoad = async () => {
-	// TODO: Replace with BaseLinker API integration once PocketBase is fully removed.
-	// For now, always return mock data.
-	const demoProducts = mockProducts.slice(0, 8).map((p) => ({
-		...p,
-		id: p.id,
-		name: p.name,
-		slug: p.id,
-		price: p.price,
-		mainImage: p.image,
-		images: [p.image],
-		description: p.description || '',
-		status: 'active',
-		inventory: { trackQuantity: true, quantity: 10 }
-	})) as unknown as Product[];
+	const [dbProducts, totalProducts, dbCategories] = await Promise.all([
+		getFeaturedProducts(8),
+		getTotalProducts(),
+		getCategories()
+	]);
+
+	const categories = dbCategories.map((c) => ({
+		id: c.category_slug,
+		name: c.category,
+		slug: c.category_slug,
+		count: Number(c.count)
+	}));
 
 	return {
-		featuredProducts: demoProducts,
-		totalProducts: mockProducts.length
+		featuredProducts: dbProducts.map(toStoreProduct),
+		totalProducts,
+		categories
 	};
 };

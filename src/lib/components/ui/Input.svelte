@@ -40,7 +40,7 @@
 
 	const variantClasses = {
 		default: `
-			bg-white/5 border border-white/15 text-white placeholder:text-neutral-500
+			bg-white/5 border border-white/15 text-[--ft-text] placeholder:text-neutral-500
 			focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20
 			hover:border-white/25
 		`,
@@ -50,12 +50,12 @@
 			hover:border-white/50
 		`,
 		outline: `
-			bg-transparent border-2 border-white/15 text-white placeholder:text-neutral-500
+			bg-transparent border-2 border-white/15 text-[--ft-text] placeholder:text-neutral-500
 			focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20
 			hover:border-white/25
 		`,
 		filled: `
-			bg-white/5 border border-transparent text-white placeholder:text-neutral-500
+			bg-white/5 border border-transparent text-[--ft-text] placeholder:text-neutral-500
 			focus:bg-white/8 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20
 			hover:bg-white/8
 		`

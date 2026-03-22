@@ -95,7 +95,7 @@
 										class="bg-success absolute -right-1 -bottom-1 flex h-6 w-6 items-center justify-center rounded-full border-3 border-white"
 									>
 										<svg
-											class="h-3 w-3 text-white"
+											class="h-3 w-3 text-[--ft-text]"
 											fill="none"
 											stroke="currentColor"
 											viewBox="0 0 24 24"
@@ -109,7 +109,7 @@
 										</svg>
 									</div>
 								</div>
-								<h3 class="mb-1 text-xl font-bold text-white">
+								<h3 class="mb-1 text-xl font-bold text-[--ft-text]">
 									{user.name || 'Użytkownik'}
 								</h3>
 								<p class="mb-3 text-sm text-neutral-400">{user.email}</p>
@@ -247,7 +247,7 @@
 											</div>
 											<div class="min-w-0 flex-1">
 												<div
-													class="group-hover:text-brand-600 font-semibold text-white transition-colors duration-200"
+													class="group-hover:text-brand-600 font-semibold text-[--ft-text] transition-colors duration-200"
 												>
 													{item.label}
 												</div>
@@ -318,7 +318,7 @@
 				<div class="fixed right-6 bottom-6 z-50 lg:hidden">
 					<button
 						onclick={() => (mobileMenuOpen = true)}
-						class="bg-brand-600 hover:bg-brand-700 flex h-14 w-14 items-center justify-center rounded-full text-white shadow-lg transition-colors duration-200"
+						class="bg-brand-600 hover:bg-brand-700 flex h-14 w-14 items-center justify-center rounded-full !text-white shadow-lg transition-colors duration-200"
 						aria-label="Otwórz menu konta"
 					>
 						<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -353,7 +353,7 @@
 								<div
 									class="flex items-center justify-between border-b border-white/10 bg-white/5 p-6"
 								>
-									<h3 class="text-lg font-bold text-white">Menu konta</h3>
+									<h3 class="text-lg font-bold text-[--ft-text]">Menu konta</h3>
 									<button
 										onclick={() => (mobileMenuOpen = false)}
 										class="rounded-lg p-2 transition-colors duration-200 hover:bg-white/10"
@@ -391,7 +391,7 @@
 											</svg>
 										</div>
 										<div>
-											<h4 class="font-semibold text-white">
+											<h4 class="font-semibold text-[--ft-text]">
 												{user.name || 'Użytkownik'}
 											</h4>
 											<p class="text-sm text-neutral-400">{user.email}</p>

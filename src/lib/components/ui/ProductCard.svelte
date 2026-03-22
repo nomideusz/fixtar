@@ -75,11 +75,11 @@
 </script>
 
 <div
-	class="group relative overflow-hidden border border-white/6 bg-[rgba(255,255,255,0.03)] transition-all duration-300 hover:border-[rgba(55,138,146,0.15)] hover:bg-[rgba(255,255,255,0.05)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.3)]"
+	class="group relative overflow-hidden border border-[var(--ft-border)] bg-[var(--ft-surface-secondary)] transition-all duration-300 hover:border-[var(--ft-brand-border)] hover:bg-[var(--ft-card-hover)] hover:shadow-[0_8px_32px_var(--ft-shadow)]"
 >
 	<!-- Product Link -->
 	<a href={productUrl} class="block cursor-pointer">
-		<div class="relative w-full overflow-hidden bg-white/5" style="aspect-ratio: 4/3;">
+		<div class="relative w-full overflow-hidden bg-[--ft-card]" style="aspect-ratio: 4/3;">
 			{#if mainImageUrl}
 				<img
 					src={mainImageUrl}
@@ -99,7 +99,7 @@
 					}}
 				/>
 				<!-- Fallback placeholder shown when image fails to load -->
-				<div class="hidden h-full items-center justify-center bg-white/5">
+				<div class="hidden h-full items-center justify-center bg-[--ft-card]">
 					<div class="text-center">
 						<svg
 							class="mx-auto mb-2 h-12 w-12 text-neutral-400"
@@ -119,7 +119,7 @@
 				</div>
 			{:else}
 				<!-- Show placeholder when no image URL -->
-				<div class="flex h-full items-center justify-center bg-white/5">
+				<div class="flex h-full items-center justify-center bg-[--ft-card]">
 					<div class="text-center">
 						<svg
 							class="mx-auto mb-2 h-12 w-12 text-neutral-400"
@@ -142,17 +142,17 @@
 			<!-- Professional Badges -->
 			<div class="absolute top-3 left-3 flex flex-col gap-2">
 				{#if product.featured}
-					<span class="bg-brand-600 px-2.5 py-1 text-xs font-semibold text-white shadow-sm"
+					<span class="bg-brand-600 px-2.5 py-1 text-xs font-semibold !text-white shadow-sm"
 						>Polecany</span
 					>
 				{/if}
 				{#if hasDiscount}
-					<span class="bg-danger px-2.5 py-1 text-xs font-semibold text-white shadow-sm"
+					<span class="bg-danger px-2.5 py-1 text-xs font-semibold !text-white shadow-sm"
 						>-{discountPercent}%</span
 					>
 				{/if}
 				{#if !inStock}
-					<span class="bg-neutral-600 px-2.5 py-1 text-xs font-semibold text-white shadow-sm"
+					<span class="bg-neutral-600 px-2.5 py-1 text-xs font-semibold !text-white shadow-sm"
 						>Wyprzedane</span
 					>
 				{/if}
@@ -164,7 +164,7 @@
 		<!-- Product Info -->
 		<a href={productUrl} class="block">
 			<h3
-				class="group-hover:text-brand-400 mb-1 line-clamp-2 text-base font-semibold text-white transition-colors"
+				class="group-hover:text-brand-400 mb-1 line-clamp-2 text-base font-semibold text-[--ft-text] transition-colors"
 			>
 				{product.name}
 			</h3>
@@ -177,7 +177,7 @@
 		{#if product.expand?.categories && product.expand.categories.length > 0}
 			<div class="mt-3 flex flex-wrap gap-1">
 				{#each product.expand.categories.slice(0, 2) as category (category)}
-					<span class="bg-white/10 px-2 py-0.5 text-xs text-neutral-300">
+					<span class="bg-white/10 px-2 py-0.5 text-xs text-[--ft-text-muted]">
 						{category.name}
 					</span>
 				{/each}
@@ -187,7 +187,7 @@
 		<!-- Price and Stock -->
 		<div class="mt-3 flex items-center justify-between">
 			<div class="flex items-center gap-2">
-				<span class="text-lg font-bold text-white">{product.price.toFixed(2)} zł</span>
+				<span class="text-lg font-bold text-[--ft-text]">{product.price.toFixed(2)} zł</span>
 				{#if hasDiscount}
 					<span class="text-sm text-neutral-500 line-through"
 						>{product.compareAtPrice?.toFixed(2)} zł</span
@@ -211,7 +211,7 @@
 			<button
 				onclick={addToCart}
 				disabled={!inStock}
-				class="bg-brand-600 hover:bg-brand-700 flex-1 px-4 py-2 text-sm font-medium text-white transition-colors duration-200 disabled:cursor-not-allowed disabled:bg-neutral-300"
+				class="bg-brand-600 hover:bg-brand-700 flex-1 px-4 py-2 text-sm font-medium !text-white transition-colors duration-200 disabled:cursor-not-allowed disabled:bg-neutral-300"
 			>
 				{inStock ? 'Dodaj do Koszyka' : 'Wyprzedane'}
 			</button>
@@ -219,7 +219,7 @@
 				<button
 					onclick={() => onQuickView?.(product)}
 					aria-label="Szybki podgląd"
-					class="border border-white/15 bg-white/5 px-3 py-2 text-neutral-300 transition-colors duration-200 hover:border-white/25 hover:text-white"
+					class="border border-[--ft-border] bg-[--ft-card] px-3 py-2 text-[--ft-text-muted] transition-colors duration-200 hover:border-[--ft-border-hover] hover:text-[--ft-text]"
 				>
 					<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path

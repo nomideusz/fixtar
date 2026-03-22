@@ -121,7 +121,7 @@
 							Nasza Historia
 						</div>
 
-						<h2 class="text-4xl leading-tight font-bold text-white">
+						<h2 class="text-4xl leading-tight font-bold text-[--ft-text]">
 							Pasja do Narzędzi Od 2024 Roku
 						</h2>
 
@@ -147,7 +147,7 @@
 											class="from-brand-500/100 to-accent-600 flex h-6 w-6 items-center justify-center rounded-full bg-linear-to-r transition-transform duration-200 group-hover:scale-110"
 										>
 											<svg
-												class="h-3 w-3 text-white"
+												class="h-3 w-3 text-[--ft-text]"
 												fill="none"
 												stroke="currentColor"
 												viewBox="0 0 24 24"
@@ -162,7 +162,7 @@
 										</div>
 									</div>
 									<div class="ml-4">
-										<span class="font-semibold text-white">{item.title}:</span>
+										<span class="font-semibold text-[--ft-text]">{item.title}:</span>
 										<span class="text-neutral-400"> {item.desc}</span>
 									</div>
 								</div>
@@ -192,7 +192,7 @@
 		<section class="mb-20">
 			<Card class="border-2 border-white/10 bg-linear-to-br from-white/5 to-white/3 p-12">
 				<div class="mb-12 text-center">
-					<h2 class="mb-4 text-3xl font-bold text-white">FixTar w Liczbach</h2>
+					<h2 class="mb-4 text-3xl font-bold text-[--ft-text]">FixTar w Liczbach</h2>
 					<p class="text-lg text-neutral-400">Nasze osiągnięcia mówią same za siebie</p>
 				</div>
 				<div class="grid grid-cols-2 gap-8 lg:grid-cols-4">
@@ -230,7 +230,7 @@
 					</svg>
 					Nasze Wartości
 				</div>
-				<h2 class="mb-6 text-4xl font-bold text-white">Co Nas Motywuje</h2>
+				<h2 class="mb-6 text-4xl font-bold text-[--ft-text]">Co Nas Motywuje</h2>
 				<p class="mx-auto max-w-3xl text-xl text-neutral-400">
 					Nasze podstawowe wartości kształtują sposób, w jaki prowadzimy biznes i budujemy relacje z
 					klientami
@@ -252,7 +252,7 @@
 									{value.icon}
 								</div>
 								<h3
-									class="group-hover:text-brand-600 mb-4 text-xl font-bold text-white transition-colors duration-300"
+									class="group-hover:text-brand-600 mb-4 text-xl font-bold text-[--ft-text] transition-colors duration-300"
 								>
 									{value.title}
 								</h3>
@@ -282,7 +282,7 @@
 					</svg>
 					Nasz Zespół
 				</div>
-				<h2 class="mb-6 text-4xl font-bold text-white">Poznaj Ludzi Za FixTar</h2>
+				<h2 class="mb-6 text-4xl font-bold text-[--ft-text]">Poznaj Ludzi Za FixTar</h2>
 				<p class="mx-auto max-w-3xl text-xl text-neutral-400">
 					Nasz zespół składa się z pasjonatów narzędzi, którzy codziennie pracują nad tym, aby
 					dostarczać najlepsze doświadczenia naszym klientom
@@ -306,7 +306,7 @@
 									class="bg-success absolute -right-2 -bottom-2 flex h-8 w-8 items-center justify-center rounded-full border-4 border-white"
 								>
 									<svg
-										class="h-3 w-3 text-white"
+										class="h-3 w-3 text-[--ft-text]"
 										fill="none"
 										stroke="currentColor"
 										viewBox="0 0 24 24"
@@ -321,7 +321,7 @@
 								</div>
 							</div>
 							<h3
-								class="group-hover:text-brand-600 mb-2 text-xl font-bold text-white transition-colors duration-300"
+								class="group-hover:text-brand-600 mb-2 text-xl font-bold text-[--ft-text] transition-colors duration-300"
 							>
 								{member.name}
 							</h3>
@@ -364,7 +364,7 @@
 
 		<!-- CTA Section -->
 		<section class="mt-20">
-			<Card class="from-brand-600 to-accent-700 bg-linear-to-br p-12 text-center text-white">
+			<Card class="from-brand-600 to-accent-700 bg-linear-to-br p-12 text-center text-[--ft-text]">
 				<div class="mx-auto max-w-3xl">
 					<h2 class="mb-6 text-3xl font-bold">Dołącz Do Naszej Społeczności</h2>
 					<p class="mb-8 text-xl opacity-90">
@@ -380,7 +380,7 @@
 						</Button>
 						<Button
 							href="/contact"
-							class="border-2 border-white/30 px-8 py-4 text-lg font-bold text-white backdrop-blur-sm hover:border-white hover:bg-white/10"
+							class="border-2 border-white/30 px-8 py-4 text-lg font-bold text-[--ft-text] backdrop-blur-sm hover:border-white hover:bg-white/10"
 						>
 							Skontaktuj Się
 						</Button>

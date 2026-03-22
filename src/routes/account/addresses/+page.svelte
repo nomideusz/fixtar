@@ -82,7 +82,7 @@
 
 <div>
 	<div class="mb-6 flex items-center justify-between">
-		<h1 class="text-2xl font-bold text-white">My Addresses</h1>
+		<h1 class="text-2xl font-bold text-[--ft-text]">My Addresses</h1>
 		<Button href="/account/addresses/new">Add New Address</Button>
 	</div>
 
@@ -102,7 +102,7 @@
 						d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
 					/>
 				</svg>
-				<h3 class="mb-2 text-lg font-medium text-white">Error loading addresses</h3>
+				<h3 class="mb-2 text-lg font-medium text-[--ft-text]">Error loading addresses</h3>
 				<p class="mb-6 text-neutral-400">{errorMessage}</p>
 				<Button onclick={() => window.location.reload()}>Try Again</Button>
 			</div>
@@ -129,7 +129,7 @@
 						d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
 					/>
 				</svg>
-				<h3 class="mb-2 text-lg font-medium text-white">No addresses saved</h3>
+				<h3 class="mb-2 text-lg font-medium text-[--ft-text]">No addresses saved</h3>
 				<p class="mb-6 text-neutral-400">Add an address to make checkout faster.</p>
 				<Button href="/account/addresses/new">Add Your First Address</Button>
 			</div>
@@ -140,7 +140,7 @@
 				<Card>
 					<div class="mb-4 flex items-start justify-between">
 						<div>
-							<h3 class="flex items-center gap-2 font-semibold text-white">
+							<h3 class="flex items-center gap-2 font-semibold text-[--ft-text]">
 								{address.type || 'Address'}
 								{#if address.default}
 									<span

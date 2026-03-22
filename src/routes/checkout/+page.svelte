@@ -223,7 +223,7 @@
 						/>
 					</svg>
 				</div>
-				<h2 class="mb-4 text-3xl font-bold text-white">Twój koszyk jest pusty</h2>
+				<h2 class="mb-4 text-3xl font-bold text-[--ft-text]">Twój koszyk jest pusty</h2>
 				<p class="mb-8 text-lg text-neutral-400">
 					Dodaj produkty do koszyka, aby przejść do finalizacji zamówienia
 				</p>
@@ -240,7 +240,7 @@
 				<div class="flex items-center justify-center space-x-4">
 					<div class="flex items-center">
 						<div
-							class="bg-brand-600 flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold text-white"
+							class="bg-brand-600 flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold !text-white"
 						>
 							1
 						</div>
@@ -249,7 +249,7 @@
 					<div class="bg-brand-600 h-1 w-16 rounded"></div>
 					<div class="flex items-center">
 						<div
-							class="bg-brand-600 flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold text-white"
+							class="bg-brand-600 flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold !text-white"
 						>
 							2
 						</div>
@@ -328,7 +328,7 @@
 									/>
 								</svg>
 							</div>
-							<h2 class="text-2xl font-bold text-white">Dane kontaktowe</h2>
+							<h2 class="text-2xl font-bold text-[--ft-text]">Dane kontaktowe</h2>
 						</div>
 
 						<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -381,7 +381,7 @@
 									/>
 								</svg>
 							</div>
-							<h2 class="text-2xl font-bold text-white">Adres dostawy</h2>
+							<h2 class="text-2xl font-bold text-[--ft-text]">Adres dostawy</h2>
 						</div>
 
 						<div class="space-y-6">
@@ -534,7 +534,7 @@
 									/>
 								</svg>
 							</div>
-							<h2 class="text-2xl font-bold text-white">Metoda dostawy</h2>
+							<h2 class="text-2xl font-bold text-[--ft-text]">Metoda dostawy</h2>
 						</div>
 
 						{#if data.shippingMethods && data.shippingMethods.length > 0}
@@ -571,7 +571,7 @@
 											<div class="ml-4 flex-1">
 												<div class="flex items-start justify-between">
 													<div>
-														<h3 class="text-lg font-bold text-white">{method.name}</h3>
+														<h3 class="text-lg font-bold text-[--ft-text]">{method.name}</h3>
 														<p class="mt-1 text-sm text-neutral-400">{method.description}</p>
 														{#if method.estimatedDeliveryDays}
 															<div class="mt-2 flex items-center">
@@ -601,7 +601,7 @@
 																{method.cost} zł
 															</div>
 														{:else}
-															<div class="text-lg font-bold text-white">{method.cost} zł</div>
+															<div class="text-lg font-bold text-[--ft-text]">{method.cost} zł</div>
 															{#if method.freeShippingThreshold}
 																<div class="text-xs text-neutral-500">
 																	Darmowa od {method.freeShippingThreshold} zł
@@ -662,7 +662,7 @@
 									/>
 								</svg>
 							</div>
-							<h2 class="text-2xl font-bold text-white">Metoda płatności</h2>
+							<h2 class="text-2xl font-bold text-[--ft-text]">Metoda płatności</h2>
 						</div>
 
 						{#if data.paymentMethods && data.paymentMethods.length > 0}
@@ -699,7 +699,7 @@
 											<div class="ml-4 flex-1">
 												<div class="flex items-start justify-between">
 													<div>
-														<h3 class="text-lg font-bold text-white">{method.name}</h3>
+														<h3 class="text-lg font-bold text-[--ft-text]">{method.name}</h3>
 														<p class="mt-1 text-sm text-neutral-400">{method.description}</p>
 													</div>
 													{#if method.processingFee}
@@ -764,7 +764,7 @@
 									/>
 								</svg>
 							</div>
-							<h2 class="text-2xl font-bold text-white">Dodatkowe informacje</h2>
+							<h2 class="text-2xl font-bold text-[--ft-text]">Dodatkowe informacje</h2>
 						</div>
 						<textarea
 							name="notes"
@@ -781,7 +781,7 @@
 				<div class="xl:col-span-1">
 					<div class="sticky top-8">
 						<Card class="p-8">
-							<h2 class="mb-6 text-2xl font-bold text-white">Podsumowanie zamówienia</h2>
+							<h2 class="mb-6 text-2xl font-bold text-[--ft-text]">Podsumowanie zamówienia</h2>
 
 							<!-- Items with enhanced design -->
 							<div class="mb-6 space-y-4">
@@ -811,7 +811,7 @@
 											</div>
 										{/if}
 										<div class="min-w-0 flex-1">
-											<h3 class="truncate text-sm font-semibold text-white">{item.name}</h3>
+											<h3 class="truncate text-sm font-semibold text-[--ft-text]">{item.name}</h3>
 											<p class="text-sm text-neutral-400">Ilość: {item.quantity}</p>
 											<p class="text-brand-600 text-sm font-bold">
 												{(item.price * item.quantity).toFixed(2)} zł
@@ -825,12 +825,12 @@
 							<div class="space-y-4 border-t border-white/10 pt-6">
 								<div class="flex justify-between text-sm">
 									<span class="text-neutral-400">Suma częściowa</span>
-									<span class="font-semibold text-white">{subtotal.toFixed(2)} zł</span>
+									<span class="font-semibold text-[--ft-text]">{subtotal.toFixed(2)} zł</span>
 								</div>
 								<div class="flex justify-between text-sm">
 									<span class="text-neutral-400">Dostawa</span>
 									<span
-										class="font-semibold {shippingCost === 0 ? 'text-success' : 'text-white'}"
+										class="font-semibold {shippingCost === 0 ? 'text-success' : 'text-[--ft-text]'}"
 									>
 										{shippingCost === 0 ? 'Darmowa' : `${shippingCost.toFixed(2)} zł`}
 									</span>
@@ -838,17 +838,17 @@
 								{#if paymentFee > 0}
 									<div class="flex justify-between text-sm">
 										<span class="text-neutral-400">Opłata za płatność</span>
-										<span class="font-semibold text-white">{paymentFee.toFixed(2)} zł</span>
+										<span class="font-semibold text-[--ft-text]">{paymentFee.toFixed(2)} zł</span>
 									</div>
 								{/if}
 								<div class="flex justify-between text-sm">
 									<span class="text-neutral-400">VAT (23%)</span>
-									<span class="font-semibold text-white">{tax.toFixed(2)} zł</span>
+									<span class="font-semibold text-[--ft-text]">{tax.toFixed(2)} zł</span>
 								</div>
 								<div
 									class="flex justify-between border-t border-white/10 pt-4 text-xl font-bold"
 								>
-									<span class="text-white">Do zapłaty</span>
+									<span class="text-[--ft-text]">Do zapłaty</span>
 									<span class="text-brand-600">{total.toFixed(2)} zł</span>
 								</div>
 							</div>
@@ -859,11 +859,11 @@
 								fullWidth
 								size="lg"
 								disabled={processing}
-								class="from-brand-600 to-accent-600 hover:from-brand-700 hover:to-accent-700 mt-8 transform rounded-2xl bg-linear-to-r py-4 text-lg font-bold text-white shadow-lg transition-all duration-300 hover:scale-105"
+								class="from-brand-600 to-accent-600 hover:from-brand-700 hover:to-accent-700 mt-8 transform rounded-2xl bg-linear-to-r py-4 text-lg font-bold text-[--ft-text] shadow-lg transition-all duration-300 hover:scale-105"
 							>
 								{#if processing}
 									<svg
-										class="mr-3 -ml-1 h-5 w-5 animate-spin text-white"
+										class="mr-3 -ml-1 h-5 w-5 animate-spin text-[--ft-text]"
 										fill="none"
 										viewBox="0 0 24 24"
 									>
@@ -938,7 +938,7 @@
 <!-- Enhanced Error Message -->
 {#if form?.message}
 	<div
-		class="bg-danger fixed right-6 bottom-6 z-50 flex max-w-md items-center space-x-3 rounded-xl px-6 py-4 text-white shadow-2xl"
+		class="bg-danger fixed right-6 bottom-6 z-50 flex max-w-md items-center space-x-3 rounded-xl px-6 py-4 !text-white shadow-2xl"
 	>
 		<svg class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 			<path

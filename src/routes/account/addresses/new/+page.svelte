@@ -34,7 +34,7 @@
 			</svg>
 			Back to Addresses
 		</Button>
-		<h1 class="text-2xl font-bold text-white">Add New Address</h1>
+		<h1 class="text-2xl font-bold text-[--ft-text]">Add New Address</h1>
 	</div>
 
 	<div class="max-w-2xl">
