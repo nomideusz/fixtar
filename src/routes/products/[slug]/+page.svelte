@@ -6,6 +6,7 @@
 	import ProductCard from '$lib/components/ui/ProductCard.svelte';
 	import ProductGallery from '$lib/components/products/ProductGallery.svelte';
 	import { getStockInfo } from '$lib/utils/inventory';
+	import { formatProductDescription } from '$lib/utils/html';
 	import type { Product } from '$lib/stores/products.svelte';
 
 	interface Props {
@@ -82,36 +83,7 @@
 		notifications.success(`Dodano ${quantity} ${product.name} do koszyka`);
 	}
 
-	function formatDescription(text: string): string {
-		// Sanitize: escape HTML entities
-		const escaped = text
-			.replace(/&/g, '&amp;')
-			.replace(/</g, '&lt;')
-			.replace(/>/g, '&gt;')
-			.replace(/"/g, '&quot;');
-
-		// Split into paragraphs by double newlines first
-		let paragraphs = escaped.split(/\n\s*\n/).filter(Boolean);
-
-		// If no double newlines found, try single newlines
-		if (paragraphs.length <= 1) {
-			paragraphs = escaped.split(/\n/).filter(Boolean);
-		}
-
-		// If still one blob, try to add breaks at sentence boundaries for readability
-		if (paragraphs.length <= 1 && escaped.length > 200) {
-			// Break on common product description patterns:
-			// - Sentence ends followed by uppercase (new item/feature)
-			// - Items in a list pattern (e.g. "Pistolet do pompowania" "Pistolet malarski")
-			const formatted = escaped
-				.replace(/([.!?])\s+([A-ZŻŹĆĄŚĘŁÓŃ])/g, '$1</p><p>$2')
-				.replace(/(\))\s+([A-ZŻŹĆĄŚĘŁÓŃ])/g, '$1</p><p>$2');
-			return `<p>${formatted}</p>`;
-		}
-
-		return paragraphs.map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
-	}
-
+	
 	function adjustQuantity(delta: number) {
 		const newQty = quantity + delta;
 		if (newQty >= 1 && newQty <= maxQuantity) {
@@ -209,7 +181,7 @@
 						<h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-[--ft-text-muted]">Opis produktu</h3>
 						<div class="product-description text-sm leading-relaxed text-[--ft-text]">
 							{#if product.description}
-								{@html formatDescription(product.description)}
+								{@html formatProductDescription(product.description)}
 							{:else}
 								<p>{product.shortDescription}</p>
 							{/if}
@@ -416,6 +388,63 @@
 
 	.product-description :global(p:last-child) {
 		margin-bottom: 0;
+	}
+
+	.product-description :global(h3) {
+		font-size: 1.125rem;
+		font-weight: 600;
+		margin: 1.5rem 0 0.75rem 0;
+		color: var(--ft-text-strong);
+		border-bottom: 1px solid var(--ft-line);
+		padding-bottom: 0.5rem;
+	}
+
+	.product-description :global(h4) {
+		font-size: 1rem;
+		font-weight: 600;
+		margin: 1rem 0 0.5rem 0;
+		color: var(--ft-text);
+	}
+
+	.product-description :global(ul), 
+	.product-description :global(ol) {
+		margin: 0.75rem 0;
+		padding-left: 1.5rem;
+	}
+
+	.product-description :global(li) {
+		margin-bottom: 0.25rem;
+		color: var(--ft-text);
+	}
+
+	.product-description :global(strong) {
+		font-weight: 600;
+		color: var(--ft-text-strong);
+	}
+
+	.product-description :global(em) {
+		font-style: italic;
+		color: var(--ft-text-muted);
+	}
+
+	.product-description :global(.measurement) {
+		font-family: 'Courier New', monospace;
+		background: var(--ft-frost);
+		padding: 0.125rem 0.25rem;
+		border-radius: 0.25rem;
+		font-size: 0.875rem;
+		color: var(--ft-accent);
+		font-weight: 600;
+	}
+
+	.product-description :global(.model) {
+		font-family: 'Courier New', monospace;
+		background: var(--ft-frost);
+		padding: 0.125rem 0.25rem;
+		border-radius: 0.25rem;
+		font-size: 0.875rem;
+		color: var(--ft-text);
+		font-weight: 500;
 	}
 
 	.category-pill {

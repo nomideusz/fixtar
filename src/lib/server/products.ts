@@ -66,17 +66,19 @@ export async function getAllProducts(opts: {
 	sort?: string;
 	page?: number;
 	perPage?: number;
+	minPrice?: number;
+	maxPrice?: number;
+	inStockOnly?: boolean;
 }): Promise<{ products: DBProduct[]; total: number }> {
 	const db = getClient();
-	const { search, category, sort = 'name', page = 1, perPage = 20 } = opts;
+	const { search, category, sort = 'name', page = 1, perPage = 20, minPrice, maxPrice, inStockOnly } = opts;
 
 	let where = 'WHERE 1=1';
 	const args: (string | number)[] = [];
 
 	if (search) {
-		where += ' AND (name_n LIKE ? OR description_n LIKE ? OR category_n LIKE ?)';
-		const q = `%${search.toLowerCase()}%`;
-		args.push(q, q, q);
+		where += ' AND products.id IN (SELECT rowid FROM products_fts WHERE products_fts MATCH ?)';
+		args.push(search);
 	}
 
 	if (category) {
@@ -84,9 +86,25 @@ export async function getAllProducts(opts: {
 		args.push(category);
 	}
 
+	if (minPrice !== undefined) {
+		where += ' AND price >= ?';
+		args.push(minPrice);
+	}
+
+	if (maxPrice !== undefined) {
+		where += ' AND price <= ?';
+		args.push(maxPrice);
+	}
+
+	if (inStockOnly) {
+		where += ' AND in_stock > 0';
+	}
+
 	let orderBy = 'ORDER BY name ASC';
-	if (sort === 'price-asc') orderBy = 'ORDER BY price ASC';
-	else if (sort === 'price-desc') orderBy = 'ORDER BY price DESC';
+	if (sort === 'name' || sort === 'name-asc') orderBy = 'ORDER BY name ASC';
+	else if (sort === 'name-desc') orderBy = 'ORDER BY name DESC';
+	else if (sort === 'price-asc' || sort === 'price-low') orderBy = 'ORDER BY price ASC';
+	else if (sort === 'price-desc' || sort === 'price-high') orderBy = 'ORDER BY price DESC';
 	else if (sort === 'newest') orderBy = 'ORDER BY updated_at DESC';
 
 	const countResult = await db.execute({

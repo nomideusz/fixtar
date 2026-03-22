@@ -32,6 +32,9 @@
 			searchQuery: string;
 			selectedCategory: string;
 			sortBy: string;
+			minPrice?: number;
+			maxPrice?: number;
+			inStockOnly: boolean;
 			error?: string;
 		};
 	}
@@ -48,6 +51,9 @@
 		searchQuery = data.searchQuery;
 		selectedCategory = data.selectedCategory;
 		sortBy = data.sortBy;
+		priceRange.min = data.minPrice?.toString() || '0';
+		priceRange.max = data.maxPrice?.toString() || '1000';
+		showInStock = data.inStockOnly;
 	});
 
 	// UI State
@@ -116,6 +122,9 @@
 		if (searchQuery) params.set('search', searchQuery);
 		if (selectedCategory) params.set('category', selectedCategory);
 		if (sortBy !== 'name') params.set('sort', sortBy);
+		if (priceRange.min && priceRange.min !== '0') params.set('minPrice', priceRange.min);
+		if (priceRange.max && priceRange.max !== '1000') params.set('maxPrice', priceRange.max);
+		if (showInStock) params.set('inStock', 'true');
 		if (overrides.page && overrides.page > 1) params.set('page', overrides.page.toString());
 		const qs = params.toString();
 		return `/products${qs ? '?' + qs : ''}`;
@@ -161,6 +170,17 @@
 		priceRange = { min: '0', max: '1000' };
 		expandedCategories.clear();
 		goto('/products');
+	}
+
+	function handlePriceChange() {
+		// Debounce price changes to avoid excessive navigation
+		setTimeout(() => {
+			navigateWithFilters();
+		}, 300);
+	}
+
+	function handleStockChange() {
+		navigateWithFilters();
 	}
 
 	function toggleCategory(slug: string) {
@@ -296,9 +316,21 @@
 					<div class="mb-6 border-b border-[--ft-line] pb-6">
 						<h4 class="mb-4 text-sm font-semibold text-[--ft-text]">Zakres cen</h4>
 						<div class="flex items-center space-x-3">
-							<Input type="number" placeholder="Min" bind:value={priceRange.min} class="text-sm" />
+							<Input 
+								type="number" 
+								placeholder="Min" 
+								bind:value={priceRange.min} 
+								class="text-sm"
+								oninput={handlePriceChange}
+							/>
 							<span class="font-medium text-[--ft-text-faint]">-</span>
-							<Input type="number" placeholder="Max" bind:value={priceRange.max} class="text-sm" />
+							<Input 
+								type="number" 
+								placeholder="Max" 
+								bind:value={priceRange.max} 
+								class="text-sm"
+								oninput={handlePriceChange}
+							/>
 						</div>
 						<div class="mt-3 text-xs text-[--ft-text-muted]">Ceny w PLN</div>
 					</div>
@@ -311,6 +343,7 @@
 								type="checkbox"
 								bind:checked={showInStock}
 								class="text-brand-600 focus:ring-brand-500 rounded border-[--ft-line] focus:ring-2"
+								onchange={handleStockChange}
 							/>
 							<span
 								class="ml-3 text-sm text-[--ft-text-muted] transition-colors group-hover:text-[--ft-text]"
@@ -334,6 +367,8 @@
 					onToggleCategory={toggleCategory}
 					onClearFilters={clearFilters}
 					onClose={() => (showMobileFilters = false)}
+					onPriceChange={handlePriceChange}
+					onStockChange={handleStockChange}
 				/>
 			{/if}
 

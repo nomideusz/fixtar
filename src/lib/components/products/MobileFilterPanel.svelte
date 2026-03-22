@@ -24,6 +24,8 @@
 		onToggleCategory: (slug: string) => void;
 		onClearFilters: () => void;
 		onClose: () => void;
+		onPriceChange?: () => void;
+		onStockChange?: () => void;
 	}
 
 	let {
@@ -36,7 +38,9 @@
 		onCategoryChange,
 		onToggleCategory,
 		onClearFilters,
-		onClose
+		onClose,
+		onPriceChange,
+		onStockChange
 	}: Props = $props();
 
 	let panelElement = $state<HTMLDivElement | null>(null);
@@ -134,6 +138,7 @@
 							placeholder="Min"
 							bind:value={priceRange.min}
 							class="text-sm"
+							oninput={onPriceChange}
 						/>
 						<span class="text-[--ft-text-faint]">-</span>
 						<Input
@@ -141,6 +146,7 @@
 							placeholder="Max"
 							bind:value={priceRange.max}
 							class="text-sm"
+							oninput={onPriceChange}
 						/>
 					</div>
 				</div>
@@ -153,6 +159,7 @@
 							type="checkbox"
 							bind:checked={showInStock}
 							class="text-brand-600 focus:ring-brand-500 rounded border-[--ft-line]"
+							onchange={onStockChange}
 						/>
 						<span class="ml-3 text-sm text-[--ft-text-muted]">Tylko dostępne</span>
 					</label>
