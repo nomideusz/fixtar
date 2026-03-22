@@ -3,6 +3,7 @@
 	import { browser } from '$app/environment';
 	import type { Snippet } from 'svelte';
 	import { userStore, languageStore } from '$lib/stores';
+	import TrustBar from '$lib/components/layout/TrustBar.svelte';
 	import Navbar from '$lib/components/layout/Navbar.svelte';
 	import CartDrawer from '$lib/components/layout/CartDrawer.svelte';
 	import Footer from '$lib/components/layout/Footer.svelte';
@@ -41,6 +42,7 @@
 </script>
 
 <Notifications />
+<TrustBar />
 <Navbar onCartOpen={() => (cartOpen = true)} />
 <CartDrawer bind:this={cartDrawerRef} toggleCart={() => (cartOpen = false)} t={layoutT} />
 
@@ -53,6 +55,5 @@
 <style>
 	main {
 		min-height: 100vh;
-		padding-top: 68px; /* navbar height */
 	}
 </style>

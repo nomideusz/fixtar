@@ -11,14 +11,18 @@
 
 <section class="hero">
 	<div class="hero-inner">
+		<!-- Left: content -->
 		<div class="hero-content">
 			<div class="hero-kicker">Elektronarzędzia · Serwis · Dostawa 24h</div>
 
-			<h1 class="hero-title">Profesjonalne<br />Narzędzia</h1>
+			<h1 class="hero-title">
+				Narzędzia, Które<br />
+				<span class="hero-title-accent">Pracują z Tobą</span>
+			</h1>
 
 			<p class="hero-desc">
-				Szlifierki, wiertarki, młotowiertarki, piły i więcej.
-				Sprawdzone marki w konkurencyjnych cenach.
+				Sprawdzone szlifierki, wiertarki, młotowiertarki i piły.
+				Profesjonalne marki w cenach, które docenisz.
 			</p>
 
 			<div class="hero-actions">
@@ -26,10 +30,35 @@
 					Przeglądaj Produkty
 					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="M12 5l7 7-7 7" /></svg>
 				</a>
-				<a href="/search" class="hero-btn-secondary">Szukaj</a>
+				<a href="/deals" class="hero-btn-secondary">
+					Promocje
+				</a>
+			</div>
+
+			<!-- Trust signals -->
+			<div class="hero-trust">
+				<div class="trust-item">
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+					</svg>
+					<span>Gwarancja</span>
+				</div>
+				<div class="trust-item">
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<rect x="1" y="3" width="15" height="13" rx="2" /><path d="M16 8h4l3 3v5h-7V8z" /><circle cx="5.5" cy="18.5" r="2.5" /><circle cx="18.5" cy="18.5" r="2.5" />
+					</svg>
+					<span>Dostawa 24h</span>
+				</div>
+				<div class="trust-item">
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<polyline points="1 4 1 10 7 10" /><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+					</svg>
+					<span>14 dni zwrot</span>
+				</div>
 			</div>
 		</div>
 
+		<!-- Right: featured product -->
 		{#if featuredProduct}
 			<a href="/products/{featuredProduct.slug || featuredProduct.id}" class="hero-product">
 				<div class="product-image-wrap">
@@ -64,15 +93,20 @@
 				<span class="stat-value">{totalProducts}+</span>
 				<span class="stat-label">Produktów</span>
 			</div>
-			<span class="stat-dot">·</span>
+			<span class="stat-dot" aria-hidden="true">·</span>
 			<div class="stat">
 				<span class="stat-value">4</span>
 				<span class="stat-label">Marki</span>
 			</div>
-			<span class="stat-dot">·</span>
+			<span class="stat-dot" aria-hidden="true">·</span>
 			<div class="stat">
 				<span class="stat-value">24h</span>
 				<span class="stat-label">Wysyłka</span>
+			</div>
+			<span class="stat-dot" aria-hidden="true">·</span>
+			<div class="stat">
+				<span class="stat-value">14</span>
+				<span class="stat-label">Dni na zwrot</span>
 			</div>
 		</div>
 	</div>
@@ -80,7 +114,10 @@
 
 <style>
 	.hero {
-		padding: clamp(100px, 12vh, 160px) 0 0;
+		padding: clamp(80px, 10vh, 140px) 0 0;
+		background:
+			radial-gradient(ellipse 100% 60% at 75% 20%, rgba(55, 138, 146, 0.06) 0%, transparent 60%),
+			radial-gradient(ellipse 60% 40% at 20% 80%, rgba(196, 154, 108, 0.04) 0%, transparent 50%);
 	}
 
 	.hero-inner {
@@ -117,7 +154,7 @@
 
 	.hero-title {
 		font-family: var(--font-display);
-		font-size: clamp(2.8rem, 6vw, 4.4rem);
+		font-size: clamp(2.6rem, 5.5vw, 4rem);
 		font-weight: 700;
 		line-height: 1.06;
 		color: var(--ft-dark);
@@ -125,18 +162,23 @@
 		margin-bottom: 24px;
 	}
 
+	.hero-title-accent {
+		color: var(--ft-accent);
+	}
+
 	.hero-desc {
 		font-size: 1rem;
 		line-height: 1.7;
 		color: var(--ft-text-muted);
 		max-width: 420px;
-		margin-bottom: 36px;
+		margin-bottom: 32px;
 	}
 
 	.hero-actions {
 		display: flex;
 		gap: 12px;
 		flex-wrap: wrap;
+		margin-bottom: 36px;
 	}
 
 	.hero-btn-primary {
@@ -179,6 +221,27 @@
 	.hero-btn-secondary:hover {
 		border-color: var(--ft-accent);
 		color: var(--ft-dark);
+	}
+
+	/* ── Trust signals (inline below buttons) ── */
+	.hero-trust {
+		display: flex;
+		gap: 20px;
+		flex-wrap: wrap;
+	}
+
+	.trust-item {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		font-size: 0.75rem;
+		font-weight: 500;
+		color: var(--ft-text-muted);
+	}
+
+	.trust-item svg {
+		color: var(--ft-accent);
+		flex-shrink: 0;
 	}
 
 	/* ── Featured product card ── */
@@ -280,6 +343,7 @@
 		align-items: center;
 		justify-content: center;
 		gap: 32px;
+		flex-wrap: wrap;
 	}
 
 	.stat {
@@ -291,6 +355,7 @@
 	.stat-value {
 		font-family: var(--font-display);
 		font-size: 1.1rem;
+		font-weight: 700;
 		color: var(--ft-dark);
 	}
 
@@ -305,5 +370,15 @@
 	.stat-dot {
 		color: var(--ft-text-faint);
 		font-size: 0.8rem;
+	}
+
+	@media (max-width: 640px) {
+		.stats-inner {
+			gap: 16px 24px;
+		}
+
+		.stat-dot {
+			display: none;
+		}
 	}
 </style>

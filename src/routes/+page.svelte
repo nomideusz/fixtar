@@ -3,8 +3,8 @@
 	import HeroSection from '$lib/components/home/HeroSection.svelte';
 	import CategoriesSection from '$lib/components/home/CategoriesSection.svelte';
 	import FeaturedProducts from '$lib/components/home/FeaturedProducts.svelte';
+	import BrandLogos from '$lib/components/home/BrandLogos.svelte';
 	import FeaturesSection from '$lib/components/home/FeaturesSection.svelte';
-
 
 	interface Props {
 		data: {
@@ -29,4 +29,5 @@
 <HeroSection featuredProduct={data.featuredProducts[0]} totalProducts={data.totalProducts} />
 <CategoriesSection categories={data.categories} />
 <FeaturedProducts products={data.featuredProducts} error={data.error} />
+<BrandLogos />
 <FeaturesSection />

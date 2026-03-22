@@ -145,10 +145,8 @@
 
 <style>
 	.nav {
-		position: fixed;
+		position: sticky;
 		top: 0;
-		left: 0;
-		right: 0;
 		z-index: 50;
 		background: var(--ft-surface);
 		border-bottom: 1px solid var(--ft-line);
@@ -334,11 +332,12 @@
 	.mobile-overlay {
 		position: fixed;
 		inset: 0;
-		top: 68px;
+		top: 0;
 		background: var(--ft-bg);
 		z-index: 40;
 		overflow-y: auto;
 		overscroll-behavior: contain;
+		padding-top: 68px;
 	}
 
 	@media (min-width: 768px) {

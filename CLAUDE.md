@@ -147,35 +147,194 @@ Button, Card, Input, Hero, Modal, Breadcrumbs, LoadingSpinner, ProductCard, Cust
 - **Remaining legacy tokens cleaned:** `--ft-text-secondary`→`--ft-text-muted` in product pages and ProductGallery
 - All passing `svelte-check` with **0 errors, 0 warnings** ✅
 
+### Session 9 — Phase 1 Modernization: Visual Upgrades
+
+#### Layout Architecture Change
+- **Navbar:** Changed from `position: fixed` → `position: sticky`. This allows TrustBar to sit naturally above it in document flow, scroll away when user scrolls, while navbar sticks at top. Eliminated `padding-top: 68px` hack from main. Updated mobile overlay from `top: 68px` → `padding-top: 68px`.
+
+#### New Components Created
+- **`TrustBar.svelte`** (`src/lib/components/layout/`) — Dismissible trust bar with `localStorage` persistence. Shows: Darmowa dostawa od 299 zł · Gwarancja producenta · 14 dni na zwrot. SVG icons, responsive (dots hidden on mobile), `bg-[--ft-frost]`.
+- **`BrandLogos.svelte`** (`src/lib/components/home/`) — Brand trust section with text logos (Bavaria, Magnum, Eurotec, Sterling). Links to search by brand name. Faint color → teal on hover.
+
+#### Redesigned Components
+- **`HeroSection.svelte`** — New emotional headline "Narzędzia, Które Pracują z Tobą" with accent color span. CTAs now "Przeglądaj Produkty" + "Promocje" (links to /deals). Added inline trust signals row (Gwarancja, Dostawa 24h, 14 dni zwrot). Stats strip expanded to 4 items. Subtle gradient background.
+- **`CategoriesSection.svelte`** — Complete rewrite from horizontal chip-scroll to visual card grid. Each card: icon (44px frost square) + name + product count + arrow. Responsive grid 1→2→3→4 columns. Hover: icon inverts (bg→accent, color→white), card lifts with shadow. Section header with label+title hierarchy.
+- **`FeaturesSection.svelte`** — Expanded from 3 to 4 features (+Łatwe Zwroty). Distinct SVG icons per feature (Shield, Lightning, Headphones, Rotate). Responsive grid 1→2→4 columns. Icon containers now square (44px, `radius-sm`).
+- **`Footer.svelte`** — Complete rewrite from 2-row minimal to 4-column professional layout. Brand+description+social, Sklep nav, Pomoc nav, Newsletter signup. Bottom bar with payment method icons (BLIK, Visa, Mastercard, PayPal, Przelew). Responsive 4→2→1 columns.
+
+#### Homepage Updated
+- **`+page.svelte`** — New section order: Hero → Categories → FeaturedProducts → BrandLogos → Features. Added BrandLogos import.
+- **`+layout.svelte`** — Added TrustBar import, placed above Navbar. Removed `padding-top: 68px` from main.
+
+All passing `svelte-check` with **0 errors, 0 warnings** ✅
+
 ---
 
-## TODO — Remaining Work
+## TODO — Modernization Roadmap
 
-### HIGH Priority
+> **Inspiration:** scheppach.co.uk (tools e-commerce) + szkolyjogi.pl (yoga directory, our completed project).
+> Both are minimal, modern, editorial. This roadmap tracks the full modernization plan.
+
+---
+
+### 🔴 Phase 1 — High-Impact Visual Upgrades
+
+#### 1.1 Trust Bar (above navbar) ✅
+- [x] Create `TrustBar.svelte` in `src/lib/components/layout/`
+- [x] Content: "Darmowa dostawa od 299 zł · Gwarancja producenta · 14 dni na zwrot" with SVG icons
+- [x] Thin strip, `bg-[--ft-frost]`, dismissible with `localStorage` persistence
+- [x] Added to root `+layout.svelte` above `<Navbar />`
+
+#### 1.2 Hero Section Redesign ✅
+- [x] Redesigned hero with emotional headline "Narzędzia, Które Pracują z Tobą" + accent color span
+- [x] Two CTAs: "Przeglądaj Produkty" (primary) + "Promocje" (secondary, links to /deals)
+- [x] Added inline trust signals below CTAs (Gwarancja, Dostawa 24h, 14 dni zwrot) with SVG icons
+- [x] Featured product card preserved with existing visual treatment
+- [x] Stats strip expanded to 4 items (+14 Dni na zwrot), responsive wrapping
+- [x] Subtle gradient background (teal + warm radials)
+- [ ] Future: add lifestyle/workshop background photography when assets available
+
+#### 1.3 Homepage Category Showcases ✅ (partial)
+- [x] Redesigned `CategoriesSection.svelte` from chip-scroll to visual card grid
+- [x] Each card shows: icon (square, frost bg) + name + product count + arrow indicator
+- [x] Responsive grid: 1→2→3→4 columns, hover with icon color inversion + shadow lift
+- [x] Added section title "Znajdź Narzędzia" with label/title hierarchy
+- [ ] Future: `CategoryShowcase.svelte` — 2-3 deep-dive sections with product thumbnails per category
+
+#### 1.4 Footer Expansion ✅
+- [x] Redesigned `Footer.svelte` to 4-column layout (1.5fr 1fr 1fr 1.5fr)
+- [x] Col 1: Brand "fixtar.pl" + description + social icons (Facebook, Instagram, YouTube)
+- [x] Col 2: Sklep links (Wszystkie produkty, Promocje, Szukaj)
+- [x] Col 3: Pomoc links (Kontakt, O nas)
+- [x] Col 4: Newsletter signup with email input + arrow submit button + success state
+- [x] Bottom bar: payment icons (BLIK, Visa, Mastercard, PayPal, Przelew) + copyright
+- [x] Responsive: 4→2→1 column stacking, all tokens correct
+
+#### 1.5 Homepage Flow (new page structure) ✅
+- [x] Updated `+page.svelte` section order:
+  ```
+  [TrustBar]           ← layout level, dismissible
+  [Navbar]             ← layout level, now sticky (was fixed)
+  [HeroSection]        ← redesigned with trust signals
+  [CategoriesSection]  ← visual card grid (was chip scroll)
+  [FeaturedProducts]   ← kept current
+  [BrandLogos]         ← NEW (Bavaria, Magnum, Eurotec, Sterling)
+  [FeaturesSection]    ← expanded to 4 items (+ Łatwe Zwroty)
+  [Footer]             ← expanded 4-column
+  ```
+- [x] Created `BrandLogos.svelte` — text-based brand logos, link to search by brand
+- [x] Expanded `FeaturesSection.svelte` to 4 items with distinct SVG icons
+- [x] Navbar changed from `position: fixed` → `position: sticky` (TrustBar now flows naturally above it, scrolls away, navbar sticks at top)
+
+---
+
+### 🟠 Phase 2 — Navigation & Search
+
+#### 2.1 Enhanced Navigation
+- [ ] Add mega-menu dropdown on "Produkty" hover (desktop)
+- [ ] Create `MegaMenu.svelte` — grid of categories with icons/thumbnails + counts
+- [ ] Promotion badge on "Promocje" nav item when active deals exist
+- [ ] Smooth open/close transitions
+
+#### 2.2 Navbar Inline Search
+- [ ] Expandable search input in navbar (click search icon → input slides open)
+- [ ] Replace redirect to /search with inline dropdown results
+- [ ] Show: matching products (name + thumb), categories, brands
+- [ ] Keyboard navigation (↑↓ Enter Escape)
+
+#### 2.3 Search Autocomplete (products page)
+- [ ] Port yoga project's omnisearch UX pattern
+- [ ] Autocomplete dropdown with product suggestions, categories, brands
+- [ ] Recent searches from localStorage
+- [ ] Debounced server search for fuzzy matching
+- [ ] "X wyników dla '...'" result summary
+
+---
+
+### 🟡 Phase 3 — Product Experience
+
+#### 3.1 Enhanced Product Cards
+- [ ] Stock status indicator (green dot = dostępny, orange = ostatnie sztuki)
+- [ ] Brand badge/logo on card
+- [ ] Quick specs from description (e.g., "2000W · 48T" for saws)
+- [ ] Wishlist heart icon on hover
+- [ ] "Dodaj do koszyka" appears on hover (desktop) / always visible (mobile)
+
+#### 3.2 Products Page Refinements
+- [ ] Create `ProductCardSkeleton.svelte` — skeleton loading (6-9 gray placeholders)
+- [ ] Replace spinner overlay with skeleton cards during navigation
+- [ ] Sticky toolbar with active filter count badge
+- [ ] Result count above grid: "Znaleziono X produktów"
+
+#### 3.3 Quick View Modal
+- [ ] Create `QuickViewModal.svelte` — click product → modal with gallery + details + add to cart
+- [ ] Image gallery with thumbnails
+- [ ] Key specs + price + stock status + CTA
+- [ ] "Zobacz szczegóły" link to full product page
+
+#### 3.4 Product Detail Enhancements
+- [ ] Specification table (parse from description or BaseLinker data)
+- [ ] "Kup teraz" express checkout button
+- [ ] Related products carousel (horizontal scroll)
+- [ ] Full breadcrumb path showing category hierarchy
+
+---
+
+### 🟢 Phase 4 — Conversion & Trust
+
+#### 4.1 Social Proof
+- [ ] Create `BrandLogos.svelte` — partner/brand logos section
+- [ ] Customer count / order count stats (homepage)
+- [ ] Optional: Google Reviews integration
+
+#### 4.2 Newsletter & Engagement
+- [ ] Create `NewsletterSection.svelte` — email signup with discount incentive
+- [ ] "Zapisz się i otrzymaj 5% rabatu na pierwsze zamówienie"
+- [ ] Form validation, success state, error state
+- [ ] Optional: exit-intent popup
+
+#### 4.3 Deals / Outlet Enhancement
+- [ ] Countdown timers for limited-time deals
+- [ ] Discount percentage filter (10%, 20%, 30%+)
+- [ ] Flash sale banner capability on homepage
+
+---
+
+### 🔵 Phase 5 — Polish & Performance
+
+#### 5.1 Animations & Micro-interactions
+- [ ] View transitions between pages (`::view-transition-old/new` like yoga project)
+- [ ] Staggered product card entry on load and filter changes
+- [ ] Cart drawer slide animation with backdrop blur
+- [ ] Button hover: subtle lift + shadow transition
+
+#### 5.2 Typography Review
+- [ ] Evaluate Chakra Petch for headlines (more industrial/technical feel)
+- [ ] Verify `font-display: swap` and preload critical fonts
+- [ ] Ensure consistent font stack across all components
+
+#### 5.3 Dark Mode
+- [ ] Implement using yoga project's token inversion pattern
+- [ ] `@media (prefers-color-scheme: dark)` with `--ft-*` overrides
+- [ ] Test all components in dark mode
+- [ ] Add manual toggle in navbar
+
+#### 5.4 Performance
+- [ ] Image `srcset`/`sizes` for responsive product images
+- [ ] Intersection Observer for lazy-loading below-fold sections
+- [ ] Virtualized product grid for 50+ items
+- [ ] Bundle splitting audit
+
+---
+
+### ⚪ Remaining Cleanup (from Sessions 1-8)
 
 #### Design Consistency
-- [x] **CartDrawer** — ~~legacy aliases~~ migrated to canonical tokens, emoji→SVG, focus trap added
-- [ ] **SelectableMethodCard** — `.brand .radio-dot.checked` uses `--color-brand-400` (should be `--color-brand-600` or `--ft-accent`)
-- [x] **Deals page** — ~~dark theme~~ restyled with design tokens, English→Polish, added `<label>` for newsletter input
-- [x] **Orders [id] page** — ~~emoji icons~~ replaced with SVG, fixed invisible `text-neutral-200`→`text-[--ft-text-muted]`
-
-#### i18n / Language
-- [x] **AccountMobileNav** — ~~English labels~~ Polish, ~~emoji icons~~ SVG, focus trap added
-- [x] **Error page** — ~~English text~~ fully translated to Polish, emoji→SVG
-- [x] **AccountSidebar** — deleted dead component (layout has its own inline sidebar)
-
-#### Accessibility
-- [x] **MobileFilterPanel** — ~~no focus trap~~ focus trap added with Tab cycling + Escape
-- [x] **CartDrawer** — ~~no focus trap~~ focus trap added
-- [x] **ImageZoomModal** — ~~verify focus trap~~ focus trap + overscroll-behavior added
-- [x] **Deals page** — ~~newsletter form input has no `<label>`~~ `<label>` added
-- [ ] **About page** — uses emoji icons for features (🚀 etc.) — should be SVG
-- [x] **Breadcrumbs** — ~~"Home" in English~~ "Strona główna", rewritten with scoped CSS
-
-### MEDIUM Priority
+- [ ] **SelectableMethodCard** — `.brand .radio-dot.checked` uses `--color-brand-400` (should be `--ft-accent`)
+- [ ] **About page** — emoji icons (🚀 etc.) → SVG, audit spacing, verify token usage
+- [ ] **Product detail** — `bg-neutral-600` for out-of-stock badge → tokenize
 
 #### Components to Polish
-- [ ] **About page** — audit spacing, emoji→SVG, verify token usage
 - [ ] **Contact page** — audit form labels, spacing, error states
 - [ ] **Search page** — audit empty state, suggestion chips, loading states
 - [ ] **Checkout success page** — audit spacing, verify token usage
@@ -189,25 +348,11 @@ Button, Card, Input, Hero, Modal, Breadcrumbs, LoadingSpinner, ProductCard, Cust
 - [ ] **Checkout** — textarea (notes) styling should match Input component
 
 #### Admin Pages (lower priority — internal)
-- [ ] Admin pages still use raw Tailwind neutrals — acceptable for internal tools but could be tokenized later
+- [ ] Admin pages still use raw Tailwind neutrals — acceptable for now
 
-### LOW Priority
-
-#### Polish & Enhancement
-- [ ] **Footer** — audit spacing, token usage, responsive layout
-- [x] **Notifications component** — ~~`hover:text-neutral-900`~~ → `text-[--ft-text-strong]`
-- [x] **CustomBadge** — ~~warning variants~~ simplified from 90→45 lines, removed unused variant system
-- [ ] **Product detail** — `bg-neutral-600` for out-of-stock badge (works but not tokenized)
-- [ ] **Skeleton loading** — add skeleton screens for product grid loading (currently uses spinner overlay)
+#### Other
 - [ ] **Scroll restoration** — verify products page preserves scroll position on back navigation
 - [ ] **Print styles** — no print CSS exists
-- [ ] **Dark mode** — currently disabled ("light only for now"), entire token layer exists as aliases
-
-#### Performance
-- [ ] **Image optimization** — verify all product images use `srcset`/`sizes` for responsive loading
-- [ ] **Bundle splitting** — audit route-level code splitting
-- [ ] **Third-party scripts** — audit for async/defer loading
-- [ ] **Virtualized lists** — consider for product grids with 50+ items
 
 ---
 
