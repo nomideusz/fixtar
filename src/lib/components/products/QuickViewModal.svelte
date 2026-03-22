@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { Product } from '$lib/stores/products.svelte';
-	import { cart, notifications } from '$lib/stores';
+	import { cart, notifications, wishlist } from '$lib/stores';
 	import Button from '$lib/components/ui/Button.svelte';
 
 	interface Props {
@@ -52,6 +52,13 @@
 	);
 	const categoryName = $derived(product?.expand?.categories?.[0]?.name || product?.categories?.[0] || '');
 	const productUrl = $derived(`/products/${product?.slug?.trim() || product?.id}`);
+	const isWishlisted = $derived(product ? wishlist.has(product.id) : false);
+
+	function toggleWishlist() {
+		if (!product) return;
+		const added = wishlist.toggle(product.id);
+		notifications.success(added ? `Dodano ${product.name} do ulubionych` : `Usunięto ${product.name} z ulubionych`);
+	}
 
 	const shortDesc = $derived.by(() => {
 		if (!product?.description) return '';
@@ -190,6 +197,14 @@
 							<span class="qv-meta-value">{product.sku}</span>
 						</div>
 					{/if}
+
+					<!-- Wishlist -->
+					<button class="qv-wishlist" class:is-active={isWishlisted} onclick={toggleWishlist}>
+						<svg width="14" height="14" viewBox="0 0 24 24" fill={isWishlisted ? 'currentColor' : 'none'} stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+						</svg>
+						{isWishlisted ? 'W ulubionych' : 'Dodaj do ulubionych'}
+					</button>
 
 					<!-- Actions -->
 					<div class="qv-actions">
@@ -560,6 +575,31 @@
 		color: var(--color-danger);
 		background: rgba(220, 38, 38, 0.05);
 		border-radius: var(--radius-sm);
+	}
+
+	/* ── Wishlist button ── */
+	.qv-wishlist {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 6px 12px;
+		font-size: 0.72rem;
+		font-weight: 600;
+		color: var(--ft-text-muted);
+		background: transparent;
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-sm);
+		cursor: pointer;
+		transition: all 0.15s ease;
+		min-height: 36px;
+		margin-bottom: 4px;
+	}
+
+	.qv-wishlist:hover,
+	.qv-wishlist.is-active {
+		color: #ef4444;
+		border-color: #ef4444;
+		background: rgba(239, 68, 68, 0.04);
 	}
 
 	/* ── Full details link ── */

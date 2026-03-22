@@ -21,29 +21,16 @@
 	"devDependencies": {
 		"@eslint/compat": "^2.0.2",
 		"@eslint/js": "^10.0.1",
-		"@playwright/test": "^1.58.2",
 		"@sveltejs/adapter-auto": "^7.0.1",
-		"@sveltejs/adapter-netlify": "^6.0.3",
 		"@sveltejs/vite-plugin-svelte": "^6.2.4",
-		"@tailwindcss/forms": "^0.5.11",
-		"@tailwindcss/postcss": "^4.2.1",
-		"@tailwindcss/typography": "^0.5.19",
 		"@tailwindcss/vite": "^4.2.1",
-		"@testing-library/jest-dom": "^6.9.1",
-		"@testing-library/svelte": "^5.3.1",
 		"@types/node": "^25.3.0",
-		"@vitest/browser": "^4.0.18",
-		"@vitest/coverage-v8": "^4.0.18",
-		"autoprefixer": "^10.4.24",
 		"dotenv": "^17.3.1",
 		"drizzle-kit": "^0.31.9",
 		"eslint": "^10.0.2",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-svelte": "^3.15.0",
 		"globals": "^17.3.0",
-		"jsdom": "^28.1.0",
-		"playwright": "^1.58.2",
-		"postcss": "^8.5.6",
 		"prettier": "^3.8.1",
 		"prettier-plugin-svelte": "^3.5.0",
 		"prettier-plugin-tailwindcss": "^0.7.2",
@@ -53,20 +40,18 @@
 		"tsx": "^4.21.0",
 		"typescript": "^5.9.3",
 		"typescript-eslint": "^8.56.1",
-		"vite": "^7.3.1",
-		"vitest": "^4.0.18"
+		"vite": "^7.3.1"
 	},
 	"keywords": [
 		"svelte"
 	],
 	"dependencies": {
 		"@libsql/client": "^0.17.0",
+		"@nomideusz/svelte-search": "file:packages/svelte-search",
 		"@sveltejs/kit": "^2.53.0",
 		"better-auth": "^1.4.19",
 		"drizzle-orm": "^0.45.1",
-		"runed": "^0.37.1",
-		"zod": "^4.3.6",
-		"@nomideusz/svelte-search": "file:packages/svelte-search"
+		"runed": "^0.37.1"
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [

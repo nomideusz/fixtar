@@ -4,6 +4,7 @@ export { userStore } from './user.svelte';
 export { productsStore, categoriesStore } from './products.svelte';
 export { notifications } from './notifications.svelte';
 export { languageStore } from './language.svelte';
+export { wishlist } from './wishlist.svelte';
 
 // Export types
 export type { CartItem } from './cart.svelte';

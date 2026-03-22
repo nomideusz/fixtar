@@ -79,6 +79,15 @@
 	);
 
 	const hasActiveFilters = $derived(!!searchQuery || !!selectedCategory || showInStock);
+	const activeFilterCount = $derived.by(() => {
+		let count = 0;
+		if (searchQuery) count++;
+		if (selectedCategory) count++;
+		if (showInStock) count++;
+		if (priceRange.min && priceRange.min !== '0') count++;
+		if (priceRange.max && priceRange.max !== '1000') count++;
+		return count;
+	});
 
 	const breadcrumbItems = $derived.by(() => {
 		const items = [{ label: 'Strona główna', href: '/' }];
@@ -280,6 +289,9 @@
 					/>
 				</svg>
 				Filtry
+				{#if activeFilterCount > 0}
+					<span class="ml-1.5 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-[--ft-accent] px-1 text-[0.6rem] font-bold text-white">{activeFilterCount}</span>
+				{/if}
 			</Button>
 		</div>
 	</div>
@@ -374,10 +386,13 @@
 
 			<!-- Main Product Area -->
 			<div class="lg:col-span-3">
-				<!-- Toolbar -->
-				<div class="mb-6 flex flex-col gap-4 border-b border-[--ft-line] pb-5 sm:flex-row sm:items-center sm:justify-between">
-					<!-- View Mode Toggle -->
+				<!-- Toolbar (sticky) -->
+				<div class="toolbar-sticky mb-6 flex flex-col gap-4 border-b border-[--ft-line] bg-[--ft-bg] pb-5 sm:flex-row sm:items-center sm:justify-between">
+					<!-- View Mode Toggle + Filter count -->
 					<div class="flex items-center gap-3">
+						{#if activeFilterCount > 0}
+							<span class="filter-count-badge">{activeFilterCount}</span>
+						{/if}
 						<div class="flex items-center rounded-lg bg-[--ft-frost] p-0.5" role="group" aria-label="Tryb wyświetlania">
 							<button
 								onclick={() => (viewMode = 'grid')}
@@ -584,6 +599,27 @@
 {/if}
 
 <style>
+	.toolbar-sticky {
+		position: sticky;
+		top: 68px; /* navbar height */
+		z-index: 10;
+		padding-top: 1rem;
+	}
+
+	.filter-count-badge {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 22px;
+		height: 22px;
+		padding: 0 6px;
+		font-size: 0.65rem;
+		font-weight: 700;
+		color: white;
+		background: var(--ft-accent);
+		border-radius: var(--radius-full);
+	}
+
 	.view-mode-button {
 		display: flex;
 		align-items: center;

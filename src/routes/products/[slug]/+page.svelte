@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cart, notifications } from '$lib/stores';
+	import { cart, notifications, wishlist } from '$lib/stores';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Card from '$lib/components/ui/Card.svelte';
 	import Breadcrumbs from '$lib/components/ui/Breadcrumbs.svelte';
@@ -7,6 +7,7 @@
 	import ProductGallery from '$lib/components/products/ProductGallery.svelte';
 	import { getStockInfo } from '$lib/utils/inventory';
 	import { formatProductDescription } from '$lib/utils/html';
+	import { extractSpecTable } from '$lib/utils/specs';
 	import type { Product } from '$lib/stores/products.svelte';
 
 	interface Props {
@@ -52,6 +53,8 @@
 	);
 
 	const primaryCategory = $derived(product.expand?.categories?.[0]);
+	const specTable = $derived(extractSpecTable(product.description));
+	const isWishlisted = $derived(wishlist.has(product.id));
 
 	const breadcrumbItems = $derived.by(() => {
 		const items = [
@@ -83,7 +86,24 @@
 		notifications.success(`Dodano ${quantity} ${product.name} do koszyka`);
 	}
 
-	
+	function buyNow() {
+		cart.addItem(
+			{
+				productId: product.id,
+				name: product.name,
+				price: product.price,
+				image: product.mainImage
+			},
+			quantity
+		);
+		window.location.href = '/checkout';
+	}
+
+	function toggleWishlist() {
+		const added = wishlist.toggle(product.id);
+		notifications.success(added ? `Dodano ${product.name} do ulubionych` : `Usunięto ${product.name} z ulubionych`);
+	}
+
 	function adjustQuantity(delta: number) {
 		const newQty = quantity + delta;
 		if (newQty >= 1 && newQty <= maxQuantity) {
@@ -152,6 +172,14 @@
 								SKU: <span class="font-mono">{product.sku}</span>
 							</div>
 						{/if}
+
+						<!-- Wishlist button -->
+						<button class="wishlist-detail-btn" class:is-active={isWishlisted} onclick={toggleWishlist}>
+							<svg width="16" height="16" viewBox="0 0 24 24" fill={isWishlisted ? 'currentColor' : 'none'} stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+								<path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+							</svg>
+							{isWishlisted ? 'W ulubionych' : 'Dodaj do ulubionych'}
+						</button>
 					</div>
 				</div>
 
@@ -185,6 +213,21 @@
 							{:else}
 								<p>{product.shortDescription}</p>
 							{/if}
+						</div>
+					</div>
+				{/if}
+
+				<!-- Specification Table -->
+				{#if specTable.length > 0}
+					<div class="pb-5 border-b border-[--ft-line]">
+						<h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-[--ft-text-muted]">Specyfikacja</h3>
+						<div class="spec-table">
+							{#each specTable as spec (spec.key)}
+								<div class="spec-row">
+									<span class="spec-key">{spec.key}</span>
+									<span class="spec-value">{spec.value}</span>
+								</div>
+							{/each}
 						</div>
 					</div>
 				{/if}
@@ -296,6 +339,14 @@
 								Dodaj do koszyka
 							</Button>
 
+							<!-- Buy Now -->
+							<button class="buy-now-btn" onclick={buyNow}>
+								<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+								</svg>
+								Kup teraz
+							</button>
+
 							<!-- Perks -->
 							<div
 								class="grid grid-cols-1 gap-4 text-sm text-[--ft-text-faint] sm:grid-cols-2"
@@ -364,16 +415,26 @@
 			</div>
 		</div>
 
-		<!-- Related Products -->
+		<!-- Related Products Carousel -->
 		{#if relatedProducts?.length > 0}
 			<section class="mt-16 border-t border-[--ft-line] pt-12">
-				<div class="mb-8">
-					<h4 class="ft-label mb-2">Polecane</h4>
-					<h2 class="text-2xl font-bold text-[--ft-text-strong]" style="font-family:var(--font-display);letter-spacing:-0.02em">Podobne produkty</h2>
+				<div class="mb-8 flex items-end justify-between">
+					<div>
+						<h4 class="ft-label mb-2">Polecane</h4>
+						<h2 class="text-2xl font-bold text-[--ft-text-strong]" style="font-family:var(--font-display);letter-spacing:-0.02em">Podobne produkty</h2>
+					</div>
+					<a href="/products?category={primaryCategory?.slug || ''}" class="related-see-all">
+						Zobacz wszystkie
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M5 12h14" /><path d="M12 5l7 7-7 7" />
+						</svg>
+					</a>
 				</div>
-				<div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+				<div class="related-carousel">
 					{#each relatedProducts as relatedProduct (relatedProduct.id)}
-						<ProductCard product={relatedProduct} />
+						<div class="related-card">
+							<ProductCard product={relatedProduct} />
+						</div>
 					{/each}
 				</div>
 			</section>
@@ -478,5 +539,143 @@
 
 	.category-pill:hover svg {
 		color: var(--ft-accent);
+	}
+
+	/* ── Wishlist button (detail page) ── */
+	.wishlist-detail-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 6px 12px;
+		font-size: 0.78rem;
+		font-weight: 600;
+		color: var(--ft-text-muted);
+		background: transparent;
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-sm);
+		cursor: pointer;
+		transition: all 0.15s ease;
+		min-height: 36px;
+	}
+
+	.wishlist-detail-btn:hover {
+		color: #ef4444;
+		border-color: #ef4444;
+		background: rgba(239, 68, 68, 0.04);
+	}
+
+	.wishlist-detail-btn.is-active {
+		color: #ef4444;
+		border-color: #ef4444;
+		background: rgba(239, 68, 68, 0.04);
+	}
+
+	/* ── Specification table ── */
+	.spec-table {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.spec-row {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		gap: 16px;
+		padding: 8px 0;
+		border-bottom: 1px solid var(--ft-line);
+		font-size: 0.85rem;
+	}
+
+	.spec-row:last-child {
+		border-bottom: none;
+	}
+
+	.spec-key {
+		color: var(--ft-text-muted);
+		font-weight: 500;
+		flex-shrink: 0;
+	}
+
+	.spec-value {
+		color: var(--ft-text-strong);
+		font-weight: 600;
+		text-align: right;
+	}
+
+	/* ── Buy Now button ── */
+	.buy-now-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+		width: 100%;
+		min-height: 48px;
+		padding: 12px 20px;
+		font-size: 1rem;
+		font-weight: 600;
+		color: var(--ft-accent);
+		background: transparent;
+		border: 2px solid var(--ft-accent);
+		border-radius: var(--radius-sm);
+		cursor: pointer;
+		transition: all 0.2s ease;
+	}
+
+	.buy-now-btn:hover {
+		background: var(--ft-accent);
+		color: white;
+		transform: scale(1.01);
+	}
+
+	/* ── Related products carousel ── */
+	.related-carousel {
+		display: flex;
+		gap: 20px;
+		overflow-x: auto;
+		scroll-snap-type: x mandatory;
+		-webkit-overflow-scrolling: touch;
+		padding-bottom: 8px;
+		scrollbar-width: thin;
+		scrollbar-color: var(--ft-line) transparent;
+	}
+
+	.related-carousel::-webkit-scrollbar {
+		height: 6px;
+	}
+
+	.related-carousel::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	.related-carousel::-webkit-scrollbar-thumb {
+		background: var(--ft-line);
+		border-radius: 3px;
+	}
+
+	.related-card {
+		flex: 0 0 280px;
+		scroll-snap-align: start;
+	}
+
+	@media (min-width: 640px) {
+		.related-card {
+			flex: 0 0 300px;
+		}
+	}
+
+	.related-see-all {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		font-size: 0.82rem;
+		font-weight: 600;
+		color: var(--ft-accent);
+		text-decoration: none;
+		transition: gap 0.2s ease;
+		white-space: nowrap;
+	}
+
+	.related-see-all:hover {
+		gap: 10px;
 	}
 </style>

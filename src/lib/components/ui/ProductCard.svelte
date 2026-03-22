@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Product } from '$lib/stores/products.svelte';
-	import { cart, notifications } from '$lib/stores';
+	import { cart, notifications, wishlist } from '$lib/stores';
+	import { formatQuickSpecs } from '$lib/utils/specs';
 
 	interface Props {
 		product: Product;
@@ -42,6 +43,13 @@
 		onQuickView?.(product);
 	}
 
+	function toggleWishlist(e: MouseEvent) {
+		e.preventDefault();
+		e.stopPropagation();
+		const added = wishlist.toggle(product.id);
+		notifications.success(added ? `Dodano ${product.name} do ulubionych` : `Usunięto ${product.name} z ulubionych`);
+	}
+
 	const mainImageUrl = $derived(product.mainImage || '');
 	const inStock = $derived(isInStock(product));
 	const stock = $derived(getStockInfo(product));
@@ -51,6 +59,8 @@
 	);
 	const productUrl = $derived(`/products/${product.slug?.trim() || product.id}`);
 	const categoryName = $derived(product.expand?.categories?.[0]?.name || product.categories?.[0] || '');
+	const quickSpecs = $derived(formatQuickSpecs(product.description));
+	const isWishlisted = $derived(wishlist.has(product.id));
 </script>
 
 <div class="product-card">
@@ -82,6 +92,18 @@
 			<!-- Stock indicator dot (top-right) -->
 			<div class="stock-dot stock-dot--{stock.type}" title={stock.label}></div>
 
+			<!-- Wishlist heart (top-right, below stock dot) -->
+			<button
+				class="wishlist-btn"
+				class:is-wishlisted={isWishlisted}
+				onclick={toggleWishlist}
+				aria-label={isWishlisted ? 'Usuń z ulubionych' : 'Dodaj do ulubionych'}
+			>
+				<svg width="16" height="16" viewBox="0 0 24 24" fill={isWishlisted ? 'currentColor' : 'none'} stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+				</svg>
+			</button>
+
 			<!-- Hover overlay with actions -->
 			{#if inStock}
 				<div class="card-hover-overlay">
@@ -110,6 +132,11 @@
 		<a href={productUrl} class="card-name-link">
 			<h3 class="card-name">{product.name}</h3>
 		</a>
+
+		<!-- Quick specs -->
+		{#if quickSpecs}
+			<span class="card-specs">{quickSpecs}</span>
+		{/if}
 
 		<div class="card-footer">
 			<div class="card-prices">
@@ -206,6 +233,48 @@
 	.stock-dot--in { background: var(--color-success); }
 	.stock-dot--low { background: #f59e0b; }
 	.stock-dot--out { background: var(--color-danger); }
+
+	/* ── Wishlist heart ── */
+	.wishlist-btn {
+		position: absolute;
+		top: 26px;
+		right: 4px;
+		z-index: 4;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 36px;
+		height: 36px;
+		border: none;
+		background: var(--ft-surface);
+		color: var(--ft-text-faint);
+		border-radius: 50%;
+		cursor: pointer;
+		transition: all 0.2s ease;
+		box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+		opacity: 0;
+	}
+
+	.product-card:hover .wishlist-btn,
+	.wishlist-btn.is-wishlisted {
+		opacity: 1;
+	}
+
+	.wishlist-btn:hover {
+		color: #ef4444;
+		transform: scale(1.1);
+	}
+
+	.wishlist-btn.is-wishlisted {
+		color: #ef4444;
+	}
+
+	/* Always show on touch devices */
+	@media (hover: none) {
+		.wishlist-btn {
+			opacity: 1;
+		}
+	}
 
 	/* ── Badges ── */
 	.card-badges {
@@ -345,12 +414,22 @@
 		line-clamp: 2;
 		-webkit-box-orient: vertical;
 		overflow: hidden;
-		margin-bottom: 10px;
+		margin-bottom: 4px;
 		transition: color 0.15s ease;
 	}
 
 	.product-card:hover .card-name {
 		color: var(--ft-accent);
+	}
+
+	/* ── Quick specs ── */
+	.card-specs {
+		display: block;
+		font-size: 0.68rem;
+		font-weight: 500;
+		color: var(--ft-text-muted);
+		letter-spacing: 0.02em;
+		margin-bottom: 8px;
 	}
 
 	.card-footer {

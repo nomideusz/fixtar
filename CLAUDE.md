@@ -183,7 +183,7 @@ All passing `svelte-check` with **0 errors, 0 warnings** ✅
 
 All passing `svelte-check` with **0 errors, 0 warnings** ✅
 
-### Session 11 — MegaMenu Fix + Phase 3: Product Experience
+### Session 11 — MegaMenu Fix + Phase 3: Product Experience (Part 1)
 
 #### MegaMenu Fixes
 - **Hover interaction:** Fixed disconnected hover zone — MegaMenu now receives `onMouseEnter`/`onMouseLeave` props that share the same debounce timer as the Navbar trigger. Moving mouse from "Produkty" to the mega-menu dropdown no longer causes premature close.
@@ -218,6 +218,38 @@ All passing `svelte-check` with **0 errors, 0 warnings** ✅
   - **Skeleton loading**: Replaced black overlay + spinner with 6 skeleton cards during navigation
   - **Quick View**: ProductCards now pass `onQuickView` → opens QuickViewModal
   - Added `QuickViewModal` and `ProductCardSkeleton` imports
+
+All passing `svelte-check` with **0 errors, 0 warnings** ✅
+
+### Session 12 — Phase 3 Completion: Product Experience
+
+#### New Stores
+- **`wishlist.svelte.ts`** (`src/lib/stores/`) — Client-side wishlist with `localStorage` persistence. `toggle()`, `has()`, `add()`, `remove()`, `clear()` methods. Reactive `count` getter. Exported from stores index.
+
+#### New Utilities
+- **`specs.ts`** (`src/lib/utils/`) — Product specification extraction from descriptions:
+  - `extractQuickSpecs(description, max)` — Parses power (W/kW), voltage (V), RPM, disc size (mm), weight (kg), capacity (L), pressure (bar), torque (Nm), teeth count (T), battery (Ah). Returns up to 3 spec badges.
+  - `formatQuickSpecs()` — Formats as "2000W · 125mm · 2.5kg" display string.
+  - `extractSpecTable()` — Full spec table extraction with "Key: Value" pattern matching + inline spec detection. Returns key-value pairs for detail page table.
+
+#### Enhanced Components
+- **`ProductCard.svelte`** — Added:
+  - **Wishlist heart icon** (top-right, below stock dot): appears on hover (desktop), always visible when wishlisted or on touch devices. Red heart fill when active. `opacity: 0` → `1` on hover with scale animation.
+  - **Quick specs line**: Shows extracted specs (e.g., "2000W · 125mm") between product name and price in `0.68rem` muted text.
+  - Imports `wishlist` store and `formatQuickSpecs` utility.
+
+- **`QuickViewModal.svelte`** — Added:
+  - **Wishlist button** between SKU and actions: "Dodaj do ulubionych" / "W ulubionych" toggle with heart icon. Red accent when active.
+
+- **Products page** (`/products`):
+  - **Sticky toolbar**: Toolbar now `position: sticky; top: 68px` with `bg-[--ft-bg]` so it stays visible while scrolling.
+  - **Active filter count badge**: Teal pill badge showing number of active filters (search, category, stock, price min/max). Displayed both in the toolbar (desktop) and on the mobile "Filtry" button.
+
+- **Product detail page** (`/products/[slug]`):
+  - **Specification table**: Auto-generated from description using `extractSpecTable()`. Alternating rows with key (muted) and value (strong) columns. Shown between description and purchase sections.
+  - **"Kup teraz" express button**: Outlined teal button below "Dodaj do koszyka". Adds item to cart and redirects to `/checkout`. Lightning bolt icon. Hover: fills with teal, text goes white.
+  - **Wishlist button**: Inline button in header section after SKU. Heart icon + text label. Red accent when active.
+  - **Related products carousel**: Replaced static 4-column grid with horizontal scroll carousel. Cards are `280px`/`300px` wide with `scroll-snap-type: x mandatory`. Thin scrollbar. "Zobacz wszystkie" link in section header with arrow animation on hover.
 
 All passing `svelte-check` with **0 errors, 0 warnings** ✅
 
@@ -308,15 +340,15 @@ All passing `svelte-check` with **0 errors, 0 warnings** ✅
 
 #### 3.1 Enhanced Product Cards
 - [x] Stock status indicator (green dot = dostępny, orange = ostatnie sztuki)
-- [ ] Brand badge/logo on card
-- [ ] Quick specs from description (e.g., "2000W · 48T" for saws)
-- [ ] Wishlist heart icon on hover
+- [ ] Brand badge/logo on card (products lack brand field in DB — deferred until BaseLinker sync adds brand data)
+- [x] Quick specs from description (e.g., "2000W · 125mm · 2.5kg")
+- [x] Wishlist heart icon on hover
 - [x] "Dodaj do koszyka" appears on hover (desktop) / always visible (mobile)
 
 #### 3.2 Products Page Refinements
 - [x] Create `ProductCardSkeleton.svelte` — skeleton loading (6-9 gray placeholders)
 - [x] Replace spinner overlay with skeleton cards during navigation
-- [ ] Sticky toolbar with active filter count badge
+- [x] Sticky toolbar with active filter count badge
 - [x] Result count above grid: "Znaleziono X produktów"
 
 #### 3.3 Quick View Modal
@@ -324,12 +356,13 @@ All passing `svelte-check` with **0 errors, 0 warnings** ✅
 - [x] Image gallery with thumbnails
 - [x] Key specs + price + stock status + CTA
 - [x] "Zobacz szczegóły" link to full product page
+- [x] Wishlist toggle button
 
 #### 3.4 Product Detail Enhancements
-- [ ] Specification table (parse from description or BaseLinker data)
-- [ ] "Kup teraz" express checkout button
-- [ ] Related products carousel (horizontal scroll)
-- [ ] Full breadcrumb path showing category hierarchy
+- [x] Specification table (parsed from description via `extractSpecTable()`)
+- [x] "Kup teraz" express checkout button
+- [x] Related products carousel (horizontal scroll with snap)
+- [x] Full breadcrumb path showing category hierarchy (was already done in prior session)
 
 ---
 
