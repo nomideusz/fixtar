@@ -129,7 +129,7 @@
 							</span>
 							{#if hasDiscount}
 								<div class="flex items-center gap-2">
-									<span class="text-xl text-[--ft-text-secondary] line-through">
+									<span class="text-xl text-[--ft-text-muted] line-through">
 										{product.compareAtPrice?.toFixed(2)} zł
 									</span>
 									<span
@@ -152,7 +152,7 @@
 							</div>
 
 							{#if product.sku}
-								<div class="text-sm text-[--ft-text-secondary]">
+								<div class="text-sm text-[--ft-text-muted]">
 									SKU: <span class="font-mono">{product.sku}</span>
 								</div>
 							{/if}
@@ -194,7 +194,7 @@
 				{#if product.description || product.shortDescription}
 					<Card class="p-6">
 						<h3 class="mb-4 text-lg font-semibold text-[--ft-text]">Opis produktu</h3>
-						<div class="product-description leading-relaxed text-[--ft-text-secondary]">
+						<div class="product-description leading-relaxed text-[--ft-text-muted]">
 							{#if product.description}
 								<div class="max-w-none space-y-2">
 									{#each product.description.split(/\n+/).filter(Boolean) as paragraph}

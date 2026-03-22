@@ -66,7 +66,11 @@
 	--dur-med: 0.25s;
 	--ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 
-	/* Legacy aliases for components that still reference old tokens */
+	/*
+	 * Legacy aliases — for components not yet migrated to canonical tokens.
+	 * IMPORTANT: Never re-declare a canonical token here (creates circular ref).
+	 * These aliases point FROM old name → TO canonical name.
+	 */
 	--ft-primary: var(--ft-accent);
 	--ft-primary-hover: var(--ft-accent-hover);
 	--ft-primary-light: rgba(55, 138, 146, 0.1);
@@ -74,14 +78,14 @@
 	--ft-primary-ring: var(--ft-accent);
 	--ft-border: var(--ft-line);
 	--ft-border-hover: var(--ft-accent);
-	--ft-card: var(--ft-surface);
+	--ft-card: #ffffff;
 	--ft-card-hover: var(--ft-frost);
-	--ft-card-solid: var(--ft-surface);
-	--ft-surface: var(--ft-surface);
+	--ft-card-solid: #ffffff;
+	/* --ft-surface: intentionally NOT aliased (defined above as #ffffff) */
 	--ft-surface-alt: var(--ft-bg);
 	--ft-surface-secondary: var(--ft-frost);
 	--ft-surface-tertiary: var(--ft-frost);
-	--ft-surface-elevated: var(--ft-surface);
+	--ft-surface-elevated: #ffffff;
 	--ft-surface-overlay: rgba(0, 0, 0, 0.4);
 	--ft-text-secondary: var(--ft-text-muted);
 	--ft-text-inverse: #ffffff;
@@ -104,10 +108,9 @@
 	--ft-shadow: rgba(0, 0, 0, 0.08);
 	--ft-shadow-heavy: rgba(0, 0, 0, 0.15);
 
-	/* Old dark theme aliases */
-	--ft-dark: var(--ft-text-strong);
+	/* Old dark theme aliases — DO NOT redeclare --ft-dark (defined above) */
 	--ft-dark-deeper: var(--ft-bg);
-	--ft-dark-card: var(--ft-surface);
+	--ft-dark-card: #ffffff;
 	--ft-dark-card-hover: var(--ft-frost);
 	--ft-dark-border: var(--ft-line);
 	--ft-dark-border-hover: var(--ft-accent);

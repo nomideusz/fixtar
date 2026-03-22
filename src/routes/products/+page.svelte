@@ -297,7 +297,7 @@
 							<span class="font-medium text-[--ft-text-faint]">-</span>
 							<Input type="number" placeholder="Max" bind:value={priceRange.max} class="text-sm" />
 						</div>
-						<div class="mt-3 text-xs text-[--ft-text-secondary]">Ceny w PLN</div>
+						<div class="mt-3 text-xs text-[--ft-text-muted]">Ceny w PLN</div>
 					</div>
 
 					<!-- Availability -->
