@@ -131,6 +131,22 @@ Button, Card, Input, Hero, Modal, Breadcrumbs, LoadingSpinner, ProductCard, Cust
 - **ActiveFilters.svelte:** `--ft-text-secondary`→`--ft-text-muted`
 - All passing `svelte-check` with **0 errors, 0 warnings** ✅
 
+### Session 8 — Critical CSS Fixes & Product Detail Redesign
+
+#### Critical: CSS Circular Reference (`--ft-surface`)
+- **`app.css`:** Legacy alias `--ft-surface: var(--ft-surface)` overwrote the canonical `--ft-surface: #ffffff` with a self-reference, making it resolve to the CSS guaranteed-invalid value. This silently broke `background: var(--ft-surface)` across all Card components and any `bg-[--ft-surface]` usage. Fixed by removing the self-referencing alias and using literal `#ffffff` for legacy aliases that previously referenced `--ft-surface`.
+
+#### Critical: CSS Reset vs Tailwind v4 Layer Cascade
+- **`app.css`:** The global reset `* { margin: 0; padding: 0 }` was **unlayered**. In Tailwind CSS v4, all utilities (`mb-*`, `p-*`, `gap-*`, `space-y-*`) are generated inside `@layer utilities`. Per the CSS Cascade spec, unlayered CSS always beats layered CSS — so `margin: 0` silently overrode **every Tailwind spacing utility across the entire site**. Fixed by wrapping base styles in `@layer base`.
+
+#### Product Detail Page Redesign
+- **Layout:** Replaced `space-y-8` + Card wrappers with `flex flex-col gap-5` + `border-b border-[--ft-line]` dividers for clear editorial section separation
+- **Description formatting:** New `formatDescription()` function handles three cases: paragraph breaks (`\n\n`), line breaks (`\n`), and long unformatted blobs (breaks at sentence boundaries before uppercase letters — common in supplier product data). Renders via `{@html}` with HTML escaping.
+- **Category pills:** Proper scoped `.category-pill` class with white bg, subtle border, 40px min-height, hover transitions (border→teal, text→teal, bg→frost, shadow lift)
+- **Spacing tuned:** `ft-section`→`ft-section-sm`, breadcrumb margin `mb-6`, grid `gap-8`, section gaps `gap-5`/`pb-5`
+- **Remaining legacy tokens cleaned:** `--ft-text-secondary`→`--ft-text-muted` in product pages and ProductGallery
+- All passing `svelte-check` with **0 errors, 0 warnings** ✅
+
 ---
 
 ## TODO — Remaining Work
@@ -216,6 +232,13 @@ Button, Card, Input, Hero, Modal, Breadcrumbs, LoadingSpinner, ProductCard, Cust
 - **Labels:** Every input needs a visible or `sr-only` `<label>`. Every select needs `<label for="">`.
 - **Buttons:** Use the `Button` component. Sizes: sm (36px), md (44px), lg (48px) min-height.
 - **Scoped styles:** Prefer design system CSS variables over hardcoded colors. Avoid `rgb()` literals.
+
+### CSS Architecture (Tailwind v4)
+- **Layer order:** `@layer base` → `@layer components` → `@layer utilities` → unlayered (highest)
+- **⚠️ Never put resets outside `@layer base`** — unlayered `* { margin: 0 }` silently overrides ALL Tailwind utilities. Base styles MUST be in `@layer base`.
+- **⚠️ Never create circular CSS variable references** — `--ft-surface: var(--ft-surface)` makes the token invalid. Legacy aliases must point to a DIFFERENT name or use a literal value.
+- **Custom layout classes** (`.ft-container`, `.ft-section-*`) are intentionally unlayered so they're stronger than Tailwind utilities.
+- **Component classes** (`.btn-primary`, `.input`) are in `@layer components` so utilities can override them.
 
 ### Validation
 Run before committing:
