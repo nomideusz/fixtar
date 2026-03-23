@@ -7,29 +7,23 @@
 
 	const { data } = $props<{ data: PageData }>();
 
-	// Extract data
 	const favorites = $derived(data.favorites || []);
 
-	// Animation control
 	let visible = $state(false);
 
-	// Format currency
 	function formatCurrency(amount: number): string {
-		return new Intl.NumberFormat('en-US', {
+		return new Intl.NumberFormat('pl-PL', {
 			style: 'currency',
-			currency: 'USD'
+			currency: 'PLN'
 		}).format(amount);
 	}
 
-	// Track removal state
 	let removing = $state<Record<string, boolean>>({});
 
-	// Mark product as being removed
 	function startRemoving(productId: string) {
 		removing = { ...removing, [productId]: true };
 	}
 
-	// Format discount percentage
 	function calculateDiscount(price: number, compareAtPrice: number): number {
 		if (!compareAtPrice || compareAtPrice <= price) return 0;
 		return Math.round(((compareAtPrice - price) / compareAtPrice) * 100);
@@ -41,428 +35,173 @@
 </script>
 
 <svelte:head>
-	<title>My Favorites | FixTar</title>
-	<meta name="description" content="View and manage your favorite products" />
+	<title>Ulubione - FixTar</title>
+	<meta name="description" content="Przeglądaj i zarządzaj swoimi ulubionymi produktami" />
 </svelte:head>
 
-<div class="favorites-page">
-	<!-- Background elements -->
-	<div class="account-bg-elements">
-		<div class="account-bg-element account-bg-element-1"></div>
-		<div class="account-bg-element account-bg-element-2"></div>
-		<div class="account-bg-element account-bg-element-3"></div>
+<div in:fade={{ duration: 300 }}>
+	<!-- Page header -->
+	<div class="mb-8" in:fly={{ y: -16, duration: 400, delay: 150 }}>
+		<h1 class="font-[--font-display] text-2xl font-bold text-[--ft-text-strong] mb-1">
+			Ulubione
+		</h1>
+		<p class="text-sm text-[--ft-text-muted]">Produkty zapisane na później</p>
 	</div>
 
-	<div class="page-container" in:fade={{ duration: 300 }}>
-		<div class="page-header" in:fly={{ y: -20, duration: 400, delay: 200 }}>
-			<h1 class="page-title">My Favorites</h1>
-			<p class="text-[--ft-text-muted]">Products you've saved for later</p>
+	<!-- Empty state -->
+	{#if favorites.length === 0}
+		<div
+			class="bg-[--ft-frost] rounded-xl p-12 flex flex-col items-center justify-center gap-4 text-center"
+			in:fly={{ y: 20, duration: 500, delay: 300 }}
+		>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				class="w-12 h-12 text-[--ft-text-faint]"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+				stroke-width="1.5"
+				aria-hidden="true"
+			>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+				/>
+			</svg>
+			<p class="text-[--ft-text-muted] text-base">Nie masz jeszcze ulubionych produktów.</p>
+			<a
+				href="/products"
+				class="mt-2 text-sm font-medium text-[--ft-accent] underline underline-offset-4 hover:opacity-80 transition-opacity"
+			>
+				Przeglądaj produkty
+			</a>
 		</div>
 
-		<div class="favorites-container">
-			{#if favorites.length === 0}
-				<div class="card empty-state-card" in:fly={{ y: 20, duration: 500, delay: 400 }}>
-					<div class="cyber-grid"></div>
-					<div class="empty-state">
-						<p class="text-[--ft-text-muted]">You don't have any favorites yet.</p>
-						<a href="/products" class="btn btn-primary"> Browse Products </a>
-					</div>
-				</div>
-			{:else}
-				<div class="products-grid">
-					{#each favorites as product, i (product.id)}
-						{#if visible}
-							<div
-								class="product-card-wrapper"
-								in:scale={{
-									duration: 400,
-									delay: 300 + i * 100,
-									start: 0.8,
-									easing: elasticOut
+	<!-- Products grid -->
+	{:else}
+		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+			{#each favorites as product, i (product.id)}
+				{#if visible}
+					<div
+						in:scale={{
+							duration: 400,
+							delay: 300 + i * 100,
+							start: 0.8,
+							easing: elasticOut
+						}}
+						class="group bg-[--ft-surface] border border-[--ft-line] rounded-xl overflow-hidden
+						       flex flex-col transition-all duration-300
+						       hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
+					>
+						<!-- Badges -->
+						<div class="relative">
+							<a
+								href="/products/{product.slug || product.id}"
+								class="block aspect-square overflow-hidden bg-[--ft-frost]"
+							>
+								<img
+									src={product.mainImage}
+									alt={product.name}
+									width="400"
+									height="400"
+									loading="lazy"
+									class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+								/>
+							</a>
+
+							{#if product.featured || (product.compareAtPrice && product.compareAtPrice > product.price)}
+								<div class="absolute top-2.5 right-2.5 flex flex-col gap-1.5 z-10">
+									{#if product.featured}
+										<span
+											class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+											       bg-[--ft-accent] text-white"
+										>
+											Polecany
+										</span>
+									{/if}
+									{#if product.compareAtPrice && product.compareAtPrice > product.price}
+										<span
+											class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+											       bg-red-500 text-white"
+										>
+											−{calculateDiscount(product.price, product.compareAtPrice)}%
+										</span>
+									{/if}
+								</div>
+							{/if}
+						</div>
+
+						<!-- Details -->
+						<div class="flex flex-col flex-1 p-4 gap-3">
+							<h3 class="font-[--font-body] text-sm font-medium leading-snug">
+								<a
+									href="/products/{product.slug || product.id}"
+									class="text-[--ft-text] hover:text-[--ft-accent] transition-colors"
+								>
+									{product.name}
+								</a>
+							</h3>
+
+							<div class="flex items-baseline gap-2">
+								<span class="text-base font-semibold text-[--ft-text-strong]">
+									{formatCurrency(product.price)}
+								</span>
+								{#if product.compareAtPrice && product.compareAtPrice > product.price}
+									<span class="text-sm text-[--ft-text-muted] line-through">
+										{formatCurrency(product.compareAtPrice)}
+									</span>
+								{/if}
+							</div>
+
+							<!-- Actions -->
+							<form
+								method="POST"
+								action="?/removeFavorite"
+								class="mt-auto"
+								use:enhance={() => {
+									startRemoving(product.id);
+									return ({ update }) => {
+										update();
+									};
 								}}
 							>
-								<div class="card product-card">
-									<div class="product-badge-container">
-										{#if product.featured}
-											<span class="product-badge product-badge-indigo">Featured</span>
-										{/if}
-										{#if product.compareAtPrice && product.compareAtPrice > product.price}
-											<span class="product-badge product-badge-red">
-												{calculateDiscount(product.price, product.compareAtPrice)}% Off
-											</span>
-										{/if}
-									</div>
+								<input type="hidden" name="productId" value={product.id} />
 
-									<a href="/products/{product.slug || product.id}" class="product-image-link">
-										<img src={product.mainImage} alt={product.name} class="product-image" />
+								<div class="flex gap-2">
+									<a
+										href="/products/{product.slug || product.id}"
+										class="flex-1 inline-flex items-center justify-center min-h-[44px] px-3
+										       text-sm font-medium rounded-lg
+										       bg-[--ft-accent] text-white
+										       hover:opacity-90 active:opacity-80
+										       transition-opacity"
+									>
+										Zobacz szczegóły
 									</a>
 
-									<div class="product-details">
-										<h3 class="product-name">
-											<a href="/products/{product.slug || product.id}">{product.name}</a>
-										</h3>
-
-										<div class="product-price">
-											<span class="current-price">{formatCurrency(product.price)}</span>
-											{#if product.compareAtPrice && product.compareAtPrice > product.price}
-												<span class="compare-price">{formatCurrency(product.compareAtPrice)}</span>
-											{/if}
-										</div>
-
-										<div class="product-actions">
-											<form
-												method="POST"
-												action="?/removeFavorite"
-												use:enhance={() => {
-													startRemoving(product.id);
-													return ({ update }) => {
-														update();
-													};
-												}}
-											>
-												<input type="hidden" name="productId" value={product.id} />
-
-												<div class="button-group">
-													<a
-														href="/products/{product.slug || product.id}"
-														class="btn btn-secondary view-button"
-													>
-														View Details
-													</a>
-
-													<button
-														type="submit"
-														class="btn btn-outline remove-button"
-														disabled={removing[product.id]}
-													>
-														{#if removing[product.id]}
-															Removing...
-														{:else}
-															Remove
-														{/if}
-													</button>
-												</div>
-											</form>
-										</div>
-									</div>
+									<button
+										type="submit"
+										disabled={removing[product.id]}
+										class="flex-1 inline-flex items-center justify-center min-h-[44px] px-3
+										       text-sm font-medium rounded-lg
+										       border border-[--ft-line] text-[--ft-text-muted]
+										       hover:text-red-500 hover:border-red-300
+										       disabled:opacity-50 disabled:cursor-not-allowed
+										       transition-colors"
+									>
+										{#if removing[product.id]}
+											Usuwanie…
+										{:else}
+											Usuń
+										{/if}
+									</button>
 								</div>
-							</div>
-						{/if}
-					{/each}
-				</div>
-			{/if}
+							</form>
+						</div>
+					</div>
+				{/if}
+			{/each}
 		</div>
-	</div>
+	{/if}
 </div>
-
-<style>
-	/* Page layout */
-	.favorites-page {
-		min-height: calc(100vh - var(--navbar-height) - var(--footer-height));
-		position: relative;
-	}
-
-	.page-container {
-		max-width: 1200px;
-		margin: 0 auto;
-		padding: 1rem;
-	}
-
-	/* Page header */
-	.page-header {
-		margin-bottom: 2rem;
-		text-align: center;
-	}
-
-	.page-title {
-		font-size: 2rem;
-		font-weight: 700;
-		margin-bottom: 0.25rem;
-		background: linear-gradient(to right, var(--color-brand-500), var(--color-accent-500));
-		-webkit-background-clip: text;
-		background-clip: text;
-		color: transparent;
-	}
-
-	/* Card base */
-	.card {
-		border-radius: var(--radius-lg, 0.5rem);
-		overflow: hidden;
-	}
-
-	/* Empty state */
-	.empty-state-card {
-		position: relative;
-		overflow: hidden;
-		background-color: var(--ft-surface-overlay, rgba(17, 24, 39, 0.9));
-		border: 1px solid color-mix(in srgb, var(--color-danger-dark) 30%, transparent);
-		backdrop-filter: blur(12px);
-		padding: 1.5rem;
-	}
-
-	.empty-state {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		padding: 2rem;
-		gap: 1rem;
-	}
-
-	/* Button */
-	.btn {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		border-radius: var(--radius-md, 0.375rem);
-		padding: 0.5rem 1rem;
-		font-weight: 500;
-		transition: all 0.2s ease;
-		text-decoration: none;
-		cursor: pointer;
-	}
-
-	/* Products grid */
-	.products-grid {
-		display: grid;
-		grid-template-columns: repeat(1, 1fr);
-		gap: 1rem;
-	}
-
-	@media (min-width: 640px) {
-		.products-grid {
-			grid-template-columns: repeat(2, 1fr);
-		}
-	}
-
-	@media (min-width: 1024px) {
-		.products-grid {
-			grid-template-columns: repeat(3, 1fr);
-		}
-	}
-
-	/* Product card */
-	.product-card {
-		position: relative;
-		overflow: hidden;
-		height: 100%;
-		background-color: var(--ft-surface-overlay, rgba(17, 24, 39, 0.9));
-		border: 1px solid color-mix(in srgb, var(--color-danger-dark) 20%, transparent);
-		backdrop-filter: blur(12px);
-		transition:
-			transform 0.3s,
-			box-shadow 0.3s;
-		padding: 1rem;
-	}
-
-	.product-card:hover {
-		transform: translateY(-4px);
-		box-shadow: 0 10px 25px -5px color-mix(in srgb, var(--color-danger-dark) 20%, transparent);
-	}
-
-	.product-badge-container {
-		position: absolute;
-		top: 0.5rem;
-		right: 0.5rem;
-		z-index: 10;
-		display: flex;
-		flex-direction: column;
-		gap: 0.25rem;
-	}
-
-	.product-badge {
-		display: inline-flex;
-		align-items: center;
-		padding: 0.25rem 0.75rem;
-		font-size: 0.75rem;
-		font-weight: 500;
-		border-radius: 9999px;
-	}
-
-	.product-badge-indigo {
-		background-color: color-mix(in srgb, var(--color-accent-800) 30%, transparent);
-		color: var(--color-accent-300, #a5b4fc);
-		border: 1px solid color-mix(in srgb, var(--color-accent-700) 30%, transparent);
-	}
-
-	.product-badge-red {
-		background-color: color-mix(in srgb, var(--color-danger-dark) 30%, transparent);
-		color: var(--color-danger-light, #fca5a5);
-		border: 1px solid color-mix(in srgb, var(--color-danger-dark) 30%, transparent);
-	}
-
-	.product-image-link {
-		display: block;
-		position: relative;
-		overflow: hidden;
-		border-radius: var(--radius-md, 0.375rem);
-		aspect-ratio: 1 / 1;
-	}
-
-	.product-image {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		transition: transform 0.4s;
-	}
-
-	.product-image-link:hover .product-image {
-		transform: scale(1.05);
-	}
-
-	.product-details {
-		padding: 1rem 0 0;
-	}
-
-	.product-name {
-		font-size: 1.125rem;
-		font-weight: 500;
-		margin-bottom: 0.25rem;
-	}
-
-	.product-name a {
-		color: var(--ft-text);
-		text-decoration: none;
-		transition: color 0.2s;
-	}
-
-	.product-name a:hover {
-		color: var(--color-danger-light, #fca5a5);
-	}
-
-	.product-price {
-		display: flex;
-		align-items: center;
-		gap: 0.25rem;
-		margin-bottom: 0.5rem;
-	}
-
-	.current-price {
-		font-weight: 600;
-		color: var(--ft-danger);
-	}
-
-	.compare-price {
-		font-size: 0.875rem;
-		color: var(--ft-text-secondary);
-		text-decoration: line-through;
-	}
-
-	.product-actions {
-		margin-top: 1rem;
-	}
-
-	.button-group {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-	}
-
-	@media (min-width: 640px) {
-		.button-group {
-			flex-direction: row;
-		}
-	}
-
-	.view-button {
-		flex: 1;
-		background: linear-gradient(to right, var(--color-danger-dark), var(--color-danger));
-		color: white;
-	}
-
-	.remove-button {
-		flex: 1;
-		border: 1px solid color-mix(in srgb, var(--color-danger-dark) 50%, transparent);
-		color: var(--ft-danger);
-		background-color: transparent;
-	}
-
-	.remove-button:hover:not(:disabled) {
-		background-color: color-mix(in srgb, var(--color-danger-dark) 30%, transparent);
-	}
-
-	/* Background elements */
-	.account-bg-elements {
-		position: fixed;
-		top: 0;
-		left: 0;
-		height: 100%;
-		width: 100%;
-		z-index: -10;
-		opacity: 0.2;
-		pointer-events: none;
-	}
-
-	.account-bg-element {
-		position: absolute;
-		border-radius: 50%;
-	}
-
-	.account-bg-element-1 {
-		top: 10%;
-		left: 20%;
-		height: 24rem;
-		width: 24rem;
-		background-color: var(--color-accent-800, #312e81);
-		filter: blur(120px);
-	}
-
-	.account-bg-element-2 {
-		right: 10%;
-		bottom: 20%;
-		height: 16rem;
-		width: 16rem;
-		background-color: var(--color-danger-dark, #7f1d1d);
-		filter: blur(100px);
-	}
-
-	.account-bg-element-3 {
-		top: 40%;
-		right: 30%;
-		height: 18rem;
-		width: 18rem;
-		background-color: var(--color-accent-900, #581c87);
-		filter: blur(100px);
-	}
-
-	/* Cyber grid */
-	.cyber-grid {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background-image:
-			linear-gradient(to right, rgba(185, 28, 28, 0.1) 1px, transparent 1px),
-			linear-gradient(to bottom, rgba(185, 28, 28, 0.1) 1px, transparent 1px);
-		background-size: 20px 20px;
-		mask-image: linear-gradient(
-			to bottom,
-			rgba(0, 0, 0, 1) 0%,
-			rgba(0, 0, 0, 0.8) 50%,
-			rgba(0, 0, 0, 0) 100%
-		);
-		z-index: -1;
-		pointer-events: none;
-	}
-
-	/* Set height variables */
-	:root {
-		--navbar-height: 4rem;
-		--footer-height: 25rem;
-	}
-
-	/* Responsive adjustments */
-	@media (min-width: 640px) {
-		:root {
-			--navbar-height: 5rem;
-		}
-	}
-
-	@media (min-width: 768px) {
-		:root {
-			--navbar-height: 6rem;
-			--footer-height: 22rem;
-		}
-	}
-</style>

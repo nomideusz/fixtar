@@ -364,7 +364,7 @@
 				<div class="space-y-6">
 					<Card class="overflow-hidden">
 						<div
-							class="flex h-80 items-center justify-center bg-linear-to-br from-neutral-100 to-neutral-200"
+							class="flex h-80 items-center justify-center bg-linear-to-br from-[--ft-frost] to-[--ft-frost]"
 						>
 							<div class="p-8 text-center">
 								<svg

@@ -44,7 +44,7 @@
 		const badges: Array<{ label: string; class: string }> = [];
 		if (product.featured) badges.push({ label: 'Polecany', class: 'bg-brand-600' });
 		if (hasDiscount) badges.push({ label: `-${discountPercent}%`, class: 'bg-danger' });
-		if (!stock.inStock) badges.push({ label: 'Wyprzedane', class: 'bg-neutral-600' });
+		if (!stock.inStock) badges.push({ label: 'Wyprzedane', class: 'bg-[--ft-text-muted]' });
 		return badges;
 	});
 

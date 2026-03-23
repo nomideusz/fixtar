@@ -49,14 +49,14 @@
 	}
 
 	.method-card.accent:hover {
-		border-color: var(--color-accent-300);
+		border-color: var(--ft-accent);
 		box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
 	}
 
 	.method-card.accent.selected {
-		border-color: var(--color-accent-600);
-		background: var(--color-accent-50);
-		box-shadow: 0 0 0 1px var(--color-accent-600 / 0.1);
+		border-color: var(--ft-accent);
+		background: var(--ft-frost);
+		box-shadow: 0 0 0 1px rgba(55, 138, 146, 0.1);
 	}
 
 	.method-card.brand:hover {
@@ -79,7 +79,7 @@
 	}
 
 	.method-card.accent .radio-dot.checked {
-		border-color: var(--color-accent-600);
+		border-color: var(--ft-accent);
 	}
 
 	.method-card.brand .radio-dot.checked {
@@ -96,7 +96,7 @@
 	}
 
 	.method-card.accent .dot {
-		background-color: var(--color-accent-600);
+		background-color: var(--ft-accent);
 	}
 
 	.method-card.brand .dot {

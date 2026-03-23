@@ -31,47 +31,41 @@
 		}
 	];
 
-	// Brand values with enhanced design
+	// Brand values
 	const brandValues = [
 		{
 			title: 'Jakość Przede Wszystkim',
-			icon: '🎯',
+			icon: 'target',
 			description:
-				'Współpracujemy z zaufanymi markami i osobiście testujemy produkty przed dodaniem ich do naszego sklepu.',
-			color: 'from-brand-500/100 to-brand-600'
+				'Współpracujemy z zaufanymi markami i osobiście testujemy produkty przed dodaniem ich do naszego sklepu.'
 		},
 		{
 			title: 'Innowacyjność',
-			icon: '⚡',
+			icon: 'lightning',
 			description:
-				'Śledzimy najnowsze trendy technologiczne, aby dostarczać najnowsze innowacje naszym klientom.',
-			color: 'from-accent-500 to-accent-600'
+				'Śledzimy najnowsze trendy technologiczne, aby dostarczać najnowsze innowacje naszym klientom.'
 		},
 		{
 			title: 'Klient Na Pierwszym Miejscu',
-			icon: '👥',
+			icon: 'users',
 			description:
-				'Oferujemy spersonalizowaną obsługę i porady techniczne, aby pomóc znaleźć idealne rozwiązanie.',
-			color: 'from-success to-success'
+				'Oferujemy spersonalizowaną obsługę i porady techniczne, aby pomóc znaleźć idealne rozwiązanie.'
 		},
 		{
 			title: 'Profesjonalizm',
-			icon: '🏆',
+			icon: 'trophy',
 			description:
-				'Wysokie standardy obsługi i profesjonalne doradztwo w każdym aspekcie naszej działalności.',
-			color: 'from-brand-500/100 to-brand-600'
+				'Wysokie standardy obsługi i profesjonalne doradztwo w każdym aspekcie naszej działalności.'
 		},
 		{
 			title: 'Szybkość Działania',
-			icon: '🚀',
-			description: 'Szybka realizacja zamówień i błyskawiczna odpowiedź na zapytania klientów.',
-			color: 'from-danger to-danger-dark'
+			icon: 'rocket',
+			description: 'Szybka realizacja zamówień i błyskawiczna odpowiedź na zapytania klientów.'
 		},
 		{
 			title: 'Wsparcie Techniczne',
-			icon: '🔧',
-			description: 'Kompleksowe wsparcie techniczne długo po dokonaniu zakupu.',
-			color: 'from-brand-500/100 to-brand-600'
+			icon: 'wrench',
+			description: 'Kompleksowe wsparcie techniczne długo po dokonaniu zakupu.'
 		}
 	];
 
@@ -239,27 +233,55 @@
 			<div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
 				{#each brandValues as value (value)}
 					<Card hover class="group">
-						<div class="relative overflow-hidden">
-							<!-- Gradient background -->
+						<div class="p-8 text-center">
 							<div
-								class="absolute inset-0 bg-linear-to-br {value.color} opacity-0 transition-opacity duration-300 group-hover:opacity-10"
-							></div>
-
-							<div class="relative p-8 text-center">
-								<div
-									class="mb-6 transform text-5xl transition-transform duration-300 group-hover:scale-110"
-								>
-									{value.icon}
-								</div>
-								<h3
-									class="group-hover:text-brand-600 mb-4 text-xl font-bold text-[--ft-text] transition-colors duration-300"
-								>
-									{value.title}
-								</h3>
-								<p class="leading-relaxed text-[--ft-text-muted]">
-									{value.description}
-								</p>
+								class="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-[--ft-frost] text-[--ft-accent] transition-transform duration-300 group-hover:scale-110"
+							>
+								{#if value.icon === 'target'}
+									<svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8">
+										<circle cx="12" cy="12" r="10" />
+										<circle cx="12" cy="12" r="6" />
+										<circle cx="12" cy="12" r="2" />
+									</svg>
+								{:else if value.icon === 'lightning'}
+									<svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8">
+										<path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+									</svg>
+								{:else if value.icon === 'users'}
+									<svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8">
+										<path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+										<circle cx="9" cy="7" r="4" />
+										<path d="M23 21v-2a4 4 0 00-3-3.87" />
+										<path d="M16 3.13a4 4 0 010 7.75" />
+									</svg>
+								{:else if value.icon === 'trophy'}
+									<svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8">
+										<path d="M8 21h8M12 17v4" />
+										<path d="M7 4H4a1 1 0 00-1 1v3a4 4 0 004 4h1" />
+										<path d="M17 4h3a1 1 0 011 1v3a4 4 0 01-4 4h-1" />
+										<path d="M7 4h10v8a5 5 0 01-10 0V4z" />
+									</svg>
+								{:else if value.icon === 'rocket'}
+									<svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8">
+										<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 00-2.91-.09z" />
+										<path d="M12 15l-3-3a22 22 0 012-3.95A12.88 12.88 0 0122 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 01-4 2z" />
+										<path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0" />
+										<path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" />
+									</svg>
+								{:else if value.icon === 'wrench'}
+									<svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8">
+										<path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" />
+									</svg>
+								{/if}
 							</div>
+							<h3
+								class="group-hover:text-brand-600 mb-4 text-xl font-bold text-[--ft-text] transition-colors duration-300"
+							>
+								{value.title}
+							</h3>
+							<p class="leading-relaxed text-[--ft-text-muted]">
+								{value.description}
+							</p>
 						</div>
 					</Card>
 				{/each}

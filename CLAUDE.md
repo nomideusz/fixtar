@@ -121,6 +121,19 @@ npx svelte-check --threshold error
 
 All passing `svelte-check` with **0 errors, 0 warnings** ✅
 
+### Session 13 — Final Page Cleanup (Token & Emoji Sweep)
+
+- [x] **SelectableMethodCard** — replaced 4× `--color-accent-*` with `--ft-accent`/`--ft-frost`/rgba
+- [x] **About page** — 6 emoji icons (🎯⚡👥🏆🚀🔧) → SVG icons, removed unused gradient `color` field
+- [x] **Product detail** — `bg-neutral-600` out-of-stock badge → `bg-[--ft-text-muted]`
+- [x] **Contact page** — `from-neutral-100 to-neutral-200` map placeholder → `from-[--ft-frost] to-[--ft-frost]`
+- [x] **Account favorites** — complete rewrite: dark cyberpunk theme → light Scandinavian, English→Polish, proper tokens, removed all scoped dark CSS
+- [x] **order-status.ts** — `bg-neutral-100 text-neutral-200` → `bg-[--ft-frost] text-[--ft-text-muted]`
+- [x] Verified clean: checkout, account addresses, search page, footer — all already using correct tokens
+- [x] **Result: zero stale tokens and zero emoji in all non-admin code**
+
+All passing `svelte-check` with **0 errors, 0 warnings** ✅
+
 ---
 
 ## TODO — Remaining Work
@@ -132,7 +145,7 @@ All passing `svelte-check` with **0 errors, 0 warnings** ✅
 - [ ] Category name as subtle overlay on image
 
 #### Products Section
-- [ ] ProductCard: simplify to image + name + price only (remove stock dots, hover overlays)
+- [x] ProductCard: already simplified to image + name + availability + price (no stock dots, no hover overlays)
 
 ---
 
@@ -151,19 +164,9 @@ All passing `svelte-check` with **0 errors, 0 warnings** ✅
 
 ---
 
-### 🟢 Page Cleanup
+### ✅ Page Cleanup — Complete
 
-Remaining legacy token/styling issues across pages:
-
-- [ ] **SelectableMethodCard** — `.brand .radio-dot.checked` uses `--color-brand-400`
-- [ ] **About page** — emoji icons → SVG, audit tokens
-- [ ] **Product detail** — `bg-neutral-600` out-of-stock badge → tokenize
-- [ ] **Contact page** — audit form labels, spacing
-- [ ] **Search page** — audit empty state, loading states
-- [ ] **Checkout** — `text-neutral-300` on voivodeship label, textarea styling
-- [ ] **Account addresses** — `text-neutral-300` in form labels
-- [ ] **Account favorites** — `--ft-surface-overlay` in scoped styles
-- [ ] Simplify footer — fewer columns, less content, lighter
+All non-admin pages verified clean: zero stale tokens, zero emoji.
 
 ---
 

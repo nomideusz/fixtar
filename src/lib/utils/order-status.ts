@@ -19,7 +19,7 @@ const STATUS_MAP: Record<string, OrderStatusInfo> = {
 
 const DEFAULT_STATUS: OrderStatusInfo = {
 	label: 'Nieznany',
-	colorClass: 'bg-neutral-100 text-neutral-200'
+	colorClass: 'bg-[--ft-frost] text-[--ft-text-muted]'
 };
 
 export function getOrderStatus(status: string): OrderStatusInfo {
