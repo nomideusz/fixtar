@@ -22,7 +22,7 @@
 				<div class="aspect-square w-full overflow-hidden rounded-xl bg-[--ft-frost]">
 					<button
 						onclick={() => (imageZoomed = true)}
-						class="focus:ring-brand-500 h-full w-full rounded-xl focus:ring-2 focus:ring-offset-2 focus:outline-none"
+						class="focus:ring-[--ft-accent] h-full w-full rounded-xl focus:ring-2 focus:ring-offset-2 focus:outline-none"
 						aria-label="Powiększ zdjęcie produktu"
 					>
 						<img
@@ -81,7 +81,7 @@
 							onclick={() => (selectedImageIndex = index)}
 							class="h-20 w-20 shrink-0 overflow-hidden rounded-xl border-2 transition-all duration-200 {selectedImageIndex ===
 							index
-								? 'border-brand-500 ring-brand-200 ring-2'
+								? 'border-[--ft-accent] ring-[--ft-accent]/30 ring-2'
 								: 'border-[--ft-line] hover:border-[--ft-line]'}"
 						>
 							<img

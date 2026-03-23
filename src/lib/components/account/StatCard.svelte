@@ -13,8 +13,8 @@
 	let {
 		value,
 		label,
-		valueClass = 'text-brand-600',
-		gradientClass = 'from-brand-500/100/20 to-brand-500/30',
+		valueClass = 'text-[--ft-accent]',
+		gradientClass = 'from-[--ft-accent]/20 to-[--ft-accent]/30',
 		icon
 	}: Props = $props();
 </script>

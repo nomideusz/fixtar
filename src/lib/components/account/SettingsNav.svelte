@@ -30,12 +30,12 @@
 					<div
 						class="mr-3 flex h-10 w-10 items-center justify-center rounded-lg {activeSection ===
 						section.id
-							? 'bg-brand-500/20'
+							? 'bg-[--ft-accent]/20'
 							: 'bg-[--ft-frost]'} transition-colors duration-200"
 					>
 						<svg
 							class="h-5 w-5 {activeSection === section.id
-								? 'text-brand-600'
+								? 'text-[--ft-accent]'
 								: 'text-[--ft-text-muted]'}"
 							fill="none"
 							stroke="currentColor"

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Hero from '$lib/components/ui/Hero.svelte';
 	import Card from '$lib/components/ui/Card.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 
@@ -86,12 +85,14 @@
 	/>
 </svelte:head>
 
-<!-- Modern Professional Hero Section -->
-<Hero
-	title="O Nas"
-	subtitle="Poznaj historię i wartości, które kierują nami w codziennej pracy. Jesteśmy zespołem pasjonatów narzędzi, którzy chcą dzielić się swoją wiedzą i doświadczeniem."
-	centered={true}
-/>
+<section class="border-b border-[--ft-line]">
+	<div class="ft-container" style="padding-top: clamp(40px, 5vh, 56px); padding-bottom: clamp(40px, 5vh, 56px);">
+		<div class="mx-auto max-w-3xl text-center">
+			<h1 style="font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.03em; color: var(--ft-dark); margin-bottom: 12px;">O Nas</h1>
+			<p class="text-[--ft-text-muted]" style="font-size: 1rem; line-height: 1.7;">Poznaj historię i wartości, które kierują nami w codziennej pracy. Jesteśmy zespołem pasjonatów narzędzi, którzy chcą dzielić się swoją wiedzą i doświadczeniem.</p>
+		</div>
+	</div>
+</section>
 
 <!-- Main Content -->
 <div>
@@ -102,7 +103,7 @@
 				<div class="order-2 lg:order-1">
 					<div class="space-y-6">
 						<div
-							class="bg-brand-100 text-brand-800 inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold"
+							class="bg-[--ft-frost] text-[--ft-accent] inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold"
 						>
 							<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path
@@ -138,7 +139,7 @@
 								<div class="group flex items-start">
 									<div class="mt-1 shrink-0">
 										<div
-											class="from-brand-500/100 to-accent-600 flex h-6 w-6 items-center justify-center rounded-full bg-linear-to-r transition-transform duration-200 group-hover:scale-110"
+											class="from-[--ft-accent] to-[--ft-accent] flex h-6 w-6 items-center justify-center rounded-full bg-linear-to-r transition-transform duration-200 group-hover:scale-110"
 										>
 											<svg
 												class="h-3 w-3 text-[--ft-text]"
@@ -168,7 +169,7 @@
 				<div class="order-1 lg:order-2">
 					<Card class="overflow-hidden">
 						<div
-							class="from-brand-500/100/20 to-accent-500/100/20 flex aspect-4/3 items-center justify-center bg-linear-to-br"
+							class="from-[--ft-frost] to-[--ft-frost] flex aspect-4/3 items-center justify-center bg-linear-to-br"
 						>
 							<img
 								src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&q=80"
@@ -194,7 +195,7 @@
 						<div class="group text-center">
 							<div class="relative">
 								<div
-									class="from-brand-600 to-accent-600 mb-2 bg-linear-to-r bg-clip-text text-4xl font-bold text-transparent transition-transform duration-200 group-hover:scale-110 lg:text-5xl"
+									class="from-[--ft-accent] to-[--ft-accent] mb-2 bg-linear-to-r bg-clip-text text-4xl font-bold text-transparent transition-transform duration-200 group-hover:scale-110 lg:text-5xl"
 								>
 									{stat.value}
 								</div>
@@ -275,7 +276,7 @@
 								{/if}
 							</div>
 							<h3
-								class="group-hover:text-brand-600 mb-4 text-xl font-bold text-[--ft-text] transition-colors duration-300"
+								class="group-hover:text-[--ft-accent] mb-4 text-xl font-bold text-[--ft-text] transition-colors duration-300"
 							>
 								{value.title}
 							</h3>
@@ -316,7 +317,7 @@
 						<div class="text-center">
 							<div class="relative mb-6 inline-block">
 								<div
-									class="group-hover:ring-brand-200 mx-auto h-32 w-32 overflow-hidden rounded-full ring-4 ring-[--ft-line] transition-all duration-300"
+									class="group-hover:ring-[--ft-accent] mx-auto h-32 w-32 overflow-hidden rounded-full ring-4 ring-[--ft-line] transition-all duration-300"
 								>
 									<img
 										src={member.image}
@@ -343,18 +344,18 @@
 								</div>
 							</div>
 							<h3
-								class="group-hover:text-brand-600 mb-2 text-xl font-bold text-[--ft-text] transition-colors duration-300"
+								class="group-hover:text-[--ft-accent] mb-2 text-xl font-bold text-[--ft-text] transition-colors duration-300"
 							>
 								{member.name}
 							</h3>
-							<p class="text-brand-600 mb-4 font-semibold">{member.role}</p>
+							<p class="text-[--ft-accent] mb-4 font-semibold">{member.role}</p>
 							<p class="mb-6 leading-relaxed text-[--ft-text-muted]">{member.bio}</p>
 
 							<!-- Contact buttons -->
 							<div class="flex justify-center gap-3">
 								<a
 									href="mailto:{member.email}"
-									class="bg-brand-100 hover:bg-brand-200 text-brand-700 inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-200"
+									class="bg-[--ft-frost] hover:bg-[--ft-frost] text-[--ft-accent] inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-200"
 								>
 									<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 										<path
@@ -386,7 +387,7 @@
 
 		<!-- CTA Section -->
 		<section class="mt-20">
-			<Card class="from-brand-600 to-accent-700 bg-linear-to-br p-12 text-center text-[--ft-text]">
+			<Card class="from-[--ft-accent] to-[--ft-accent] bg-linear-to-br p-12 text-center text-[--ft-text]">
 				<div class="mx-auto max-w-3xl">
 					<h2 class="mb-6 text-3xl font-bold">Dołącz Do Naszej Społeczności</h2>
 					<p class="mb-8 text-xl opacity-90">
@@ -396,7 +397,7 @@
 					<div class="flex flex-col justify-center gap-4 sm:flex-row">
 						<Button
 							href="/products"
-							class="text-brand-600 bg-[--ft-frost] px-8 py-4 text-lg font-bold shadow-lg hover:bg-[--ft-frost]"
+							class="text-[--ft-accent] bg-[--ft-frost] px-8 py-4 text-lg font-bold shadow-lg hover:bg-[--ft-frost]"
 						>
 							Przeglądaj Produkty
 						</Button>

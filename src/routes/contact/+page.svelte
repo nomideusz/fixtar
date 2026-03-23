@@ -2,7 +2,6 @@
 	import Card from '$lib/components/ui/Card.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
-	import Hero from '$lib/components/ui/Hero.svelte';
 	import { notifications } from '$lib/stores';
 
 	let formData = $state({
@@ -99,12 +98,14 @@
 	/>
 </svelte:head>
 
-<!-- Modern Professional Hero Section -->
-<Hero
-	title="Kontakt"
-	subtitle="Jesteśmy tutaj, aby pomóc! Skontaktuj się z nami w sprawie pytań, wsparcia lub po prostu by porozmawiać o technologii."
-	centered={true}
-/>
+<section class="border-b border-[--ft-line]">
+	<div class="ft-container" style="padding-top: clamp(40px, 5vh, 56px); padding-bottom: clamp(40px, 5vh, 56px);">
+		<div class="mx-auto max-w-3xl text-center">
+			<h1 style="font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.03em; color: var(--ft-dark); margin-bottom: 12px;">Kontakt</h1>
+			<p class="text-[--ft-text-muted]" style="font-size: 1rem; line-height: 1.7;">Jesteśmy tutaj, aby pomóc! Skontaktuj się z nami w sprawie pytań, wsparcia lub po prostu by porozmawiać o technologii.</p>
+		</div>
+	</div>
+</section>
 
 <!-- Main Content -->
 <div>
@@ -143,11 +144,11 @@
 						<div class="p-6">
 							<!-- Icon -->
 							<div
-								class="from-brand-500/100/20 to-accent-500/100/20 mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br transition-transform duration-200 group-hover:scale-110"
+								class="from-[--ft-frost] to-[--ft-frost] mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br transition-transform duration-200 group-hover:scale-110"
 							>
 								{#if info.icon === 'location'}
 									<svg
-										class="text-brand-600 h-8 w-8"
+										class="text-[--ft-accent] h-8 w-8"
 										fill="none"
 										stroke="currentColor"
 										viewBox="0 0 24 24"
@@ -167,7 +168,7 @@
 									</svg>
 								{:else if info.icon === 'phone'}
 									<svg
-										class="text-brand-600 h-8 w-8"
+										class="text-[--ft-accent] h-8 w-8"
 										fill="none"
 										stroke="currentColor"
 										viewBox="0 0 24 24"
@@ -181,7 +182,7 @@
 									</svg>
 								{:else if info.icon === 'email'}
 									<svg
-										class="text-brand-600 h-8 w-8"
+										class="text-[--ft-accent] h-8 w-8"
 										fill="none"
 										stroke="currentColor"
 										viewBox="0 0 24 24"
@@ -195,7 +196,7 @@
 									</svg>
 								{:else if info.icon === 'clock'}
 									<svg
-										class="text-brand-600 h-8 w-8"
+										class="text-[--ft-accent] h-8 w-8"
 										fill="none"
 										stroke="currentColor"
 										viewBox="0 0 24 24"
@@ -212,7 +213,7 @@
 
 							<!-- Content -->
 							<h3
-								class="group-hover:text-brand-600 mb-3 text-lg font-bold text-[--ft-text] transition-colors duration-200"
+								class="group-hover:text-[--ft-accent] mb-3 text-lg font-bold text-[--ft-text] transition-colors duration-200"
 							>
 								{info.title}
 							</h3>
@@ -226,7 +227,7 @@
 							{#if info.action}
 								<a
 									href={info.action.href}
-									class="text-brand-600 hover:text-brand-700 inline-flex items-center text-sm font-medium transition-all duration-200 group-hover:underline"
+									class="text-[--ft-accent] hover:text-[--ft-accent] inline-flex items-center text-sm font-medium transition-all duration-200 group-hover:underline"
 								>
 									{info.action.text}
 									<svg
@@ -318,7 +319,7 @@
 									required
 									disabled={sending}
 									rows="5"
-									class="focus:ring-brand-500 w-full resize-none rounded-xl border border-[--ft-line] px-4 py-3 focus:border-transparent focus:ring-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+									class="focus:ring-[--ft-accent] w-full resize-none rounded-xl border border-[--ft-line] px-4 py-3 focus:border-transparent focus:ring-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
 								></textarea>
 							</div>
 
@@ -392,12 +393,12 @@
 						</div>
 					</Card>
 
-					<Card class="from-brand-500/100/8 to-accent-500/100/8 bg-linear-to-br p-6">
+					<Card class="from-[--ft-frost] to-[--ft-frost] bg-linear-to-br p-6">
 						<h4 class="mb-4 text-lg font-bold text-[--ft-text]">Odwiedź Nas</h4>
 						<div class="space-y-3 text-sm">
 							<div class="flex items-center">
 								<svg
-									class="text-brand-600 mr-3 h-5 w-5"
+									class="text-[--ft-accent] mr-3 h-5 w-5"
 									fill="none"
 									stroke="currentColor"
 									viewBox="0 0 24 24"
@@ -419,7 +420,7 @@
 							</div>
 							<div class="flex items-center">
 								<svg
-									class="text-brand-600 mr-3 h-5 w-5"
+									class="text-[--ft-accent] mr-3 h-5 w-5"
 									fill="none"
 									stroke="currentColor"
 									viewBox="0 0 24 24"
@@ -435,7 +436,7 @@
 							</div>
 							<div class="flex items-center">
 								<svg
-									class="text-brand-600 mr-3 h-5 w-5"
+									class="text-[--ft-accent] mr-3 h-5 w-5"
 									fill="none"
 									stroke="currentColor"
 									viewBox="0 0 24 24"
@@ -459,7 +460,7 @@
 		<section>
 			<div class="mb-12 text-center">
 				<div
-					class="bg-brand-100 text-brand-800 mb-4 inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold"
+					class="bg-[--ft-frost] text-[--ft-accent] mb-4 inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold"
 				>
 					<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path

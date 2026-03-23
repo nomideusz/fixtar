@@ -26,7 +26,7 @@
 				{@render icon()}
 			</div>
 			<h3
-				class="group-hover:text-brand-600 mb-2 text-lg font-bold text-[--ft-text] transition-colors duration-200"
+				class="group-hover:text-[--ft-accent] mb-2 text-lg font-bold text-[--ft-text] transition-colors duration-200"
 			>
 				{title}
 			</h3>
@@ -37,7 +37,7 @@
 				{href}
 				variant="outline"
 				size="sm"
-				class="group-hover:border-brand-500 group-hover:text-brand-600 w-full transition-colors duration-200"
+				class="group-hover:border-[--ft-accent] group-hover:text-[--ft-accent] w-full transition-colors duration-200"
 			>
 				Przejdź
 			</Button>

@@ -201,7 +201,7 @@
 									onclick={close}
 									aria-label={item.name}
 								>
-									<img src={item.image} alt={item.name} class="cart-item__image" />
+									<img src={item.image} alt={item.name} class="cart-item__image" width="64" height="64" loading="lazy" />
 								</a>
 								<div class="cart-item__details">
 									<a href={productHref(item)} class="cart-item__name-link" onclick={close}>

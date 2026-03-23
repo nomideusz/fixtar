@@ -58,7 +58,7 @@
 				<button
 					type="button"
 					onclick={onClose}
-					class="focus:ring-brand-500 rounded-lg p-1 text-[--ft-text-muted] hover:text-[--ft-text] focus:ring-2 focus:outline-none"
+					class="focus:ring-[--ft-accent] rounded-lg p-1 text-[--ft-text-muted] hover:text-[--ft-text] focus:ring-2 focus:outline-none"
 					aria-label="Zamknij"
 				>
 					<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -70,7 +70,7 @@
 							class="border-b border-[--ft-line] transition-colors duration-150 hover:bg-[--ft-frost]"
 						>
 							<td class="px-4 py-4">
-								<span class="text-brand-600 font-medium">#{order.id}</span>
+								<span class="text-[--ft-accent] font-medium">#{order.id}</span>
 							</td>
 							<td class="px-4 py-4 text-[--ft-text-muted]">{order.date}</td>
 							<td class="px-4 py-4 text-[--ft-text-muted]">
@@ -92,7 +92,7 @@
 									href="/account/orders/{order.id}"
 									variant="ghost"
 									size="sm"
-									class="text-brand-600 hover:text-brand-700"
+									class="text-[--ft-accent] hover:text-[--ft-accent]"
 								>
 									Zobacz szczegóły
 								</Button>

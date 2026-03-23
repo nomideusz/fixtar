@@ -75,10 +75,10 @@
 							<div class="mb-8 text-center">
 								<div class="relative mb-4 inline-block">
 									<div
-										class="from-brand-500/100/20 to-accent-500/100/20 mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-linear-to-br ring-4 ring-[--ft-line]"
+										class="from-[--ft-accent]/20 to-[--ft-accent]/20 mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-linear-to-br ring-4 ring-[--ft-line]"
 									>
 										<svg
-											class="text-brand-600 h-10 w-10"
+											class="text-[--ft-accent] h-10 w-10"
 											fill="none"
 											stroke="currentColor"
 											viewBox="0 0 24 24"
@@ -114,7 +114,7 @@
 								</h3>
 								<p class="mb-3 text-sm text-[--ft-text-muted]">{user.email}</p>
 								<div
-									class="bg-brand-100 text-brand-800 inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold"
+									class="bg-[--ft-frost] text-[--ft-accent] inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold"
 								>
 									<svg class="mr-1 h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 										<path
@@ -142,14 +142,14 @@
 												class="mr-3 flex h-10 w-10 items-center justify-center rounded-lg {isActive(
 													item.href
 												)
-													? 'bg-brand-500/20'
-													: 'group-hover:bg-brand-50 bg-[--ft-frost]'} transition-colors duration-200"
+													? 'bg-[--ft-accent]/20'
+													: 'group-hover:bg-[--ft-frost] bg-[--ft-frost]'} transition-colors duration-200"
 											>
 												{#if item.icon === 'overview'}
 													<svg
 														class="h-5 w-5 {isActive(item.href)
-															? 'text-brand-600'
-															: 'group-hover:text-brand-600 text-[--ft-text-muted]'}"
+															? 'text-[--ft-accent]'
+															: 'group-hover:text-[--ft-accent] text-[--ft-text-muted]'}"
 														fill="none"
 														stroke="currentColor"
 														viewBox="0 0 24 24"
@@ -170,8 +170,8 @@
 												{:else if item.icon === 'orders'}
 													<svg
 														class="h-5 w-5 {isActive(item.href)
-															? 'text-brand-600'
-															: 'group-hover:text-brand-600 text-[--ft-text-muted]'}"
+															? 'text-[--ft-accent]'
+															: 'group-hover:text-[--ft-accent] text-[--ft-text-muted]'}"
 														fill="none"
 														stroke="currentColor"
 														viewBox="0 0 24 24"
@@ -186,8 +186,8 @@
 												{:else if item.icon === 'addresses'}
 													<svg
 														class="h-5 w-5 {isActive(item.href)
-															? 'text-brand-600'
-															: 'group-hover:text-brand-600 text-[--ft-text-muted]'}"
+															? 'text-[--ft-accent]'
+															: 'group-hover:text-[--ft-accent] text-[--ft-text-muted]'}"
 														fill="none"
 														stroke="currentColor"
 														viewBox="0 0 24 24"
@@ -208,8 +208,8 @@
 												{:else if item.icon === 'favorites'}
 													<svg
 														class="h-5 w-5 {isActive(item.href)
-															? 'text-brand-600'
-															: 'group-hover:text-brand-600 text-[--ft-text-muted]'}"
+															? 'text-[--ft-accent]'
+															: 'group-hover:text-[--ft-accent] text-[--ft-text-muted]'}"
 														fill="none"
 														stroke="currentColor"
 														viewBox="0 0 24 24"
@@ -224,8 +224,8 @@
 												{:else if item.icon === 'settings'}
 													<svg
 														class="h-5 w-5 {isActive(item.href)
-															? 'text-brand-600'
-															: 'group-hover:text-brand-600 text-[--ft-text-muted]'}"
+															? 'text-[--ft-accent]'
+															: 'group-hover:text-[--ft-accent] text-[--ft-text-muted]'}"
 														fill="none"
 														stroke="currentColor"
 														viewBox="0 0 24 24"
@@ -247,7 +247,7 @@
 											</div>
 											<div class="min-w-0 flex-1">
 												<div
-													class="group-hover:text-brand-600 font-semibold text-[--ft-text] transition-colors duration-200"
+													class="group-hover:text-[--ft-accent] font-semibold text-[--ft-text] transition-colors duration-200"
 												>
 													{item.label}
 												</div>
@@ -258,7 +258,7 @@
 											{#if isActive(item.href)}
 												<div class="ml-2">
 													<svg
-														class="text-brand-600 h-4 w-4"
+														class="text-[--ft-accent] h-4 w-4"
 														fill="none"
 														stroke="currentColor"
 														viewBox="0 0 24 24"
@@ -282,7 +282,7 @@
 								<div class="space-y-2">
 									<a
 										href="/products"
-										class="hover:text-brand-600 hover:bg-brand-50 flex items-center rounded-lg px-3 py-2 text-sm font-medium text-[--ft-text-muted] transition-colors duration-200"
+										class="hover:text-[--ft-accent] hover:bg-[--ft-frost] flex items-center rounded-lg px-3 py-2 text-sm font-medium text-[--ft-text-muted] transition-colors duration-200"
 									>
 										<svg class="mr-3 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 											<path
@@ -296,7 +296,7 @@
 									</a>
 									<a
 										href="/contact"
-										class="hover:text-brand-600 hover:bg-brand-50 flex items-center rounded-lg px-3 py-2 text-sm font-medium text-[--ft-text-muted] transition-colors duration-200"
+										class="hover:text-[--ft-accent] hover:bg-[--ft-frost] flex items-center rounded-lg px-3 py-2 text-sm font-medium text-[--ft-text-muted] transition-colors duration-200"
 									>
 										<svg class="mr-3 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 											<path
@@ -318,7 +318,7 @@
 				<div class="fixed right-6 bottom-6 z-50 lg:hidden">
 					<button
 						onclick={() => (mobileMenuOpen = true)}
-						class="bg-brand-600 hover:bg-brand-700 flex h-14 w-14 items-center justify-center rounded-full !text-white shadow-lg transition-colors duration-200"
+						class="bg-[--ft-accent] hover:bg-[--ft-accent-hover] flex h-14 w-14 items-center justify-center rounded-full !text-white shadow-lg transition-colors duration-200"
 						aria-label="Otwórz menu konta"
 					>
 						<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -374,10 +374,10 @@
 								<div class="border-b border-[--ft-line] p-6">
 									<div class="flex items-center">
 										<div
-											class="from-brand-500/100/20 to-accent-500/100/20 mr-3 flex h-12 w-12 items-center justify-center rounded-full bg-linear-to-br"
+											class="from-[--ft-accent]/20 to-[--ft-accent]/20 mr-3 flex h-12 w-12 items-center justify-center rounded-full bg-linear-to-br"
 										>
 											<svg
-												class="text-brand-600 h-6 w-6"
+												class="text-[--ft-accent] h-6 w-6"
 												fill="none"
 												stroke="currentColor"
 												viewBox="0 0 24 24"
@@ -414,13 +414,13 @@
 													class="mr-3 flex h-8 w-8 items-center justify-center rounded-lg {isActive(
 														item.href
 													)
-														? 'bg-brand-500/20'
+														? 'bg-[--ft-accent]/20'
 														: 'bg-[--ft-frost]'}"
 												>
 													{#if item.icon === 'overview'}
 														<svg
 															class="h-4 w-4 {isActive(item.href)
-																? 'text-brand-600'
+																? 'text-[--ft-accent]'
 																: 'text-[--ft-text-muted]'}"
 															fill="none"
 															stroke="currentColor"
@@ -442,7 +442,7 @@
 													{:else if item.icon === 'orders'}
 														<svg
 															class="h-4 w-4 {isActive(item.href)
-																? 'text-brand-600'
+																? 'text-[--ft-accent]'
 																: 'text-[--ft-text-muted]'}"
 															fill="none"
 															stroke="currentColor"
@@ -458,7 +458,7 @@
 													{:else if item.icon === 'addresses'}
 														<svg
 															class="h-4 w-4 {isActive(item.href)
-																? 'text-brand-600'
+																? 'text-[--ft-accent]'
 																: 'text-[--ft-text-muted]'}"
 															fill="none"
 															stroke="currentColor"
@@ -480,7 +480,7 @@
 													{:else if item.icon === 'favorites'}
 														<svg
 															class="h-4 w-4 {isActive(item.href)
-																? 'text-brand-600'
+																? 'text-[--ft-accent]'
 																: 'text-[--ft-text-muted]'}"
 															fill="none"
 															stroke="currentColor"
@@ -496,7 +496,7 @@
 													{:else if item.icon === 'settings'}
 														<svg
 															class="h-4 w-4 {isActive(item.href)
-																? 'text-brand-600'
+																? 'text-[--ft-accent]'
 																: 'text-[--ft-text-muted]'}"
 															fill="none"
 															stroke="currentColor"

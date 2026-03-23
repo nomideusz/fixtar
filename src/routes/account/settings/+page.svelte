@@ -350,7 +350,7 @@
 							<div class="space-y-4">
 								<div>
 									<label for="language" class="mb-2 block text-sm font-medium text-[--ft-text]">Język interfejsu</label>
-									<select id="language" name="language" bind:value={preferencesForm.language} class="focus:ring-brand-500 w-full rounded-lg border border-[--ft-line] px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none">
+									<select id="language" name="language" bind:value={preferencesForm.language} class="focus:ring-[--ft-accent] w-full rounded-lg border border-[--ft-line] px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none">
 										<option value="pl">Polski</option>
 										<option value="en">English</option>
 										<option value="de">Deutsch</option>
@@ -358,7 +358,7 @@
 								</div>
 								<div>
 									<label for="currency" class="mb-2 block text-sm font-medium text-[--ft-text]">Waluta</label>
-									<select id="currency" name="currency" bind:value={preferencesForm.currency} class="focus:ring-brand-500 w-full rounded-lg border border-[--ft-line] px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none">
+									<select id="currency" name="currency" bind:value={preferencesForm.currency} class="focus:ring-[--ft-accent] w-full rounded-lg border border-[--ft-line] px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none">
 										<option value="PLN">PLN (złoty)</option>
 										<option value="EUR">EUR (euro)</option>
 										<option value="USD">USD (dolar)</option>
@@ -372,7 +372,7 @@
 							<div class="space-y-4">
 								<div>
 									<label for="theme" class="mb-2 block text-sm font-medium text-[--ft-text]">Motyw</label>
-									<select id="theme" name="theme" bind:value={preferencesForm.theme} class="focus:ring-brand-500 w-full rounded-lg border border-[--ft-line] px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none">
+									<select id="theme" name="theme" bind:value={preferencesForm.theme} class="focus:ring-[--ft-accent] w-full rounded-lg border border-[--ft-line] px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none">
 										<option value="light">Jasny</option>
 										<option value="dark">Ciemny</option>
 										<option value="auto">Automatyczny</option>
@@ -394,7 +394,7 @@
 
 	<!-- Account Actions -->
 	<section>
-		<Card class="from-danger/5 to-brand-50 border-danger/10 border-2 bg-linear-to-br p-8">
+		<Card class="from-danger/5 to-[--ft-frost] border-danger/10 border-2 bg-linear-to-br p-8">
 			<div class="text-center">
 				<h3 class="mb-4 text-xl font-bold text-[--ft-text]">Akcje konta</h3>
 				<p class="mb-6 text-[--ft-text-muted]">Zarządzaj swoim kontem lub usuń je całkowicie</p>

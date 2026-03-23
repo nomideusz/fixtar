@@ -3,7 +3,6 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import Card from '$lib/components/ui/Card.svelte';
-	import Hero from '$lib/components/ui/Hero.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import FixTarLogo from '$lib/images/logo/fixtar-logo-primary.webp';
 
@@ -70,12 +69,14 @@
 	<meta name="description" content="Wylogowywanie z konta FixTar" />
 </svelte:head>
 
-<!-- Professional Auth Hero -->
-<Hero
-	title="Do zobaczenia!"
-	subtitle="Wylogowywanie z Twojego konta FixTar - dziękujemy za odwiedziny"
-	centered={true}
-/>
+<section class="border-b border-[--ft-line]">
+	<div class="ft-container" style="padding-top: clamp(40px, 5vh, 56px); padding-bottom: clamp(40px, 5vh, 56px);">
+		<div class="mx-auto max-w-3xl text-center">
+			<h1 style="font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.03em; color: var(--ft-dark); margin-bottom: 12px;">Do zobaczenia!</h1>
+			<p class="text-[--ft-text-muted]" style="font-size: 1rem; line-height: 1.7;">Wylogowywanie z Twojego konta FixTar - dziękujemy za odwiedziny</p>
+		</div>
+	</div>
+</section>
 
 <div class="min-h-screen">
 	<div class="ft-container ft-section-lg">
@@ -84,9 +85,9 @@
 			<div class="mb-8 text-center">
 				<div class="relative mb-6 inline-block">
 					<div
-						class="bg-brand-100 absolute inset-0 scale-110 transform rounded-full opacity-30"
+						class="bg-[--ft-frost] absolute inset-0 scale-110 transform rounded-full opacity-30"
 					></div>
-					<img src={FixTarLogo} alt="FixTar" class="relative mx-auto h-16 w-auto" />
+					<img src={FixTarLogo} alt="FixTar" class="relative mx-auto h-16 w-auto" width="120" height="64" />
 				</div>
 			</div>
 
@@ -95,9 +96,9 @@
 				<div class="mb-8">
 					{#if logoutStage === 'processing'}
 						<div class="relative inline-block">
-							<div class="bg-brand-100 absolute inset-0 animate-pulse rounded-full"></div>
+							<div class="bg-[--ft-frost] absolute inset-0 animate-pulse rounded-full"></div>
 							<div
-								class="bg-brand-600 relative mx-auto flex h-20 w-20 items-center justify-center rounded-full shadow-xl"
+								class="bg-[--ft-accent] relative mx-auto flex h-20 w-20 items-center justify-center rounded-full shadow-xl"
 							>
 								<svg class="h-10 w-10 animate-spin text-[--ft-text]" fill="none" viewBox="0 0 24 24">
 									<circle
@@ -170,13 +171,13 @@
 						<h1 class="mb-4 text-3xl font-bold text-[--ft-text]">Wylogowywanie...</h1>
 						<p class="mb-6 text-lg text-[--ft-text-muted]">Prosimy czekać, kończymy sesję</p>
 						<div class="flex items-center justify-center space-x-2">
-							<div class="bg-brand-600 h-2 w-2 animate-bounce rounded-full"></div>
+							<div class="bg-[--ft-accent] h-2 w-2 animate-bounce rounded-full"></div>
 							<div
-								class="bg-brand-600 h-2 w-2 animate-bounce rounded-full"
+								class="bg-[--ft-accent] h-2 w-2 animate-bounce rounded-full"
 								style="animation-delay: 0.1s"
 							></div>
 							<div
-								class="bg-brand-600 h-2 w-2 animate-bounce rounded-full"
+								class="bg-[--ft-accent] h-2 w-2 animate-bounce rounded-full"
 								style="animation-delay: 0.2s"
 							></div>
 						</div>
@@ -204,7 +205,7 @@
 					<div class="space-y-4">
 						<Button
 							onclick={redirectNow}
-							class="from-brand-600 to-accent-600 hover:from-brand-700 hover:to-accent-700 transform rounded-2xl bg-linear-to-r px-8 py-3 font-bold text-[--ft-text] shadow-lg transition-all duration-300 hover:scale-105"
+							class="from-[--ft-accent] to-[--ft-accent] hover:from-[--ft-accent] hover:to-[--ft-accent] transform rounded-2xl bg-linear-to-r px-8 py-3 font-bold text-[--ft-text] shadow-lg transition-all duration-300 hover:scale-105"
 						>
 							<svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path
@@ -221,7 +222,7 @@
 							<Button
 								href="/auth/login"
 								variant="outline"
-								class="hover:border-brand-500 hover:text-brand-600 border-2 border-[--ft-line] font-medium transition-all duration-300"
+								class="hover:border-[--ft-accent] hover:text-[--ft-accent] border-2 border-[--ft-line] font-medium transition-all duration-300"
 							>
 								<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 									<path
@@ -254,7 +255,7 @@
 				{:else if logoutStage === 'error'}
 					<Button
 						onclick={redirectNow}
-						class="from-danger to-brand-600 hover:from-danger-dark hover:to-brand-700 transform rounded-2xl bg-linear-to-r px-8 py-3 font-bold text-[--ft-text] shadow-lg transition-all duration-300 hover:scale-105"
+						class="from-danger to-[--ft-accent] hover:from-danger-dark hover:to-[--ft-accent] transform rounded-2xl bg-linear-to-r px-8 py-3 font-bold text-[--ft-text] shadow-lg transition-all duration-300 hover:scale-105"
 					>
 						<svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path

@@ -121,16 +121,51 @@ npx svelte-check --threshold error
 
 All passing `svelte-check` with **0 errors, 0 warnings** ✅
 
-### Session 13 — Final Page Cleanup (Token & Emoji Sweep)
+### Session 13 — Token Cleanup & Emoji Sweep
 
 - [x] **SelectableMethodCard** — replaced 4× `--color-accent-*` with `--ft-accent`/`--ft-frost`/rgba
 - [x] **About page** — 6 emoji icons (🎯⚡👥🏆🚀🔧) → SVG icons, removed unused gradient `color` field
 - [x] **Product detail** — `bg-neutral-600` out-of-stock badge → `bg-[--ft-text-muted]`
 - [x] **Contact page** — `from-neutral-100 to-neutral-200` map placeholder → `from-[--ft-frost] to-[--ft-frost]`
-- [x] **Account favorites** — complete rewrite: dark cyberpunk theme → light Scandinavian, English→Polish, proper tokens, removed all scoped dark CSS
+- [x] **Account favorites** — complete rewrite: dark cyberpunk theme → light Scandinavian, English→Polish, proper tokens
 - [x] **order-status.ts** — `bg-neutral-100 text-neutral-200` → `bg-[--ft-frost] text-[--ft-text-muted]`
-- [x] Verified clean: checkout, account addresses, search page, footer — all already using correct tokens
-- [x] **Result: zero stale tokens and zero emoji in all non-admin code**
+
+All passing `svelte-check` with **0 errors, 0 warnings** ✅
+
+### Session 14 — Deep Audit: Dead Code, Translations, Accessibility, Token Sweep
+
+#### Dead Component Cleanup (11 files deleted, 45→34 components)
+- [x] Deleted: `BrandLogos`, `FeaturesSection`, `TrustBar`, `MegaMenu`, `AccountMobileNav`, `MobileFilterPanel`, `QuickViewModal`, `ProductListItem`, `ActiveFilters`, `CategoryFilter`, `AnnouncementBanner`
+- [x] Deleted `Hero.svelte` — replaced with inline section headers on all 6 pages
+
+#### Hero → Inline Section Headers (6 pages)
+- [x] `about`, `auth/logout`, `checkout`, `checkout/success`, `contact`, `search` — all replaced with lightweight inline `<section>` headers
+
+#### Account Addresses — English→Polish (3 pages)
+- [x] Full translation: titles, labels, placeholders, buttons, notifications, error states
+- [x] Address type options: Home→Dom, Work→Praca, Other→Inny
+- [x] Country names: Poland→Polska, Germany→Niemcy, etc.
+- [x] Replaced `bg-brand-100 text-brand-800` Default badge → `bg-[--ft-frost] text-[--ft-accent]`
+
+#### Accessibility Fixes
+- [x] Added `aria-label` to social login buttons (Google, GitHub) on login + register pages
+- [x] Added `aria-label="Szukaj produktów"` to error page search input
+- [x] Added `aria-hidden="true"` on social login SVG icons
+
+#### Image CLS Prevention (6 files)
+- [x] Added `width`/`height` to auth logos, cart items, checkout success items, CartDrawer items
+- [x] Added `loading="lazy"` to product thumbnails (not logos — above fold)
+
+#### Complete `brand-*` → Token Sweep (~130 replacements across 23 files)
+- [x] `text-brand-*` → `text-[--ft-accent]`
+- [x] `bg-brand-600/500` → `bg-[--ft-accent]`, `bg-brand-100/50` → `bg-[--ft-frost]`
+- [x] `hover:text-brand-*` → `hover:text-[--ft-accent]`
+- [x] `hover:bg-brand-700` → `hover:bg-[--ft-accent-hover]`
+- [x] `focus:ring-brand-500` → `focus:ring-[--ft-accent]`
+- [x] `group-hover:text-brand-*` → `group-hover:text-[--ft-accent]`
+- [x] All account, checkout, contact, about, search, auth, error, orders, cart pages + 8 components
+
+**Result: zero `brand-*` classes, zero `neutral-*` classes, zero stale tokens, zero emoji in all non-admin code.**
 
 All passing `svelte-check` with **0 errors, 0 warnings** ✅
 
@@ -140,12 +175,8 @@ All passing `svelte-check` with **0 errors, 0 warnings** ✅
 
 ### 🔴 Homepage
 
-#### Categories
 - [ ] Add category photography (replace frost placeholders)
 - [ ] Category name as subtle overlay on image
-
-#### Products Section
-- [x] ProductCard: already simplified to image + name + availability + price (no stock dots, no hover overlays)
 
 ---
 
@@ -164,12 +195,6 @@ All passing `svelte-check` with **0 errors, 0 warnings** ✅
 
 ---
 
-### ✅ Page Cleanup — Complete
-
-All non-admin pages verified clean: zero stale tokens, zero emoji.
-
----
-
 ### 🔵 Future (Low Priority)
 
 - [ ] View transitions between pages
@@ -177,3 +202,4 @@ All non-admin pages verified clean: zero stale tokens, zero emoji.
 - [ ] Image `srcset`/`sizes` for responsive images
 - [ ] Lazy-loading below-fold sections
 - [ ] Print styles
+- [ ] Admin pages token cleanup (88 stale `neutral-*` references — internal only)

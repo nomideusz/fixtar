@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Button from '$lib/components/ui/Button.svelte';
 	import Card from '$lib/components/ui/Card.svelte';
-	import Hero from '$lib/components/ui/Hero.svelte';
 	import type { PageData } from './$types';
 	import { page } from '$app/stores';
 
@@ -52,12 +51,14 @@
 	/>
 </svelte:head>
 
-<!-- Professional Success Hero -->
-<Hero
-	title="Zamówienie Potwierdzone!"
-	subtitle="Dziękujemy za zakupy w FixTar - Twoje zamówienie zostało pomyślnie złożone i zostanie szybko przetworzone"
-	centered={true}
-/>
+<section class="border-b border-[--ft-line]">
+	<div class="ft-container" style="padding-top: clamp(40px, 5vh, 56px); padding-bottom: clamp(40px, 5vh, 56px);">
+		<div class="mx-auto max-w-3xl text-center">
+			<h1 style="font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.03em; color: var(--ft-dark); margin-bottom: 12px;">Zamówienie Potwierdzone!</h1>
+			<p class="text-[--ft-text-muted]" style="font-size: 1rem; line-height: 1.7;">Dziękujemy za zakupy w FixTar - Twoje zamówienie zostało pomyślnie złożone i zostanie szybko przetworzone</p>
+		</div>
+	</div>
+</section>
 
 <div class="min-h-screen">
 	<div class="ft-container ft-section-lg">
@@ -83,12 +84,12 @@
 
 			<!-- Order Number Display -->
 			<Card
-				class="from-brand-500/100/8 to-success/5 border-success/20 mb-8 inline-block border-2 bg-linear-to-r p-6"
+				class="from-[--ft-accent]/10 to-success/5 border-success/20 mb-8 inline-block border-2 bg-linear-to-r p-6"
 			>
 				<div class="flex items-center space-x-4">
-					<div class="bg-brand-100 flex h-12 w-12 items-center justify-center rounded-xl">
+					<div class="bg-[--ft-frost] flex h-12 w-12 items-center justify-center rounded-xl">
 						<svg
-							class="text-brand-600 h-6 w-6"
+							class="text-[--ft-accent] h-6 w-6"
 							fill="none"
 							stroke="currentColor"
 							viewBox="0 0 24 24"
@@ -149,11 +150,11 @@
 		<!-- Bank Transfer Details (if applicable) -->
 		{#if data.order?.paymentMethod === 'bank_transfer' && data.order?.metadata?.paymentDetails?.bankDetails}
 			<div class="mx-auto mb-12 max-w-4xl">
-				<Card class="bg-brand-500/10 border-brand-500/20 border-2 p-8">
+				<Card class="bg-[--ft-accent]/10 border-[--ft-accent]/20 border-2 p-8">
 					<div class="mb-6 flex items-center">
-						<div class="bg-brand-100 mr-4 flex h-12 w-12 items-center justify-center rounded-xl">
+						<div class="bg-[--ft-frost] mr-4 flex h-12 w-12 items-center justify-center rounded-xl">
 							<svg
-								class="text-brand-600 h-6 w-6"
+								class="text-[--ft-accent] h-6 w-6"
 								fill="none"
 								stroke="currentColor"
 								viewBox="0 0 24 24"
@@ -166,7 +167,7 @@
 								/>
 							</svg>
 						</div>
-						<h3 class="text-brand-900 text-2xl font-bold">Dane do przelewu</h3>
+						<h3 class="text-[--ft-text-strong] text-2xl font-bold">Dane do przelewu</h3>
 					</div>
 
 					<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -218,7 +219,7 @@
 						<div class="md:col-span-2">
 							<h4 class="mb-2 text-sm font-semibold text-[--ft-text]">Kwota do zapłaty</h4>
 							<p
-								class="text-brand-600 rounded-xl border border-[--ft-line] bg-[--ft-frost] p-4 text-center text-3xl font-bold"
+								class="text-[--ft-accent] rounded-xl border border-[--ft-line] bg-[--ft-frost] p-4 text-center text-3xl font-bold"
 							>
 								{data.order.metadata.paymentDetails.bankDetails.amount}
 							</p>
@@ -263,7 +264,7 @@
 			<div class="flex flex-col justify-center gap-4 sm:flex-row">
 				<Button
 					href="/account/orders"
-					class="from-brand-600 to-accent-600 hover:from-brand-700 hover:to-accent-700 transform rounded-2xl bg-linear-to-r px-8 py-4 text-lg font-bold text-[--ft-text] shadow-lg transition-all duration-300 hover:scale-105"
+					class="from-[--ft-accent] to-accent-600 hover:from-[--ft-accent] hover:to-accent-700 transform rounded-2xl bg-linear-to-r px-8 py-4 text-lg font-bold text-[--ft-text] shadow-lg transition-all duration-300 hover:scale-105"
 				>
 					<svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path
@@ -278,7 +279,7 @@
 				<Button
 					href="/products"
 					variant="outline"
-					class="hover:border-brand-500 hover:text-brand-600 rounded-2xl border-2 border-[--ft-line] px-8 py-4 text-lg font-bold transition-all duration-300"
+					class="hover:border-[--ft-accent] hover:text-[--ft-accent] rounded-2xl border-2 border-[--ft-line] px-8 py-4 text-lg font-bold transition-all duration-300"
 				>
 					<svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path
@@ -324,7 +325,7 @@
 								>
 									{#if item.image}
 										<div class="h-20 w-20 shrink-0 overflow-hidden rounded-xl">
-											<img src={item.image} alt={item.name} class="h-full w-full object-cover" />
+											<img src={item.image} alt={item.name} class="h-full w-full object-cover" width="80" height="80" loading="lazy" />
 										</div>
 									{:else}
 										<div
@@ -359,7 +360,7 @@
 									</div>
 
 									<div class="text-right">
-										<p class="text-brand-600 text-xl font-bold">
+										<p class="text-[--ft-accent] text-xl font-bold">
 											{formatCurrency(item.price * item.quantity)}
 										</p>
 									</div>
@@ -395,9 +396,9 @@
 					<!-- Shipping Address -->
 					<Card class="p-8">
 						<div class="mb-6 flex items-center">
-							<div class="bg-brand-100 mr-3 flex h-10 w-10 items-center justify-center rounded-xl">
+							<div class="bg-[--ft-frost] mr-3 flex h-10 w-10 items-center justify-center rounded-xl">
 								<svg
-									class="text-brand-600 h-5 w-5"
+									class="text-[--ft-accent] h-5 w-5"
 									fill="none"
 									stroke="currentColor"
 									viewBox="0 0 24 24"
@@ -546,13 +547,13 @@
 
 		<!-- Next Steps -->
 		<div class="mx-auto mt-16 max-w-4xl">
-			<Card class="from-brand-500/100/8 to-accent-500/100/8 border-2 border-[--ft-line] bg-linear-to-br p-8">
+			<Card class="from-[--ft-accent]/10 to-accent-500/100/8 border-2 border-[--ft-line] bg-linear-to-br p-8">
 				<div class="text-center">
 					<div
-						class="bg-brand-100 mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl"
+						class="bg-[--ft-frost] mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl"
 					>
 						<svg
-							class="text-brand-600 h-8 w-8"
+							class="text-[--ft-accent] h-8 w-8"
 							fill="none"
 							stroke="currentColor"
 							viewBox="0 0 24 24"
@@ -582,9 +583,9 @@
 						</div>
 						<div class="flex items-start space-x-3">
 							<div
-								class="bg-brand-100 mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
+								class="bg-[--ft-frost] mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
 							>
-								<span class="text-brand-600 text-sm font-bold">2</span>
+								<span class="text-[--ft-accent] text-sm font-bold">2</span>
 							</div>
 							<div>
 								<h4 class="mb-1 font-bold text-[--ft-text]">Przygotowanie</h4>

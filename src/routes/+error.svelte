@@ -38,7 +38,7 @@
 	<!-- Decorative elements -->
 	{#if browser && showDecorations}
 		<div
-			class="bg-brand-600/10 absolute top-1/3 right-0 -z-10 h-72 w-72 rounded-full opacity-70 blur-3xl filter transition-opacity duration-1000 ease-out"
+			class="bg-[--ft-accent]/10 absolute top-1/3 right-0 -z-10 h-72 w-72 rounded-full opacity-70 blur-3xl filter transition-opacity duration-1000 ease-out"
 		></div>
 		<div
 			class="bg-accent-600/10 absolute top-2/3 left-1/4 -z-10 h-64 w-64 rounded-full opacity-70 blur-3xl filter transition-opacity delay-300 duration-1000 ease-out"
@@ -50,13 +50,13 @@
 
 	<div class="mb-12 text-center">
 		<div
-			class="bg-brand-100 text-brand-800 mb-4 inline-block rounded-full px-3 py-1 text-sm font-medium"
+			class="bg-[--ft-frost] text-[--ft-accent] mb-4 inline-block rounded-full px-3 py-1 text-sm font-medium"
 		>
 			Błąd {$page.status || 404}
 		</div>
 
 		<h1
-			class="from-brand-600 to-accent-600 mb-4 bg-linear-to-r bg-clip-text text-4xl font-bold text-transparent md:text-5xl lg:text-6xl"
+			class="from-[--ft-accent] to-[--ft-accent] mb-4 bg-linear-to-r bg-clip-text text-4xl font-bold text-transparent md:text-5xl lg:text-6xl"
 		>
 			Nie znaleziono strony
 		</h1>
@@ -109,6 +109,7 @@
 						placeholder="pilarka, wiertarka, szlifierka..."
 						bind:value={searchQuery}
 						class="input flex-1"
+						aria-label="Szukaj produktów"
 						onkeydown={(e) => e.key === 'Enter' && handleSearch()}
 					/>
 					<button type="button" class="btn-primary" onclick={handleSearch}>Szukaj</button>

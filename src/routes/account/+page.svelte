@@ -83,10 +83,10 @@
 			<div class="mx-auto max-w-2xl">
 				<Card class="p-12 text-center">
 					<div
-						class="from-brand-500/100/20 to-accent-500/100/20 mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-full bg-linear-to-br"
+						class="from-[--ft-accent]/20 to-[--ft-accent]/20 mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-full bg-linear-to-br"
 					>
 						<svg
-							class="text-brand-600 h-10 w-10"
+							class="text-[--ft-accent] h-10 w-10"
 							fill="none"
 							stroke="currentColor"
 							viewBox="0 0 24 24"
@@ -120,10 +120,10 @@
 							<div class="mb-6 lg:mb-0">
 								<div class="mb-4 flex items-center">
 									<div
-										class="from-brand-500/100/20 to-accent-500/100/20 mr-4 flex h-16 w-16 items-center justify-center rounded-full bg-linear-to-br"
+										class="from-[--ft-accent]/20 to-[--ft-accent]/20 mr-4 flex h-16 w-16 items-center justify-center rounded-full bg-linear-to-br"
 									>
 										<svg
-											class="text-brand-600 h-8 w-8"
+											class="text-[--ft-accent] h-8 w-8"
 											fill="none"
 											stroke="currentColor"
 											viewBox="0 0 24 24"
@@ -179,7 +179,7 @@
 					<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
 						<StatCard value={stats.totalOrders} label="Łączne zamówienia">
 							{#snippet icon()}
-								<svg class="text-brand-600 h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<svg class="text-[--ft-accent] h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
 								</svg>
 							{/snippet}
@@ -213,7 +213,7 @@
 
 						<StatCard value={stats.rewardPoints} label="Punkty lojalnościowe">
 							{#snippet icon()}
-								<svg class="text-brand-600 h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<svg class="text-[--ft-accent] h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
 								</svg>
 							{/snippet}
@@ -233,7 +233,7 @@
 							title="Zamówienia"
 							description="Śledź i zarządzaj swoimi zamówieniami"
 							href="/account/orders"
-							gradientClass="from-brand-500/100 to-brand-600"
+							gradientClass="from-[--ft-accent] to-[--ft-accent]"
 						>
 							{#snippet icon()}
 								<svg class="h-6 w-6 text-[--ft-text]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -273,7 +273,7 @@
 							title="Ustawienia"
 							description="Zaktualizuj preferencje konta"
 							href="/account/settings"
-							gradientClass="from-brand-500/100 to-brand-600"
+							gradientClass="from-[--ft-accent] to-[--ft-accent]"
 						>
 							{#snippet icon()}
 								<svg class="h-6 w-6 text-[--ft-text]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -343,7 +343,7 @@
 				<!-- Support Section -->
 				<section>
 					<Card
-						class="from-brand-500/100/8 to-accent-500/100/8 border-2 border-[--ft-line] bg-linear-to-br p-8"
+						class="from-[--ft-accent]/8 to-[--ft-accent]/8 border-2 border-[--ft-line] bg-linear-to-br p-8"
 					>
 						<div class="text-center">
 							<h3 class="mb-4 text-xl font-bold text-[--ft-text]">Potrzebujesz pomocy?</h3>

@@ -17,7 +17,7 @@
 	// Handle form results
 	$effect(() => {
 		if (form?.success) {
-			notifications.success('Action completed successfully');
+			notifications.success('Akcja zakończona pomyślnie');
 			// Reload the page to get fresh data
 			window.location.reload();
 		} else if (form?.message) {
@@ -43,14 +43,14 @@
 						...addr,
 						default: addr.id === addressId
 					}));
-					notifications.success('Default address updated');
+					notifications.success('Domyślny adres zaktualizowany');
 				} else {
-					notifications.error('Failed to update default address');
+					notifications.error('Nie udało się zaktualizować domyślnego adresu');
 				}
 			})
 			.catch((err) => {
 				console.error('Error setting default address:', err);
-				notifications.error('Failed to update default address');
+				notifications.error('Nie udało się zaktualizować domyślnego adresu');
 			})
 			.finally(() => {
 				isSubmitting = false;
@@ -59,11 +59,11 @@
 
 	function handleDelete(addressId: string) {
 		if (addresses.length === 1) {
-			notifications.error('You must have at least one address');
+			notifications.error('Musisz mieć co najmniej jeden adres');
 			return;
 		}
 
-		if (!confirm('Are you sure you want to delete this address?')) {
+		if (!confirm('Czy na pewno chcesz usunąć ten adres?')) {
 			return;
 		}
 
@@ -76,14 +76,14 @@
 </script>
 
 <svelte:head>
-	<title>My Addresses - FixTar</title>
-	<meta name="description" content="Manage your shipping addresses" />
+	<title>Moje adresy - FixTar</title>
+	<meta name="description" content="Zarządzaj adresami dostawy" />
 </svelte:head>
 
 <div>
 	<div class="mb-6 flex items-center justify-between">
-		<h1 class="text-2xl font-bold text-[--ft-text]">My Addresses</h1>
-		<Button href="/account/addresses/new">Add New Address</Button>
+		<h1 class="text-2xl font-bold text-[--ft-text]">Moje adresy</h1>
+		<Button href="/account/addresses/new">Dodaj nowy adres</Button>
 	</div>
 
 	{#if hasError}
@@ -102,9 +102,9 @@
 						d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
 					/>
 				</svg>
-				<h3 class="mb-2 text-lg font-medium text-[--ft-text]">Error loading addresses</h3>
+				<h3 class="mb-2 text-lg font-medium text-[--ft-text]">Błąd ładowania adresów</h3>
 				<p class="mb-6 text-[--ft-text-muted]">{errorMessage}</p>
-				<Button onclick={() => window.location.reload()}>Try Again</Button>
+				<Button onclick={() => window.location.reload()}>Spróbuj ponownie</Button>
 			</div>
 		</Card>
 	{:else if addresses.length === 0}
@@ -129,9 +129,9 @@
 						d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
 					/>
 				</svg>
-				<h3 class="mb-2 text-lg font-medium text-[--ft-text]">No addresses saved</h3>
-				<p class="mb-6 text-[--ft-text-muted]">Add an address to make checkout faster.</p>
-				<Button href="/account/addresses/new">Add Your First Address</Button>
+				<h3 class="mb-2 text-lg font-medium text-[--ft-text]">Brak zapisanych adresów</h3>
+				<p class="mb-6 text-[--ft-text-muted]">Dodaj adres, aby przyspieszyć składanie zamówień.</p>
+				<Button href="/account/addresses/new">Dodaj pierwszy adres</Button>
 			</div>
 		</Card>
 	{:else}
@@ -141,12 +141,12 @@
 					<div class="mb-4 flex items-start justify-between">
 						<div>
 							<h3 class="flex items-center gap-2 font-semibold text-[--ft-text]">
-								{address.type || 'Address'}
+								{address.type || 'Adres'}
 								{#if address.default}
 									<span
-										class="bg-brand-100 text-brand-800 rounded-full px-2 py-1 text-xs font-medium"
+										class="rounded-full bg-[--ft-frost] px-2 py-1 text-xs font-medium text-[--ft-accent]"
 									>
-										Default
+										Domyślny
 									</span>
 								{/if}
 							</h3>
@@ -166,7 +166,7 @@
 								onclick={() => handleDelete(address.id)}
 								disabled={isSubmitting}
 								class="hover:text-danger p-1 text-[--ft-text-muted] transition-colors disabled:cursor-not-allowed disabled:opacity-50"
-								aria-label="Delete address"
+								aria-label="Usuń adres"
 							>
 								<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 									<path
@@ -211,7 +211,7 @@
 							size="sm"
 							fullWidth
 						>
-							{isSubmitting ? 'Setting...' : 'Set as Default'}
+							{isSubmitting ? 'Ustawianie...' : 'Ustaw jako domyślny'}
 						</Button>
 					{/if}
 				</Card>

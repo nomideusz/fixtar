@@ -42,7 +42,7 @@
 
 	const imageBadges = $derived.by(() => {
 		const badges: Array<{ label: string; class: string }> = [];
-		if (product.featured) badges.push({ label: 'Polecany', class: 'bg-brand-600' });
+		if (product.featured) badges.push({ label: 'Polecany', class: 'bg-[--ft-accent]' });
 		if (hasDiscount) badges.push({ label: `-${discountPercent}%`, class: 'bg-danger' });
 		if (!stock.inStock) badges.push({ label: 'Wyprzedane', class: 'bg-[--ft-text-muted]' });
 		return badges;
@@ -145,7 +145,7 @@
 
 					<!-- Price -->
 					<div class="mb-4 flex items-center gap-4">
-						<span class="text-brand-600 text-4xl font-bold">
+						<span class="text-[--ft-accent] text-4xl font-bold">
 							{product.price.toFixed(2)} zł
 						</span>
 						{#if hasDiscount}
@@ -235,7 +235,7 @@
 				<!-- Purchase / Out of Stock -->
 				{#if stock.inStock}
 					<Card
-						class="from-brand-500/100/8 to-accent-500/100/8 border-brand-500/20 border bg-linear-to-br p-6"
+						class="from-[--ft-frost] to-[--ft-frost] border-[--ft-accent]/20 border bg-linear-to-br p-6"
 					>
 						<div class="space-y-6">
 							<!-- Quantity Selector -->
@@ -312,7 +312,7 @@
 								class="flex items-center justify-between rounded-xl border border-[--ft-line] bg-[--ft-surface] px-4 py-4"
 							>
 								<span class="text-lg font-semibold text-[--ft-text]">Łączna cena:</span>
-								<span class="text-brand-600 text-2xl font-bold">
+								<span class="text-[--ft-accent] text-2xl font-bold">
 									{(product.price * quantity).toFixed(2)} zł
 								</span>
 							</div>
@@ -369,7 +369,7 @@
 								</div>
 								<div class="flex items-center gap-2">
 									<svg
-										class="text-brand-500 h-4 w-4"
+										class="text-[--ft-accent] h-4 w-4"
 										fill="none"
 										stroke="currentColor"
 										viewBox="0 0 24 24"

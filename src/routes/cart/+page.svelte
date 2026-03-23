@@ -59,7 +59,7 @@
 						{#each cart.items as item (item)}
 							<div class="flex items-center space-x-4 border-b py-4 last:border-0">
 								{#if item.image}
-									<img src={item.image} alt={item.name} class="h-20 w-20 rounded object-cover" />
+									<img src={item.image} alt={item.name} class="h-20 w-20 rounded object-cover" width="80" height="80" loading="lazy" />
 								{:else}
 									<div class="flex h-20 w-20 items-center justify-center rounded bg-[--ft-frost]">
 										<svg
@@ -184,7 +184,7 @@
 
 					<!-- Continue Shopping -->
 					<div class="mt-4 text-center">
-						<a href="/products" class="text-brand-600 hover:text-brand-800 text-sm">
+						<a href="/products" class="text-[--ft-accent] hover:text-[--ft-accent] text-sm">
 							Continue Shopping
 						</a>
 					</div>

@@ -56,7 +56,7 @@
 					<div class="min-w-0 flex-1">
 						<h3 class="truncate text-sm font-semibold text-[--ft-text]">{item.name}</h3>
 						<p class="text-sm text-[--ft-text-muted]">Ilość: {item.quantity}</p>
-						<p class="text-brand-600 text-sm font-bold">
+						<p class="text-[--ft-accent] text-sm font-bold">
 							{formatPrice(item.price * item.quantity)}
 						</p>
 					</div>
@@ -88,7 +88,7 @@
 			</div>
 			<div class="flex justify-between border-t border-[--ft-line] pt-4 text-xl font-bold">
 				<span class="text-[--ft-text]">Do zapłaty</span>
-				<span class="text-brand-600">{formatPrice(total)}</span>
+				<span class="text-[--ft-accent]">{formatPrice(total)}</span>
 			</div>
 		</div>
 
@@ -98,7 +98,7 @@
 			fullWidth
 			size="lg"
 			disabled={processing}
-			class="from-brand-600 to-accent-600 hover:from-brand-700 hover:to-accent-700 mt-8 transform rounded-2xl bg-linear-to-r py-4 text-lg font-bold text-[--ft-text] shadow-lg transition-all duration-300 hover:scale-105"
+			class="from-[--ft-accent] to-accent-600 hover:from-[--ft-accent] hover:to-accent-700 mt-8 transform rounded-2xl bg-linear-to-r py-4 text-lg font-bold text-[--ft-text] shadow-lg transition-all duration-300 hover:scale-105"
 		>
 			{#if processing}
 				<svg

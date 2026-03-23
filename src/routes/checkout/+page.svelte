@@ -5,7 +5,6 @@
 	import Button from '$lib/components/ui/Button.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
 	import Card from '$lib/components/ui/Card.svelte';
-	import Hero from '$lib/components/ui/Hero.svelte';
 	import CheckoutProgress from '$lib/components/checkout/CheckoutProgress.svelte';
 	import SectionHeader from '$lib/components/checkout/SectionHeader.svelte';
 	import SelectableMethodCard from '$lib/components/checkout/SelectableMethodCard.svelte';
@@ -193,11 +192,14 @@
 	/>
 </svelte:head>
 
-<Hero
-	title="Finalizacja Zamówienia"
-	subtitle="Bezpiecznie sfinalizuj swoje zakupy - potrzebujesz tylko kilku kliknięć"
-	centered={true}
-/>
+<section class="border-b border-[--ft-line]">
+	<div class="ft-container" style="padding-top: clamp(40px, 5vh, 56px); padding-bottom: clamp(40px, 5vh, 56px);">
+		<div class="mx-auto max-w-3xl text-center">
+			<h1 style="font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.03em; color: var(--ft-dark); margin-bottom: 12px;">Finalizacja Zamówienia</h1>
+			<p class="text-[--ft-text-muted]" style="font-size: 1rem; line-height: 1.7;">Bezpiecznie sfinalizuj swoje zakupy - potrzebujesz tylko kilku kliknięć</p>
+		</div>
+	</div>
+</section>
 
 <div class="min-h-screen">
 	<div class="ft-container ft-section-lg">
@@ -273,7 +275,7 @@
 				<div class="space-y-8 xl:col-span-2">
 					<!-- Contact Information -->
 					<Card class="p-8">
-						<SectionHeader title="Dane kontaktowe" iconBgClass="bg-brand-100" iconColorClass="text-brand-600">
+						<SectionHeader title="Dane kontaktowe" iconBgClass="bg-[--ft-frost]" iconColorClass="text-[--ft-accent]">
 							{#snippet icon()}
 								<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="h-4 w-4">
 									<path
@@ -296,7 +298,7 @@
 								error={errors.email}
 								required
 								placeholder="jan.kowalski@example.com"
-								class="focus:ring-brand-500 focus:ring-2"
+								class="focus:ring-[--ft-accent] focus:ring-2"
 							/>
 							<Input
 								type="tel"
@@ -307,7 +309,7 @@
 								error={errors.phone}
 								required
 								placeholder="+48 123 456 789"
-								class="focus:ring-brand-500 focus:ring-2"
+								class="focus:ring-[--ft-accent] focus:ring-2"
 							/>
 						</div>
 					</Card>
@@ -550,7 +552,7 @@
 
 					<!-- Payment Method -->
 					<Card class="p-8">
-						<SectionHeader title="Metoda płatności" iconBgClass="bg-brand-100" iconColorClass="text-brand-600">
+						<SectionHeader title="Metoda płatności" iconBgClass="bg-[--ft-frost]" iconColorClass="text-[--ft-accent]">
 							{#snippet icon()}
 								<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="h-4 w-4">
 									<path
@@ -623,7 +625,7 @@
 							oninput={bindField('notes')}
 							placeholder="Uwagi do zamówienia, specjalne instrukcje dostawy (opcjonalnie)"
 							rows="4"
-							class="focus:ring-brand-500 focus:border-brand-500 w-full resize-none rounded-xl border border-[--ft-line] px-4 py-3 shadow-sm transition-colors focus:ring-2"
+							class="focus:ring-[--ft-accent] focus:border-[--ft-accent] w-full resize-none rounded-xl border border-[--ft-line] px-4 py-3 shadow-sm transition-colors focus:ring-2"
 						></textarea>
 					</Card>
 				</div>

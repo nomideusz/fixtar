@@ -13,7 +13,7 @@
 	// Handle form results
 	$effect(() => {
 		if (form?.success) {
-			notifications.success('Address updated successfully');
+			notifications.success('Adres zaktualizowany pomyślnie');
 			goto('/account/addresses');
 		} else if (form?.message) {
 			notifications.error(form.message);
@@ -25,8 +25,8 @@
 </script>
 
 <svelte:head>
-	<title>Edit Address - FixTar</title>
-	<meta name="description" content="Edit your shipping address" />
+	<title>Edytuj adres - FixTar</title>
+	<meta name="description" content="Edytuj adres dostawy" />
 </svelte:head>
 
 <div>
@@ -35,9 +35,9 @@
 			<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
 			</svg>
-			Back to Addresses
+			Powrót do adresów
 		</Button>
-		<h1 class="text-2xl font-bold text-[--ft-text]">Edit Address</h1>
+		<h1 class="text-2xl font-bold text-[--ft-text]">Edytuj adres</h1>
 	</div>
 
 	{#if address}
@@ -59,24 +59,24 @@
 					<div class="space-y-6">
 						<div>
 							<label for="type" class="mb-2 block text-sm font-medium text-[--ft-text]">
-								Address Type
+								Typ adresu
 							</label>
 							<select
 								id="type"
 								name="type"
 								required
 								value={address.type || 'Home'}
-								class="focus:ring-brand-500 focus:border-brand-500 w-full rounded-md border border-[--ft-line] px-3 py-2 shadow-sm focus:outline-none"
+								class="focus:ring-[--ft-accent] focus:border-[--ft-accent] w-full rounded-md border border-[--ft-line] px-3 py-2 shadow-sm focus:outline-none"
 							>
-								<option value="Home">Home</option>
-								<option value="Work">Work</option>
-								<option value="Other">Other</option>
+								<option value="Home">Dom</option>
+								<option value="Work">Praca</option>
+								<option value="Other">Inny</option>
 							</select>
 						</div>
 
 						<div>
 							<label for="street" class="mb-2 block text-sm font-medium text-[--ft-text]">
-								Street Address *
+								Ulica *
 							</label>
 							<input
 								type="text"
@@ -84,15 +84,15 @@
 								name="street"
 								required
 								value={address.street || ''}
-								placeholder="123 Main Street"
-								class="focus:ring-brand-500 focus:border-brand-500 w-full rounded-md border border-[--ft-line] px-3 py-2 shadow-sm focus:outline-none"
+								placeholder="ul. Przykładowa 1"
+								class="focus:ring-[--ft-accent] focus:border-[--ft-accent] w-full rounded-md border border-[--ft-line] px-3 py-2 shadow-sm focus:outline-none"
 							/>
 						</div>
 
 						<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
 							<div>
 								<label for="city" class="mb-2 block text-sm font-medium text-[--ft-text]">
-									City *
+									Miasto *
 								</label>
 								<input
 									type="text"
@@ -100,14 +100,14 @@
 									name="city"
 									required
 									value={address.city || ''}
-									placeholder="Warsaw"
-									class="focus:ring-brand-500 focus:border-brand-500 w-full rounded-md border border-[--ft-line] px-3 py-2 shadow-sm focus:outline-none"
+									placeholder="Warszawa"
+									class="focus:ring-[--ft-accent] focus:border-[--ft-accent] w-full rounded-md border border-[--ft-line] px-3 py-2 shadow-sm focus:outline-none"
 								/>
 							</div>
 
 							<div>
 								<label for="postalCode" class="mb-2 block text-sm font-medium text-[--ft-text]">
-									Postal Code *
+									Kod pocztowy *
 								</label>
 								<input
 									type="text"
@@ -116,31 +116,31 @@
 									required
 									value={address.postalCode || ''}
 									placeholder="00-001"
-									class="focus:ring-brand-500 focus:border-brand-500 w-full rounded-md border border-[--ft-line] px-3 py-2 shadow-sm focus:outline-none"
+									class="focus:ring-[--ft-accent] focus:border-[--ft-accent] w-full rounded-md border border-[--ft-line] px-3 py-2 shadow-sm focus:outline-none"
 								/>
 							</div>
 						</div>
 
 						<div>
 							<label for="country" class="mb-2 block text-sm font-medium text-[--ft-text]">
-								Country *
+								Kraj *
 							</label>
 							<select
 								id="country"
 								name="country"
 								required
 								value={address.country || ''}
-								class="focus:ring-brand-500 focus:border-brand-500 w-full rounded-md border border-[--ft-line] px-3 py-2 shadow-sm focus:outline-none"
+								class="focus:ring-[--ft-accent] focus:border-[--ft-accent] w-full rounded-md border border-[--ft-line] px-3 py-2 shadow-sm focus:outline-none"
 							>
-								<option value="">Select Country</option>
-								<option value="Poland">Poland</option>
-								<option value="Germany">Germany</option>
-								<option value="Czech Republic">Czech Republic</option>
-								<option value="Slovakia">Slovakia</option>
-								<option value="Lithuania">Lithuania</option>
-								<option value="Latvia">Latvia</option>
+								<option value="">Wybierz kraj</option>
+								<option value="Poland">Polska</option>
+								<option value="Germany">Niemcy</option>
+								<option value="Czech Republic">Czechy</option>
+								<option value="Slovakia">Słowacja</option>
+								<option value="Lithuania">Litwa</option>
+								<option value="Latvia">Łotwa</option>
 								<option value="Estonia">Estonia</option>
-								<option value="Other">Other</option>
+								<option value="Other">Inny</option>
 							</select>
 						</div>
 
@@ -151,19 +151,19 @@
 								name="default"
 								value="true"
 								checked={address.default === true}
-								class="text-brand-600 focus:ring-brand-500 h-4 w-4 rounded border-[--ft-line]"
+								class="text-[--ft-accent] focus:ring-[--ft-accent] h-4 w-4 rounded border-[--ft-line]"
 							/>
 							<label for="default" class="ml-2 block text-sm text-[--ft-text]">
-								Set as default address
+								Ustaw jako adres domyślny
 							</label>
 						</div>
 					</div>
 
 					<div class="mt-6 flex gap-3 border-t border-[--ft-line] pt-6">
 						<Button type="submit" disabled={isSubmitting}>
-							{isSubmitting ? 'Updating Address...' : 'Update Address'}
+							{isSubmitting ? 'Zapisywanie...' : 'Zapisz zmiany'}
 						</Button>
-						<Button type="button" variant="secondary" href="/account/addresses">Cancel</Button>
+						<Button type="button" variant="secondary" href="/account/addresses">Anuluj</Button>
 					</div>
 				</form>
 			</Card>
@@ -184,9 +184,9 @@
 						d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
 					/>
 				</svg>
-				<h3 class="mb-2 text-lg font-medium text-[--ft-text]">Address not found</h3>
-				<p class="mb-6 text-[--ft-text-muted]">The address you're trying to edit doesn't exist.</p>
-				<Button href="/account/addresses">Back to Addresses</Button>
+				<h3 class="mb-2 text-lg font-medium text-[--ft-text]">Nie znaleziono adresu</h3>
+				<p class="mb-6 text-[--ft-text-muted]">Adres, który próbujesz edytować, nie istnieje.</p>
+				<Button href="/account/addresses">Powrót do adresów</Button>
 			</div>
 		</Card>
 	{/if}

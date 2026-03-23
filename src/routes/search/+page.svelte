@@ -5,7 +5,6 @@
 	import Input from '$lib/components/ui/Input.svelte';
 	import type { Product } from '$lib/stores/products.svelte';
 	import LoadingSpinner from '$lib/components/ui/LoadingSpinner.svelte';
-	import Hero from '$lib/components/ui/Hero.svelte';
 	import { navigating } from '$app/state';
 
 	interface Props {
@@ -43,98 +42,99 @@
 	/>
 </svelte:head>
 
-<!-- Professional Search Hero -->
-<Hero
-	title="Wyszukiwarka"
-	subtitle="Znajdź dokładnie to, czego szukasz w naszej szerokiej ofercie produktów"
-	centered={true}
->
-	<!-- Enhanced Search Form in Hero -->
-	<div class="mx-auto mt-8 max-w-2xl">
-		<form onsubmit={handleSearchSubmit} class="relative">
-			<div class="group relative">
-				<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
-					<svg
-						class="group-focus-within:text-brand-600 h-5 w-5 text-[--ft-text-muted] transition-colors"
-						fill="none"
-						stroke="currentColor"
-						viewBox="0 0 24 24"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+<section class="border-b border-[--ft-line]">
+	<div class="ft-container" style="padding-top: clamp(40px, 5vh, 56px); padding-bottom: clamp(40px, 5vh, 56px);">
+		<div class="mx-auto max-w-3xl text-center">
+			<h1 style="font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.03em; color: var(--ft-dark); margin-bottom: 12px;">Wyszukiwarka</h1>
+			<p class="text-[--ft-text-muted]" style="font-size: 1rem; line-height: 1.7;">Znajdź dokładnie to, czego szukasz w naszej szerokiej ofercie produktów</p>
+			<!-- Enhanced Search Form -->
+			<div class="mx-auto mt-8 max-w-2xl">
+				<form onsubmit={handleSearchSubmit} class="relative">
+					<div class="group relative">
+						<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+							<svg
+								class="group-focus-within:text-[--ft-accent] h-5 w-5 text-[--ft-text-muted] transition-colors"
+								fill="none"
+								stroke="currentColor"
+								viewBox="0 0 24 24"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+								/>
+							</svg>
+						</div>
+						<Input
+							type="text"
+							placeholder="Wpisz nazwę produktu, kategorię lub słowo kluczowe..."
+							value={searchQuery}
+							oninput={(e) => (searchQuery = (e.target as HTMLInputElement).value)}
+							class="focus:border-[--ft-accent] rounded-2xl border-2 border-transparent py-4 pr-12 pl-12 text-lg shadow-lg transition-all"
+							autofocus
 						/>
-					</svg>
-				</div>
-				<Input
-					type="text"
-					placeholder="Wpisz nazwę produktu, kategorię lub słowo kluczowe..."
-					value={searchQuery}
-					oninput={(e) => (searchQuery = (e.target as HTMLInputElement).value)}
-					class="focus:border-brand-500 rounded-2xl border-2 border-transparent py-4 pr-12 pl-12 text-lg shadow-lg transition-all"
-					autofocus
-				/>
-				{#if searchQuery}
-					<button
-						type="button"
-						onclick={clearSearch}
-						class="group/clear absolute inset-y-0 right-4 flex items-center"
-						aria-label="Wyczyść wyszukiwanie"
-					>
-						<svg
-							class="h-5 w-5 text-[--ft-text-muted] transition-colors group-hover/clear:text-[--ft-text-muted]"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
+						{#if searchQuery}
+							<button
+								type="button"
+								onclick={clearSearch}
+								class="group/clear absolute inset-y-0 right-4 flex items-center"
+								aria-label="Wyczyść wyszukiwanie"
+							>
+								<svg
+									class="h-5 w-5 text-[--ft-text-muted] transition-colors group-hover/clear:text-[--ft-text-muted]"
+									fill="none"
+									stroke="currentColor"
+									viewBox="0 0 24 24"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M6 18L18 6M6 6l12 12"
+									/>
+								</svg>
+							</button>
+						{/if}
+					</div>
+
+					<div class="mt-4 flex justify-center">
+						<Button
+							type="submit"
+							disabled={!searchQuery || !searchQuery.trim() || !!navigating.to}
+							class="px-8 py-3 text-base font-semibold shadow-md"
 						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M6 18L18 6M6 6l12 12"
-							/>
-						</svg>
-					</button>
-				{/if}
-			</div>
+							{#if navigating.to}
+								<LoadingSpinner visible={true} />
+								<span class="ml-2">Szukam...</span>
+							{:else}
+								Szukaj
+							{/if}
+						</Button>
+					</div>
+				</form>
 
-			<div class="mt-4 flex justify-center">
-				<Button
-					type="submit"
-					disabled={!searchQuery || !searchQuery.trim() || !!navigating.to}
-					class="px-8 py-3 text-base font-semibold shadow-md"
-				>
-					{#if navigating.to}
-						<LoadingSpinner visible={true} />
-						<span class="ml-2">Szukam...</span>
-					{:else}
-						Szukaj
-					{/if}
-				</Button>
-			</div>
-		</form>
-
-		<!-- Popular Searches -->
-		<div class="mt-8 text-center">
-			<p class="mb-3 text-sm text-[--ft-text-muted]">Popularne wyszukiwania:</p>
-			<div class="flex flex-wrap justify-center gap-2">
-				{#each ['Pilarki', 'Wiertarki', 'Szlifierki', 'Spawarki', 'Narzędzia ogrodowe'] as term (term)}
-					<button
-						onclick={() => {
-							searchQuery = term;
-							handleSearchSubmit(new Event('submit'));
-						}}
-						class="cursor-pointer rounded-full bg-[--ft-frost] px-4 py-2 text-sm font-medium text-[--ft-text] transition-colors hover:bg-[--ft-line]"
-					>
-						{term}
-					</button>
-				{/each}
+				<!-- Popular Searches -->
+				<div class="mt-8 text-center">
+					<p class="mb-3 text-sm text-[--ft-text-muted]">Popularne wyszukiwania:</p>
+					<div class="flex flex-wrap justify-center gap-2">
+						{#each ['Pilarki', 'Wiertarki', 'Szlifierki', 'Spawarki', 'Narzędzia ogrodowe'] as term (term)}
+							<button
+								onclick={() => {
+									searchQuery = term;
+									handleSearchSubmit(new Event('submit'));
+								}}
+								class="cursor-pointer rounded-full bg-[--ft-frost] px-4 py-2 text-sm font-medium text-[--ft-text] transition-colors hover:bg-[--ft-line]"
+							>
+								{term}
+							</button>
+						{/each}
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
-</Hero>
+</section>
 
 <!-- Main Content -->
 <div>
@@ -184,7 +184,7 @@
 						<ul class="inline-block space-y-2 text-left text-sm text-[--ft-text-muted]">
 							<li class="flex items-start">
 								<svg
-									class="text-brand-500 mt-0.5 mr-2 h-4 w-4 shrink-0"
+									class="text-[--ft-accent] mt-0.5 mr-2 h-4 w-4 shrink-0"
 									fill="currentColor"
 									viewBox="0 0 20 20"
 								>
@@ -198,7 +198,7 @@
 							</li>
 							<li class="flex items-start">
 								<svg
-									class="text-brand-500 mt-0.5 mr-2 h-4 w-4 shrink-0"
+									class="text-[--ft-accent] mt-0.5 mr-2 h-4 w-4 shrink-0"
 									fill="currentColor"
 									viewBox="0 0 20 20"
 								>
@@ -212,7 +212,7 @@
 							</li>
 							<li class="flex items-start">
 								<svg
-									class="text-brand-500 mt-0.5 mr-2 h-4 w-4 shrink-0"
+									class="text-[--ft-accent] mt-0.5 mr-2 h-4 w-4 shrink-0"
 									fill="currentColor"
 									viewBox="0 0 20 20"
 								>
@@ -257,11 +257,11 @@
 					<div class="relative">
 						<div class="absolute inset-0 flex items-center justify-center">
 							<div
-								class="bg-brand-200 h-32 w-32 animate-pulse rounded-full opacity-30 blur-3xl filter"
+								class="bg-[--ft-accent] h-32 w-32 animate-pulse rounded-full opacity-30 blur-3xl filter"
 							></div>
 						</div>
 						<svg
-							class="text-brand-600 relative mx-auto mb-6 h-20 w-20"
+							class="text-[--ft-accent] relative mx-auto mb-6 h-20 w-20"
 							fill="none"
 							stroke="currentColor"
 							viewBox="0 0 24 24"

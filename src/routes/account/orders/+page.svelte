@@ -119,7 +119,7 @@
 			<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
 				<StatCard value={orderStats.total} label="Łączne zamówienia">
 					{#snippet icon()}
-						<svg class="text-brand-600 h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<svg class="text-[--ft-accent] h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
 						</svg>
 					{/snippet}
@@ -135,7 +135,7 @@
 
 				<StatCard value={orderStats.processing} label="W trakcie">
 					{#snippet icon()}
-						<svg class="text-brand-600 h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<svg class="text-[--ft-accent] h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
 						</svg>
 					{/snippet}
@@ -158,7 +158,7 @@
 					<div class="flex flex-col gap-4 sm:flex-row">
 						<div>
 							<label for="status-filter" class="mb-2 block text-sm font-medium text-[--ft-text]">Filtruj po statusie</label>
-							<select id="status-filter" bind:value={statusFilter} class="focus:ring-brand-500 rounded-lg border border-[--ft-line] px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none">
+							<select id="status-filter" bind:value={statusFilter} class="focus:ring-[--ft-accent] rounded-lg border border-[--ft-line] px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none">
 								<option value="all">Wszystkie</option>
 								<option value="delivered">Dostarczone</option>
 								<option value="processing">Przetwarzane</option>
@@ -169,7 +169,7 @@
 
 						<div>
 							<label for="sort-filter" class="mb-2 block text-sm font-medium text-[--ft-text]">Sortuj według</label>
-							<select id="sort-filter" bind:value={sortBy} class="focus:ring-brand-500 rounded-lg border border-[--ft-line] px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none">
+							<select id="sort-filter" bind:value={sortBy} class="focus:ring-[--ft-accent] rounded-lg border border-[--ft-line] px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none">
 								<option value="date-desc">Data: najnowsze</option>
 								<option value="date-asc">Data: najstarsze</option>
 								<option value="total-desc">Kwota: malejąco</option>
@@ -219,7 +219,7 @@
 									<div class="mb-4 flex-1 lg:mb-0">
 										<div class="mb-3 flex items-center gap-4">
 											<div>
-												<h3 class="group-hover:text-brand-600 text-lg font-bold text-[--ft-text] transition-colors">
+												<h3 class="group-hover:text-[--ft-accent] text-lg font-bold text-[--ft-text] transition-colors">
 													Zamówienie #{order.orderNumber || order.id}
 												</h3>
 												<p class="text-sm text-[--ft-text-muted]">Złożone {formatDate(order.created)}</p>
@@ -246,7 +246,7 @@
 									</div>
 
 									<div class="flex flex-col gap-3 sm:flex-row">
-										<Button href="/account/orders/{order.id}" variant="outline" size="sm" class="group-hover:border-brand-500 group-hover:text-brand-600 transition-colors">
+										<Button href="/account/orders/{order.id}" variant="outline" size="sm" class="group-hover:border-[--ft-accent] group-hover:text-[--ft-accent] transition-colors">
 											Zobacz szczegóły
 										</Button>
 										{#if isCompleted(order.status)}
@@ -263,7 +263,7 @@
 
 		<!-- Support -->
 		<section>
-			<Card class="from-brand-500/100/8 to-accent-500/100/8 border-2 border-[--ft-line] bg-linear-to-br p-8">
+			<Card class="border-2 border-[--ft-line] bg-[--ft-frost] p-8">
 				<div class="text-center">
 					<h3 class="mb-4 text-xl font-bold text-[--ft-text]">Potrzebujesz pomocy z zamówieniem?</h3>
 					<p class="mb-6 text-[--ft-text-muted]">Nasz zespół wsparcia jest gotowy do pomocy w każdej kwestii dotyczącej Twoich zamówień</p>
