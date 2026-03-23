@@ -5,7 +5,7 @@
 	import Input from '$lib/components/ui/Input.svelte';
 	import Card from '$lib/components/ui/Card.svelte';
 	import { notifications } from '$lib/stores';
-	import FixTarLogo from '$lib/img/logo-FixTar.webp';
+	import FixTarLogo from '$lib/images/logo/fixtar-logo-primary.webp';
 
 	const { form } = $props<{ form?: any }>();
 

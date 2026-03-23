@@ -25,7 +25,7 @@
 	/>
 </svelte:head>
 
-<HeroSection totalProducts={data.totalProducts} />
+<HeroSection />
+<FeaturesSection />
 <CategoriesSection categories={data.categories} />
 <FeaturedProducts products={data.featuredProducts} error={data.error} />
-<FeaturesSection />

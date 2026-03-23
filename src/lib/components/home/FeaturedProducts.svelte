@@ -5,19 +5,17 @@
 	interface Props {
 		products?: Product[];
 		error?: string;
+		title?: string;
 	}
 
-	let { products = [], error }: Props = $props();
+	let { products = [], error, title = 'Bestsellery' }: Props = $props();
 </script>
 
 <section class="featured">
 	<div class="featured-inner">
 		<div class="featured-header">
-			<div>
-				<span class="featured-label">Polecane</span>
-				<h2 class="featured-title">Najlepiej Oceniane</h2>
-			</div>
-			<a href="/products" class="see-all">
+			<h2 class="featured-title">{title}</h2>
+			<a href="/products" class="featured-all">
 				Wszystkie produkty
 				<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
 			</a>
@@ -42,7 +40,7 @@
 
 <style>
 	.featured {
-		padding: clamp(48px, 6vh, 72px) 0;
+		padding: clamp(40px, 5vh, 56px) 0;
 	}
 
 	.featured-inner {
@@ -51,71 +49,54 @@
 		padding: 0 var(--ft-gutter);
 	}
 
-	/* ── Header ── */
 	.featured-header {
 		display: flex;
-		align-items: flex-end;
+		align-items: baseline;
 		justify-content: space-between;
-		gap: 16px;
-		margin-bottom: 32px;
-	}
-
-	.featured-label {
-		font-size: 0.68rem;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.15em;
-		color: var(--ft-accent);
-		display: block;
-		margin-bottom: 6px;
+		margin-bottom: 24px;
 	}
 
 	.featured-title {
 		font-family: var(--font-display);
-		font-size: clamp(1.6rem, 3vw, 2.2rem);
-		font-weight: 800;
+		font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+		font-weight: 700;
 		color: var(--ft-dark);
-		letter-spacing: -0.03em;
+		letter-spacing: -0.02em;
 	}
 
-	/* ── Grid ── */
-	.grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-		gap: 16px;
-	}
-
-	/* ── See all link ── */
-	.see-all {
+	.featured-all {
 		display: inline-flex;
 		align-items: center;
 		gap: 6px;
-		font-family: var(--font-display);
-		font-size: 0.75rem;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.08em;
+		font-size: 0.78rem;
+		font-weight: 600;
 		color: var(--ft-text-muted);
 		text-decoration: none;
 		white-space: nowrap;
 		transition: color 0.15s ease, gap 0.15s ease;
 	}
 
-	.see-all:hover {
-		color: var(--ft-cta);
+	.featured-all:hover {
+		color: var(--ft-dark);
 		gap: 10px;
 	}
 
-	/* ── Empty state ── */
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+		gap: 12px;
+	}
+
 	.featured-empty {
 		text-align: center;
-		padding: 64px 0;
+		padding: 48px 0;
 		color: var(--ft-text-muted);
+		font-size: 0.9rem;
 	}
 
 	.featured-link {
 		display: inline-block;
-		margin-top: 16px;
+		margin-top: 12px;
 		color: var(--ft-accent);
 		font-weight: 600;
 		font-size: 0.85rem;

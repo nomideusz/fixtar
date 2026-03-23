@@ -5,7 +5,7 @@
 	import Card from '$lib/components/ui/Card.svelte';
 	import Hero from '$lib/components/ui/Hero.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
-	import FixTarLogo from '$lib/img/logo-FixTar.webp';
+	import FixTarLogo from '$lib/images/logo/fixtar-logo-primary.webp';
 
 	let logoutStage = $state<'processing' | 'complete' | 'error'>('processing');
 	let countdown = $state(3);

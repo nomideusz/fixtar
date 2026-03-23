@@ -1,5 +1,6 @@
 /* ==========================================================================
-   FixTar — Industrial Precision Design System
+   FixTar — Minimal Design System
+   Inspired by scheppach.co.uk: clean, light, photography-first.
    3-color hierarchy: Orange (action) + Navy (authority) + Teal (info).
    Plus Jakarta Sans headlines + Inter body.
    ========================================================================== */
@@ -45,17 +46,17 @@
 }
 
 /* ==========================================================================
-   2. SEMANTIC TOKENS — Light by default (like yoga site)
+   2. SEMANTIC TOKENS — Light, clean white
    ========================================================================== */
 
 :root {
-	/* ── Core palette ── */
-	--ft-bg: #f8fafb;
+	/* ── Core palette — pure white, no tints ── */
+	--ft-bg: #ffffff;
 	--ft-surface: #ffffff;
 	--ft-dark: #014783;             /* Navy — headings, brand */
-	--ft-text: #2e3a46;             /* Darker body text */
+	--ft-text: #2e3a46;             /* Body text */
 	--ft-text-strong: #014783;      /* Navy for headings */
-	--ft-text-muted: #6b7d8e;       /* Cooler secondary text */
+	--ft-text-muted: #6b7d8e;       /* Secondary text */
 	--ft-text-faint: #9baab8;       /* Hints, placeholders */
 
 	/* ── Action colors ── */
@@ -70,13 +71,13 @@
 	--ft-warm-bg: #f5ede4;
 
 	/* ── Surfaces & borders ── */
-	--ft-line: #dce4ee;
-	--ft-frost: #edf1f6;
+	--ft-line: #e2e8f0;
+	--ft-frost: #f1f5f9;
 
 	/* ── Elevation ── */
-	--ft-shadow-sm: 0 1px 3px rgba(1, 71, 131, 0.04);
-	--ft-shadow-md: 0 4px 20px rgba(1, 71, 131, 0.07);
-	--ft-shadow-lg: 0 8px 36px rgba(1, 71, 131, 0.1);
+	--ft-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+	--ft-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
+	--ft-shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.08);
 
 	/* ── Layout ── */
 	--ft-container: 1440px;
@@ -169,10 +170,6 @@ html {
 body {
 	font-family: var(--font-sans);
 	background: var(--ft-bg);
-	background-image:
-		radial-gradient(ellipse 80% 50% at 50% 0%, rgba(1, 71, 131, 0.04) 0%, transparent 60%),
-		radial-gradient(ellipse 60% 40% at 80% 100%, rgba(62, 139, 139, 0.03) 0%, transparent 50%);
-	background-attachment: fixed;
 	color: var(--ft-text);
 	line-height: 1.7;
 	font-size: 15px;
@@ -371,9 +368,6 @@ h4 {
 
 /*
  * Page section spacing — consistent vertical rhythm
- *
- * Use these on the outermost content wrapper INSIDE each page,
- * after any Hero / page-header.
  *
  *   .ft-section        — standard page section      (48 → 64px)
  *   .ft-section-lg     — hero-adjacent / spacious    (64 → 96px)
