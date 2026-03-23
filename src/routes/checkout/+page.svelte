@@ -2,9 +2,7 @@
 	import { cart } from '$lib/stores';
 	import { goto } from '$app/navigation';
 	import { enhance } from '$app/forms';
-	import Button from '$lib/components/ui/Button.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
-	import Card from '$lib/components/ui/Card.svelte';
 	import CheckoutProgress from '$lib/components/checkout/CheckoutProgress.svelte';
 	import SectionHeader from '$lib/components/checkout/SectionHeader.svelte';
 	import SelectableMethodCard from '$lib/components/checkout/SelectableMethodCard.svelte';
@@ -205,7 +203,7 @@
 	<div class="ft-container ft-section-lg">
 		{#if cart.items.length === 0}
 			<!-- Empty Cart -->
-			<Card class="mx-auto max-w-2xl p-16 text-center">
+			<div class="mx-auto max-w-2xl py-16 text-center">
 				<div
 					class="mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-3xl bg-[--ft-frost]"
 				>
@@ -227,13 +225,11 @@
 				<p class="mb-8 text-lg text-[--ft-text-muted]">
 					Dodaj produkty do koszyka, aby przejść do finalizacji zamówienia
 				</p>
-				<div class="flex flex-col justify-center gap-4 sm:flex-row">
-					<Button href="/products" class="px-8 py-4 text-lg">Przeglądaj produkty</Button>
-					<Button href="/" variant="outline" class="px-8 py-4 text-lg">
-						Wróć do strony głównej
-					</Button>
+				<div class="flex flex-col justify-center gap-6 sm:flex-row">
+					<a href="/products" class="text-[--ft-accent] font-medium hover:underline">Przeglądaj produkty</a>
+					<a href="/" class="text-[--ft-text-muted] hover:text-[--ft-text]">Wróć do strony głównej</a>
 				</div>
-			</Card>
+			</div>
 		{:else}
 			<CheckoutProgress steps={checkoutSteps} />
 
@@ -274,7 +270,7 @@
 				<!-- Left Column: Form Sections -->
 				<div class="space-y-8 xl:col-span-2">
 					<!-- Contact Information -->
-					<Card class="p-8">
+					<div class="border border-[--ft-line] rounded-xl p-8">
 						<SectionHeader title="Dane kontaktowe" iconBgClass="bg-[--ft-frost]" iconColorClass="text-[--ft-accent]">
 							{#snippet icon()}
 								<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="h-4 w-4">
@@ -312,10 +308,10 @@
 								class="focus:ring-[--ft-accent] focus:ring-2"
 							/>
 						</div>
-					</Card>
+					</div>
 
 					<!-- Shipping Address -->
-					<Card class="p-8">
+					<div class="border border-[--ft-line] rounded-xl p-8">
 						<SectionHeader title="Adres dostawy" iconBgClass="bg-accent-100" iconColorClass="text-success">
 							{#snippet icon()}
 								<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="h-4 w-4">
@@ -465,10 +461,10 @@
 								</label>
 							{/if}
 						</div>
-					</Card>
+					</div>
 
 					<!-- Shipping Method -->
-					<Card class="p-8">
+					<div class="border border-[--ft-line] rounded-xl p-8">
 						<SectionHeader title="Metoda dostawy" iconBgClass="bg-accent-100" iconColorClass="text-accent-600">
 							{#snippet icon()}
 								<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="h-4 w-4">
@@ -548,10 +544,10 @@
 						{#if errors.shippingMethod}
 							<p class="text-danger mt-3 text-sm">{errors.shippingMethod}</p>
 						{/if}
-					</Card>
+					</div>
 
 					<!-- Payment Method -->
-					<Card class="p-8">
+					<div class="border border-[--ft-line] rounded-xl p-8">
 						<SectionHeader title="Metoda płatności" iconBgClass="bg-[--ft-frost]" iconColorClass="text-[--ft-accent]">
 							{#snippet icon()}
 								<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="h-4 w-4">
@@ -603,10 +599,10 @@
 						{#if errors.paymentMethod}
 							<p class="text-danger mt-3 text-sm">{errors.paymentMethod}</p>
 						{/if}
-					</Card>
+					</div>
 
 					<!-- Additional Notes -->
-					<Card class="p-8">
+					<div class="border border-[--ft-line] rounded-xl p-8">
 						<SectionHeader title="Dodatkowe informacje">
 							{#snippet icon()}
 								<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="h-4 w-4">
@@ -627,7 +623,7 @@
 							rows="4"
 							class="focus:ring-[--ft-accent] focus:border-[--ft-accent] w-full resize-none rounded-xl border border-[--ft-line] px-4 py-3 shadow-sm transition-colors focus:ring-2"
 						></textarea>
-					</Card>
+					</div>
 				</div>
 
 				<!-- Right Column: Order Summary -->

@@ -1,6 +1,4 @@
 <script lang="ts">
-	import Card from '$lib/components/ui/Card.svelte';
-	import Button from '$lib/components/ui/Button.svelte';
 	import StatCard from '$lib/components/account/StatCard.svelte';
 	import { getOrderStatus } from '$lib/utils/order-status';
 	import type { PageData } from './$types';
@@ -91,7 +89,7 @@
 	<div class="space-y-8">
 	{#if data.error}
 		<!-- Error State -->
-		<Card class="p-8 text-center">
+		<div class="py-8 text-center">
 			<div
 				class="bg-danger/10 mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl"
 			>
@@ -111,8 +109,8 @@
 			</div>
 			<h3 class="mb-2 text-xl font-bold text-[--ft-text]">Wystąpił błąd</h3>
 			<p class="mb-6 text-[--ft-text-muted]">{data.error}</p>
-			<Button href="/account">Wróć do konta</Button>
-		</Card>
+			<a href="/account" class="text-[--ft-accent] font-medium hover:underline">Wróć do konta</a>
+		</div>
 	{:else}
 		<!-- Stats -->
 		<section>
@@ -143,7 +141,7 @@
 
 				<StatCard value="{orderStats.totalSpent.toFixed(2)} zł" label="Łączne wydatki" valueClass="text-[--ft-accent]">
 					{#snippet icon()}
-						<svg class="text-accent-600 h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<svg class="text-[--ft-accent] h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
 						</svg>
 					{/snippet}
@@ -153,7 +151,7 @@
 
 		<!-- Filters -->
 		<section>
-			<Card class="p-6">
+			<div class="py-4 border-b border-[--ft-line]">
 				<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 					<div class="flex flex-col gap-4 sm:flex-row">
 						<div>
@@ -182,13 +180,13 @@
 						Wyświetlam {filteredOrders.length} z {orders.length} zamówień
 					</div>
 				</div>
-			</Card>
+			</div>
 		</section>
 
 		<!-- Orders List -->
 		<section>
 			{#if filteredOrders.length === 0}
-				<Card class="p-12 text-center">
+				<div class="py-12 text-center">
 					<div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-[--ft-frost]">
 						<svg class="h-8 w-8 text-[--ft-text-muted]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -202,60 +200,67 @@
 							? 'Rozpocznij zakupy i zobacz swoje zamówienia tutaj'
 							: 'Spróbuj zmienić filtr lub dodać nowe zamówienia'}
 					</p>
-					<div class="flex flex-col justify-center gap-3 sm:flex-row">
+					<div class="flex flex-col justify-center gap-4 sm:flex-row">
 						{#if statusFilter !== 'all'}
-							<Button variant="outline" onclick={() => (statusFilter = 'all')}>Pokaż wszystkie</Button>
+							<button
+								onclick={() => (statusFilter = 'all')}
+								class="text-[--ft-text-muted] hover:text-[--ft-text] font-medium"
+							>Pokaż wszystkie</button>
 						{/if}
-						<Button href="/products">Rozpocznij zakupy</Button>
+						<a href="/products" class="text-[--ft-accent] font-medium hover:underline">Rozpocznij zakupy</a>
 					</div>
-				</Card>
+				</div>
 			{:else}
-				<div class="space-y-4">
+				<div class="space-y-0 divide-y divide-[--ft-line]">
 					{#each filteredOrders as order (order)}
 						{@const status = getOrderStatus(order.status)}
-						<Card hover class="group">
-							<div class="p-6">
-								<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
-									<div class="mb-4 flex-1 lg:mb-0">
-										<div class="mb-3 flex items-center gap-4">
-											<div>
-												<h3 class="group-hover:text-[--ft-accent] text-lg font-bold text-[--ft-text] transition-colors">
-													Zamówienie #{order.orderNumber || order.id}
-												</h3>
-												<p class="text-sm text-[--ft-text-muted]">Złożone {formatDate(order.created)}</p>
-											</div>
-											<span class="inline-flex rounded-full px-3 py-1 text-xs font-semibold {status.colorClass}">
-												{status.label}
-											</span>
+						<div class="group py-6">
+							<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+								<div class="mb-4 flex-1 lg:mb-0">
+									<div class="mb-3 flex items-center gap-4">
+										<div>
+											<h3 class="text-lg font-bold text-[--ft-text]">
+												Zamówienie #{order.orderNumber || order.id}
+											</h3>
+											<p class="text-sm text-[--ft-text-muted]">Złożone {formatDate(order.created)}</p>
 										</div>
-
-										<div class="grid grid-cols-1 gap-4 text-sm sm:grid-cols-3">
-											<div>
-												<span class="text-[--ft-text-muted]">Suma zamówienia:</span>
-												<span class="ml-1 font-semibold text-[--ft-text]">{(order.total || 0).toFixed(2)} zł</span>
-											</div>
-											<div>
-												<span class="text-[--ft-text-muted]">Metoda płatności:</span>
-												<span class="ml-1 font-semibold text-[--ft-text]">{order.paymentMethod || 'Karta'}</span>
-											</div>
-											<div>
-												<span class="text-[--ft-text-muted]">Dostawa:</span>
-												<span class="ml-1 font-semibold text-[--ft-text]">{order.shippingMethod || 'Standardowa'}</span>
-											</div>
-										</div>
+										<span class="inline-flex rounded-full px-3 py-1 text-xs font-semibold {status.colorClass}">
+											{status.label}
+										</span>
 									</div>
 
-									<div class="flex flex-col gap-3 sm:flex-row">
-										<Button href="/account/orders/{order.id}" variant="outline" size="sm" class="group-hover:border-[--ft-accent] group-hover:text-[--ft-accent] transition-colors">
-											Zobacz szczegóły
-										</Button>
-										{#if isCompleted(order.status)}
-											<Button href="/products?reorder={order.id}" size="sm">Zamów ponownie</Button>
-										{/if}
+									<div class="grid grid-cols-1 gap-4 text-sm sm:grid-cols-3">
+										<div>
+											<span class="text-[--ft-text-muted]">Suma zamówienia:</span>
+											<span class="ml-1 font-semibold text-[--ft-text]">{(order.total || 0).toFixed(2)} zł</span>
+										</div>
+										<div>
+											<span class="text-[--ft-text-muted]">Metoda płatności:</span>
+											<span class="ml-1 font-semibold text-[--ft-text]">{order.paymentMethod || 'Karta'}</span>
+										</div>
+										<div>
+											<span class="text-[--ft-text-muted]">Dostawa:</span>
+											<span class="ml-1 font-semibold text-[--ft-text]">{order.shippingMethod || 'Standardowa'}</span>
+										</div>
 									</div>
 								</div>
+
+								<div class="flex flex-col gap-3 sm:flex-row">
+									<a
+										href="/account/orders/{order.id}"
+										class="text-sm font-medium text-[--ft-accent] hover:underline"
+									>
+										Zobacz szczegóły
+									</a>
+									{#if isCompleted(order.status)}
+										<a
+											href="/products?reorder={order.id}"
+											class="text-sm font-medium text-[--ft-text-muted] hover:text-[--ft-text]"
+										>Zamów ponownie</a>
+									{/if}
+								</div>
 							</div>
-						</Card>
+						</div>
 					{/each}
 				</div>
 			{/if}
@@ -263,16 +268,14 @@
 
 		<!-- Support -->
 		<section>
-			<Card class="border-2 border-[--ft-line] bg-[--ft-frost] p-8">
-				<div class="text-center">
-					<h3 class="mb-4 text-xl font-bold text-[--ft-text]">Potrzebujesz pomocy z zamówieniem?</h3>
-					<p class="mb-6 text-[--ft-text-muted]">Nasz zespół wsparcia jest gotowy do pomocy w każdej kwestii dotyczącej Twoich zamówień</p>
-					<div class="flex flex-col justify-center gap-4 sm:flex-row">
-						<Button href="/contact" variant="outline">Skontaktuj się z nami</Button>
-						<Button href="/help/orders">Pomoc z zamówieniami</Button>
-					</div>
+			<div class="bg-[--ft-frost] rounded-lg p-8 text-center">
+				<h3 class="mb-4 text-xl font-bold text-[--ft-text]">Potrzebujesz pomocy z zamówieniem?</h3>
+				<p class="mb-6 text-[--ft-text-muted]">Nasz zespół wsparcia jest gotowy do pomocy w każdej kwestii dotyczącej Twoich zamówień</p>
+				<div class="flex flex-col justify-center gap-6 sm:flex-row">
+					<a href="/contact" class="text-[--ft-accent] font-medium hover:underline">Skontaktuj się z nami</a>
+					<a href="/help/orders" class="text-[--ft-text-muted] hover:text-[--ft-text]">Pomoc z zamówieniami</a>
 				</div>
-			</Card>
+			</div>
 		</section>
 	{/if}
 </div>

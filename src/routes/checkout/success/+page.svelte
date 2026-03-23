@@ -1,6 +1,4 @@
 <script lang="ts">
-	import Button from '$lib/components/ui/Button.svelte';
-	import Card from '$lib/components/ui/Card.svelte';
 	import type { PageData } from './$types';
 	import { page } from '$app/stores';
 
@@ -62,7 +60,7 @@
 
 <div class="min-h-screen">
 	<div class="ft-container ft-section-lg">
-		<!-- Enhanced Success Header -->
+		<!-- Success Header -->
 		<div class="mb-12 text-center">
 			<div class="relative mb-8 inline-block">
 				<div
@@ -71,7 +69,7 @@
 				<div
 					class="bg-success relative mx-auto flex h-24 w-24 items-center justify-center rounded-full shadow-xl"
 				>
-					<svg class="h-12 w-12 text-[--ft-text]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<svg class="h-12 w-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path
 							stroke-linecap="round"
 							stroke-linejoin="round"
@@ -83,37 +81,33 @@
 			</div>
 
 			<!-- Order Number Display -->
-			<Card
-				class="from-[--ft-accent]/10 to-success/5 border-success/20 mb-8 inline-block border-2 bg-linear-to-r p-6"
-			>
-				<div class="flex items-center space-x-4">
-					<div class="bg-[--ft-frost] flex h-12 w-12 items-center justify-center rounded-xl">
-						<svg
-							class="text-[--ft-accent] h-6 w-6"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-							/>
-						</svg>
-					</div>
-					<div class="text-left">
-						<p class="text-sm font-medium text-[--ft-text-muted]">Numer zamówienia</p>
-						<p class="text-2xl font-bold text-[--ft-text]">#{orderNumber}</p>
-					</div>
+			<div class="mb-8 inline-flex items-center gap-4 bg-[--ft-frost] rounded-xl py-4 px-6">
+				<div class="bg-white flex h-12 w-12 items-center justify-center rounded-xl">
+					<svg
+						class="text-[--ft-accent] h-6 w-6"
+						fill="none"
+						stroke="currentColor"
+						viewBox="0 0 24 24"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+						/>
+					</svg>
 				</div>
-			</Card>
+				<div class="text-left">
+					<p class="text-sm font-medium text-[--ft-text-muted]">Numer zamówienia</p>
+					<p class="text-2xl font-bold text-[--ft-text]">#{orderNumber}</p>
+				</div>
+			</div>
 		</div>
 
 		<!-- Fallback notification -->
 		{#if isFallback && data.order?.metadata?.paymentDetails?.originalMethod}
 			<div class="mx-auto mb-8 max-w-4xl">
-				<Card class="border-2 border-amber-500/20 bg-amber-500/10 p-6">
+				<div class="border border-[--ft-line] rounded-xl p-6 bg-[--ft-frost]">
 					<div class="flex items-start space-x-4">
 						<div class="shrink-0">
 							<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/20">
@@ -143,16 +137,16 @@
 							</p>
 						</div>
 					</div>
-				</Card>
+				</div>
 			</div>
 		{/if}
 
 		<!-- Bank Transfer Details (if applicable) -->
 		{#if data.order?.paymentMethod === 'bank_transfer' && data.order?.metadata?.paymentDetails?.bankDetails}
 			<div class="mx-auto mb-12 max-w-4xl">
-				<Card class="bg-[--ft-accent]/10 border-[--ft-accent]/20 border-2 p-8">
+				<div class="bg-[--ft-frost] border border-[--ft-line] rounded-xl p-8">
 					<div class="mb-6 flex items-center">
-						<div class="bg-[--ft-frost] mr-4 flex h-12 w-12 items-center justify-center rounded-xl">
+						<div class="bg-white mr-4 flex h-12 w-12 items-center justify-center rounded-xl">
 							<svg
 								class="text-[--ft-accent] h-6 w-6"
 								fill="none"
@@ -174,7 +168,7 @@
 						<div>
 							<h4 class="mb-2 text-sm font-semibold text-[--ft-text]">Nazwa odbiorcy</h4>
 							<p
-								class="rounded-xl border border-[--ft-line] bg-[--ft-frost] p-3 text-lg font-bold text-[--ft-text]"
+								class="rounded-xl border border-[--ft-line] bg-white p-3 text-lg font-bold text-[--ft-text]"
 							>
 								{data.order.metadata.paymentDetails.bankDetails.accountName}
 							</p>
@@ -183,7 +177,7 @@
 						<div>
 							<h4 class="mb-2 text-sm font-semibold text-[--ft-text]">Bank</h4>
 							<p
-								class="rounded-xl border border-[--ft-line] bg-[--ft-frost] p-3 text-lg font-bold text-[--ft-text]"
+								class="rounded-xl border border-[--ft-line] bg-white p-3 text-lg font-bold text-[--ft-text]"
 							>
 								{data.order.metadata.paymentDetails.bankDetails.bankName}
 							</p>
@@ -192,7 +186,7 @@
 						<div>
 							<h4 class="mb-2 text-sm font-semibold text-[--ft-text]">Numer konta</h4>
 							<p
-								class="rounded-xl border border-[--ft-line] bg-[--ft-frost] p-3 font-mono text-lg font-bold tracking-wider text-[--ft-text]"
+								class="rounded-xl border border-[--ft-line] bg-white p-3 font-mono text-lg font-bold tracking-wider text-[--ft-text]"
 							>
 								{data.order.metadata.paymentDetails.bankDetails.accountNumber}
 							</p>
@@ -201,7 +195,7 @@
 						<div>
 							<h4 class="mb-2 text-sm font-semibold text-[--ft-text]">SWIFT</h4>
 							<p
-								class="rounded-xl border border-[--ft-line] bg-[--ft-frost] p-3 font-mono text-lg font-bold text-[--ft-text]"
+								class="rounded-xl border border-[--ft-line] bg-white p-3 font-mono text-lg font-bold text-[--ft-text]"
 							>
 								{data.order.metadata.paymentDetails.bankDetails.swift}
 							</p>
@@ -219,7 +213,7 @@
 						<div class="md:col-span-2">
 							<h4 class="mb-2 text-sm font-semibold text-[--ft-text]">Kwota do zapłaty</h4>
 							<p
-								class="text-[--ft-accent] rounded-xl border border-[--ft-line] bg-[--ft-frost] p-4 text-center text-3xl font-bold"
+								class="text-[--ft-accent] rounded-xl border border-[--ft-line] bg-white p-4 text-center text-3xl font-bold"
 							>
 								{data.order.metadata.paymentDetails.bankDetails.amount}
 							</p>
@@ -251,22 +245,22 @@
 							</div>
 						</div>
 					</div>
-				</Card>
+				</div>
 			</div>
 		{/if}
 
-		<!-- Action Buttons -->
+		<!-- Action Links -->
 		<div class="mb-16 text-center">
 			<p class="mb-8 text-lg text-[--ft-text-muted]">
 				Wysłaliśmy email z potwierdzeniem zamówienia i szczegółami dostawy na podany adres.
 			</p>
 
-			<div class="flex flex-col justify-center gap-4 sm:flex-row">
-				<Button
+			<div class="flex flex-col justify-center gap-6 sm:flex-row">
+				<a
 					href="/account/orders"
-					class="rounded-2xl bg-[--ft-accent] px-8 py-4 text-lg font-bold text-white hover:bg-[--ft-accent-hover] transition-colors duration-200"
+					class="inline-flex items-center gap-2 text-[--ft-accent] font-medium hover:underline"
 				>
-					<svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path
 							stroke-linecap="round"
 							stroke-linejoin="round"
@@ -275,13 +269,12 @@
 						/>
 					</svg>
 					Moje zamówienia
-				</Button>
-				<Button
+				</a>
+				<a
 					href="/products"
-					variant="outline"
-					class="hover:border-[--ft-accent] hover:text-[--ft-accent] rounded-2xl border-2 border-[--ft-line] px-8 py-4 text-lg font-bold transition-colors duration-200"
+					class="inline-flex items-center gap-2 text-[--ft-text-muted] hover:text-[--ft-text]"
 				>
-					<svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path
 							stroke-linecap="round"
 							stroke-linejoin="round"
@@ -290,14 +283,14 @@
 						/>
 					</svg>
 					Kontynuuj zakupy
-				</Button>
+				</a>
 			</div>
 		</div>
 
 		{#if data.order}
 			<div class="mx-auto grid max-w-6xl grid-cols-1 gap-8 lg:grid-cols-2">
-				<!-- Enhanced Order Items -->
-				<Card class="p-8">
+				<!-- Order Items -->
+				<div class="border border-[--ft-line] rounded-xl p-8">
 					<div class="mb-6 flex items-center">
 						<div class="bg-success/10 mr-3 flex h-10 w-10 items-center justify-center rounded-xl">
 							<svg
@@ -321,7 +314,7 @@
 						<div class="space-y-4">
 							{#each data.order.items as item (item)}
 								<div
-									class="flex items-center space-x-4 rounded-xl bg-[--ft-frost] p-4 transition-colors duration-200 hover:bg-[--ft-frost]"
+									class="flex items-center space-x-4 rounded-xl bg-[--ft-frost] p-4"
 								>
 									{#if item.image}
 										<div class="h-20 w-20 shrink-0 overflow-hidden rounded-xl">
@@ -389,12 +382,12 @@
 							<p class="text-[--ft-text-muted]">Brak szczegółów produktów w zamówieniu</p>
 						</div>
 					{/if}
-				</Card>
+				</div>
 
-				<!-- Enhanced Shipping & Payment Info -->
+				<!-- Shipping & Payment Info -->
 				<div class="space-y-8">
 					<!-- Shipping Address -->
-					<Card class="p-8">
+					<div class="border border-[--ft-line] rounded-xl p-8">
 						<div class="mb-6 flex items-center">
 							<div class="bg-[--ft-frost] mr-3 flex h-10 w-10 items-center justify-center rounded-xl">
 								<svg
@@ -446,14 +439,14 @@
 						{:else}
 							<p class="text-[--ft-text-muted]">Brak danych adresowych</p>
 						{/if}
-					</Card>
+					</div>
 
 					<!-- Payment & Shipping Methods -->
-					<Card class="p-8">
+					<div class="border border-[--ft-line] rounded-xl p-8">
 						<div class="mb-6 flex items-center">
-							<div class="bg-accent-100 mr-3 flex h-10 w-10 items-center justify-center rounded-xl">
+							<div class="bg-[--ft-frost] mr-3 flex h-10 w-10 items-center justify-center rounded-xl">
 								<svg
-									class="text-accent-600 h-5 w-5"
+									class="text-[--ft-accent] h-5 w-5"
 									fill="none"
 									stroke="currentColor"
 									viewBox="0 0 24 24"
@@ -540,14 +533,14 @@
 								</div>
 							{/if}
 						</div>
-					</Card>
+					</div>
 				</div>
 			</div>
 		{/if}
 
 		<!-- Next Steps -->
 		<div class="mx-auto mt-16 max-w-4xl">
-			<Card class="from-[--ft-accent]/10 to-accent-500/100/8 border-2 border-[--ft-line] bg-linear-to-br p-8">
+			<div class="border border-[--ft-line] rounded-xl p-8">
 				<div class="text-center">
 					<div
 						class="bg-[--ft-frost] mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl"
@@ -594,9 +587,9 @@
 						</div>
 						<div class="flex items-start space-x-3">
 							<div
-								class="bg-accent-100 mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
+								class="bg-[--ft-frost] mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
 							>
-								<span class="text-accent-600 text-sm font-bold">3</span>
+								<span class="text-[--ft-accent] text-sm font-bold">3</span>
 							</div>
 							<div>
 								<h4 class="mb-1 font-bold text-[--ft-text]">Dostawa</h4>
@@ -607,7 +600,7 @@
 						</div>
 					</div>
 				</div>
-			</Card>
+			</div>
 		</div>
 	</div>
 </div>

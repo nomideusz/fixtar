@@ -1,6 +1,4 @@
 <script lang="ts">
-	import Card from '$lib/components/ui/Card.svelte';
-	import Button from '$lib/components/ui/Button.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
 	import { notifications } from '$lib/stores';
 
@@ -114,7 +112,7 @@
 		<section class="mb-20">
 			<div class="mb-12 text-center">
 				<div
-					class="bg-accent-100 text-accent-800 mb-4 inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold"
+					class="bg-[--ft-frost] text-[--ft-accent] mb-4 inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold"
 				>
 					<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path
@@ -140,7 +138,7 @@
 
 			<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
 				{#each contactInfo as info (info)}
-					<Card hover class="group text-center">
+					<div class="group text-center">
 						<div class="p-6">
 							<!-- Icon -->
 							<div
@@ -212,9 +210,7 @@
 							</div>
 
 							<!-- Content -->
-							<h3
-								class="group-hover:text-[--ft-accent] mb-3 text-lg font-bold text-[--ft-text] transition-colors duration-200"
-							>
+							<h3 class="mb-3 text-lg font-bold text-[--ft-text]">
 								{info.title}
 							</h3>
 							<div class="mb-4 space-y-1">
@@ -223,15 +219,15 @@
 								{/each}
 							</div>
 
-							<!-- Action Button -->
+							<!-- Action Link -->
 							{#if info.action}
 								<a
 									href={info.action.href}
-									class="text-[--ft-accent] hover:text-[--ft-accent] inline-flex items-center text-sm font-medium transition-colors duration-200 group-hover:underline"
+									class="text-[--ft-accent] inline-flex items-center text-sm font-medium transition-colors duration-200 hover:underline"
 								>
 									{info.action.text}
 									<svg
-										class="ml-1 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1"
+										class="ml-1 h-4 w-4"
 										fill="none"
 										stroke="currentColor"
 										viewBox="0 0 24 24"
@@ -246,7 +242,7 @@
 								</a>
 							{/if}
 						</div>
-					</Card>
+					</div>
 				{/each}
 			</div>
 		</section>
@@ -256,114 +252,116 @@
 			<div class="grid grid-cols-1 gap-16 lg:grid-cols-2">
 				<!-- Contact Form -->
 				<div>
-					<Card class="p-8">
-						<div class="mb-8">
-							<h3 class="mb-4 text-2xl font-bold text-[--ft-text]">Napisz Do Nas</h3>
-							<p class="text-[--ft-text-muted]">
-								Wypełnij formularz poniżej, a odpowiemy w ciągu 24 godzin.
-							</p>
-						</div>
+					<div class="mb-8">
+						<h3 class="mb-4 text-2xl font-bold text-[--ft-text]">Napisz Do Nas</h3>
+						<p class="text-[--ft-text-muted]">
+							Wypełnij formularz poniżej, a odpowiemy w ciągu 24 godzin.
+						</p>
+					</div>
 
-						<form onsubmit={handleSubmit} class="space-y-6">
-							<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-								<div>
-									<label for="name" class="mb-2 block text-sm font-semibold text-[--ft-text]">
-										Imię i nazwisko *
-									</label>
-									<Input
-										id="name"
-										type="text"
-										bind:value={formData.name}
-										placeholder="Jan Kowalski"
-										required
-										disabled={sending}
-									/>
-								</div>
-								<div>
-									<label for="email" class="mb-2 block text-sm font-semibold text-[--ft-text]">
-										Adres email *
-									</label>
-									<Input
-										id="email"
-										type="email"
-										bind:value={formData.email}
-										placeholder="jan@example.com"
-										required
-										disabled={sending}
-									/>
-								</div>
-							</div>
-
+					<form onsubmit={handleSubmit} class="space-y-6">
+						<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 							<div>
-								<label for="subject" class="mb-2 block text-sm font-semibold text-[--ft-text]">
-									Temat *
+								<label for="name" class="mb-2 block text-sm font-semibold text-[--ft-text]">
+									Imię i nazwisko *
 								</label>
 								<Input
-									id="subject"
+									id="name"
 									type="text"
-									bind:value={formData.subject}
-									placeholder="W czym możemy pomóc?"
+									bind:value={formData.name}
+									placeholder="Jan Kowalski"
 									required
 									disabled={sending}
 								/>
 							</div>
-
 							<div>
-								<label for="message" class="mb-2 block text-sm font-semibold text-[--ft-text]">
-									Wiadomość *
+								<label for="email" class="mb-2 block text-sm font-semibold text-[--ft-text]">
+									Adres email *
 								</label>
-								<textarea
-									id="message"
-									bind:value={formData.message}
-									placeholder="Opisz swoje pytanie lub problem..."
+								<Input
+									id="email"
+									type="email"
+									bind:value={formData.email}
+									placeholder="jan@example.com"
 									required
 									disabled={sending}
-									rows="5"
-									class="focus:ring-[--ft-accent] w-full resize-none rounded-xl border border-[--ft-line] px-4 py-3 focus:border-transparent focus:ring-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-								></textarea>
+								/>
 							</div>
+						</div>
 
-							<Button type="submit" disabled={sending} class="w-full py-4 text-lg">
-								{#if sending}
-									<svg
-										class="mr-3 -ml-1 h-5 w-5 animate-spin text-[--ft-text]"
-										fill="none"
-										viewBox="0 0 24 24"
-									>
-										<circle
-											class="opacity-25"
-											cx="12"
-											cy="12"
-											r="10"
-											stroke="currentColor"
-											stroke-width="4"
-										></circle>
-										<path
-											class="opacity-75"
-											fill="currentColor"
-											d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-										></path>
-									</svg>
-									Wysyłanie...
-								{:else}
-									<svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-										/>
-									</svg>
-									Wyślij Wiadomość
-								{/if}
-							</Button>
-						</form>
-					</Card>
+						<div>
+							<label for="subject" class="mb-2 block text-sm font-semibold text-[--ft-text]">
+								Temat *
+							</label>
+							<Input
+								id="subject"
+								type="text"
+								bind:value={formData.subject}
+								placeholder="W czym możemy pomóc?"
+								required
+								disabled={sending}
+							/>
+						</div>
+
+						<div>
+							<label for="message" class="mb-2 block text-sm font-semibold text-[--ft-text]">
+								Wiadomość *
+							</label>
+							<textarea
+								id="message"
+								bind:value={formData.message}
+								placeholder="Opisz swoje pytanie lub problem..."
+								required
+								disabled={sending}
+								rows="5"
+								class="focus:ring-[--ft-accent] w-full resize-none rounded-xl border border-[--ft-line] px-4 py-3 focus:border-transparent focus:ring-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+							></textarea>
+						</div>
+
+						<button
+							type="submit"
+							disabled={sending}
+							class="w-full flex items-center justify-center gap-2 py-4 px-6 font-semibold text-white rounded-xl bg-[--ft-text-strong] hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+						>
+							{#if sending}
+								<svg
+									class="h-5 w-5 animate-spin"
+									fill="none"
+									viewBox="0 0 24 24"
+								>
+									<circle
+										class="opacity-25"
+										cx="12"
+										cy="12"
+										r="10"
+										stroke="currentColor"
+										stroke-width="4"
+									></circle>
+									<path
+										class="opacity-75"
+										fill="currentColor"
+										d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+									></path>
+								</svg>
+								Wysyłanie...
+							{:else}
+								<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+									/>
+								</svg>
+								Wyślij Wiadomość
+							{/if}
+						</button>
+					</form>
 				</div>
 
 				<!-- Map / Office Info -->
 				<div class="space-y-6">
-					<Card class="overflow-hidden">
+					<div class="rounded-lg overflow-hidden">
 						<div
 							class="flex h-80 items-center justify-center bg-[--ft-frost]"
 						>
@@ -391,9 +389,9 @@
 								<p class="mt-2 text-sm text-[--ft-text-muted]">ul. Technologiczna 15, Warszawa</p>
 							</div>
 						</div>
-					</Card>
+					</div>
 
-					<Card class="bg-[--ft-frost] p-6">
+					<div class="bg-[--ft-frost] rounded-lg p-6">
 						<h4 class="mb-4 text-lg font-bold text-[--ft-text]">Odwiedź Nas</h4>
 						<div class="space-y-3 text-sm">
 							<div class="flex items-center">
@@ -451,7 +449,7 @@
 								<span class="text-[--ft-text]">Parking dostępny na terenie budynku</span>
 							</div>
 						</div>
-					</Card>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -478,26 +476,29 @@
 				</p>
 			</div>
 
-			<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+			<div class="grid grid-cols-1 gap-0 md:grid-cols-2 md:gap-x-12">
 				{#each faqItems as faq (faq)}
-					<Card class="p-6 transition-shadow duration-200 hover:shadow-lg">
+					<div class="py-6 border-b border-[--ft-line]">
 						<h4 class="mb-3 text-lg font-semibold text-[--ft-text]">
 							{faq.question}
 						</h4>
 						<p class="leading-relaxed text-[--ft-text-muted]">
 							{faq.answer}
 						</p>
-					</Card>
+					</div>
 				{/each}
 			</div>
 
 			<div class="mt-12 text-center">
-				<Card class="inline-block bg-linear-to-br from-[--ft-frost] to-[--ft-surface] p-8">
+				<div class="bg-[--ft-frost] rounded-lg p-8 inline-block">
 					<h3 class="mb-4 text-xl font-bold text-[--ft-text]">Nie znalazłeś odpowiedzi?</h3>
 					<p class="mb-6 text-[--ft-text-muted]">Nasz zespół wsparcia jest gotowy do pomocy</p>
-					<div class="flex flex-col justify-center gap-3 sm:flex-row">
-						<Button href="tel:+48221234567" variant="outline">
-							<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<div class="flex flex-col justify-center gap-4 sm:flex-row">
+						<a
+							href="tel:+48221234567"
+							class="inline-flex items-center gap-2 text-sm font-medium text-[--ft-accent] hover:underline"
+						>
+							<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path
 									stroke-linecap="round"
 									stroke-linejoin="round"
@@ -506,9 +507,12 @@
 								/>
 							</svg>
 							Zadzwoń
-						</Button>
-						<Button href="mailto:kontakt@FixTar.pl">
-							<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						</a>
+						<a
+							href="mailto:kontakt@FixTar.pl"
+							class="inline-flex items-center gap-2 text-sm font-medium text-[--ft-accent] hover:underline"
+						>
+							<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path
 									stroke-linecap="round"
 									stroke-linejoin="round"
@@ -517,9 +521,9 @@
 								/>
 							</svg>
 							Napisz Email
-						</Button>
+						</a>
 					</div>
-				</Card>
+				</div>
 			</div>
 		</section>
 	</div>
