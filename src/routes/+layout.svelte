@@ -3,7 +3,6 @@
 	import { browser } from '$app/environment';
 	import type { Snippet } from 'svelte';
 	import { userStore, languageStore } from '$lib/stores';
-	import TrustBar from '$lib/components/layout/TrustBar.svelte';
 	import Navbar from '$lib/components/layout/Navbar.svelte';
 	import CartDrawer from '$lib/components/layout/CartDrawer.svelte';
 	import Footer from '$lib/components/layout/Footer.svelte';
@@ -47,8 +46,7 @@
 
 <a href="#main-content" class="skip-link">Przejdź do treści</a>
 <Notifications />
-<TrustBar />
-<Navbar onCartOpen={() => (cartOpen = true)} categories={data?.categories ?? []} />
+<Navbar onCartOpen={() => (cartOpen = true)} />
 <CartDrawer bind:this={cartDrawerRef} toggleCart={() => (cartOpen = false)} t={layoutT} />
 
 <main id="main-content" tabindex="-1">

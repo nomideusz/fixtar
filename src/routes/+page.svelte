@@ -1,9 +1,8 @@
 <script lang="ts">
 	import type { Product } from '$lib/stores/products.svelte';
 	import HeroSection from '$lib/components/home/HeroSection.svelte';
-	import CategoriesSection from '$lib/components/home/CategoriesSection.svelte';
 	import FeaturedProducts from '$lib/components/home/FeaturedProducts.svelte';
-	import FeaturesSection from '$lib/components/home/FeaturesSection.svelte';
+	import CategoriesSection from '$lib/components/home/CategoriesSection.svelte';
 
 	interface Props {
 		data: {
@@ -26,6 +25,5 @@
 </svelte:head>
 
 <HeroSection />
-<FeaturesSection />
-<CategoriesSection categories={data.categories} />
 <FeaturedProducts products={data.featuredProducts} error={data.error} />
+<CategoriesSection categories={data.categories} />

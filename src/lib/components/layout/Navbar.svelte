@@ -2,29 +2,18 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { cart, userStore } from '$lib/stores';
-	import FixTarLogo from '$lib/img/logo-FixTar.webp';
-	import MegaMenu from './MegaMenu.svelte';
+	import FixTarLogo from '$lib/images/logo/fixtar-logo-primary.webp';
 	import NavSearch from './NavSearch.svelte';
-
-	interface Category {
-		id: string;
-		name: string;
-		slug: string;
-		count: number;
-	}
 
 	interface Props {
 		onCartOpen?: () => void;
-		categories?: Category[];
 	}
 
-	let { onCartOpen, categories = [] }: Props = $props();
+	let { onCartOpen }: Props = $props();
 
 	let mobileMenuOpen = $state(false);
 	let scrolled = $state(false);
-	let megaMenuVisible = $state(false);
 	let searchOpen = $state(false);
-	let megaMenuTimer: ReturnType<typeof setTimeout>;
 
 	function closeMobileMenu() {
 		mobileMenuOpen = false;
@@ -51,23 +40,9 @@
 
 	const cartCount = $derived(cart.count);
 
-	function showMegaMenu() {
-		clearTimeout(megaMenuTimer);
-		megaMenuVisible = true;
-	}
-
-	function hideMegaMenu() {
-		clearTimeout(megaMenuTimer);
-		megaMenuTimer = setTimeout(() => {
-			megaMenuVisible = false;
-		}, 200);
-	}
-
 	function toggleSearch() {
 		searchOpen = !searchOpen;
-		if (searchOpen) {
-			megaMenuVisible = false;
-		}
+		
 	}
 
 	async function handleLogout() {
@@ -81,47 +56,21 @@
 
 {#snippet navLinks(mobile = false)}
 	{@const links = [
-		{ href: '/products', label: 'Produkty', hasMega: true },
-		{ href: '/deals', label: 'Promocje', hasMega: false },
-		{ href: '/about', label: 'O Nas', hasMega: false },
-		{ href: '/contact', label: 'Kontakt', hasMega: false }
+		{ href: '/products', label: 'Produkty' },
+		{ href: '/deals', label: 'Promocje' },
+		{ href: '/about', label: 'O Nas' },
+		{ href: '/contact', label: 'Kontakt' }
 	]}
 	{#each links as link (link.href)}
 		{@const isActive = $page.url.pathname.startsWith(link.href)}
-		{#if link.hasMega && !mobile}
-			<!-- svelte-ignore a11y_no_static_element_interactions -->
-			<div
-				class="nav-link-mega-wrap"
-				onmouseenter={showMegaMenu}
-				onmouseleave={hideMegaMenu}
-				onfocusin={showMegaMenu}
-				onfocusout={hideMegaMenu}
-			>
-				<a
-					href={link.href}
-					class="nav-link {isActive ? 'is-active' : ''}"
-					aria-current={isActive ? 'page' : undefined}
-					aria-haspopup="true"
-					aria-expanded={megaMenuVisible}
-				>
-					{link.label}
-				</a>
-				<MegaMenu
-					{categories}
-					visible={megaMenuVisible}
-					onClose={() => (megaMenuVisible = false)}
-				/>
-			</div>
-		{:else}
-			<a
-				href={link.href}
-				class="{mobile ? 'mobile-link' : 'nav-link'} {isActive ? 'is-active' : ''}"
-				onclick={mobile ? closeMobileMenu : undefined}
-				aria-current={isActive ? 'page' : undefined}
-			>
-				{link.label}
-			</a>
-		{/if}
+		<a
+			href={link.href}
+			class="{mobile ? 'mobile-link' : 'nav-link'} {isActive ? 'is-active' : ''}"
+			onclick={mobile ? closeMobileMenu : undefined}
+			aria-current={isActive ? 'page' : undefined}
+		>
+			{link.label}
+		</a>
 	{/each}
 {/snippet}
 
@@ -316,10 +265,6 @@
 	.nav-link:focus-visible {
 		outline: 2px solid var(--ft-accent);
 		outline-offset: 2px;
-	}
-
-	.nav-link-mega-wrap {
-		position: static;
 	}
 
 	/* ── Search wrap ── */
