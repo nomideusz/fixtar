@@ -85,7 +85,7 @@
 		border-radius: var(--radius-md);
 		padding: 0.5rem 1rem;
 		border: 1px solid var(--ft-line);
-		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+		box-shadow: 0 1px 2px color-mix(in srgb, black 5%, transparent);
 		width: 100%;
 		overflow: hidden;
 	}

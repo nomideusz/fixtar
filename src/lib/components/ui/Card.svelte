@@ -54,6 +54,6 @@
 
 	.ft-card--hover:hover {
 		border-color: var(--ft-cta);
-		box-shadow: 0 4px 16px rgba(255, 107, 0, 0.1);
+		box-shadow: 0 4px 16px color-mix(in srgb, var(--ft-cta) 10%, transparent);
 	}
 </style>

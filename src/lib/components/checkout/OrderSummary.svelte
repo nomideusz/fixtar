@@ -98,7 +98,7 @@
 			fullWidth
 			size="lg"
 			disabled={processing}
-			class="from-[--ft-accent] to-accent-600 hover:from-[--ft-accent] hover:to-accent-700 mt-8 transform rounded-2xl bg-linear-to-r py-4 text-lg font-bold text-[--ft-text] shadow-lg transition-all duration-300 hover:scale-105"
+			class="mt-8 rounded-2xl bg-[--ft-accent] py-4 text-lg font-bold text-white hover:bg-[--ft-accent-hover] transition-colors duration-200"
 		>
 			{#if processing}
 				<svg

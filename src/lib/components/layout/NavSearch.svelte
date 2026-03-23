@@ -318,7 +318,7 @@
 		border: 1px solid transparent;
 		border-radius: var(--radius-full);
 		outline: none;
-		transition: all 0.2s ease;
+		transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 	}
 
 	.search-input::placeholder {
@@ -328,7 +328,7 @@
 	.search-input:focus {
 		background: var(--ft-surface);
 		border-color: var(--ft-line);
-		box-shadow: 0 0 0 3px rgba(55, 138, 146, 0.08);
+		box-shadow: 0 0 0 3px color-mix(in srgb, var(--ft-accent) 8%, transparent);
 	}
 
 	.search-clear {
@@ -345,7 +345,7 @@
 		color: var(--ft-text-muted);
 		cursor: pointer;
 		border-radius: 50%;
-		transition: all 0.15s ease;
+		transition: background-color 0.15s ease, color 0.15s ease;
 	}
 
 	.search-clear:hover {
@@ -397,7 +397,7 @@
 		background: var(--ft-surface);
 		border: 1px solid var(--ft-line);
 		border-radius: var(--radius-md);
-		box-shadow: var(--ft-shadow-lg, 0 10px 40px rgba(0,0,0,0.1));
+		box-shadow: var(--ft-shadow-lg, 0 10px 40px color-mix(in srgb, black 10%, transparent));
 		overflow: hidden;
 		animation: dropdownSlideIn 0.15s ease-out;
 	}
@@ -628,11 +628,11 @@
 		border: none;
 		border-top: 1px solid var(--ft-line);
 		cursor: pointer;
-		transition: all 0.15s ease;
+		transition: background-color 0.15s ease;
 	}
 
 	.dropdown-all:hover {
-		background: rgba(55, 138, 146, 0.08);
+		background: color-mix(in srgb, var(--ft-accent) 8%, transparent);
 	}
 
 	.dropdown-all:focus-visible {

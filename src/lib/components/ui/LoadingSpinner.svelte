@@ -38,7 +38,7 @@
 	const spinnerColorStyles = $derived.by(() => {
 		switch (color) {
 			case 'white':
-				return '--spinner-color: #ffffff;';
+				return '--spinner-color: var(--ft-text-inverse);';
 			case 'muted':
 				return '--spinner-color: var(--ft-text-muted);';
 			default:

@@ -205,7 +205,7 @@
 					<div class="space-y-4">
 						<Button
 							onclick={redirectNow}
-							class="from-[--ft-accent] to-[--ft-accent] hover:from-[--ft-accent] hover:to-[--ft-accent] transform rounded-2xl bg-linear-to-r px-8 py-3 font-bold text-[--ft-text] shadow-lg transition-all duration-300 hover:scale-105"
+							class="rounded-2xl bg-[--ft-accent] px-8 py-3 font-bold text-white hover:bg-[--ft-accent-hover] transition-colors duration-200"
 						>
 							<svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path
@@ -222,7 +222,7 @@
 							<Button
 								href="/auth/login"
 								variant="outline"
-								class="hover:border-[--ft-accent] hover:text-[--ft-accent] border-2 border-[--ft-line] font-medium transition-all duration-300"
+								class="hover:border-[--ft-accent] hover:text-[--ft-accent] border-2 border-[--ft-line] font-medium transition-colors duration-200"
 							>
 								<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 									<path
@@ -238,7 +238,7 @@
 							<Button
 								href="/products"
 								variant="outline"
-								class="hover:border-success hover:text-success border-2 border-[--ft-line] font-medium transition-all duration-300"
+								class="hover:border-success hover:text-success border-2 border-[--ft-line] font-medium transition-colors duration-200"
 							>
 								<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 									<path
@@ -255,7 +255,7 @@
 				{:else if logoutStage === 'error'}
 					<Button
 						onclick={redirectNow}
-						class="from-danger to-[--ft-accent] hover:from-danger-dark hover:to-[--ft-accent] transform rounded-2xl bg-linear-to-r px-8 py-3 font-bold text-[--ft-text] shadow-lg transition-all duration-300 hover:scale-105"
+						class="rounded-2xl bg-[--ft-accent] px-8 py-3 font-bold text-white hover:bg-[--ft-accent-hover] transition-colors duration-200"
 					>
 						<svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path
@@ -322,5 +322,14 @@
 
 	.animate-bounce {
 		animation: bounce 1s ease infinite;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.animate-bounce {
+			animation: none;
+		}
+		:global(.animate-spin) {
+			animation: none;
+		}
 	}
 </style>

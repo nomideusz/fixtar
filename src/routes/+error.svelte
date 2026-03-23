@@ -56,7 +56,7 @@
 		</div>
 
 		<h1
-			class="from-[--ft-accent] to-[--ft-accent] mb-4 bg-linear-to-r bg-clip-text text-4xl font-bold text-transparent md:text-5xl lg:text-6xl"
+			class="mb-4 text-4xl font-bold text-[--ft-text-strong] md:text-5xl lg:text-6xl"
 		>
 			Nie znaleziono strony
 		</h1>

@@ -64,15 +64,15 @@
 		padding: 1rem;
 		border-radius: 0.75rem;
 		border: 1px solid transparent;
-		transition: all 0.2s;
+		transition: background-color 0.2s, border-color 0.2s, color 0.2s;
 		cursor: pointer;
 		text-align: left;
 		width: 100%;
 	}
 
 	.settings-nav-active {
-		background-color: rgba(255, 107, 0, 0.06);
-		border-color: rgba(255, 107, 0, 0.2);
+		background-color: var(--ft-cta-light);
+		border-color: color-mix(in srgb, var(--ft-cta) 20%, transparent);
 		color: var(--ft-cta);
 	}
 
@@ -82,8 +82,8 @@
 	}
 
 	.settings-nav-inactive:hover {
-		background-color: rgba(255, 107, 0, 0.04);
-		border-color: rgba(255, 107, 0, 0.15);
+		background-color: color-mix(in srgb, var(--ft-cta) 4%, transparent);
+		border-color: color-mix(in srgb, var(--ft-cta) 15%, transparent);
 		color: var(--ft-cta);
 	}
 </style>

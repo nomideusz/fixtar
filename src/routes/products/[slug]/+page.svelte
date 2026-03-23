@@ -235,7 +235,7 @@
 				<!-- Purchase / Out of Stock -->
 				{#if stock.inStock}
 					<Card
-						class="from-[--ft-frost] to-[--ft-frost] border-[--ft-accent]/20 border bg-linear-to-br p-6"
+						class="border-[--ft-accent]/20 border bg-[--ft-frost] p-6"
 					>
 						<div class="space-y-6">
 							<!-- Quantity Selector -->
@@ -320,7 +320,7 @@
 							<!-- Add to Cart -->
 							<Button
 								onclick={addToCart}
-								class="w-full transform py-4 text-lg font-semibold shadow-lg transition-all duration-200 hover:scale-[1.02] hover:shadow-xl"
+								class="w-full py-4 text-lg font-semibold transition-colors duration-200"
 								size="lg"
 							>
 								<svg
@@ -554,20 +554,20 @@
 		border: 1px solid var(--ft-line);
 		border-radius: var(--radius-sm);
 		cursor: pointer;
-		transition: all 0.15s ease;
+		transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
 		min-height: 36px;
 	}
 
 	.wishlist-detail-btn:hover {
-		color: #ef4444;
-		border-color: #ef4444;
-		background: rgba(239, 68, 68, 0.04);
+		color: var(--ft-cta);
+		border-color: var(--ft-cta);
+		background: var(--ft-cta-light);
 	}
 
 	.wishlist-detail-btn.is-active {
-		color: #ef4444;
-		border-color: #ef4444;
-		background: rgba(239, 68, 68, 0.04);
+		color: var(--ft-cta);
+		border-color: var(--ft-cta);
+		background: var(--ft-cta-light);
 	}
 
 	/* ── Specification table ── */
@@ -618,13 +618,12 @@
 		border: 2px solid var(--ft-accent);
 		border-radius: var(--radius-sm);
 		cursor: pointer;
-		transition: all 0.2s ease;
+		transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 	}
 
 	.buy-now-btn:hover {
 		background: var(--ft-accent);
 		color: white;
-		transform: scale(1.01);
 	}
 
 	/* ── Related products carousel ── */

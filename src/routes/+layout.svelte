@@ -57,8 +57,8 @@
 
 <style>
 	.skip-link {
-		position: absolute;
-		top: -100%;
+		position: fixed;
+		top: 8px;
 		left: 16px;
 		z-index: 100;
 		padding: 10px 20px;
@@ -68,12 +68,13 @@
 		font-weight: 600;
 		border-radius: var(--radius-sm);
 		text-decoration: none;
-		box-shadow: 0 2px 8px rgba(255, 107, 0, 0.3);
-		transition: top 0.15s ease;
+		box-shadow: 0 2px 8px color-mix(in srgb, var(--ft-cta) 30%, transparent);
+		transform: translateY(-200%);
+		transition: transform 0.15s ease;
 	}
 
 	.skip-link:focus {
-		top: 8px;
+		transform: translateY(0);
 		outline: 2px solid var(--ft-cta);
 		outline-offset: 2px;
 	}

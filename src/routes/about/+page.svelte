@@ -139,7 +139,7 @@
 								<div class="group flex items-start">
 									<div class="mt-1 shrink-0">
 										<div
-											class="from-[--ft-accent] to-[--ft-accent] flex h-6 w-6 items-center justify-center rounded-full bg-linear-to-r transition-transform duration-200 group-hover:scale-110"
+											class="bg-[--ft-accent] flex h-6 w-6 items-center justify-center rounded-full"
 										>
 											<svg
 												class="h-3 w-3 text-[--ft-text]"
@@ -169,7 +169,7 @@
 				<div class="order-1 lg:order-2">
 					<Card class="overflow-hidden">
 						<div
-							class="from-[--ft-frost] to-[--ft-frost] flex aspect-4/3 items-center justify-center bg-linear-to-br"
+							class="bg-[--ft-frost] flex aspect-4/3 items-center justify-center"
 						>
 							<img
 								src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&q=80"
@@ -195,7 +195,7 @@
 						<div class="group text-center">
 							<div class="relative">
 								<div
-									class="from-[--ft-accent] to-[--ft-accent] mb-2 bg-linear-to-r bg-clip-text text-4xl font-bold text-transparent transition-transform duration-200 group-hover:scale-110 lg:text-5xl"
+									class="mb-2 text-4xl font-bold text-[--ft-text-strong] lg:text-5xl"
 								>
 									{stat.value}
 								</div>
@@ -317,7 +317,7 @@
 						<div class="text-center">
 							<div class="relative mb-6 inline-block">
 								<div
-									class="group-hover:ring-[--ft-accent] mx-auto h-32 w-32 overflow-hidden rounded-full ring-4 ring-[--ft-line] transition-all duration-300"
+									class="group-hover:ring-[--ft-accent] mx-auto h-32 w-32 overflow-hidden rounded-full ring-4 ring-[--ft-line] transition-shadow duration-300"
 								>
 									<img
 										src={member.image}
@@ -387,7 +387,7 @@
 
 		<!-- CTA Section -->
 		<section class="mt-20">
-			<Card class="from-[--ft-accent] to-[--ft-accent] bg-linear-to-br p-12 text-center text-[--ft-text]">
+			<Card class="bg-[--ft-accent] p-12 text-center text-[--ft-text]">
 				<div class="mx-auto max-w-3xl">
 					<h2 class="mb-6 text-3xl font-bold">Dołącz Do Naszej Społeczności</h2>
 					<p class="mb-8 text-xl opacity-90">

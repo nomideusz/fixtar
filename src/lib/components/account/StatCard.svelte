@@ -6,7 +6,6 @@
 		value: string | number;
 		label: string;
 		valueClass?: string;
-		gradientClass?: string;
 		icon: Snippet;
 	}
 
@@ -14,14 +13,13 @@
 		value,
 		label,
 		valueClass = 'text-[--ft-accent]',
-		gradientClass = 'from-[--ft-accent]/20 to-[--ft-accent]/30',
 		icon
 	}: Props = $props();
 </script>
 
 <Card hover class="group p-6 text-center">
 	<div
-		class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br {gradientClass} transition-transform duration-200 group-hover:scale-110"
+		class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-[--ft-accent]/20"
 	>
 		{@render icon()}
 	</div>

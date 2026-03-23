@@ -264,7 +264,7 @@
 			<div class="flex flex-col justify-center gap-4 sm:flex-row">
 				<Button
 					href="/account/orders"
-					class="from-[--ft-accent] to-accent-600 hover:from-[--ft-accent] hover:to-accent-700 transform rounded-2xl bg-linear-to-r px-8 py-4 text-lg font-bold text-[--ft-text] shadow-lg transition-all duration-300 hover:scale-105"
+					class="rounded-2xl bg-[--ft-accent] px-8 py-4 text-lg font-bold text-white hover:bg-[--ft-accent-hover] transition-colors duration-200"
 				>
 					<svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path
@@ -279,7 +279,7 @@
 				<Button
 					href="/products"
 					variant="outline"
-					class="hover:border-[--ft-accent] hover:text-[--ft-accent] rounded-2xl border-2 border-[--ft-line] px-8 py-4 text-lg font-bold transition-all duration-300"
+					class="hover:border-[--ft-accent] hover:text-[--ft-accent] rounded-2xl border-2 border-[--ft-line] px-8 py-4 text-lg font-bold transition-colors duration-200"
 				>
 					<svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path

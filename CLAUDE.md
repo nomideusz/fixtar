@@ -2,7 +2,7 @@
 
 ## Project
 SvelteKit e-commerce for professional power tools (Polish language).  
-**Stack:** SvelteKit, Tailwind CSS v4, PocketBase, Drizzle ORM  
+**Stack:** SvelteKit, Tailwind CSS v4, Turso (DB), BaseLinker API (product sync), Drizzle ORM  
 **Language:** Polish (all customer-facing UI)
 
 ---

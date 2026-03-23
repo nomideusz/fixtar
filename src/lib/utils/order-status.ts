@@ -10,8 +10,8 @@ interface OrderStatusInfo {
 const STATUS_MAP: Record<string, OrderStatusInfo> = {
 	delivered: { label: 'Dostarczono', colorClass: 'bg-success/10 text-success-dark' },
 	completed: { label: 'Dostarczono', colorClass: 'bg-success/10 text-success-dark' },
-	shipped: { label: 'Wysłano', colorClass: 'bg-brand-100 text-brand-800' },
-	shipping: { label: 'Wysłano', colorClass: 'bg-brand-100 text-brand-800' },
+	shipped: { label: 'Wysłano', colorClass: 'bg-[--ft-frost] text-[--ft-accent]' },
+	shipping: { label: 'Wysłano', colorClass: 'bg-[--ft-frost] text-[--ft-accent]' },
 	processing: { label: 'Przetwarzane', colorClass: 'bg-warning/10 text-warning-dark' },
 	pending: { label: 'Przetwarzane', colorClass: 'bg-warning/10 text-warning-dark' },
 	cancelled: { label: 'Anulowano', colorClass: 'bg-danger/10 text-danger-dark' }

@@ -247,7 +247,7 @@
 		background: var(--ft-surface);
 		font-size: 0.875rem;
 		color: var(--ft-text);
-		transition: all 0.2s;
+		transition: border-color 0.2s, background-color 0.2s;
 		cursor: pointer;
 	}
 

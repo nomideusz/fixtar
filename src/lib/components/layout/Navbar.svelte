@@ -351,7 +351,7 @@
 		height: 2px;
 		background: currentColor;
 		border-radius: 1px;
-		transition: all 0.25s var(--ease-out);
+		transition: transform 0.25s var(--ease-out), opacity 0.25s var(--ease-out);
 		transform-origin: center;
 	}
 
@@ -401,7 +401,7 @@
 		font-size: 0.88rem;
 		font-weight: 500;
 		color: var(--ft-text-muted);
-		transition: all var(--dur-fast) ease;
+		transition: background-color var(--dur-fast) ease, color var(--dur-fast) ease;
 		border-radius: var(--radius-sm);
 		border: none;
 		background: none;

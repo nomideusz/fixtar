@@ -85,6 +85,7 @@
 				width="1920"
 				height="1072"
 				loading={i === 0 ? 'eager' : 'lazy'}
+				fetchpriority={i === 0 ? 'high' : 'auto'}
 				decoding="async"
 				draggable="false"
 			/>

@@ -71,7 +71,7 @@
 							placeholder="Wpisz nazwę produktu, kategorię lub słowo kluczowe..."
 							value={searchQuery}
 							oninput={(e) => (searchQuery = (e.target as HTMLInputElement).value)}
-							class="focus:border-[--ft-accent] rounded-2xl border-2 border-transparent py-4 pr-12 pl-12 text-lg shadow-lg transition-all"
+							class="focus:border-[--ft-accent] rounded-2xl border-2 border-transparent py-4 pr-12 pl-12 text-lg shadow-lg transition-colors"
 							autofocus
 						/>
 						{#if searchQuery}
@@ -253,7 +253,7 @@
 		{:else}
 			<!-- Empty State - No search yet -->
 			<div class="mx-auto max-w-2xl">
-				<div class="from-[--ft-frost] to-[--ft-frost] rounded-2xl bg-linear-to-br p-12 text-center">
+				<div class="rounded-2xl bg-[--ft-frost] p-12 text-center">
 					<div class="relative">
 						<div class="absolute inset-0 flex items-center justify-center">
 							<div

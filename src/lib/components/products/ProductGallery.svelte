@@ -37,7 +37,7 @@
 
 				<!-- Zoom overlay hint -->
 				<div
-					class="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-all duration-300 group-hover:opacity-100"
+					class="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
 				>
 					<div
 						class="rounded-lg bg-[--ft-surface] px-3 py-2 text-sm font-medium text-[--ft-text] backdrop-blur-sm"
@@ -79,7 +79,7 @@
 					{#each images as image, index (image)}
 						<button
 							onclick={() => (selectedImageIndex = index)}
-							class="h-20 w-20 shrink-0 overflow-hidden rounded-xl border-2 transition-all duration-200 {selectedImageIndex ===
+							class="h-20 w-20 shrink-0 overflow-hidden rounded-xl border-2 transition-colors duration-200 {selectedImageIndex ===
 							index
 								? 'border-[--ft-accent] ring-[--ft-accent]/30 ring-2'
 								: 'border-[--ft-line] hover:border-[--ft-line]'}"

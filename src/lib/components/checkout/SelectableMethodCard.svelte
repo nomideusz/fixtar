@@ -44,7 +44,7 @@
 		border: 2px solid var(--ft-line);
 		border-radius: 1rem;
 		cursor: pointer;
-		transition: all 0.2s;
+		transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
 		background: var(--ft-surface);
 	}
 
@@ -56,7 +56,7 @@
 	.method-card.accent.selected {
 		border-color: var(--ft-accent);
 		background: var(--ft-frost);
-		box-shadow: 0 0 0 1px rgba(55, 138, 146, 0.1);
+		box-shadow: 0 0 0 1px color-mix(in srgb, var(--ft-accent) 10%, transparent);
 	}
 
 	.method-card.brand:hover {
@@ -67,7 +67,7 @@
 	.method-card.brand.selected {
 		border-color: var(--ft-cta);
 		background: var(--ft-cta-light);
-		box-shadow: 0 0 0 1px rgba(255, 107, 0, 0.1);
+		box-shadow: 0 0 0 1px color-mix(in srgb, var(--ft-cta) 10%, transparent);
 	}
 
 	.radio-dot {

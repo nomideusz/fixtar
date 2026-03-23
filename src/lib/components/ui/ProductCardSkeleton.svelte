@@ -104,4 +104,14 @@
 		width: 100%;
 		border-radius: var(--radius-sm);
 	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.skeleton-card {
+			animation: none;
+			opacity: 1;
+		}
+		.skeleton-shimmer {
+			animation: none;
+		}
+	}
 </style>

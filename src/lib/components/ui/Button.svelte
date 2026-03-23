@@ -77,7 +77,7 @@
 	.btn--primary:hover {
 		background: var(--ft-cta-hover);
 		border-color: var(--ft-cta-hover);
-		box-shadow: 0 4px 16px rgba(255, 107, 0, 0.2);
+		box-shadow: 0 4px 16px color-mix(in srgb, var(--ft-cta) 20%, transparent);
 	}
 
 	.btn--secondary {
@@ -121,5 +121,13 @@
 
 	@keyframes spin {
 		to { transform: rotate(360deg); }
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.spinner {
+			animation: none;
+			border-top-color: currentColor;
+			opacity: 0.6;
+		}
 	}
 </style>

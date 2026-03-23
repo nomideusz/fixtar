@@ -75,7 +75,7 @@
 							<div class="mb-8 text-center">
 								<div class="relative mb-4 inline-block">
 									<div
-										class="from-[--ft-accent]/20 to-[--ft-accent]/20 mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-linear-to-br ring-4 ring-[--ft-line]"
+										class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-[--ft-accent]/20 ring-4 ring-[--ft-line]"
 									>
 										<svg
 											class="text-[--ft-accent] h-10 w-10"
@@ -374,7 +374,7 @@
 								<div class="border-b border-[--ft-line] p-6">
 									<div class="flex items-center">
 										<div
-											class="from-[--ft-accent]/20 to-[--ft-accent]/20 mr-3 flex h-12 w-12 items-center justify-center rounded-full bg-linear-to-br"
+											class="mr-3 flex h-12 w-12 items-center justify-center rounded-full bg-[--ft-accent]/20"
 										>
 											<svg
 												class="text-[--ft-accent] h-6 w-6"
@@ -598,14 +598,14 @@
 		display: block;
 		padding: 0.75rem 1rem;
 		border-radius: 0.75rem;
-		transition: all 0.2s;
+		transition: background-color 0.2s, color 0.2s;
 		text-decoration: none;
 	}
 
 	.nav-item-active {
-		background-color: rgba(255, 107, 0, 0.06);
+		background-color: var(--ft-cta-light);
 		color: var(--ft-cta);
-		border: 1px solid rgba(255, 107, 0, 0.2);
+		border: 1px solid color-mix(in srgb, var(--ft-cta) 20%, transparent);
 	}
 
 	.nav-item-inactive {
@@ -613,7 +613,7 @@
 	}
 
 	.nav-item-inactive:hover {
-		background-color: rgba(255, 107, 0, 0.04);
+		background-color: color-mix(in srgb, var(--ft-cta) 4%, transparent);
 		color: var(--ft-cta);
 	}
 
@@ -622,12 +622,12 @@
 		align-items: center;
 		padding: 0.75rem 1rem;
 		border-radius: 0.75rem;
-		transition: all 0.2s;
+		transition: background-color 0.2s, color 0.2s;
 		text-decoration: none;
 	}
 
 	.mobile-nav-item-active {
-		background-color: rgba(255, 107, 0, 0.06);
+		background-color: var(--ft-cta-light);
 		color: var(--ft-cta);
 	}
 
@@ -636,7 +636,7 @@
 	}
 
 	.mobile-nav-item-inactive:hover {
-		background-color: rgba(255, 107, 0, 0.04);
+		background-color: color-mix(in srgb, var(--ft-cta) 4%, transparent);
 		color: var(--ft-cta);
 	}
 </style>

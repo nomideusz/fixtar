@@ -220,7 +220,7 @@
 							</div>
 							<div class="h-1 w-full rounded-full bg-[--ft-frost]">
 								<div
-									class="h-1 rounded-full transition-all duration-300 {getPasswordStrengthColor()}"
+									class="h-1 rounded-full transition-[width,background-color] duration-300 {getPasswordStrengthColor()}"
 									style="width: {(passwordStrength / 5) * 100}%"
 								></div>
 							</div>
@@ -383,7 +383,7 @@
 		background: var(--ft-surface);
 		font-size: 0.875rem;
 		color: var(--ft-text);
-		transition: all 0.2s;
+		transition: border-color 0.2s, background-color 0.2s;
 		cursor: pointer;
 	}
 

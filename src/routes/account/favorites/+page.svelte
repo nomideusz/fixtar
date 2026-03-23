@@ -91,7 +91,7 @@
 							easing: elasticOut
 						}}
 						class="group bg-[--ft-surface] border border-[--ft-line] rounded-xl overflow-hidden
-						       flex flex-col transition-all duration-300
+						       flex flex-col transition-shadow duration-300
 						       hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
 					>
 						<!-- Badges -->
@@ -123,7 +123,7 @@
 									{#if product.compareAtPrice && product.compareAtPrice > product.price}
 										<span
 											class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-											       bg-red-500 text-white"
+											       bg-[--ft-cta] text-white"
 										>
 											−{calculateDiscount(product.price, product.compareAtPrice)}%
 										</span>
@@ -186,7 +186,7 @@
 										class="flex-1 inline-flex items-center justify-center min-h-[44px] px-3
 										       text-sm font-medium rounded-lg
 										       border border-[--ft-line] text-[--ft-text-muted]
-										       hover:text-red-500 hover:border-red-300
+										       hover:text-[--ft-cta] hover:border-[--ft-cta]
 										       disabled:opacity-50 disabled:cursor-not-allowed
 										       transition-colors"
 									>

@@ -51,13 +51,15 @@
 				<div class="p-6">
 					<div class="mb-2 flex items-start justify-between">
 						<h3 class="text-xl font-semibold text-[--ft-text]">{deal.title}</h3>
-						<span class="rounded-full bg-[color-mix(in_srgb,var(--color-danger)_10%,transparent)] px-3 py-1 text-sm font-bold text-[--color-danger]">
+						<span class="rounded-full bg-[color-mix(in_srgb,var(--ft-cta)_10%,transparent)] px-3 py-1 text-sm font-bold text-[--ft-cta]">
 							{deal.discount}
 						</span>
 					</div>
 					<p class="mb-4 text-[--ft-text-muted]">{deal.description}</p>
 					<p class="mb-4 text-sm text-[--ft-text-muted]">Ważne do: {deal.validUntil}</p>
-					<Button href="/products" fullWidth>Kup teraz</Button>
+					<a href="/products" class="block text-center text-sm font-medium text-[--ft-accent] hover:text-[--ft-accent-hover] transition-colors">
+						Przeglądaj ofertę →
+					</a>
 				</div>
 			</Card>
 		{/each}

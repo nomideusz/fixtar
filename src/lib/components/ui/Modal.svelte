@@ -81,7 +81,7 @@
 
 <style>
 	dialog::backdrop {
-		background-color: rgba(0, 0, 0, 0.4);
+		background-color: var(--ft-surface-overlay);
 	}
 
 	dialog {

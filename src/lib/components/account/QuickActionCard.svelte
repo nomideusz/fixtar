@@ -7,21 +7,17 @@
 		title: string;
 		description: string;
 		href: string;
-		gradientClass: string;
 		icon: Snippet;
 	}
 
-	let { title, description, href, gradientClass, icon }: Props = $props();
+	let { title, description, href, icon }: Props = $props();
 </script>
 
 <Card hover class="group">
 	<div class="relative overflow-hidden">
-		<div
-			class="absolute inset-0 bg-linear-to-br {gradientClass} opacity-0 transition-opacity duration-300 group-hover:opacity-10"
-		></div>
 		<div class="relative p-6">
 			<div
-				class="h-12 w-12 bg-linear-to-br {gradientClass} mb-4 flex items-center justify-center rounded-xl transition-transform duration-200 group-hover:scale-110"
+				class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[--ft-accent]/20"
 			>
 				{@render icon()}
 			</div>

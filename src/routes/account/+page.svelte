@@ -83,7 +83,7 @@
 			<div class="mx-auto max-w-2xl">
 				<Card class="p-12 text-center">
 					<div
-						class="from-[--ft-accent]/20 to-[--ft-accent]/20 mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-full bg-linear-to-br"
+						class="mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-full bg-[--ft-accent]/20"
 					>
 						<svg
 							class="text-[--ft-accent] h-10 w-10"
@@ -120,7 +120,7 @@
 							<div class="mb-6 lg:mb-0">
 								<div class="mb-4 flex items-center">
 									<div
-										class="from-[--ft-accent]/20 to-[--ft-accent]/20 mr-4 flex h-16 w-16 items-center justify-center rounded-full bg-linear-to-br"
+										class="mr-4 flex h-16 w-16 items-center justify-center rounded-full bg-[--ft-accent]/20"
 									>
 										<svg
 											class="text-[--ft-accent] h-8 w-8"
@@ -188,8 +188,7 @@
 						<StatCard
 							value="{stats.totalSpent.toFixed(2)} zł"
 							label="Łączne wydatki"
-							valueClass="text-success"
-							gradientClass="from-success/10 to-success/10"
+							valueClass="text-[--ft-accent]"
 						>
 							{#snippet icon()}
 								<svg class="text-success h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -201,8 +200,7 @@
 						<StatCard
 							value={stats.favoriteItems}
 							label="Ulubione produkty"
-							valueClass="text-accent-600"
-							gradientClass="from-accent-100 to-accent-200"
+							valueClass="text-[--ft-accent]"
 						>
 							{#snippet icon()}
 								<svg class="text-accent-600 h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -233,7 +231,6 @@
 							title="Zamówienia"
 							description="Śledź i zarządzaj swoimi zamówieniami"
 							href="/account/orders"
-							gradientClass="from-[--ft-accent] to-[--ft-accent]"
 						>
 							{#snippet icon()}
 								<svg class="h-6 w-6 text-[--ft-text]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -246,7 +243,6 @@
 							title="Adresy"
 							description="Zarządzaj adresami dostawy"
 							href="/account/addresses"
-							gradientClass="from-success to-success"
 						>
 							{#snippet icon()}
 								<svg class="h-6 w-6 text-[--ft-text]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -260,7 +256,6 @@
 							title="Ulubione"
 							description="Przeglądaj ulubione produkty"
 							href="/account/favorites"
-							gradientClass="from-accent-500 to-accent-600"
 						>
 							{#snippet icon()}
 								<svg class="h-6 w-6 text-[--ft-text]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -273,7 +268,6 @@
 							title="Ustawienia"
 							description="Zaktualizuj preferencje konta"
 							href="/account/settings"
-							gradientClass="from-[--ft-accent] to-[--ft-accent]"
 						>
 							{#snippet icon()}
 								<svg class="h-6 w-6 text-[--ft-text]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -343,7 +337,7 @@
 				<!-- Support Section -->
 				<section>
 					<Card
-						class="from-[--ft-accent]/8 to-[--ft-accent]/8 border-2 border-[--ft-line] bg-linear-to-br p-8"
+						class="border-2 border-[--ft-line] bg-[--ft-accent]/8 p-8"
 					>
 						<div class="text-center">
 							<h3 class="mb-4 text-xl font-bold text-[--ft-text]">Potrzebujesz pomocy?</h3>

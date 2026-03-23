@@ -144,7 +144,7 @@
 						<div class="p-6">
 							<!-- Icon -->
 							<div
-								class="from-[--ft-frost] to-[--ft-frost] mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br transition-transform duration-200 group-hover:scale-110"
+								class="bg-[--ft-frost] mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl"
 							>
 								{#if info.icon === 'location'}
 									<svg
@@ -227,7 +227,7 @@
 							{#if info.action}
 								<a
 									href={info.action.href}
-									class="text-[--ft-accent] hover:text-[--ft-accent] inline-flex items-center text-sm font-medium transition-all duration-200 group-hover:underline"
+									class="text-[--ft-accent] hover:text-[--ft-accent] inline-flex items-center text-sm font-medium transition-colors duration-200 group-hover:underline"
 								>
 									{info.action.text}
 									<svg
@@ -365,7 +365,7 @@
 				<div class="space-y-6">
 					<Card class="overflow-hidden">
 						<div
-							class="flex h-80 items-center justify-center bg-linear-to-br from-[--ft-frost] to-[--ft-frost]"
+							class="flex h-80 items-center justify-center bg-[--ft-frost]"
 						>
 							<div class="p-8 text-center">
 								<svg
@@ -393,7 +393,7 @@
 						</div>
 					</Card>
 
-					<Card class="from-[--ft-frost] to-[--ft-frost] bg-linear-to-br p-6">
+					<Card class="bg-[--ft-frost] p-6">
 						<h4 class="mb-4 text-lg font-bold text-[--ft-text]">Odwiedź Nas</h4>
 						<div class="space-y-3 text-sm">
 							<div class="flex items-center">

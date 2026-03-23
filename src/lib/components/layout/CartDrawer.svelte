@@ -175,7 +175,9 @@
 					class="cart-drawer__icon-btn cart-drawer__icon-btn--close"
 					aria-label={t('closeCartDrawer')}
 				>
-					✕
+					<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+					</svg>
 				</button>
 			</div>
 		</div>
@@ -235,7 +237,9 @@
 								class="cart-drawer__icon-btn cart-drawer__icon-btn--remove"
 								aria-label={t('remove')}
 							>
-								✕
+								<svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+								</svg>
 							</button>
 						</div>
 					{/each}
@@ -273,7 +277,7 @@
 		position: fixed;
 		inset: 0;
 		z-index: 150;
-		background-color: rgba(0, 0, 0, 0.4);
+		background-color: var(--ft-surface-overlay);
 		backdrop-filter: blur(4px);
 	}
 
@@ -287,7 +291,7 @@
 		width: min(100%, 36rem);
 		flex-direction: column;
 		background-color: var(--ft-surface);
-		box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.22);
+		box-shadow: 0 10px 30px -12px color-mix(in srgb, black 22%, transparent);
 		border-left: 1px solid var(--ft-line);
 		overscroll-behavior: contain;
 	}
@@ -471,7 +475,7 @@
 	}
 
 	.cart-item__quantity-btn:hover {
-		background-color: rgba(255, 107, 0, 0.06);
+		background-color: var(--ft-cta-light);
 		color: var(--ft-cta);
 		box-shadow: inset 0 0 0 1px var(--ft-cta);
 	}
