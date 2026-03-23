@@ -570,8 +570,8 @@
 	.result-price {
 		flex-shrink: 0;
 		font-size: 0.78rem;
-		font-weight: 600;
-		color: var(--ft-accent);
+		font-weight: 700;
+		color: var(--ft-cta);
 	}
 
 	/* ── Loading ── */
@@ -593,7 +593,7 @@
 		width: 5px;
 		height: 5px;
 		border-radius: 50%;
-		background: var(--ft-accent);
+		background: var(--ft-cta);
 		animation: dotPulse 1s ease-in-out infinite;
 	}
 

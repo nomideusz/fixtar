@@ -71,9 +71,9 @@
 	}
 
 	.settings-nav-active {
-		background-color: rgba(55, 138, 146, 0.08);
-		border-color: rgba(55, 138, 146, 0.25);
-		color: var(--ft-accent);
+		background-color: rgba(255, 107, 0, 0.06);
+		border-color: rgba(255, 107, 0, 0.2);
+		color: var(--ft-cta);
 	}
 
 	.settings-nav-inactive {
@@ -82,8 +82,8 @@
 	}
 
 	.settings-nav-inactive:hover {
-		background-color: rgba(55, 138, 146, 0.06);
-		border-color: rgba(55, 138, 146, 0.15);
-		color: var(--ft-accent);
+		background-color: rgba(255, 107, 0, 0.04);
+		border-color: rgba(255, 107, 0, 0.15);
+		color: var(--ft-cta);
 	}
 </style>

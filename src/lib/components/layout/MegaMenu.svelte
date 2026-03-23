@@ -318,9 +318,9 @@
 	}
 
 	.mega-item:hover .mega-icon {
-		background: var(--ft-accent);
+		background: var(--ft-cta);
 		color: white;
-		box-shadow: 0 2px 8px rgba(55, 138, 146, 0.2);
+		box-shadow: 0 2px 8px rgba(255, 107, 0, 0.2);
 	}
 
 	.mega-item-info {
@@ -383,8 +383,8 @@
 	}
 
 	.mega-promo:hover {
-		color: var(--ft-accent);
-		background: rgba(55, 138, 146, 0.04);
+		color: var(--ft-cta);
+		background: rgba(255, 107, 0, 0.04);
 	}
 
 	.mega-promo:focus-visible {

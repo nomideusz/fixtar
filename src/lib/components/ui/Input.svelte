@@ -75,8 +75,8 @@
 
 	.input-field:focus {
 		outline: none;
-		border-color: var(--ft-accent);
-		box-shadow: 0 0 0 3px rgba(55, 138, 146, 0.1);
+		border-color: var(--ft-cta);
+		box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.08);
 	}
 
 	.input-field:hover {

@@ -7,182 +7,317 @@
 	}
 
 	interface Props {
-		categories: Category[];
+		categories?: Category[];
 	}
 
-	let { categories }: Props = $props();
+	let { categories = [] }: Props = $props();
 
-	/* SVG icon paths per category slug — lightweight tool silhouettes */
-	const categoryIcons: Record<string, string> = {
-		'szlifierki-i-polerki':
-			'M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z',
-		'wiertarki-i-wkretarki':
-			'M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z',
-		'pily-i-pilarki':
-			'M3 6h18M3 12h18M3 18h18',
-		'mlotowiertarki':
-			'M15 12h.01M12 12h.01M9 12h.01M4 4h16v16H4z',
-		default:
-			'M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z'
+	/* Story blocks — top 4 categories get editorial treatment */
+	const storyGradients = [
+		'linear-gradient(135deg, #014783 0%, #0a5a9e 100%)',
+		'linear-gradient(135deg, #1a2233 0%, #2e3a46 100%)',
+		'linear-gradient(135deg, #3E8B8B 0%, #327272 100%)',
+		'linear-gradient(135deg, #014783 0%, #1a3a5c 100%)',
+	];
+
+	const storyIcons = [
+		/* Saws / cutting */
+		'M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z',
+		/* Drill */
+		'M12 22V8M5 12H2a10 10 0 0020 0h-3',
+		/* Grinder */
+		'M22 12h-4l-3 9L9 3l-3 9H2',
+		/* Hammer */
+		'M15 12l-8.5 8.5a2.12 2.12 0 01-3-3L12 9',
+	];
+
+	const storyDescriptions: Record<string, string> = {
+		'szlifierki': 'Precyzyjne szlifowanie metalu, drewna i betonu.',
+		'wiertarki': 'Wiercenie w każdym materiale z pełną kontrolą.',
+		'piły': 'Czyste cięcia w drewnie, metalu i laminacie.',
+		'młotowiertarki': 'Kucie i wiercenie w betonie i kamieniu.',
+		'frezarki': 'Profesjonalne frezowanie krawędzi i profili.',
+		'odkurzacze': 'Porządek na budowie i w warsztacie.',
+		'narzędzia ręczne': 'Klasyczne narzędzia najwyższej jakości.',
+		'akcesoria': 'Tarcze, wiertła, nasadki i więcej.',
+		'kompresory': 'Sprężone powietrze do każdego zastosowania.',
+		'spawarki': 'Spawanie MIG, TIG i elektrodowe.',
 	};
 
-	function getIcon(slug: string): string {
-		return categoryIcons[slug] || categoryIcons['default'];
-	}
+	const storyCategories = $derived(categories.slice(0, 4));
+	const remainingCategories = $derived(categories.slice(4));
 </script>
 
-<section class="categories">
-	<div class="categories-inner">
-		<h4 class="categories-label">Kategorie</h4>
-		<h2 class="categories-title">Znajdź Narzędzia</h2>
-
-		<div class="categories-grid">
-			{#each categories as cat, i (cat.id)}
-				<a
-					href="/products?category={cat.slug}"
-					class="category-card ft-animate"
-					style="animation-delay: {i * 50}ms"
-				>
-					<div class="category-icon">
-						<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-							<path d={getIcon(cat.slug)} />
-						</svg>
-					</div>
-					<div class="category-info">
-						<span class="category-name">{cat.name}</span>
-						<span class="category-count">{cat.count} {cat.count === 1 ? 'produkt' : cat.count < 5 ? 'produkty' : 'produktów'}</span>
-					</div>
-					<svg class="category-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-						<path d="M5 12h14" /><path d="M12 5l7 7-7 7" />
-					</svg>
-				</a>
-			{/each}
+<section class="categories-section">
+	<div class="section-header">
+		<div class="section-header-inner">
+			<span class="section-kicker">Kategorie</span>
+			<h2 class="section-title">Znajdź Swoje Narzędzia</h2>
 		</div>
 	</div>
+
+	<!-- Story blocks — large editorial cards -->
+	<div class="story-grid">
+		{#each storyCategories as category, i (category.id)}
+			<a
+				href="/products?category={category.slug}"
+				class="story-block"
+				class:story-block--wide={i === 0}
+				style="--story-bg: {storyGradients[i % storyGradients.length]}"
+			>
+				<!-- Photo placeholder -->
+				<div class="story-photo" aria-hidden="true">
+					<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+						<path d={storyIcons[i % storyIcons.length]} />
+					</svg>
+				</div>
+
+				<div class="story-content">
+					<span class="story-count">{category.count} produktów</span>
+					<h3 class="story-name">{category.name}</h3>
+					<p class="story-desc">
+						{storyDescriptions[category.slug.toLowerCase()] || 'Sprawdź pełną ofertę w tej kategorii.'}
+					</p>
+					<span class="story-cta">
+						Przeglądaj
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+					</span>
+				</div>
+			</a>
+		{/each}
+	</div>
+
+	<!-- Remaining categories — compact row -->
+	{#if remainingCategories.length > 0}
+		<div class="remaining">
+			<div class="remaining-inner">
+				{#each remainingCategories as category (category.id)}
+					<a href="/products?category={category.slug}" class="remaining-chip">
+						{category.name}
+						<span class="chip-count">{category.count}</span>
+					</a>
+				{/each}
+				<a href="/products" class="remaining-chip remaining-chip--all">
+					Wszystkie produkty
+					<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+				</a>
+			</div>
+		</div>
+	{/if}
 </section>
 
 <style>
-	.categories {
+	.categories-section {
 		padding: clamp(48px, 6vh, 72px) 0;
 	}
 
-	.categories-inner {
+	/* ── Section header ── */
+	.section-header {
 		max-width: var(--ft-container);
 		margin: 0 auto;
 		padding: 0 var(--ft-gutter);
-	}
-
-	.categories-label {
-		font-size: 0.68rem;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
-		color: var(--ft-accent);
-		margin-bottom: 8px;
-	}
-
-	.categories-title {
-		font-family: var(--font-display);
-		font-size: clamp(1.5rem, 3vw, 2rem);
-		font-weight: 700;
-		color: var(--ft-dark);
-		letter-spacing: -0.02em;
 		margin-bottom: 32px;
 	}
 
-	/* ── Grid of category cards ── */
-	.categories-grid {
+	.section-kicker {
+		font-size: 0.68rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.15em;
+		color: var(--ft-accent);
+		display: block;
+		margin-bottom: 6px;
+	}
+
+	.section-title {
+		font-family: var(--font-display);
+		font-size: clamp(1.6rem, 3vw, 2.2rem);
+		font-weight: 800;
+		color: var(--ft-dark);
+		letter-spacing: -0.03em;
+	}
+
+	/* ── Story grid ── */
+	.story-grid {
+		max-width: var(--ft-container);
+		margin: 0 auto;
+		padding: 0 var(--ft-gutter);
 		display: grid;
 		grid-template-columns: 1fr;
 		gap: 12px;
 	}
 
-	@media (min-width: 640px) {
-		.categories-grid {
+	@media (min-width: 768px) {
+		.story-grid {
 			grid-template-columns: repeat(2, 1fr);
+		}
+
+		.story-block--wide {
+			grid-column: span 2;
 		}
 	}
 
 	@media (min-width: 1024px) {
-		.categories-grid {
-			grid-template-columns: repeat(3, 1fr);
-		}
-	}
-
-	@media (min-width: 1280px) {
-		.categories-grid {
+		.story-grid {
 			grid-template-columns: repeat(4, 1fr);
 		}
+
+		.story-block--wide {
+			grid-column: span 2;
+		}
 	}
 
-	/* ── Category card ── */
-	.category-card {
+	/* ── Story block ── */
+	.story-block {
+		position: relative;
 		display: flex;
-		align-items: center;
-		gap: 14px;
-		padding: 18px 20px;
-		background: var(--ft-surface);
-		border: 1px solid var(--ft-line);
+		flex-direction: column;
+		justify-content: flex-end;
+		min-height: 220px;
+		padding: 28px;
 		border-radius: var(--radius-md);
+		background: var(--story-bg);
+		color: white;
 		text-decoration: none;
-		color: inherit;
-		transition: all 0.25s ease;
+		overflow: hidden;
+		transition: transform 0.3s ease, box-shadow 0.3s ease;
 	}
 
-	.category-card:hover {
-		border-color: var(--ft-accent);
-		box-shadow: var(--ft-shadow-md);
-		transform: translateY(-1px);
+	.story-block--wide {
+		min-height: 260px;
 	}
 
-	.category-icon {
-		flex-shrink: 0;
-		width: 44px;
-		height: 44px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		border-radius: var(--radius-sm);
-		background: var(--ft-frost);
-		color: var(--ft-accent);
-		transition: all 0.25s ease;
-	}
-
-	.category-card:hover .category-icon {
-		background: var(--ft-accent);
+	.story-block:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
 		color: white;
 	}
 
-	.category-info {
-		flex: 1;
-		min-width: 0;
+	/* ── Photo placeholder — will hold product/lifestyle photos ── */
+	.story-photo {
+		position: absolute;
+		top: 20px;
+		right: 20px;
+		width: 80px;
+		height: 80px;
+		border-radius: 50%;
+		background: rgba(255, 255, 255, 0.1);
 		display: flex;
-		flex-direction: column;
-		gap: 2px;
+		align-items: center;
+		justify-content: center;
+		color: rgba(255, 255, 255, 0.4);
+		transition: all 0.3s ease;
 	}
 
-	.category-name {
-		font-size: 0.88rem;
+	.story-block:hover .story-photo {
+		background: rgba(255, 255, 255, 0.15);
+		color: rgba(255, 255, 255, 0.6);
+		transform: scale(1.05);
+	}
+
+	/* ── Content ── */
+	.story-content {
+		position: relative;
+		z-index: 2;
+	}
+
+	.story-count {
+		font-size: 0.65rem;
 		font-weight: 600;
-		color: var(--ft-dark);
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
+		opacity: 0.6;
+		display: block;
+		margin-bottom: 6px;
 	}
 
-	.category-count {
+	.story-name {
+		font-family: var(--font-display);
+		font-size: 1.4rem;
+		font-weight: 800;
+		letter-spacing: -0.02em;
+		color: white;
+		margin-bottom: 6px;
+		text-transform: capitalize;
+	}
+
+	.story-block--wide .story-name {
+		font-size: 1.8rem;
+	}
+
+	.story-desc {
+		font-size: 0.82rem;
+		line-height: 1.5;
+		opacity: 0.7;
+		margin-bottom: 16px;
+		max-width: 300px;
+	}
+
+	.story-cta {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		font-family: var(--font-display);
 		font-size: 0.72rem;
-		color: var(--ft-text-muted);
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
+		opacity: 0.9;
+		transition: gap 0.2s ease;
 	}
 
-	.category-arrow {
-		flex-shrink: 0;
+	.story-block:hover .story-cta {
+		gap: 10px;
+		opacity: 1;
+	}
+
+	/* ── Remaining categories (compact chips) ── */
+	.remaining {
+		max-width: var(--ft-container);
+		margin: 0 auto;
+		padding: 20px var(--ft-gutter) 0;
+	}
+
+	.remaining-inner {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+
+	.remaining-chip {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 8px 16px;
+		font-size: 0.78rem;
+		font-weight: 600;
+		color: var(--ft-text);
+		background: var(--ft-surface);
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-full);
+		text-decoration: none;
+		transition: all 0.15s ease;
+	}
+
+	.remaining-chip:hover {
+		border-color: var(--ft-cta);
+		color: var(--ft-cta);
+	}
+
+	.chip-count {
+		font-size: 0.65rem;
 		color: var(--ft-text-faint);
-		transition: all 0.25s ease;
+		font-weight: 500;
 	}
 
-	.category-card:hover .category-arrow {
-		color: var(--ft-accent);
-		transform: translateX(3px);
+	.remaining-chip--all {
+		color: var(--ft-cta);
+		border-color: var(--ft-cta);
+		background: rgba(255, 107, 0, 0.04);
+	}
+
+	.remaining-chip--all:hover {
+		background: var(--ft-cta);
+		color: white;
 	}
 </style>

@@ -64,7 +64,7 @@
 	}
 
 	.brand-item:hover .brand-name {
-		color: var(--ft-accent);
+		color: var(--ft-cta);
 	}
 
 	@media (max-width: 640px) {

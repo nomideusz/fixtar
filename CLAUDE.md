@@ -2,8 +2,9 @@
 
 ## Project Overview
 SvelteKit e-commerce app for professional power tools (Polish language).  
-Scandinavian industrial aesthetic: editorial, refined, lots of white space.  
-Warm slate + teal accent. DM Sans headlines + Inter body.
+Industrial precision aesthetic: bold, editorial, lots of white space.  
+3-color hierarchy: Orange (action) + Navy (authority) + Teal (info).  
+Plus Jakarta Sans headlines + Inter body.
 
 **Stack:** SvelteKit, Tailwind CSS v4, PocketBase, Drizzle ORM  
 **Deploy:** Netlify / Vercel  
@@ -15,18 +16,23 @@ Warm slate + teal accent. DM Sans headlines + Inter body.
 
 ### Tokens (defined in `src/app.css`)
 
+**3-Color Hierarchy:** Orange (action) + Navy (authority) + Teal (info)
+
 | Token | Value | Usage |
 |---|---|---|
-| `--ft-bg` | `#f7f9fc` | Page background |
+| `--ft-bg` | `#f8fafb` | Page background |
 | `--ft-surface` | `#ffffff` | Cards, panels |
-| `--ft-frost` | `#e8f0fa` | Subtle fills, hover states |
+| `--ft-frost` | `#edf1f6` | Subtle fills, hover states |
 | `--ft-line` | `#dce4ee` | Borders, dividers |
-| `--ft-text` | `#3a4558` | Body text |
-| `--ft-text-strong` | `#1a2233` | Headings (alias: `--ft-dark`) |
-| `--ft-text-muted` | `#8a95a8` | Secondary text |
-| `--ft-text-faint` | `#b0bac8` | Hints, placeholders |
-| `--ft-accent` | `#378a92` | Brand teal, links, active states |
-| `--ft-accent-hover` | `#2f6d73` | Hover on accent |
+| `--ft-text` | `#2e3a46` | Body text |
+| `--ft-text-strong` | `#014783` | Headings — Navy (alias: `--ft-dark`) |
+| `--ft-text-muted` | `#6b7d8e` | Secondary text |
+| `--ft-text-faint` | `#9baab8` | Hints, placeholders |
+| `--ft-cta` | `#FF6B00` | **Primary action** — CTAs, prices, active states |
+| `--ft-cta-hover` | `#E55F00` | Hover on CTA |
+| `--ft-cta-light` | `rgba(255,107,0,0.08)` | Subtle CTA background |
+| `--ft-accent` | `#3E8B8B` | **Secondary accent** — teal, labels, status, links |
+| `--ft-accent-hover` | `#327272` | Hover on accent |
 | `--ft-warm` | `#c49a6c` | Badge accent (warm gold) |
 
 ### Spacing System (`src/app.css`)
@@ -183,7 +189,7 @@ All passing `svelte-check` with **0 errors, 0 warnings** ✅
 
 All passing `svelte-check` with **0 errors, 0 warnings** ✅
 
-### Session 11 — MegaMenu Fix + Phase 3: Product Experience (Part 1)
+### Session 11 — MegaMenu Fix + Phase 3: Product Experience
 
 #### MegaMenu Fixes
 - **Hover interaction:** Fixed disconnected hover zone — MegaMenu now receives `onMouseEnter`/`onMouseLeave` props that share the same debounce timer as the Navbar trigger. Moving mouse from "Produkty" to the mega-menu dropdown no longer causes premature close.
@@ -221,35 +227,111 @@ All passing `svelte-check` with **0 errors, 0 warnings** ✅
 
 All passing `svelte-check` with **0 errors, 0 warnings** ✅
 
-### Session 12 — Phase 3 Completion: Product Experience
+### Session 12 — Design System Color Overhaul (Mock-Driven)
 
-#### New Stores
-- **`wishlist.svelte.ts`** (`src/lib/stores/`) — Client-side wishlist with `localStorage` persistence. `toggle()`, `has()`, `add()`, `remove()`, `clear()` methods. Reactive `count` getter. Exported from stores index.
+#### New 3-Color Hierarchy (from mock.html)
+Replaced single-teal system with a 3-color hierarchy inspired by industrial e-commerce mock:
+- **Orange `#FF6B00`** (`--ft-cta`) — Primary action: CTAs, prices, active states, cart buttons, hover borders
+- **Navy `#014783`** (`--ft-dark`) — Authority: all headings, brand text (via token update)
+- **Teal `#3E8B8B`** (`--ft-accent`) — Informational: labels, kickers, status dots, category tags, breadcrumbs
 
-#### New Utilities
-- **`specs.ts`** (`src/lib/utils/`) — Product specification extraction from descriptions:
-  - `extractQuickSpecs(description, max)` — Parses power (W/kW), voltage (V), RPM, disc size (mm), weight (kg), capacity (L), pressure (bar), torque (Nm), teeth count (T), battery (Ah). Returns up to 3 spec badges.
-  - `formatQuickSpecs()` — Formats as "2000W · 125mm · 2.5kg" display string.
-  - `extractSpecTable()` — Full spec table extraction with "Key: Value" pattern matching + inline spec detection. Returns key-value pairs for detail page table.
+#### Token Changes (`app.css`)
+- **New tokens:** `--ft-cta`, `--ft-cta-hover`, `--ft-cta-light`
+- **Updated:** `--ft-dark`/`--ft-text-strong` → `#014783` (navy), `--ft-text` → `#2e3a46` (darker), `--ft-text-muted` → `#6b7d8e`, `--ft-bg` → `#f8fafb`, `--ft-frost` → `#edf1f6`, `--ft-accent` → `#3E8B8B` (adjusted)
+- **Font:** `--font-display` → Plus Jakarta Sans (was DM Sans)
+- **Radii:** Tighter: 4/8/12px (was 6/10/14px)
+- **Shadows:** Navy-tinted instead of generic
+- **Legacy aliases:** `--ft-primary` now points to `--ft-cta` (orange)
 
-#### Enhanced Components
-- **`ProductCard.svelte`** — Added:
-  - **Wishlist heart icon** (top-right, below stock dot): appears on hover (desktop), always visible when wishlisted or on touch devices. Red heart fill when active. `opacity: 0` → `1` on hover with scale animation.
-  - **Quick specs line**: Shows extracted specs (e.g., "2000W · 125mm") between product name and price in `0.68rem` muted text.
-  - Imports `wishlist` store and `formatQuickSpecs` utility.
+#### Components Updated (30+ files)
+- **`Button.svelte`** — Primary variant now orange, secondary uses navy text, outline uses orange, font-display for all buttons
+- **`HeroSection.svelte`** — Primary CTA orange, secondary CTA navy→orange on hover, hero product card hover orange, gradient uses navy+orange
+- **`ProductCard.svelte`** — Prices orange, cart buttons orange, hover border orange, hover name color orange
+- **`Footer.svelte`** — Newsletter submit orange, input focus orange
+- **`Navbar.svelte`** — Active nav underline orange, cart badge orange, login button orange, mobile active states orange
+- **`CartDrawer.svelte`** — Prices orange, quantity hover orange
+- **`QuickViewModal.svelte`** — Price orange, add-to-cart button orange
+- **`CategoriesSection.svelte`** — Card hover border/icon/arrow orange
+- **`FeaturedProducts.svelte`** — Card name hover orange, cart icon hover orange, see-all hover orange
+- **`Card.svelte`** — Hover border orange
+- **`Input.svelte`** — Focus ring orange
+- **`CategoryFilter.svelte`** — Active filter states orange
+- **`ActiveFilters.svelte`** — Filter chips orange (was teal)
+- **`SelectableMethodCard.svelte`** — Brand variant now uses `--ft-cta` (was broken `--color-brand-*`)
+- **`MegaMenu.svelte`** — Icon hover orange, promo link hover orange
+- **`NavSearch.svelte`** — Price orange, loading dots orange
+- **`LoadingSpinner.svelte`** — Spinner color orange
+- **`SettingsNav.svelte`** — Active/hover states orange
+- **`BrandLogos.svelte`** — Hover color orange
+- **Account layout** — Sidebar active/hover states orange
+- **Auth pages** — Social login hover orange
+- **Products page** — Search focus orange, view mode active orange, sort select focus orange
+- **Product detail** — Category pill hover orange
+- **About page** — CTA hover orange
+- **Error page** — Category chip hover orange
+- **Root layout** — Skip link orange
 
-- **`QuickViewModal.svelte`** — Added:
-  - **Wishlist button** between SKU and actions: "Dodaj do ulubionych" / "W ulubionych" toggle with heart icon. Red accent when active.
+#### Kept as Teal (`--ft-accent`)
+Section labels/kickers, breadcrumb links, trust bar icons, hero trust signals, hero title accent span, footer column titles, mega-menu "all products" link, mega-menu icon resting color, announcement banner, feature section icons (48 references — all informational/label usage)
 
-- **Products page** (`/products`):
-  - **Sticky toolbar**: Toolbar now `position: sticky; top: 68px` with `bg-[--ft-bg]` so it stays visible while scrolling.
-  - **Active filter count badge**: Teal pill badge showing number of active filters (search, category, stock, price min/max). Displayed both in the toolbar (desktop) and on the mobile "Filtry" button.
+All passing `svelte-check` with **0 errors, 0 warnings** ✅
 
-- **Product detail page** (`/products/[slug]`):
-  - **Specification table**: Auto-generated from description using `extractSpecTable()`. Alternating rows with key (muted) and value (strong) columns. Shown between description and purchase sections.
-  - **"Kup teraz" express button**: Outlined teal button below "Dodaj do koszyka". Adds item to cart and redirects to `/checkout`. Lightning bolt icon. Hover: fills with teal, text goes white.
-  - **Wishlist button**: Inline button in header section after SKU. Heart icon + text label. Red accent when active.
-  - **Related products carousel**: Replaced static 4-column grid with horizontal scroll carousel. Cards are `280px`/`300px` wide with `scroll-snap-type: x mandatory`. Thin scrollbar. "Zobacz wszystkie" link in section header with arrow animation on hover.
+### Session 13 — Scheppach-Inspired Design Overhaul
+
+#### Design Philosophy Shift
+Moved from "Scandinavian editorial with featured product" to **"Photography-first editorial"** inspired by scheppach.co.uk. Key principle: less decoration = more premium.
+
+#### HeroSection — Full-Bleed Slider
+- **Complete rewrite** — replaced static hero with auto-advancing 3-slide carousel
+- Each slide: gradient background + kicker + bold headline (accent word in orange) + description + CTA
+- Auto-advance every 6s with progress bar indicators, pauses on hover
+- Slides: "Precyzja w Każdym Cięciu" (products), "Moc, Której Potrzebujesz" (deals), "Narzędzia Na Lata" (about)
+- Photo placeholder area (right side on desktop) — ready for lifestyle photography
+- Removed featured product card from hero (products belong in grid, not hero)
+- `aria-live="polite"` for screen readers, `role="tablist"` on indicators
+- Fade-up animation on slide change, `@keyframes dotFill` progress on active indicator
+
+#### CategoriesSection — Editorial Story Blocks
+- **Complete rewrite** — replaced icon grid with large, full-width editorial cards
+- Top 4 categories: navy/teal gradient backgrounds, large text, product count, CTA with arrow
+- First category gets `span 2` width on desktop (hero treatment)
+- Remaining categories: compact pill chips below the story grid
+- "Wszystkie produkty" chip with orange accent as final CTA
+- Photo placeholder circles ready for lifestyle/product photos
+- Hover: card lifts with deep shadow, icon placeholder scales up
+
+#### ProductCard — Simplified to Essentials
+- **Major simplification** — stripped from ~300 lines to ~200 lines
+- **Removed:** hover overlay, quick view button, stock indicator dots, category label, stock labels with indicators
+- **Kept:** image, title, price, discount badge, out-of-stock badge, mobile add-to-cart
+- **Desktop:** cart button hidden by default, slides up on hover (opacity transition)
+- **Price:** now uses `font-display` (Plus Jakarta Sans) for stronger visual hierarchy
+- Card is now a single `<a>` wrapper (was div with nested links)
+- Cleaner hover: border → orange, subtle navy-tinted shadow, name → orange
+
+#### FeaturedProducts — Cleaned Up
+- **Rewritten** — now uses ProductCard component directly (was duplicating card markup)
+- Header: section kicker + title on left, "Wszystkie produkty" link on right
+- Grid: `minmax(250px, 1fr)` auto-fill, 16px gap
+- Removed custom card styles, brand-specific add-to-cart button, internal cart logic
+
+#### FeaturesSection — Tighter
+- Shortened descriptions to single lines
+- Centered layout with circular icon containers
+- `background: var(--ft-surface)` for visual separation
+
+#### Footer — Dark Navy Background
+- **Main section:** `background: var(--ft-dark)` (navy `#014783`)
+- All text colors: white with opacity levels (0.55 for body, 0.35 for muted)
+- Newsletter input: frosted glass effect (`rgba(255,255,255,0.08)` background)
+- Social links: white on dark, orange glow on hover
+- Bottom bar: dark navy continuation with subtle top border
+- Payment icons: `filter: brightness(3)` to invert for dark bg
+
+#### Homepage — Streamlined Flow
+- **Removed BrandLogos component** from page (text logos looked amateur without real brand SVGs)
+- New section order: Hero Slider → Category Story Blocks → Featured Products Grid → Features Strip
+- Removed `featuredProduct` prop from HeroSection (products belong in grid)
 
 All passing `svelte-check` with **0 errors, 0 warnings** ✅
 
@@ -340,15 +422,15 @@ All passing `svelte-check` with **0 errors, 0 warnings** ✅
 
 #### 3.1 Enhanced Product Cards
 - [x] Stock status indicator (green dot = dostępny, orange = ostatnie sztuki)
-- [ ] Brand badge/logo on card (products lack brand field in DB — deferred until BaseLinker sync adds brand data)
-- [x] Quick specs from description (e.g., "2000W · 125mm · 2.5kg")
-- [x] Wishlist heart icon on hover
+- [ ] Brand badge/logo on card
+- [ ] Quick specs from description (e.g., "2000W · 48T" for saws)
+- [ ] Wishlist heart icon on hover
 - [x] "Dodaj do koszyka" appears on hover (desktop) / always visible (mobile)
 
 #### 3.2 Products Page Refinements
 - [x] Create `ProductCardSkeleton.svelte` — skeleton loading (6-9 gray placeholders)
 - [x] Replace spinner overlay with skeleton cards during navigation
-- [x] Sticky toolbar with active filter count badge
+- [ ] Sticky toolbar with active filter count badge
 - [x] Result count above grid: "Znaleziono X produktów"
 
 #### 3.3 Quick View Modal
@@ -356,13 +438,12 @@ All passing `svelte-check` with **0 errors, 0 warnings** ✅
 - [x] Image gallery with thumbnails
 - [x] Key specs + price + stock status + CTA
 - [x] "Zobacz szczegóły" link to full product page
-- [x] Wishlist toggle button
 
 #### 3.4 Product Detail Enhancements
-- [x] Specification table (parsed from description via `extractSpecTable()`)
-- [x] "Kup teraz" express checkout button
-- [x] Related products carousel (horizontal scroll with snap)
-- [x] Full breadcrumb path showing category hierarchy (was already done in prior session)
+- [ ] Specification table (parse from description or BaseLinker data)
+- [ ] "Kup teraz" express checkout button
+- [ ] Related products carousel (horizontal scroll)
+- [ ] Full breadcrumb path showing category hierarchy
 
 ---
 
@@ -454,7 +535,7 @@ All passing `svelte-check` with **0 errors, 0 warnings** ✅
 
 ### Key Patterns
 - **Spacing:** Always use `.ft-section-*` + `.ft-container`. Never add `px-*` on ft-container.
-- **Colors:** Use CSS custom properties (`--ft-*`), never raw hex or Tailwind neutral/white opacity.
+- **Colors:** Use CSS custom properties (`--ft-*`), never raw hex or Tailwind neutral/white opacity. Use `--ft-cta` (orange) for action buttons/prices, `--ft-accent` (teal) for labels/status/links, `--ft-dark` (navy) for headings.
 - **Borders:** `border-[--ft-line]` for all dividers. Never `border-white/*` or `border-neutral-*`.
 - **Text:** `text-[--ft-text]` (body), `text-[--ft-text-strong]` (headings), `text-[--ft-text-muted]` (secondary), `text-[--ft-text-faint]` (hints).
 - **Backgrounds:** `bg-[--ft-surface]` (cards), `bg-[--ft-frost]` (subtle fills), `bg-[--ft-bg]` (page).

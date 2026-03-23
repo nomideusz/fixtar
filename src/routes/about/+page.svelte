@@ -380,7 +380,7 @@
 						</Button>
 						<Button
 							href="/contact"
-							class="border-2 border-[--ft-line] px-8 py-4 text-lg font-bold text-[--ft-text] backdrop-blur-sm hover:border-[--ft-accent] hover:bg-[--ft-frost]"
+							class="border-2 border-[--ft-line] px-8 py-4 text-lg font-bold text-[--ft-text] backdrop-blur-sm hover:border-[--ft-cta] hover:text-[--ft-cta] hover:bg-[--ft-frost]"
 						>
 							Skontaktuj Się
 						</Button>

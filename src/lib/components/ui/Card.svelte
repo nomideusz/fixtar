@@ -53,7 +53,7 @@
 	}
 
 	.ft-card--hover:hover {
-		border-color: var(--ft-accent);
-		box-shadow: var(--ft-shadow-md);
+		border-color: var(--ft-cta);
+		box-shadow: 0 4px 16px rgba(255, 107, 0, 0.1);
 	}
 </style>

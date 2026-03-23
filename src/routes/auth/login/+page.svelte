@@ -252,7 +252,7 @@
 	}
 
 	.social-login-button:hover {
-		border-color: var(--ft-accent);
+		border-color: var(--ft-cta);
 		background-color: var(--ft-frost);
 	}
 </style>

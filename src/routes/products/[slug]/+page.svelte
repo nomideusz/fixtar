@@ -526,8 +526,8 @@
 	}
 
 	.category-pill:hover {
-		border-color: var(--ft-accent);
-		color: var(--ft-accent);
+		border-color: var(--ft-cta);
+		color: var(--ft-cta);
 		background: var(--ft-frost);
 		box-shadow: var(--ft-shadow-sm);
 	}
@@ -538,7 +538,7 @@
 	}
 
 	.category-pill:hover svg {
-		color: var(--ft-accent);
+		color: var(--ft-cta);
 	}
 
 	/* ── Wishlist button (detail page) ── */

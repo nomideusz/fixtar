@@ -436,8 +436,8 @@
 
 	.qv-price {
 		font-size: 1.35rem;
-		font-weight: 700;
-		color: var(--ft-dark);
+		font-weight: 800;
+		color: var(--ft-cta);
 		font-variant-numeric: tabular-nums;
 	}
 
@@ -554,7 +554,7 @@
 		font-weight: 600;
 		text-transform: uppercase;
 		letter-spacing: 0.06em;
-		background: var(--ft-accent);
+		background: var(--ft-cta);
 		color: white;
 		border: none;
 		border-radius: var(--radius-sm);
@@ -563,7 +563,7 @@
 	}
 
 	.qv-cart-btn:hover {
-		background: var(--ft-accent-hover);
+		background: var(--ft-cta-hover);
 	}
 
 	.qv-out-of-stock {

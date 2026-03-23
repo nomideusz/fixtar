@@ -130,14 +130,14 @@
 	}
 
 	.filter-category-button:not(.active):hover {
-		color: var(--ft-accent);
-		background-color: rgba(55, 138, 146, 0.06);
+		color: var(--ft-cta);
+		background-color: rgba(255, 107, 0, 0.04);
 	}
 
 	.filter-category-button.active {
-		background-color: rgba(55, 138, 146, 0.1);
-		color: var(--ft-accent);
-		border: 1px solid rgba(55, 138, 146, 0.2);
+		background-color: rgba(255, 107, 0, 0.08);
+		color: var(--ft-cta);
+		border: 1px solid rgba(255, 107, 0, 0.2);
 		font-weight: 600;
 	}
 
@@ -162,13 +162,13 @@
 	}
 
 	.filter-subcategory-button:not(.active):hover {
-		color: var(--ft-accent);
-		background-color: rgba(55, 138, 146, 0.06);
+		color: var(--ft-cta);
+		background-color: rgba(255, 107, 0, 0.04);
 	}
 
 	.filter-subcategory-button.active {
-		background-color: rgba(55, 138, 146, 0.08);
-		color: var(--ft-accent);
+		background-color: rgba(255, 107, 0, 0.06);
+		color: var(--ft-cta);
 		font-weight: 600;
 	}
 
@@ -186,7 +186,7 @@
 
 	.category-toggle-button:hover {
 		background-color: var(--ft-frost);
-		color: var(--ft-accent);
+		color: var(--ft-cta);
 	}
 
 	.category-toggle-button:disabled {

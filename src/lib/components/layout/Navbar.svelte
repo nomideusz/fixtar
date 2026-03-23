@@ -398,7 +398,7 @@
 	}
 
 	.nav-link.is-active {
-		color: var(--ft-accent);
+		color: var(--ft-cta);
 	}
 
 	/* Active underline indicator */
@@ -409,7 +409,7 @@
 		left: 14px;
 		right: 14px;
 		height: 2px;
-		background: var(--ft-accent);
+		background: var(--ft-cta);
 		border-radius: 1px;
 	}
 
@@ -509,8 +509,8 @@
 	}
 
 	.nav-action-btn.is-active {
-		color: var(--ft-accent);
-		background: rgba(55, 138, 146, 0.08);
+		color: var(--ft-cta);
+		background: rgba(255, 107, 0, 0.06);
 	}
 
 	.nav-action-btn:focus-visible {
@@ -532,7 +532,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background: var(--ft-accent);
+		background: var(--ft-cta);
 		color: white;
 		font-size: 0.6rem;
 		font-weight: 700;
@@ -549,10 +549,10 @@
 		align-items: center;
 		gap: 6px;
 		font-size: 0.72rem;
-		font-weight: 600;
+		font-weight: 700;
 		text-transform: uppercase;
-		letter-spacing: 0.06em;
-		color: var(--ft-accent);
+		letter-spacing: 0.08em;
+		color: var(--ft-cta);
 		padding: 8px 18px;
 		border: 1.5px solid var(--ft-line);
 		border-radius: var(--radius-sm);
@@ -572,9 +572,10 @@
 	}
 
 	.login-btn:hover {
-		border-color: var(--ft-accent);
-		background: rgba(55, 138, 146, 0.04);
-		box-shadow: 0 0 0 3px rgba(55, 138, 146, 0.06);
+		border-color: var(--ft-cta);
+		color: var(--ft-cta);
+		background: rgba(255, 107, 0, 0.04);
+		box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.06);
 	}
 
 	.login-btn:focus-visible {
@@ -709,12 +710,12 @@
 	}
 
 	.mobile-link.is-active {
-		color: var(--ft-accent);
-		background: rgba(55, 138, 146, 0.06);
+		color: var(--ft-cta);
+		background: rgba(255, 107, 0, 0.06);
 	}
 
 	.mobile-link.is-active svg {
-		color: var(--ft-accent);
+		color: var(--ft-cta);
 	}
 
 	.mobile-link svg {
@@ -749,10 +750,10 @@
 		gap: 8px;
 		padding: 14px;
 		font-size: 0.8rem;
-		font-weight: 600;
+		font-weight: 700;
 		text-transform: uppercase;
-		letter-spacing: 0.06em;
-		color: var(--ft-accent);
+		letter-spacing: 0.08em;
+		color: var(--ft-cta);
 		border: 1.5px solid var(--ft-line);
 		border-radius: var(--radius-sm);
 		cursor: pointer;
@@ -761,8 +762,8 @@
 	}
 
 	.mobile-login:hover {
-		border-color: var(--ft-accent);
-		background: rgba(55, 138, 146, 0.04);
+		border-color: var(--ft-cta);
+		background: rgba(255, 107, 0, 0.04);
 	}
 
 	.mobile-login:focus-visible {

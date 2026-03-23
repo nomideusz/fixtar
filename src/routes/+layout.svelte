@@ -64,19 +64,19 @@
 		left: 16px;
 		z-index: 100;
 		padding: 10px 20px;
-		background: var(--ft-accent);
+		background: var(--ft-cta);
 		color: white;
 		font-size: 0.82rem;
 		font-weight: 600;
 		border-radius: var(--radius-sm);
 		text-decoration: none;
-		box-shadow: 0 2px 8px rgba(55, 138, 146, 0.3);
+		box-shadow: 0 2px 8px rgba(255, 107, 0, 0.3);
 		transition: top 0.15s ease;
 	}
 
 	.skip-link:focus {
 		top: 8px;
-		outline: 2px solid var(--ft-accent);
+		outline: 2px solid var(--ft-cta);
 		outline-offset: 2px;
 	}
 

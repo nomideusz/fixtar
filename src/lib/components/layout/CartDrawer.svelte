@@ -434,13 +434,13 @@
 	}
 
 	.cart-item__name-link:hover .cart-item__name {
-		color: var(--ft-accent);
+		color: var(--ft-cta);
 	}
 
 	.cart-item__price {
 		font-size: 0.875rem;
-		font-weight: 600;
-		color: var(--ft-accent);
+		font-weight: 700;
+		color: var(--ft-cta);
 	}
 
 	.cart-item__quantity {
@@ -471,9 +471,9 @@
 	}
 
 	.cart-item__quantity-btn:hover {
-		background-color: rgba(55, 138, 146, 0.1);
-		color: var(--ft-accent);
-		box-shadow: inset 0 0 0 1px var(--ft-accent);
+		background-color: rgba(255, 107, 0, 0.06);
+		color: var(--ft-cta);
+		box-shadow: inset 0 0 0 1px var(--ft-cta);
 	}
 
 	:global(.cart-drawer__checkout-btn:hover),

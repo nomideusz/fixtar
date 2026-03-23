@@ -233,7 +233,7 @@
 				<label for="product-search" class="sr-only">Szukaj produktów</label>
 				<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
 					<svg
-						class="h-4.5 w-4.5 text-[--ft-text-faint] transition-colors group-focus-within:text-[--ft-accent]"
+						class="h-4.5 w-4.5 text-[--ft-text-faint] transition-colors group-focus-within:text-[--ft-cta]"
 						fill="none"
 						stroke="currentColor"
 						viewBox="0 0 24 24"
@@ -253,7 +253,7 @@
 					placeholder="Szukaj produktów, kategorii, marek..."
 					value={searchQuery}
 					oninput={(e: Event) => (searchQuery = (e.target as HTMLInputElement).value)}
-					class="rounded-lg border border-[--ft-line] py-2.5 pr-10 pl-10 text-sm shadow-sm focus:border-[--ft-accent] focus:ring-1 focus:ring-[--ft-accent]"
+					class="rounded-lg border border-[--ft-line] py-2.5 pr-10 pl-10 text-sm shadow-sm focus:border-[--ft-cta] focus:ring-1 focus:ring-[--ft-cta]"
 				/>
 				{#if searchQuery}
 					<button
@@ -424,7 +424,7 @@
 							id="product-sort"
 							value={sortBy}
 							onchange={handleSortChange}
-							class="rounded-lg border border-[--ft-line] bg-[--ft-surface] px-3 py-2 text-sm text-[--ft-text] transition-colors focus:border-[--ft-accent] focus:ring-1 focus:ring-[--ft-accent] focus:outline-none"
+							class="rounded-lg border border-[--ft-line] bg-[--ft-surface] px-3 py-2 text-sm text-[--ft-text] transition-colors focus:border-[--ft-cta] focus:ring-1 focus:ring-[--ft-cta] focus:outline-none"
 						>
 							<option value="name">Nazwa A-Z</option>
 							<option value="price-low">Cena: rosnąco</option>
@@ -637,13 +637,13 @@
 	}
 
 	.view-mode-button:not(.active):hover {
-		color: var(--ft-accent);
-		background-color: rgba(55, 138, 146, 0.06);
+		color: var(--ft-cta);
+		background-color: rgba(255, 107, 0, 0.06);
 	}
 
 	.view-mode-button.active {
 		background-color: var(--ft-surface);
-		color: var(--ft-accent);
+		color: var(--ft-cta);
 		box-shadow: var(--ft-shadow-sm);
 	}
 </style>

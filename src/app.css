@@ -1,7 +1,7 @@
 /* ==========================================================================
-   FixTar — Scandinavian Industrial Design System
-   Inspired by szkolyjogi.pl aesthetic: editorial, refined, lots of air.
-   Warm slate + teal accent. DM Serif Display headlines + Inter body.
+   FixTar — Industrial Precision Design System
+   3-color hierarchy: Orange (action) + Navy (authority) + Teal (info).
+   Plus Jakarta Sans headlines + Inter body.
    ========================================================================== */
 
 @import 'tailwindcss';
@@ -11,9 +11,19 @@
    ========================================================================== */
 
 @theme {
-	--color-brand-500: #378a92;
-	--color-brand-600: #2f6d73;
-	--color-brand-700: #275155;
+	/* Orange — primary action (CTAs, prices, active states) */
+	--color-cta: #FF6B00;
+	--color-cta-hover: #E55F00;
+	--color-cta-light: rgba(255, 107, 0, 0.1);
+
+	/* Navy — headings, brand, authority */
+	--color-navy: #014783;
+	--color-navy-light: #0a5a9e;
+
+	/* Teal — secondary accent (labels, status, links) */
+	--color-brand-500: #3E8B8B;
+	--color-brand-600: #327272;
+	--color-brand-700: #275a5a;
 
 	--color-warm: #c49a6c;
 	--color-warm-bg: #f5ede4;
@@ -23,13 +33,13 @@
 	--color-danger: #dc2626;
 
 	--font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-	--font-display: 'DM Sans', system-ui, -apple-system, sans-serif;
+	--font-display: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
 	--font-mono: 'Inter', system-ui, sans-serif;
 
-	--radius-sm: 6px;
-	--radius-md: 10px;
-	--radius-lg: 14px;
-	--radius-xl: 14px;
+	--radius-sm: 4px;
+	--radius-md: 8px;
+	--radius-lg: 12px;
+	--radius-xl: 12px;
 	--radius-2xl: 16px;
 	--radius-full: 9999px;
 }
@@ -39,29 +49,40 @@
    ========================================================================== */
 
 :root {
-	--ft-bg: #f7f9fc;
+	/* ── Core palette ── */
+	--ft-bg: #f8fafb;
 	--ft-surface: #ffffff;
-	--ft-dark: #1a2233;
-	--ft-text: #3a4558;
-	--ft-text-strong: #1a2233;
-	--ft-text-muted: #8a95a8;
-	--ft-text-faint: #b0bac8;
+	--ft-dark: #014783;             /* Navy — headings, brand */
+	--ft-text: #2e3a46;             /* Darker body text */
+	--ft-text-strong: #014783;      /* Navy for headings */
+	--ft-text-muted: #6b7d8e;       /* Cooler secondary text */
+	--ft-text-faint: #9baab8;       /* Hints, placeholders */
 
-	--ft-accent: #378a92;
-	--ft-accent-hover: #2f6d73;
+	/* ── Action colors ── */
+	--ft-cta: #FF6B00;              /* Orange — primary actions (CTAs, prices) */
+	--ft-cta-hover: #E55F00;
+	--ft-cta-light: rgba(255, 107, 0, 0.08);
+
+	--ft-accent: #3E8B8B;           /* Teal — secondary accent (labels, status, links) */
+	--ft-accent-hover: #327272;
+
 	--ft-warm: #c49a6c;
 	--ft-warm-bg: #f5ede4;
 
+	/* ── Surfaces & borders ── */
 	--ft-line: #dce4ee;
-	--ft-frost: #e8f0fa;
+	--ft-frost: #edf1f6;
 
-	--ft-shadow-sm: 0 1px 3px rgba(21, 29, 43, 0.04);
-	--ft-shadow-md: 0 4px 20px rgba(74, 127, 181, 0.07);
-	--ft-shadow-lg: 0 8px 36px rgba(74, 127, 181, 0.1);
+	/* ── Elevation ── */
+	--ft-shadow-sm: 0 1px 3px rgba(1, 71, 131, 0.04);
+	--ft-shadow-md: 0 4px 20px rgba(1, 71, 131, 0.07);
+	--ft-shadow-lg: 0 8px 36px rgba(1, 71, 131, 0.1);
 
+	/* ── Layout ── */
 	--ft-container: 1440px;
 	--ft-gutter: clamp(24px, 5vw, 80px);
 
+	/* ── Motion ── */
 	--dur-fast: 0.15s;
 	--dur-med: 0.25s;
 	--ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -69,19 +90,17 @@
 	/*
 	 * Legacy aliases — for components not yet migrated to canonical tokens.
 	 * IMPORTANT: Never re-declare a canonical token here (creates circular ref).
-	 * These aliases point FROM old name → TO canonical name.
 	 */
-	--ft-primary: var(--ft-accent);
-	--ft-primary-hover: var(--ft-accent-hover);
-	--ft-primary-light: rgba(55, 138, 146, 0.1);
-	--ft-primary-active: var(--ft-accent-hover);
-	--ft-primary-ring: var(--ft-accent);
+	--ft-primary: var(--ft-cta);
+	--ft-primary-hover: var(--ft-cta-hover);
+	--ft-primary-light: var(--ft-cta-light);
+	--ft-primary-active: var(--ft-cta-hover);
+	--ft-primary-ring: var(--ft-cta);
 	--ft-border: var(--ft-line);
 	--ft-border-hover: var(--ft-accent);
 	--ft-card: #ffffff;
 	--ft-card-hover: var(--ft-frost);
 	--ft-card-solid: #ffffff;
-	/* --ft-surface: intentionally NOT aliased (defined above as #ffffff) */
 	--ft-surface-alt: var(--ft-bg);
 	--ft-surface-secondary: var(--ft-frost);
 	--ft-surface-tertiary: var(--ft-frost);
@@ -91,24 +110,24 @@
 	--ft-text-inverse: #ffffff;
 	--ft-text-brand: var(--ft-accent);
 	--ft-border-subtle: var(--ft-frost);
-	--ft-focus-ring: var(--ft-accent);
+	--ft-focus-ring: var(--ft-cta);
 	--ft-focus-offset: 2px;
-	--ft-border-focus: var(--ft-accent);
+	--ft-border-focus: var(--ft-cta);
 
-	/* Old brand overlay tokens */
-	--ft-brand-subtle: rgba(55, 138, 146, 0.03);
-	--ft-brand-muted: rgba(55, 138, 146, 0.08);
-	--ft-brand-light: rgba(55, 138, 146, 0.12);
-	--ft-brand-medium: rgba(55, 138, 146, 0.15);
-	--ft-brand-border: rgba(55, 138, 146, 0.15);
-	--ft-brand-glow: rgba(55, 138, 146, 0.1);
-	--ft-grid-line: rgba(55, 138, 146, 0.04);
-	--ft-grid-line-subtle: rgba(55, 138, 146, 0.03);
-	--ft-divider: rgba(55, 138, 146, 0.2);
+	/* Old brand overlay tokens (teal-based) */
+	--ft-brand-subtle: rgba(62, 139, 139, 0.03);
+	--ft-brand-muted: rgba(62, 139, 139, 0.08);
+	--ft-brand-light: rgba(62, 139, 139, 0.12);
+	--ft-brand-medium: rgba(62, 139, 139, 0.15);
+	--ft-brand-border: rgba(62, 139, 139, 0.15);
+	--ft-brand-glow: rgba(62, 139, 139, 0.1);
+	--ft-grid-line: rgba(62, 139, 139, 0.04);
+	--ft-grid-line-subtle: rgba(62, 139, 139, 0.03);
+	--ft-divider: rgba(62, 139, 139, 0.2);
 	--ft-shadow: rgba(0, 0, 0, 0.08);
 	--ft-shadow-heavy: rgba(0, 0, 0, 0.15);
 
-	/* Old dark theme aliases — DO NOT redeclare --ft-dark (defined above) */
+	/* Old dark theme aliases */
 	--ft-dark-deeper: var(--ft-bg);
 	--ft-dark-card: #ffffff;
 	--ft-dark-card-hover: var(--ft-frost);
@@ -151,8 +170,8 @@ body {
 	font-family: var(--font-sans);
 	background: var(--ft-bg);
 	background-image:
-		radial-gradient(ellipse 80% 50% at 50% 0%, rgba(55, 138, 146, 0.06) 0%, transparent 60%),
-		radial-gradient(ellipse 60% 40% at 80% 100%, rgba(55, 138, 146, 0.04) 0%, transparent 50%);
+		radial-gradient(ellipse 80% 50% at 50% 0%, rgba(1, 71, 131, 0.04) 0%, transparent 60%),
+		radial-gradient(ellipse 60% 40% at 80% 100%, rgba(62, 139, 139, 0.03) 0%, transparent 50%);
 	background-attachment: fixed;
 	color: var(--ft-text);
 	line-height: 1.7;
@@ -167,7 +186,7 @@ body {
 }
 
 :focus-visible {
-	outline: 2px solid var(--ft-warm);
+	outline: 2px solid var(--ft-cta);
 	outline-offset: 2px;
 }
 
@@ -274,24 +293,24 @@ h4 {
 		display: inline-flex;
 		align-items: center;
 		gap: 8px;
-		background-color: var(--ft-accent);
+		background-color: var(--ft-cta);
 		color: #ffffff;
-		font-family: var(--font-mono);
-		font-weight: 600;
-		font-size: 0.72rem;
+		font-family: var(--font-display);
+		font-weight: 700;
+		font-size: 0.78rem;
 		text-transform: uppercase;
-		letter-spacing: 0.08em;
-		padding: 13px 28px;
-		border: 1px solid var(--ft-accent);
+		letter-spacing: 0.1em;
+		padding: 14px 32px;
+		border: 1px solid var(--ft-cta);
 		border-radius: var(--radius-sm);
 		cursor: pointer;
-		transition: all var(--dur-fast) ease;
+		transition: background-color var(--dur-fast) ease, border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
 	}
 
 	.btn-primary:hover {
-		background-color: var(--ft-accent-hover);
-		border-color: var(--ft-accent-hover);
-		box-shadow: var(--ft-shadow-md);
+		background-color: var(--ft-cta-hover);
+		border-color: var(--ft-cta-hover);
+		box-shadow: 0 4px 16px rgba(255, 107, 0, 0.2);
 	}
 
 	.btn-secondary {
@@ -299,21 +318,22 @@ h4 {
 		align-items: center;
 		gap: 8px;
 		background: transparent;
-		color: var(--ft-accent);
-		font-family: var(--font-mono);
-		font-weight: 600;
-		font-size: 0.72rem;
+		color: var(--ft-dark);
+		font-family: var(--font-display);
+		font-weight: 700;
+		font-size: 0.78rem;
 		text-transform: uppercase;
-		letter-spacing: 0.08em;
-		padding: 13px 28px;
+		letter-spacing: 0.1em;
+		padding: 14px 32px;
 		border: 1px solid var(--ft-line);
 		border-radius: var(--radius-sm);
 		cursor: pointer;
-		transition: all var(--dur-fast) ease;
+		transition: border-color var(--dur-fast) ease, color var(--dur-fast) ease;
 	}
 
 	.btn-secondary:hover {
-		border-color: var(--ft-accent);
+		border-color: var(--ft-cta);
+		color: var(--ft-cta);
 	}
 
 	.input {
@@ -331,8 +351,8 @@ h4 {
 	}
 
 	.input:focus {
-		border-color: var(--ft-accent);
-		box-shadow: 0 0 0 3px rgba(55, 138, 146, 0.1);
+		border-color: var(--ft-cta);
+		box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.1);
 	}
 }
 

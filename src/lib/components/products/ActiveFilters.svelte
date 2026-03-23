@@ -123,9 +123,9 @@
 		border-radius: var(--radius-sm);
 		font-size: 0.8rem;
 		font-weight: 500;
-		background-color: rgba(55, 138, 146, 0.08);
-		color: var(--ft-accent-hover);
-		border: 1px solid rgba(55, 138, 146, 0.15);
+		background-color: rgba(255, 107, 0, 0.06);
+		color: var(--ft-cta);
+		border: 1px solid rgba(255, 107, 0, 0.15);
 		gap: 0.25rem;
 	}
 
@@ -142,7 +142,7 @@
 	}
 
 	.filter-remove-button:hover {
-		background-color: rgba(55, 138, 146, 0.15);
-		color: var(--ft-accent-hover);
+		background-color: rgba(255, 107, 0, 0.12);
+		color: var(--ft-cta-hover);
 	}
 </style>

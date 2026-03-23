@@ -88,7 +88,7 @@
 					{#each popularCategories as category (category.id)}
 						<a
 							href="/products?category={category.id}"
-							class="inline-flex items-center gap-1.5 rounded-full border border-[--ft-line] bg-[--ft-frost] px-3 py-1.5 text-sm font-medium text-[--ft-text] transition-colors hover:border-[--ft-accent] hover:text-[--ft-accent]"
+							class="inline-flex items-center gap-1.5 rounded-full border border-[--ft-line] bg-[--ft-frost] px-3 py-1.5 text-sm font-medium text-[--ft-text] transition-colors hover:border-[--ft-cta] hover:text-[--ft-cta]"
 						>
 							<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={category.iconPath} />

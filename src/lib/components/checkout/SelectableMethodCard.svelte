@@ -60,14 +60,14 @@
 	}
 
 	.method-card.brand:hover {
-		border-color: var(--color-brand-400);
+		border-color: var(--ft-cta);
 		box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
 	}
 
 	.method-card.brand.selected {
-		border-color: var(--color-brand-500);
-		background: var(--color-brand-50);
-		box-shadow: 0 0 0 1px var(--color-brand-500 / 0.1);
+		border-color: var(--ft-cta);
+		background: var(--ft-cta-light);
+		box-shadow: 0 0 0 1px rgba(255, 107, 0, 0.1);
 	}
 
 	.radio-dot {
@@ -83,7 +83,7 @@
 	}
 
 	.method-card.brand .radio-dot.checked {
-		border-color: var(--color-brand-600);
+		border-color: var(--ft-cta);
 	}
 
 	.dot {
@@ -100,6 +100,6 @@
 	}
 
 	.method-card.brand .dot {
-		background-color: var(--color-brand-600);
+		background-color: var(--ft-cta);
 	}
 </style>

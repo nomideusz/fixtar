@@ -1,5 +1,15 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import type { Product } from '$lib/stores/products.svelte';
+
+	interface Slide {
+		kicker: string;
+		headline: string;
+		headlineAccent?: string;
+		description: string;
+		cta: { text: string; href: string };
+		gradient: string;
+	}
 
 	interface Props {
 		featuredProduct?: Product;
@@ -7,83 +17,116 @@
 	}
 
 	let { featuredProduct, totalProducts = 0 }: Props = $props();
+
+	const slides: Slide[] = [
+		{
+			kicker: 'Elektronarzędzia · Serwis · Dostawa 24h',
+			headline: 'Precyzja w Każdym',
+			headlineAccent: 'Cięciu.',
+			description: 'Szlifierki, wiertarki, piły i młotowiertarki. Profesjonalne marki w cenach, które docenisz.',
+			cta: { text: 'Przeglądaj Produkty', href: '/products' },
+			gradient: 'radial-gradient(ellipse 120% 80% at 80% 30%, rgba(1,71,131,0.12) 0%, transparent 60%), radial-gradient(ellipse 80% 60% at 20% 80%, rgba(255,107,0,0.06) 0%, transparent 50%)'
+		},
+		{
+			kicker: 'Outlet · Okazje · Niższe ceny',
+			headline: 'Moc, Której',
+			headlineAccent: 'Potrzebujesz.',
+			description: 'Sprawdzone narzędzia w niższych cenach. Ta sama jakość, lepsza oferta.',
+			cta: { text: 'Zobacz Promocje', href: '/deals' },
+			gradient: 'radial-gradient(ellipse 120% 80% at 70% 40%, rgba(255,107,0,0.1) 0%, transparent 60%), radial-gradient(ellipse 80% 60% at 10% 70%, rgba(1,71,131,0.08) 0%, transparent 50%)'
+		},
+		{
+			kicker: 'Gwarancja · Zwroty · Wsparcie',
+			headline: 'Narzędzia Na',
+			headlineAccent: 'Lata.',
+			description: 'Pełna gwarancja producenta, 14 dni na zwrot i eksperckie doradztwo techniczne.',
+			cta: { text: 'O Nas', href: '/about' },
+			gradient: 'radial-gradient(ellipse 120% 80% at 30% 30%, rgba(62,139,139,0.1) 0%, transparent 60%), radial-gradient(ellipse 80% 60% at 90% 80%, rgba(1,71,131,0.06) 0%, transparent 50%)'
+		}
+	];
+
+	let current = $state(0);
+	let paused = $state(false);
+	let interval: ReturnType<typeof setInterval>;
+
+	function goto(index: number) {
+		current = index;
+		resetTimer();
+	}
+
+	function next() {
+		current = (current + 1) % slides.length;
+	}
+
+	function resetTimer() {
+		clearInterval(interval);
+		interval = setInterval(() => {
+			if (!paused) next();
+		}, 6000);
+	}
+
+	onMount(() => {
+		resetTimer();
+		return () => clearInterval(interval);
+	});
+
+	const slide = $derived(slides[current]);
 </script>
 
-<section class="hero">
+<section
+	class="hero"
+	aria-label="Baner główny"
+	onmouseenter={() => paused = true}
+	onmouseleave={() => paused = false}
+>
+	<!-- Slide background -->
+	<div class="hero-bg" style="background-image: {slide.gradient}"></div>
+
+	<!-- Photo placeholder area — will hold lifestyle images later -->
+	<div class="hero-photo-area" aria-hidden="true">
+		<div class="hero-photo-placeholder">
+			<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+				<path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" />
+			</svg>
+		</div>
+	</div>
+
 	<div class="hero-inner">
-		<!-- Left: content -->
-		<div class="hero-content">
-			<div class="hero-kicker">Elektronarzędzia · Serwis · Dostawa 24h</div>
+		<div class="hero-content" aria-live="polite">
+			<div class="hero-kicker">{slide.kicker}</div>
 
 			<h1 class="hero-title">
-				Narzędzia, Które<br />
-				<span class="hero-title-accent">Pracują z Tobą</span>
+				{slide.headline}<br />
+				{#if slide.headlineAccent}
+					<span class="hero-accent">{slide.headlineAccent}</span>
+				{/if}
 			</h1>
 
-			<p class="hero-desc">
-				Sprawdzone szlifierki, wiertarki, młotowiertarki i piły.
-				Profesjonalne marki w cenach, które docenisz.
-			</p>
+			<p class="hero-desc">{slide.description}</p>
 
-			<div class="hero-actions">
-				<a href="/products" class="hero-btn-primary">
-					Przeglądaj Produkty
-					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="M12 5l7 7-7 7" /></svg>
-				</a>
-				<a href="/deals" class="hero-btn-secondary">
-					Promocje
-				</a>
-			</div>
-
-			<!-- Trust signals -->
-			<div class="hero-trust">
-				<div class="trust-item">
-					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-						<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-					</svg>
-					<span>Gwarancja</span>
-				</div>
-				<div class="trust-item">
-					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-						<rect x="1" y="3" width="15" height="13" rx="2" /><path d="M16 8h4l3 3v5h-7V8z" /><circle cx="5.5" cy="18.5" r="2.5" /><circle cx="18.5" cy="18.5" r="2.5" />
-					</svg>
-					<span>Dostawa 24h</span>
-				</div>
-				<div class="trust-item">
-					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-						<polyline points="1 4 1 10 7 10" /><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
-					</svg>
-					<span>14 dni zwrot</span>
-				</div>
-			</div>
-		</div>
-
-		<!-- Right: featured product -->
-		{#if featuredProduct}
-			<a href="/products/{featuredProduct.slug || featuredProduct.id}" class="hero-product">
-				<div class="product-image-wrap">
-					{#if featuredProduct.mainImage}
-						<img
-							src={featuredProduct.mainImage}
-							alt={featuredProduct.name}
-							class="product-img"
-							width="400"
-							height="300"
-						/>
-					{/if}
-				</div>
-				<div class="product-info">
-					<span class="product-badge">Polecany</span>
-					<h2 class="product-name">{featuredProduct.name}</h2>
-					<div class="product-price-row">
-						<span class="product-price">{featuredProduct.price.toFixed(2)} zł</span>
-						{#if featuredProduct.compareAtPrice && featuredProduct.compareAtPrice > featuredProduct.price}
-							<span class="product-old-price">{featuredProduct.compareAtPrice.toFixed(2)} zł</span>
-						{/if}
-					</div>
-				</div>
+			<a href={slide.cta.href} class="hero-cta">
+				{slide.cta.text}
+				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="M12 5l7 7-7 7" /></svg>
 			</a>
-		{/if}
+		</div>
+	</div>
+
+	<!-- Slide indicators -->
+	<div class="hero-dots" role="tablist" aria-label="Slajdy">
+		{#each slides as _, i}
+			<button
+				class="hero-dot"
+				class:is-active={i === current}
+				role="tab"
+				aria-selected={i === current}
+				aria-label="Slajd {i + 1}"
+				onclick={() => goto(i)}
+			>
+				{#if i === current}
+					<span class="dot-progress"></span>
+				{/if}
+			</button>
+		{/each}
 	</div>
 
 	<!-- Stats strip -->
@@ -114,225 +157,186 @@
 
 <style>
 	.hero {
-		padding: clamp(80px, 10vh, 140px) 0 0;
-		background:
-			radial-gradient(ellipse 100% 60% at 75% 20%, rgba(55, 138, 146, 0.06) 0%, transparent 60%),
-			radial-gradient(ellipse 60% 40% at 20% 80%, rgba(196, 154, 108, 0.04) 0%, transparent 50%);
+		position: relative;
+		min-height: clamp(480px, 70vh, 680px);
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
 	}
 
-	.hero-inner {
-		max-width: var(--ft-container);
-		margin: 0 auto;
-		padding: 0 var(--ft-gutter);
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: 48px;
-		align-items: center;
+	/* ── Background ── */
+	.hero-bg {
+		position: absolute;
+		inset: 0;
+		transition: background-image 0.8s ease;
+		z-index: 0;
+	}
+
+	/* ── Photo placeholder — right side on desktop ── */
+	.hero-photo-area {
+		display: none;
 	}
 
 	@media (min-width: 1024px) {
-		.hero-inner {
-			grid-template-columns: 1fr 1fr;
-			gap: 64px;
+		.hero-photo-area {
+			display: flex;
+			position: absolute;
+			right: 0;
+			top: 0;
+			bottom: 0;
+			width: 45%;
+			align-items: center;
+			justify-content: center;
+			z-index: 1;
 		}
 	}
 
-	/* ── Content ── */
-	.hero-content {
+	.hero-photo-placeholder {
+		width: 280px;
+		height: 280px;
+		border-radius: 50%;
+		background: var(--ft-frost);
+		border: 1px dashed var(--ft-line);
 		display: flex;
-		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		color: var(--ft-text-faint);
+		opacity: 0.5;
+	}
+
+	/* ── Content ── */
+	.hero-inner {
+		position: relative;
+		z-index: 2;
+		flex: 1;
+		display: flex;
+		align-items: center;
+		max-width: var(--ft-container);
+		width: 100%;
+		margin: 0 auto;
+		padding: clamp(100px, 12vh, 160px) var(--ft-gutter) clamp(60px, 8vh, 100px);
+	}
+
+	.hero-content {
+		max-width: 560px;
 	}
 
 	.hero-kicker {
 		font-size: 0.68rem;
 		font-weight: 600;
 		text-transform: uppercase;
-		letter-spacing: 0.12em;
+		letter-spacing: 0.15em;
 		color: var(--ft-accent);
 		margin-bottom: 20px;
+		opacity: 0;
+		animation: fadeUp 0.5s ease forwards;
 	}
 
 	.hero-title {
 		font-family: var(--font-display);
-		font-size: clamp(2.6rem, 5.5vw, 4rem);
-		font-weight: 700;
-		line-height: 1.06;
+		font-size: clamp(2.8rem, 6vw, 4.2rem);
+		font-weight: 800;
+		line-height: 1.04;
 		color: var(--ft-dark);
-		letter-spacing: -0.03em;
-		margin-bottom: 24px;
+		letter-spacing: -0.04em;
+		margin-bottom: 20px;
+		opacity: 0;
+		animation: fadeUp 0.5s 0.1s ease forwards;
 	}
 
-	.hero-title-accent {
-		color: var(--ft-accent);
+	.hero-accent {
+		color: var(--ft-cta);
 	}
 
 	.hero-desc {
 		font-size: 1rem;
 		line-height: 1.7;
 		color: var(--ft-text-muted);
-		max-width: 420px;
+		max-width: 440px;
 		margin-bottom: 32px;
+		opacity: 0;
+		animation: fadeUp 0.5s 0.2s ease forwards;
 	}
 
-	.hero-actions {
-		display: flex;
-		gap: 12px;
-		flex-wrap: wrap;
-		margin-bottom: 36px;
-	}
-
-	.hero-btn-primary {
+	.hero-cta {
 		display: inline-flex;
 		align-items: center;
-		gap: 8px;
-		background: var(--ft-accent);
+		gap: 10px;
+		background: var(--ft-cta);
 		color: white;
-		font-size: 0.72rem;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.08em;
-		padding: 14px 28px;
-		border-radius: var(--radius-sm);
-		transition: all var(--dur-fast) ease;
-	}
-
-	.hero-btn-primary:hover {
-		background: var(--ft-accent-hover);
-		color: white;
-		box-shadow: var(--ft-shadow-md);
-	}
-
-	.hero-btn-secondary {
-		display: inline-flex;
-		align-items: center;
-		gap: 8px;
-		background: transparent;
-		color: var(--ft-text-muted);
-		font-size: 0.72rem;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.08em;
-		padding: 14px 28px;
-		border: 1px solid var(--ft-line);
-		border-radius: var(--radius-sm);
-		transition: all var(--dur-fast) ease;
-	}
-
-	.hero-btn-secondary:hover {
-		border-color: var(--ft-accent);
-		color: var(--ft-dark);
-	}
-
-	/* ── Trust signals (inline below buttons) ── */
-	.hero-trust {
-		display: flex;
-		gap: 20px;
-		flex-wrap: wrap;
-	}
-
-	.trust-item {
-		display: flex;
-		align-items: center;
-		gap: 6px;
-		font-size: 0.75rem;
-		font-weight: 500;
-		color: var(--ft-text-muted);
-	}
-
-	.trust-item svg {
-		color: var(--ft-accent);
-		flex-shrink: 0;
-	}
-
-	/* ── Featured product card ── */
-	.hero-product {
-		display: flex;
-		flex-direction: column;
-		background: var(--ft-surface);
-		border: 1px solid var(--ft-line);
-		border-radius: var(--radius-lg);
-		overflow: hidden;
-		text-decoration: none;
-		color: inherit;
-		transition: all 0.3s ease;
-	}
-
-	.hero-product:hover {
-		border-color: var(--ft-accent);
-		box-shadow: var(--ft-shadow-lg);
-	}
-
-	.product-image-wrap {
-		padding: 32px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		background: #ffffff;
-		min-height: 280px;
-	}
-
-	.product-img {
-		max-width: 100%;
-		max-height: 260px;
-		object-fit: contain;
-		transition: transform 0.4s var(--ease-out);
-	}
-
-	.hero-product:hover .product-img {
-		transform: scale(1.03);
-	}
-
-	.product-info {
-		padding: 24px;
-	}
-
-	.product-badge {
-		display: inline-block;
-		font-size: 0.6rem;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.08em;
-		color: var(--ft-warm);
-		border: 1px solid var(--ft-warm);
-		background: var(--ft-warm-bg);
-		padding: 3px 10px;
-		border-radius: var(--radius-full);
-		margin-bottom: 10px;
-	}
-
-	.product-name {
-		font-family: var(--font-sans);
-		font-size: 1.05rem;
-		font-weight: 600;
-		color: var(--ft-dark);
-		line-height: 1.35;
-		margin-bottom: 8px;
-	}
-
-	.product-price-row {
-		display: flex;
-		align-items: baseline;
-		gap: 8px;
-	}
-
-	.product-price {
+		font-family: var(--font-display);
+		font-size: 0.82rem;
 		font-weight: 700;
-		font-size: 1.2rem;
-		color: var(--ft-dark);
-		font-variant-numeric: tabular-nums;
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
+		padding: 16px 36px;
+		border-radius: var(--radius-sm);
+		text-decoration: none;
+		transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+		opacity: 0;
+		animation: fadeUp 0.5s 0.3s ease forwards;
 	}
 
-	.product-old-price {
-		font-size: 0.85rem;
-		color: var(--ft-text-muted);
-		text-decoration: line-through;
+	.hero-cta:hover {
+		background: var(--ft-cta-hover);
+		color: white;
+		box-shadow: 0 6px 24px rgba(255, 107, 0, 0.25);
+		transform: translateY(-1px);
+	}
+
+	/* ── Slide indicators ── */
+	.hero-dots {
+		position: absolute;
+		bottom: clamp(80px, 10vh, 110px);
+		left: 50%;
+		transform: translateX(-50%);
+		display: flex;
+		gap: 8px;
+		z-index: 5;
+	}
+
+	.hero-dot {
+		width: 32px;
+		height: 3px;
+		background: var(--ft-line);
+		border: none;
+		border-radius: 2px;
+		cursor: pointer;
+		padding: 0;
+		overflow: hidden;
+		position: relative;
+		transition: background 0.2s ease;
+	}
+
+	.hero-dot.is-active {
+		background: rgba(1, 71, 131, 0.2);
+	}
+
+	.dot-progress {
+		position: absolute;
+		inset: 0;
+		background: var(--ft-cta);
+		border-radius: 2px;
+		animation: dotFill 6s linear forwards;
+	}
+
+	@keyframes dotFill {
+		from { transform: scaleX(0); transform-origin: left; }
+		to { transform: scaleX(1); transform-origin: left; }
+	}
+
+	@keyframes fadeUp {
+		from { opacity: 0; transform: translateY(12px); }
+		to { opacity: 1; transform: translateY(0); }
 	}
 
 	/* ── Stats strip ── */
 	.stats-strip {
-		margin-top: 56px;
+		position: relative;
+		z-index: 3;
 		border-top: 1px solid var(--ft-line);
 		border-bottom: 1px solid var(--ft-line);
+		background: var(--ft-surface);
 	}
 
 	.stats-inner {
@@ -373,12 +377,7 @@
 	}
 
 	@media (max-width: 640px) {
-		.stats-inner {
-			gap: 16px 24px;
-		}
-
-		.stat-dot {
-			display: none;
-		}
+		.stats-inner { gap: 16px 24px; }
+		.stat-dot { display: none; }
 	}
 </style>

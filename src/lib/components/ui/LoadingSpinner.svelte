@@ -42,7 +42,7 @@
 			case 'muted':
 				return '--spinner-color: var(--ft-text-muted);';
 			default:
-				return '--spinner-color: var(--ft-accent);';
+				return '--spinner-color: var(--ft-cta);';
 		}
 	});
 </script>

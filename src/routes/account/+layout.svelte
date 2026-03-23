@@ -603,9 +603,9 @@
 	}
 
 	.nav-item-active {
-		background-color: rgba(55, 138, 146, 0.08);
-		color: var(--ft-accent);
-		border: 1px solid rgba(55, 138, 146, 0.25);
+		background-color: rgba(255, 107, 0, 0.06);
+		color: var(--ft-cta);
+		border: 1px solid rgba(255, 107, 0, 0.2);
 	}
 
 	.nav-item-inactive {
@@ -613,8 +613,8 @@
 	}
 
 	.nav-item-inactive:hover {
-		background-color: rgba(55, 138, 146, 0.06);
-		color: var(--ft-accent);
+		background-color: rgba(255, 107, 0, 0.04);
+		color: var(--ft-cta);
 	}
 
 	.mobile-nav-item {
@@ -627,8 +627,8 @@
 	}
 
 	.mobile-nav-item-active {
-		background-color: rgba(55, 138, 146, 0.08);
-		color: var(--ft-accent);
+		background-color: rgba(255, 107, 0, 0.06);
+		color: var(--ft-cta);
 	}
 
 	.mobile-nav-item-inactive {
@@ -636,7 +636,7 @@
 	}
 
 	.mobile-nav-item-inactive:hover {
-		background-color: rgba(55, 138, 146, 0.06);
-		color: var(--ft-accent);
+		background-color: rgba(255, 107, 0, 0.04);
+		color: var(--ft-cta);
 	}
 </style>

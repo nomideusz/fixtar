@@ -146,13 +146,15 @@
 
 <style>
 	.footer {
-		border-top: 1px solid var(--ft-line);
+		border-top: none;
 		margin-top: auto;
 	}
 
 	/* ── Main section ── */
 	.footer-main {
 		padding: clamp(40px, 5vh, 56px) 0;
+		background: var(--ft-dark);
+		color: rgba(255, 255, 255, 0.7);
 	}
 
 	.footer-inner {
@@ -187,20 +189,20 @@
 		font-family: var(--font-display);
 		font-size: 1.1rem;
 		font-weight: 700;
-		color: var(--ft-dark);
+		color: white;
 		text-decoration: none;
 		letter-spacing: -0.02em;
 		margin-bottom: 12px;
 	}
 
 	.footer-brand:hover {
-		color: var(--ft-accent);
+		color: var(--ft-cta);
 	}
 
 	.footer-desc {
 		font-size: 0.82rem;
 		line-height: 1.6;
-		color: var(--ft-text-muted);
+		color: rgba(255, 255, 255, 0.55);
 		margin-bottom: 16px;
 		max-width: 280px;
 	}
@@ -217,25 +219,25 @@
 		width: 36px;
 		height: 36px;
 		border-radius: 50%;
-		color: var(--ft-text-muted);
-		border: 1px solid var(--ft-line);
+		color: rgba(255, 255, 255, 0.5);
+		border: 1px solid rgba(255, 255, 255, 0.15);
 		transition: all var(--dur-fast) ease;
 	}
 
 	.social-link:hover {
-		color: var(--ft-accent);
-		border-color: var(--ft-accent);
-		background: var(--ft-frost);
+		color: white;
+		border-color: var(--ft-cta);
+		background: rgba(255, 107, 0, 0.15);
 	}
 
 	/* ── Link columns ── */
 	.footer-col-title {
-		font-family: var(--font-sans);
+		font-family: var(--font-display);
 		font-size: 0.68rem;
-		font-weight: 600;
+		font-weight: 700;
 		text-transform: uppercase;
-		letter-spacing: 0.1em;
-		color: var(--ft-accent);
+		letter-spacing: 0.15em;
+		color: white;
 		margin-bottom: 14px;
 	}
 
@@ -247,18 +249,18 @@
 
 	.footer-nav a {
 		font-size: 0.85rem;
-		color: var(--ft-text-muted);
+		color: rgba(255, 255, 255, 0.55);
 		transition: color var(--dur-fast) ease;
 	}
 
 	.footer-nav a:hover {
-		color: var(--ft-dark);
+		color: white;
 	}
 
 	/* ── Newsletter ── */
 	.newsletter-desc {
 		font-size: 0.82rem;
-		color: var(--ft-text-muted);
+		color: rgba(255, 255, 255, 0.55);
 		line-height: 1.5;
 		margin-bottom: 12px;
 	}
@@ -274,9 +276,9 @@
 		padding: 10px 14px;
 		font-family: var(--font-sans);
 		font-size: 0.85rem;
-		color: var(--ft-dark);
-		background: var(--ft-surface);
-		border: 1px solid var(--ft-line);
+		color: white;
+		background: rgba(255, 255, 255, 0.08);
+		border: 1px solid rgba(255, 255, 255, 0.15);
 		border-right: none;
 		border-radius: var(--radius-sm) 0 0 var(--radius-sm);
 		outline: none;
@@ -284,11 +286,12 @@
 	}
 
 	.newsletter-input:focus {
-		border-color: var(--ft-accent);
+		border-color: var(--ft-cta);
+		background: rgba(255, 255, 255, 0.12);
 	}
 
 	.newsletter-input::placeholder {
-		color: var(--ft-text-faint);
+		color: rgba(255, 255, 255, 0.35);
 	}
 
 	.newsletter-btn {
@@ -297,17 +300,17 @@
 		justify-content: center;
 		min-width: 44px;
 		min-height: 44px;
-		background: var(--ft-accent);
+		background: var(--ft-cta);
 		color: white;
-		border: 1px solid var(--ft-accent);
+		border: 1px solid var(--ft-cta);
 		border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
 		cursor: pointer;
 		transition: background var(--dur-fast) ease;
 	}
 
 	.newsletter-btn:hover {
-		background: var(--ft-accent-hover);
-		border-color: var(--ft-accent-hover);
+		background: var(--ft-cta-hover);
+		border-color: var(--ft-cta-hover);
 	}
 
 	.newsletter-success {
@@ -321,8 +324,9 @@
 
 	/* ── Bottom bar ── */
 	.footer-bottom {
-		border-top: 1px solid var(--ft-line);
+		border-top: 1px solid rgba(255, 255, 255, 0.08);
 		padding: 16px 0;
+		background: var(--ft-dark);
 	}
 
 	.footer-bottom-inner {
@@ -338,7 +342,7 @@
 
 	.footer-copy {
 		font-size: 0.7rem;
-		color: var(--ft-text-faint);
+		color: rgba(255, 255, 255, 0.35);
 	}
 
 	.footer-payments {
@@ -349,7 +353,7 @@
 
 	.payment-label {
 		font-size: 0.65rem;
-		color: var(--ft-text-faint);
+		color: rgba(255, 255, 255, 0.35);
 		font-weight: 500;
 	}
 
@@ -360,12 +364,13 @@
 
 	.payment-icon {
 		display: flex;
-		opacity: 0.7;
+		opacity: 0.5;
 		transition: opacity var(--dur-fast) ease;
+		filter: brightness(3);
 	}
 
 	.payment-icon:hover {
-		opacity: 1;
+		opacity: 0.8;
 	}
 
 	.sr-only {
