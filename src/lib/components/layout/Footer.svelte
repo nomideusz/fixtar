@@ -36,6 +36,7 @@
 				<nav class="footer-nav" aria-label="Sklep">
 					<a href="/products">Wszystkie produkty</a>
 					<a href="/deals">Promocje</a>
+					<a href="/blog">Blog</a>
 					<a href="/contact">Kontakt</a>
 					<a href="/about">O nas</a>
 				</nav>
