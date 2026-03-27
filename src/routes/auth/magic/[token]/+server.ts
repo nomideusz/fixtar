@@ -18,7 +18,6 @@ export const GET: RequestHandler = async ({ params, cookies }) => {
 	}
 
 	if (link.expiresAt < new Date()) {
-		// Mark as used so it can't be retried
 		await db.update(magicLink).set({ used: true }).where(eq(magicLink.id, link.id));
 		throw redirect(302, '/auth/login?error=expired-link');
 	}
@@ -34,7 +33,7 @@ export const GET: RequestHandler = async ({ params, cookies }) => {
 
 	// Create a session directly
 	const now = new Date();
-	const expiresAt = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000); // 30 days
+	const expiresAt = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
 	const sessionToken = crypto.randomUUID();
 	const sessionId = crypto.randomUUID();
 
@@ -47,11 +46,16 @@ export const GET: RequestHandler = async ({ params, cookies }) => {
 		updatedAt: now
 	});
 
-	// Set the session cookie (better-auth uses "better-auth.session_token")
-	cookies.set('better-auth.session_token', sessionToken, {
+	// better-auth prefixes cookie name with __Secure- when useSecureCookies is true (production)
+	const isProduction = process.env.NODE_ENV === 'production';
+	const cookieName = isProduction
+		? '__Secure-better-auth.session_token'
+		: 'better-auth.session_token';
+
+	cookies.set(cookieName, sessionToken, {
 		path: '/',
 		httpOnly: true,
-		secure: process.env.NODE_ENV === 'production',
+		secure: isProduction,
 		sameSite: 'lax',
 		maxAge: 30 * 24 * 60 * 60
 	});
