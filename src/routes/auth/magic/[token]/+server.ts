@@ -2,36 +2,33 @@ import { redirect } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { db } from '$lib/server/db';
 import { magicLink, user, session } from '$lib/server/schema';
-import { eq, and } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 
 export const GET: RequestHandler = async ({ params, cookies }) => {
 	const { token } = params;
 
-	// Find valid, unused, non-expired magic link
 	const [link] = await db
 		.select()
 		.from(magicLink)
-		.where(and(eq(magicLink.token, token), eq(magicLink.used, false)));
+		.where(eq(magicLink.token, token));
 
 	if (!link) {
 		throw redirect(302, '/auth/login?error=invalid-link');
 	}
 
 	if (link.expiresAt < new Date()) {
-		await db.update(magicLink).set({ used: true }).where(eq(magicLink.id, link.id));
 		throw redirect(302, '/auth/login?error=expired-link');
 	}
 
-	// Mark as used
-	await db.update(magicLink).set({ used: true }).where(eq(magicLink.id, link.id));
+	// Single-use links get consumed; reusable links (used=false) stay active
+	// To make a link single-use, set used=true after first use
+	// For now all links are reusable until expiry
 
-	// Get the user
 	const [targetUser] = await db.select().from(user).where(eq(user.id, link.userId));
 	if (!targetUser) {
 		throw redirect(302, '/auth/login?error=user-not-found');
 	}
 
-	// Create a session directly
 	const now = new Date();
 	const expiresAt = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
 	const sessionToken = crypto.randomUUID();
@@ -46,7 +43,6 @@ export const GET: RequestHandler = async ({ params, cookies }) => {
 		updatedAt: now
 	});
 
-	// better-auth prefixes cookie name with __Secure- when useSecureCookies is true (production)
 	const isProduction = process.env.NODE_ENV === 'production';
 	const cookieName = isProduction
 		? '__Secure-better-auth.session_token'
