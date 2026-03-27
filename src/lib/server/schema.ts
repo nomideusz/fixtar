@@ -132,6 +132,18 @@ export const magicLink = sqliteTable('magic_link', {
 	createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull()
 });
 
+export const blogPosts = sqliteTable('blog_posts', {
+	id: text('id').primaryKey(),
+	slug: text('slug').notNull().unique(),
+	title: text('title').notNull(),
+	description: text('description').notNull(),
+	tag: text('tag').notNull().default('Poradnik'),
+	content: text('content').notNull(), // markdown-like blocks stored as JSON array
+	publishAt: integer('publish_at', { mode: 'timestamp_ms' }).notNull(),
+	createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
+	updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull()
+});
+
 export const verification = sqliteTable('verification', {
 	id: text('id').primaryKey(),
 	identifier: text('identifier').notNull(),

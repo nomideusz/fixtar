@@ -1,3 +1,27 @@
+<script lang="ts">
+	let { data } = $props();
+
+	function formatDate(date: Date): string {
+		return new Intl.DateTimeFormat('pl-PL', {
+			day: 'numeric',
+			month: 'long',
+			year: 'numeric'
+		}).format(date);
+	}
+
+	function toISO(date: Date): string {
+		return date.toISOString().slice(0, 10);
+	}
+
+	// Tag → icon mapping (SVG tool icons)
+	const tagIcons: Record<string, string> = {
+		'Poradnik': 'M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z',
+		'Konserwacja': 'M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.49 8.49l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.49-8.49l2.83-2.83',
+		'Porównanie': 'M9 19V6l12-3v13M9 19c0 1.1-1.3 2-3 2s-3-.9-3-2 1.3-2 3-2 3 .9 3 2zm12-3c0 1.1-1.3 2-3 2s-3-.9-3-2 1.3-2 3-2 3 .9 3 2z',
+		'Bezpieczeństwo': 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'
+	};
+</script>
+
 <svelte:head>
 	<title>Blog — FixTar</title>
 	<meta name="description" content="Porady, recenzje i aktualności ze świata elektronarzędzi. Blog FixTar." />
@@ -11,21 +35,27 @@
 			<p class="blog-lead">Praktyczne porady, recenzje sprzętu i nowości ze świata profesjonalnych elektronarzędzi.</p>
 		</div>
 
-		<div class="posts-grid">
-			<a href="/blog/jak-wybrac-wiertarke-udarowa" class="post-card">
-				<div class="post-img">
-					<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-						<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
-					</svg>
-				</div>
-				<div class="post-meta">
-					<time datetime="2026-03-25">25 marca 2026</time>
-					<span class="post-tag">Poradnik</span>
-				</div>
-				<h2 class="post-title">Jak wybrać wiertarkę udarową? Kompletny poradnik</h2>
-				<p class="post-excerpt">Wiertarka udarowa to jedno z najważniejszych narzędzi w warsztacie. Podpowiadamy, na co zwrócić uwagę przy zakupie — od mocy silnika po rodzaj uchwytu.</p>
-			</a>
+		<div class="posts-grid ft-stagger">
+			{#each data.posts as post}
+				<a href="/blog/{post.slug}" class="post-card">
+					<div class="post-img">
+						<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d={tagIcons[post.tag] || tagIcons['Poradnik']} />
+						</svg>
+					</div>
+					<div class="post-meta">
+						<time datetime={toISO(post.publishAt)}>{formatDate(post.publishAt)}</time>
+						<span class="post-tag">{post.tag}</span>
+					</div>
+					<h2 class="post-title">{post.title}</h2>
+					<p class="post-excerpt">{post.description}</p>
+				</a>
+			{/each}
 		</div>
+
+		{#if data.posts.length === 0}
+			<p class="empty-state">Brak artykułów. Wróć wkrótce!</p>
+		{/if}
 	</div>
 </div>
 
@@ -129,5 +159,11 @@
 		line-height: 1.6;
 		color: var(--ft-text-muted);
 		padding: 6px 20px 20px;
+	}
+
+	.empty-state {
+		margin-top: 48px;
+		font-size: 0.9rem;
+		color: var(--ft-text-muted);
 	}
 </style>

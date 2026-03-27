@@ -1,69 +1,26 @@
 <script lang="ts">
-	import { error } from '@sveltejs/kit';
-	import { page } from '$app/stores';
+	let { data } = $props();
 
-	// For now, a single hardcoded article. In the future this will come from a CMS or DB.
-	const articles: Record<string, {
-		title: string;
-		description: string;
-		date: string;
-		dateISO: string;
-		tag: string;
-		content: string[];
-	}> = {
-		'jak-wybrac-wiertarke-udarowa': {
-			title: 'Jak wybrać wiertarkę udarową? Kompletny poradnik',
-			description: 'Wiertarka udarowa to jedno z najważniejszych narzędzi w warsztacie. Podpowiadamy, na co zwrócić uwagę przy zakupie.',
-			date: '25 marca 2026',
-			dateISO: '2026-03-25',
-			tag: 'Poradnik',
-			content: [
-				'Wiertarka udarowa to uniwersalne narzędzie, bez którego trudno sobie wyobrazić jakikolwiek remont czy prace wykończeniowe. Łączy funkcję wiercenia z mechanizmem udaru, dzięki czemu radzi sobie nie tylko z drewnem i metalem, ale również z betonem i cegłą.',
+	const post = $derived(data.post);
 
-				'## Na co zwrócić uwagę przy wyborze?',
+	function formatDate(date: Date): string {
+		return new Intl.DateTimeFormat('pl-PL', {
+			day: 'numeric',
+			month: 'long',
+			year: 'numeric'
+		}).format(date);
+	}
 
-				'### 1. Moc silnika',
-				'Dla prac domowych wystarczy wiertarka o mocy 600–800 W. Do profesjonalnego użytku szukaj modeli od 1000 W wzwyż. Pamiętaj — większa moc to nie tylko szybsze wiercenie, ale też mniejsze ryzyko przegrzania przy długich sesjach pracy.',
-
-				'### 2. Energia udaru',
-				'Mierzona w dżulach (J), określa siłę pojedynczego uderzenia. Do wiercenia w betonie potrzebujesz minimum 2,5 J. Profesjonalne młotowiertarki oferują nawet 8–12 J.',
-
-				'### 3. Rodzaj uchwytu',
-				'Dwa najpopularniejsze standardy to **SDS-Plus** (do lżejszych prac, wiertła 4–26 mm) i **SDS-Max** (ciężkie kucie i wiercenie, wiertła 12–52 mm). Do typowego warsztatu domowego SDS-Plus w zupełności wystarczy.',
-
-				'### 4. Funkcje dodatkowe',
-				'Szukaj modeli z regulacją obrotów, rewersem (przydatny do wykręcania wkrętów), ogranicznikiem momentu obrotowego i antywibracyjnym uchwytem. Te funkcje znacząco poprawiają komfort i bezpieczeństwo pracy.',
-
-				'### 5. Zasilanie: sieciowa czy akumulatorowa?',
-				'Wiertarki sieciowe oferują stałą moc i nieograniczony czas pracy. Akumulatorowe (18V lub 36V) dają mobilność, ale wymagają zapasowego akumulatora przy dłuższych pracach. Dla prac na budowie — akumulatorowa. Do warsztatu — sieciowa.',
-
-				'## Popularne marki w FixTar',
-				'W naszym sklepie znajdziesz wiertarki udarowe od sprawdzonych producentów: **Bavaria**, **Graphite**, **Yato** i **Magnum**. Każdy model jest testowany przed dodaniem do oferty, żebyś miał pewność, że kupujesz solidne narzędzie.',
-
-				'## Podsumowanie',
-				'Dobra wiertarka udarowa to inwestycja na lata. Nie oszczędzaj na mocy — lepiej mieć zapas niż męczyć się z za słabym narzędziem. Zwróć uwagę na uchwyt SDS-Plus, regulację obrotów i ergonomię. A jeśli masz wątpliwości — napisz do nas, pomożemy dobrać model do Twoich potrzeb.',
-			]
-		}
-	};
-
-	const slug = $derived($page.params.slug ?? '');
-	const article = $derived(articles[slug]);
-
-	$effect(() => {
-		if (!article) {
-			error(404, 'Artykuł nie został znaleziony');
-		}
-	});
+	function toISO(date: Date): string {
+		return date.toISOString().slice(0, 10);
+	}
 </script>
 
 <svelte:head>
-	<title>{article ? article.title + ' — Blog FixTar' : 'Blog — FixTar'}</title>
-	{#if article}
-		<meta name="description" content={article.description} />
-	{/if}
+	<title>{post.title} — Blog FixTar</title>
+	<meta name="description" content={post.description} />
 </svelte:head>
 
-{#if article}
 <div class="ft-container ft-section">
 	<article class="article">
 		<!-- Breadcrumb -->
@@ -72,22 +29,22 @@
 			<span aria-hidden="true">/</span>
 			<a href="/blog">Blog</a>
 			<span aria-hidden="true">/</span>
-			<span>{article.title}</span>
+			<span>{post.title}</span>
 		</nav>
 
 		<!-- Header -->
 		<header class="article-header">
 			<div class="article-meta">
-				<time datetime={article.dateISO}>{article.date}</time>
-				<span class="article-tag">{article.tag}</span>
+				<time datetime={toISO(post.publishAt)}>{formatDate(post.publishAt)}</time>
+				<span class="article-tag">{post.tag}</span>
 			</div>
-			<h1 class="article-title">{article.title}</h1>
-			<p class="article-lead">{article.description}</p>
+			<h1 class="article-title">{post.title}</h1>
+			<p class="article-lead">{post.description}</p>
 		</header>
 
 		<!-- Body -->
 		<div class="article-body">
-			{#each article.content as block}
+			{#each post.content as block}
 				{#if block.startsWith('### ')}
 					<h3>{block.slice(4)}</h3>
 				{:else if block.startsWith('## ')}
@@ -100,7 +57,7 @@
 
 		<!-- Footer CTA -->
 		<div class="article-cta">
-			<p>Szukasz wiertarki udarowej?</p>
+			<p>Szukasz narzędzi?</p>
 			<div class="cta-links">
 				<a href="/products">Przeglądaj ofertę</a>
 				<a href="/contact" class="cta-secondary">Zapytaj o doradztwo</a>
@@ -112,7 +69,6 @@
 		</div>
 	</article>
 </div>
-{/if}
 
 <style>
 	.article {
