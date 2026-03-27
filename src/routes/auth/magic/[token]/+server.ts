@@ -74,7 +74,7 @@ export const GET: RequestHandler = async ({ params, request }) => {
 	return new Response(null, {
 		status: 302,
 		headers: {
-			Location: '/',
+			Location: '/docs',
 			'Set-Cookie': parts.join('; ')
 		}
 	});
