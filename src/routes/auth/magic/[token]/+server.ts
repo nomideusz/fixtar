@@ -4,13 +4,24 @@ import { db } from '$lib/server/db';
 import { magicLink, user } from '$lib/server/schema';
 import { eq } from 'drizzle-orm';
 import { auth } from '$lib/server/auth';
-import { createHmac } from 'crypto';
 
-function signCookie(value: string, secret: string): string {
-	const signature = createHmac('sha256', secret)
-		.update(value)
-		.digest('base64url');
-	return `${value}.${signature}`;
+/**
+ * Sign a cookie value the same way better-call does:
+ * HMAC-SHA256 with Web Crypto, output as base64 (not base64url).
+ * The signed format is: "value.signature" where signature is 44 chars base64 ending with "=".
+ */
+async function signCookie(value: string, secret: string): Promise<string> {
+	const encoder = new TextEncoder();
+	const key = await crypto.subtle.importKey(
+		'raw',
+		encoder.encode(secret),
+		{ name: 'HMAC', hash: 'SHA-256' },
+		false,
+		['sign']
+	);
+	const sig = await crypto.subtle.sign('HMAC', key, encoder.encode(value));
+	const base64 = btoa(String.fromCharCode(...new Uint8Array(sig)));
+	return `${value}.${base64}`;
 }
 
 export const GET: RequestHandler = async ({ params, request }) => {
@@ -34,9 +45,8 @@ export const GET: RequestHandler = async ({ params, request }) => {
 		throw redirect(302, '/auth/login?error=user-not-found');
 	}
 
-	// Access better-auth internals to create a real session
+	// Create session via better-auth internals
 	const ctx = await (auth as any).$context;
-
 	const internalSession = await ctx.internalAdapter.createSession(
 		targetUser.id,
 		request.headers
@@ -46,10 +56,10 @@ export const GET: RequestHandler = async ({ params, request }) => {
 		throw redirect(302, '/auth/login?error=session-failed');
 	}
 
-	// Sign the session token the same way better-auth does
+	// Sign cookie with the same method better-call uses (Web Crypto HMAC-SHA256, base64)
 	const cookieName = ctx.authCookies.sessionToken.name;
 	const cookieAttrs = ctx.authCookies.sessionToken.attributes;
-	const signedValue = signCookie(internalSession.token, ctx.secret);
+	const signedValue = await signCookie(internalSession.token, ctx.secret);
 	const maxAge = ctx.sessionConfig.expiresIn || 30 * 24 * 60 * 60;
 
 	const parts = [
