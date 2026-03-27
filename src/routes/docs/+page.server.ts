@@ -65,13 +65,17 @@ function renderMarkdown(md: string): string {
 
 		// Headings
 		if (trimmed.startsWith('#### ')) {
-			html.push(`<h4>${inline(trimmed.slice(5))}</h4>`);
+			const text = trimmed.slice(5);
+			html.push(`<h4 id="${slugify(text)}">${inline(text)}</h4>`);
 		} else if (trimmed.startsWith('### ')) {
-			html.push(`<h3>${inline(trimmed.slice(4))}</h3>`);
+			const text = trimmed.slice(4);
+			html.push(`<h3 id="${slugify(text)}">${inline(text)}</h3>`);
 		} else if (trimmed.startsWith('## ')) {
-			html.push(`<h2>${inline(trimmed.slice(3))}</h2>`);
+			const text = trimmed.slice(3);
+			html.push(`<h2 id="${slugify(text)}">${inline(text)}</h2>`);
 		} else if (trimmed.startsWith('# ')) {
-			html.push(`<h1>${inline(trimmed.slice(2))}</h1>`);
+			const text = trimmed.slice(2);
+			html.push(`<h1 id="${slugify(text)}">${inline(text)}</h1>`);
 		}
 
 		// Tables
@@ -115,6 +119,26 @@ function renderMarkdown(md: string): string {
 	if (inTable) html.push('</tbody></table>');
 
 	return html.join('\n');
+}
+
+function slugify(text: string): string {
+	return text
+		.toLowerCase()
+		.replace(/[ąàáâ]/g, 'a').replace(/[ćčç]/g, 'c').replace(/[ęèéê]/g, 'e')
+		.replace(/[łľ]/g, 'l').replace(/[ńñ]/g, 'n').replace(/[óòôö]/g, 'o')
+		.replace(/[śšş]/g, 's').replace(/[úùûü]/g, 'u').replace(/[źżž]/g, 'z')
+		.replace(/[іїйє]/g, (c) => ({ 'і': 'i', 'ї': 'i', 'й': 'y', 'є': 'ye' }[c] || c))
+		.replace(/[а-яґ]/g, (c) => {
+			const map: Record<string, string> = {
+				'а':'a','б':'b','в':'v','г':'h','ґ':'g','д':'d','е':'e','ж':'zh',
+				'з':'z','и':'y','к':'k','л':'l','м':'m','н':'n','о':'o','п':'p',
+				'р':'r','с':'s','т':'t','у':'u','ф':'f','х':'kh','ц':'ts','ч':'ch',
+				'ш':'sh','щ':'shch','ь':'','ю':'yu','я':'ya'
+			};
+			return map[c] || c;
+		})
+		.replace(/[^a-z0-9]+/g, '-')
+		.replace(/(^-|-$)/g, '');
 }
 
 function esc(s: string): string {
