@@ -85,7 +85,7 @@
 			<Breadcrumbs items={breadcrumbItems} />
 		</nav>
 
-		<div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
+		<div class="grid grid-cols-1 gap-5 sm:gap-8 lg:grid-cols-2">
 			<!-- Product Images -->
 			<div style="view-transition-name:product-img-{product.id.slice(0, 8)}">
 				<ProductGallery images={allImages} productName={product.name} badges={imageBadges} />
@@ -95,17 +95,17 @@
 			<div class="flex flex-col gap-5">
 				<!-- Header -->
 				<div class="pb-5 border-b border-[--ft-line]">
-					<h1 class="mb-4 text-3xl leading-tight font-bold text-[--ft-text] lg:text-4xl">{product.name}</h1>
+					<h1 class="mb-4 text-2xl leading-tight font-bold text-[--ft-text] sm:text-3xl lg:text-4xl">{product.name}</h1>
 
-					<div class="mb-4 flex items-center gap-4">
-						<span class="text-[--ft-accent] text-4xl font-bold">{product.price.toFixed(2)} zł</span>
+					<div class="mb-4 flex flex-wrap items-center gap-3 sm:gap-4">
+						<span class="text-[--ft-accent] text-2xl font-bold sm:text-4xl">{product.price.toFixed(2)} zł</span>
 						{#if hasDiscount}
 							<span class="text-xl text-[--ft-text-muted] line-through">{product.compareAtPrice?.toFixed(2)} zł</span>
 							<span class="bg-danger rounded-lg px-2 py-1 text-sm font-semibold !text-white">-{discountPercent}%</span>
 						{/if}
 					</div>
 
-					<div class="flex items-center gap-3">
+					<div class="flex flex-wrap items-center gap-3">
 						<div class="flex items-center gap-2">
 							<div class="h-2 w-2 rounded-full {stock.inStock ? 'bg-success' : 'bg-danger'}"></div>
 							<span class="text-sm font-semibold {stock.colorClass}">{stock.label}</span>
@@ -282,7 +282,7 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 6px;
-		padding: 6px 12px;
+		padding: 8px 12px;
 		font-size: 0.78rem;
 		font-weight: 600;
 		color: var(--ft-text-muted);
@@ -291,7 +291,7 @@
 		border-radius: var(--radius-sm);
 		cursor: pointer;
 		transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
-		min-height: 36px;
+		min-height: 44px;
 	}
 
 	.wishlist-btn:hover,

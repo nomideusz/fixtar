@@ -94,12 +94,18 @@
 		margin: 0;
 		padding: 0;
 		flex-wrap: nowrap;
+		overflow: hidden;
 	}
 
 	.breadcrumb-item {
 		display: inline-flex;
 		align-items: center;
 		white-space: nowrap;
+		min-width: 0;
+	}
+
+	.breadcrumb-item:last-child {
+		overflow: hidden;
 	}
 
 	.breadcrumb-link {
@@ -148,5 +154,8 @@
 		color: var(--ft-accent);
 		overflow: hidden;
 		text-overflow: ellipsis;
+		white-space: nowrap;
+		display: block;
+		max-width: 100%;
 	}
 </style>

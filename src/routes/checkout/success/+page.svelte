@@ -69,7 +69,7 @@
 			</div>
 
 			<!-- Order Number Display -->
-			<div class="mb-8 inline-flex items-center gap-4 bg-[--ft-frost] rounded-xl py-4 px-6">
+			<div class="mb-8 inline-flex items-center gap-3 bg-[--ft-frost] rounded-xl py-3 px-4 sm:gap-4 sm:py-4 sm:px-6">
 				<div class="bg-[--ft-surface] flex h-12 w-12 items-center justify-center rounded-xl">
 					<FileTextIcon class="text-[--ft-accent] h-6 w-6" aria-hidden="true" />
 				</div>
@@ -108,7 +108,7 @@
 		<!-- Bank Transfer Details (if applicable) -->
 		{#if data.order?.paymentMethod === 'bank_transfer' && data.order?.metadata?.paymentDetails?.bankDetails}
 			<div class="mx-auto mb-12 max-w-4xl">
-				<div class="bg-[--ft-frost] border border-[--ft-line] rounded-xl p-8">
+				<div class="bg-[--ft-frost] border border-[--ft-line] rounded-xl p-4 sm:p-8">
 					<div class="mb-6 flex items-center">
 						<div class="bg-[--ft-surface] mr-4 flex h-12 w-12 items-center justify-center rounded-xl">
 							<CreditCardIcon class="text-[--ft-accent] h-6 w-6" aria-hidden="true" />
@@ -216,7 +216,7 @@
 		{#if data.order}
 			<div class="mx-auto grid max-w-6xl grid-cols-1 gap-8 lg:grid-cols-2">
 				<!-- Order Items -->
-				<div class="border border-[--ft-line] rounded-xl p-8">
+				<div class="border border-[--ft-line] rounded-xl p-4 sm:p-8">
 					<div class="mb-6 flex items-center">
 						<div class="bg-success/10 mr-3 flex h-10 w-10 items-center justify-center rounded-xl">
 							<PackageIcon class="text-success h-5 w-5" aria-hidden="true" />
@@ -228,34 +228,36 @@
 						<div class="space-y-4">
 							{#each data.order.items as item (item)}
 								<div
-									class="flex items-center space-x-4 rounded-xl bg-[--ft-frost] p-4"
+									class="flex flex-col gap-3 rounded-xl bg-[--ft-frost] p-3 sm:flex-row sm:items-center sm:gap-4 sm:p-4"
 								>
-									{#if item.image}
-										<div class="h-20 w-20 shrink-0 overflow-hidden rounded-xl">
-											<img src={item.image} alt={item.name} class="h-full w-full object-cover" width="80" height="80" loading="lazy" />
-										</div>
-									{:else}
-										<div
-											class="flex h-20 w-20 shrink-0 items-center justify-center rounded-xl bg-[--ft-frost]"
-										>
-											<ImageSquareIcon class="h-10 w-10 text-[--ft-text-muted]" aria-hidden="true" />
-										</div>
-									{/if}
+									<div class="flex items-center gap-3">
+										{#if item.image}
+											<div class="h-16 w-16 shrink-0 overflow-hidden rounded-xl sm:h-20 sm:w-20">
+												<img src={item.image} alt={item.name} class="h-full w-full object-cover" width="80" height="80" loading="lazy" />
+											</div>
+										{:else}
+											<div
+												class="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-[--ft-frost] sm:h-20 sm:w-20"
+											>
+												<ImageSquareIcon class="h-8 w-8 text-[--ft-text-muted] sm:h-10 sm:w-10" aria-hidden="true" />
+											</div>
+										{/if}
 
-									<div class="min-w-0 flex-1">
-										<h4 class="truncate text-lg font-bold text-[--ft-text]">{item.name}</h4>
-										<div class="mt-2 flex items-center space-x-4">
-											<span class="text-sm text-[--ft-text-muted]"
-												>Ilość: <strong>{item.quantity}</strong></span
-											>
-											<span class="text-sm text-[--ft-text-muted]"
-												>Cena: <strong>{formatCurrency(item.price)}</strong></span
-											>
+										<div class="min-w-0 flex-1">
+											<h4 class="truncate text-base font-bold text-[--ft-text] sm:text-lg">{item.name}</h4>
+											<div class="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 sm:mt-2">
+												<span class="text-sm text-[--ft-text-muted]"
+													>Ilość: <strong>{item.quantity}</strong></span
+												>
+												<span class="text-sm text-[--ft-text-muted]"
+													>Cena: <strong>{formatCurrency(item.price)}</strong></span
+												>
+											</div>
 										</div>
 									</div>
 
-									<div class="text-right">
-										<p class="text-[--ft-accent] text-xl font-bold">
+									<div class="text-right sm:shrink-0">
+										<p class="text-[--ft-accent] text-lg font-bold sm:text-xl">
 											{formatCurrency(item.price * item.quantity)}
 										</p>
 									</div>
@@ -277,7 +279,7 @@
 				<!-- Shipping & Payment InfoIcon -->
 				<div class="space-y-8">
 					<!-- Shipping Address -->
-					<div class="border border-[--ft-line] rounded-xl p-8">
+					<div class="border border-[--ft-line] rounded-xl p-4 sm:p-8">
 						<div class="mb-6 flex items-center">
 							<div class="bg-[--ft-frost] mr-3 flex h-10 w-10 items-center justify-center rounded-xl">
 								<MapPinIcon class="text-[--ft-accent] h-5 w-5" aria-hidden="true" />
@@ -314,7 +316,7 @@
 					</div>
 
 					<!-- Payment & Shipping Methods -->
-					<div class="border border-[--ft-line] rounded-xl p-8">
+					<div class="border border-[--ft-line] rounded-xl p-4 sm:p-8">
 						<div class="mb-6 flex items-center">
 							<div class="bg-[--ft-frost] mr-3 flex h-10 w-10 items-center justify-center rounded-xl">
 								<LightningIcon class="text-[--ft-accent] h-5 w-5" aria-hidden="true" />
@@ -364,7 +366,7 @@
 
 		<!-- Next Steps -->
 		<div class="mx-auto mt-16 max-w-4xl">
-			<div class="border border-[--ft-line] rounded-xl p-8">
+			<div class="border border-[--ft-line] rounded-xl p-4 sm:p-8">
 				<div class="text-center">
 					<div
 						class="bg-[--ft-frost] mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl"

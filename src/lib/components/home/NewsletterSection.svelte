@@ -250,7 +250,7 @@
 		align-items: flex-start;
 		gap: 12px;
 		text-align: left;
-		padding: 20px 24px;
+		padding: clamp(16px, 4vw, 24px);
 		background: var(--ft-surface);
 		border: 1px solid var(--color-success);
 		border-radius: var(--radius-md);

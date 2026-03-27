@@ -154,7 +154,7 @@
 
 	/* ── Card ── */
 	.testimonial-card {
-		padding: 24px;
+		padding: clamp(16px, 4vw, 24px);
 		animation: ft-fade-up 0.4s var(--ease-out) both;
 	}
 

@@ -41,7 +41,7 @@
 		<div class="ft-container ft-section-sm">
 			<div class="flex flex-col gap-8 lg:flex-row">
 				<!-- Desktop Sidebar -->
-				<div class="shrink-0 lg:w-80">
+				<div class="hidden shrink-0 lg:block lg:w-80">
 					<div class="sticky top-8">
 						<Card class="p-6">
 							<!-- UserIcon Profile -->

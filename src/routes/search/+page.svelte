@@ -126,7 +126,7 @@
 			</div>
 		{:else if searchQuery && data.products.length === 0}
 			<div class="mx-auto max-w-2xl">
-				<div class="rounded-xl bg-[--ft-frost] p-12 text-center">
+				<div class="rounded-xl bg-[--ft-frost] p-6 text-center sm:p-12">
 					<MagnifyingGlassIcon class="mx-auto mb-6 h-16 w-16 text-[--ft-text-muted]" aria-hidden="true" />
 					<h3 class="mb-3 text-xl font-semibold text-[--ft-text]">Brak wyników</h3>
 					<p class="mb-6 text-[--ft-text-muted]">
@@ -176,7 +176,7 @@
 		{:else}
 			<!-- Empty State - No search yet -->
 			<div class="mx-auto max-w-2xl">
-				<div class="rounded-2xl bg-[--ft-frost] p-12 text-center">
+				<div class="rounded-2xl bg-[--ft-frost] p-6 text-center sm:p-12">
 					<div class="relative">
 						<div class="absolute inset-0 flex items-center justify-center">
 							<div

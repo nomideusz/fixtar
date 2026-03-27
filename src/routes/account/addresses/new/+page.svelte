@@ -28,12 +28,12 @@
 </svelte:head>
 
 <div>
-	<div class="mb-6 flex items-center gap-4">
+	<div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center">
 		<Button href="/account/addresses" variant="ghost" size="sm">
 			<CaretLeftIcon class="mr-2 h-4 w-4" aria-hidden="true" />
-			Powrót do adresów
+			Powrót
 		</Button>
-		<h1 class="text-2xl font-bold text-[--ft-text]">Dodaj nowy adres</h1>
+		<h1 class="text-xl font-bold text-[--ft-text] sm:text-2xl">Dodaj nowy adres</h1>
 	</div>
 
 	<div class="max-w-2xl">
@@ -146,7 +146,7 @@
 					</div>
 				</div>
 
-				<div class="mt-6 flex gap-3 border-t border-[--ft-line] pt-6">
+				<div class="mt-6 flex flex-col gap-3 border-t border-[--ft-line] pt-6 sm:flex-row">
 					<Button type="submit" disabled={isSubmitting}>
 						{isSubmitting ? 'Dodawanie adresu...' : 'Dodaj adres'}
 					</Button>

@@ -3,8 +3,9 @@
 	import { page } from '$app/stores';
 	import { cart, userStore } from '$lib/stores';
 	import FixTarLogo from '$lib/images/logo/fixtar-logo-black-trimmed.png';
+	import FixTarIcon from '$lib/images/logo/fixtar-icon-black.png';
 	import NavSearch from './NavSearch.svelte';
-	import { SunIcon, MoonIcon, XIcon, MagnifyingGlassIcon, ShoppingCartSimpleIcon, UserIcon, SignInIcon } from 'phosphor-svelte';
+	import { SunIcon, MoonIcon, XIcon, MagnifyingGlassIcon, ToteIcon, UserCircleIcon, UserGearIcon, SignOutIcon } from 'phosphor-svelte';
 
 	interface Props {
 		onCartOpen?: () => void;
@@ -16,6 +17,7 @@
 	let scrolled = $state(false);
 	let mobileSearchOpen = $state(false);
 	let darkMode = $state(false);
+	let accountMenuOpen = $state(false);
 
 	function closeMobileMenu() {
 		mobileMenuOpen = false;
@@ -109,7 +111,8 @@
 	<div class="nav-inner">
 		<!-- Logo -->
 		<a href="/" class="nav-logo" aria-label="FixTar — Strona główna">
-			<img src={FixTarLogo} alt="" class="logo-img" />
+			<img src={FixTarLogo} alt="" class="logo-img logo-full" />
+			<img src={FixTarIcon} alt="" class="logo-img logo-icon" />
 		</a>
 
 		<!-- Desktop inline search (Always visible) -->
@@ -146,7 +149,7 @@
 				title="Koszyk"
 			>
 				<div class="nav-action-icon-wrap">
-					<ShoppingCartSimpleIcon size={24} weight="bold" aria-hidden="true" />
+					<ToteIcon size={24} weight="bold" aria-hidden="true" />
 					{#if cartCount > 0}
 						<span class="cart-badge" aria-hidden="true">{cartCount}</span>
 					{/if}
@@ -156,18 +159,51 @@
 
 			<!-- Account -->
 			{#if userStore.current}
-				<a href="/account" class="nav-icon-btn nav-action-btn" aria-label="Moje konto" title="Moje konto">
+				<!-- svelte-ignore a11y_no_static_element_interactions -->
+				<div
+					class="account-dropdown-wrap desktop-only"
+					onmouseenter={() => (accountMenuOpen = true)}
+					onmouseleave={() => (accountMenuOpen = false)}
+				>
+					<button
+						class="nav-icon-btn nav-action-btn"
+						aria-label="Moje konto"
+						aria-expanded={accountMenuOpen}
+						aria-haspopup="true"
+						onclick={() => (accountMenuOpen = !accountMenuOpen)}
+					>
+						<div class="nav-action-icon-wrap">
+							<UserCircleIcon size={24} weight="bold" aria-hidden="true" />
+						</div>
+						<span class="nav-action-label">Konto</span>
+					</button>
+
+					{#if accountMenuOpen}
+						<div class="account-dropdown">
+							<a href="/account" class="account-dropdown-item" onclick={() => (accountMenuOpen = false)}>
+								<UserGearIcon size={16} weight="bold" aria-hidden="true" />
+								Moje konto
+							</a>
+							<button class="account-dropdown-item account-dropdown-item--danger" onclick={() => { accountMenuOpen = false; handleLogout(); }}>
+								<SignOutIcon size={16} weight="bold" aria-hidden="true" />
+								Wyloguj
+							</button>
+						</div>
+					{/if}
+				</div>
+
+				<!-- Mobile: icon only, no dropdown -->
+				<a href="/account" class="nav-icon-btn nav-action-btn mobile-only" aria-label="Moje konto" title="Moje konto">
 					<div class="nav-action-icon-wrap">
-						<UserIcon size={24} weight="bold" aria-hidden="true" />
+						<UserCircleIcon size={24} weight="bold" aria-hidden="true" />
 					</div>
-					<span class="nav-action-label desktop-only">Konto</span>
 				</a>
 			{:else}
 				<a href="/auth/login" class="nav-icon-btn nav-action-btn desktop-only" aria-label="Zaloguj się" title="Zaloguj się">
 					<div class="nav-action-icon-wrap">
-						<SignInIcon size={24} weight="bold" aria-hidden="true" />
+						<UserCircleIcon size={24} weight="bold" aria-hidden="true" />
 					</div>
-					<span class="nav-action-label desktop-only">Zaloguj</span>
+					<span class="nav-action-label">Zaloguj</span>
 				</a>
 			{/if}
 
@@ -197,6 +233,18 @@
 	<!-- Mobile menu -->
 	{#if mobileMenuOpen}
 		<div class="mobile-overlay" role="dialog" aria-modal="true" aria-label="Menu nawigacji">
+			<div class="mobile-menu-header">
+				<a href="/" class="nav-logo" aria-label="FixTar — Strona główna" onclick={closeMobileMenu}>
+					<img src={FixTarIcon} alt="" class="logo-img logo-icon" style="display:block" />
+				</a>
+				<button
+					onclick={closeMobileMenu}
+					class="nav-icon-btn"
+					aria-label="Zamknij menu"
+				>
+					<XIcon size={24} weight="bold" aria-hidden="true" />
+				</button>
+			</div>
 			<div class="mobile-menu">
 				<a href="/search" class="mobile-link" onclick={closeMobileMenu}>Szukaj</a>
 				{@render navLinks(true)}
@@ -237,10 +285,17 @@
 		max-width: var(--ft-container);
 		margin: 0 auto;
 		padding: 0 var(--ft-gutter);
-		height: 100px;
+		height: 60px;
 		display: flex;
 		align-items: center;
-		gap: 32px;
+		gap: 12px;
+	}
+
+	@media (min-width: 768px) {
+		.nav-inner {
+			height: 100px;
+			gap: 32px;
+		}
 	}
 
 	/* ── Logo ── */
@@ -260,10 +315,30 @@
 	}
 
 	.logo-img {
-		height: 56px;
 		width: auto;
 		display: block;
 		object-fit: contain;
+	}
+
+	/* Mobile: show icon only */
+	.logo-full {
+		display: none;
+	}
+
+	.logo-icon {
+		display: block;
+		height: 36px;
+	}
+
+	@media (min-width: 768px) {
+		.logo-full {
+			display: block;
+			height: 56px;
+		}
+
+		.logo-icon {
+			display: none;
+		}
 	}
 
 	/* ── Desktop nav links — plain text, no icons ── */
@@ -344,8 +419,15 @@
 	.nav-actions {
 		display: flex;
 		align-items: center;
-		gap: 8px;
-		margin-left: 12px;
+		gap: 4px;
+		margin-left: auto;
+	}
+
+	@media (min-width: 768px) {
+		.nav-actions {
+			gap: 8px;
+			margin-left: 12px;
+		}
 	}
 
 	.nav-icon-btn {
@@ -353,9 +435,9 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		gap: 4px;
-		min-width: 48px;
-		min-height: 48px;
+		gap: 2px;
+		min-width: 44px;
+		min-height: 44px;
 		border-radius: var(--radius-sm);
 		color: var(--ft-text-strong);
 		background: transparent;
@@ -364,6 +446,14 @@
 		text-decoration: none;
 		position: relative;
 		transition: color var(--dur-fast) ease;
+	}
+
+	@media (min-width: 768px) {
+		.nav-icon-btn {
+			gap: 4px;
+			min-width: 48px;
+			min-height: 48px;
+		}
 	}
 
 	.nav-action-btn:hover { color: var(--color-brand-500); }
@@ -390,8 +480,63 @@
 		outline-offset: 2px;
 	}
 
-	.desktop-only { display: none; }
-	@media (min-width: 768px) { .desktop-only { display: flex; } }
+	.desktop-only { display: none !important; }
+	@media (min-width: 768px) { .desktop-only { display: flex !important; } }
+
+	.mobile-only { display: flex; }
+	@media (min-width: 768px) { .mobile-only { display: none !important; } }
+
+	/* ── Account dropdown ── */
+	.account-dropdown-wrap {
+		position: relative;
+	}
+
+	.account-dropdown {
+		position: absolute;
+		top: 100%;
+		right: 0;
+		margin-top: 4px;
+		background: var(--ft-surface);
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-sm);
+		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+		min-width: 180px;
+		padding: 4px;
+		z-index: 60;
+		animation: dropdownIn 0.12s var(--ease-out);
+	}
+
+	@keyframes dropdownIn {
+		from { opacity: 0; transform: translateY(-4px); }
+		to { opacity: 1; transform: translateY(0); }
+	}
+
+	.account-dropdown-item {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		width: 100%;
+		padding: 10px 14px;
+		min-height: 44px;
+		font-size: 0.85rem;
+		font-weight: 500;
+		color: var(--ft-text);
+		background: none;
+		border: none;
+		border-radius: var(--radius-sm);
+		cursor: pointer;
+		text-decoration: none;
+		transition: background-color var(--dur-fast) ease, color var(--dur-fast) ease;
+	}
+
+	.account-dropdown-item:hover {
+		background: var(--ft-frost);
+		color: var(--ft-accent);
+	}
+
+	.account-dropdown-item--danger:hover {
+		color: var(--color-danger);
+	}
 
 	/* ── Cart badge ── */
 	.cart-badge {
@@ -442,12 +587,11 @@
 	.mobile-overlay {
 		position: fixed;
 		inset: 0;
-		top: 0;
 		background: var(--ft-bg);
-		z-index: 45;
-		overflow-y: auto;
+		z-index: 55;
+		display: flex;
+		flex-direction: column;
 		overscroll-behavior: contain;
-		padding-top: 60px;
 		animation: mobileSlideIn 0.2s var(--ease-out);
 	}
 
@@ -464,11 +608,23 @@
 		.mobile-overlay { display: none; }
 	}
 
+	.mobile-menu-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0 var(--ft-gutter);
+		height: 60px;
+		border-bottom: 1px solid var(--ft-line);
+		flex-shrink: 0;
+	}
+
 	.mobile-menu {
-		padding: 20px var(--ft-gutter);
+		padding: 12px var(--ft-gutter);
 		display: flex;
 		flex-direction: column;
 		gap: 2px;
+		overflow-y: auto;
+		flex: 1;
 	}
 
 	.mobile-link {

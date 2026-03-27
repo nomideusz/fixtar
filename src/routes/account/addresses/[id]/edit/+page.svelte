@@ -31,12 +31,12 @@
 </svelte:head>
 
 <div>
-	<div class="mb-6 flex items-center gap-4">
+	<div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center">
 		<Button href="/account/addresses" variant="ghost" size="sm">
 			<CaretLeftIcon class="mr-2 h-4 w-4" aria-hidden="true" />
-			Powrót do adresów
+			Powrót
 		</Button>
-		<h1 class="text-2xl font-bold text-[--ft-text]">Edytuj adres</h1>
+		<h1 class="text-xl font-bold text-[--ft-text] sm:text-2xl">Edytuj adres</h1>
 	</div>
 
 	{#if address}

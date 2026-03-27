@@ -164,7 +164,7 @@
 					</div>
 				{/if}
 
-				<div class="grid grid-cols-2 gap-3">
+				<div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
 					<Input
 						name="firstName"
 						label="Imię"
@@ -365,6 +365,7 @@
 		justify-content: center;
 		width: 100%;
 		padding: 0.75rem;
+		min-height: 44px;
 		border: 1px solid var(--ft-line);
 		border-radius: 0.5rem;
 		background: var(--ft-surface);

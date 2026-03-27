@@ -58,6 +58,7 @@ export interface DBProduct {
 	sku: string;
 	ean: string;
 	weight: number;
+	gallery: string;
 }
 
 export interface DBCategory {
@@ -150,7 +151,7 @@ export async function getAllProducts(opts: {
 export async function getProductBySlug(slug: string): Promise<DBProduct | null> {
 	const db = getClient();
 	const result = await db.execute({
-		sql: `SELECT id, name, slug, description, price, original_price, image, category, category_slug, tags, in_stock, sku, ean, weight
+		sql: `SELECT id, name, slug, description, price, original_price, image, gallery, category, category_slug, tags, in_stock, sku, ean, weight
 		      FROM products WHERE slug = ? LIMIT 1`,
 		args: [slug]
 	});
@@ -161,7 +162,7 @@ export async function getProductBySlug(slug: string): Promise<DBProduct | null> 
 export async function getProductById(id: string): Promise<DBProduct | null> {
 	const db = getClient();
 	const result = await db.execute({
-		sql: `SELECT id, name, slug, description, price, original_price, image, category, category_slug, tags, in_stock, sku, ean, weight
+		sql: `SELECT id, name, slug, description, price, original_price, image, gallery, category, category_slug, tags, in_stock, sku, ean, weight
 		      FROM products WHERE id = ? LIMIT 1`,
 		args: [id]
 	});
@@ -214,6 +215,18 @@ export async function getTotalProducts(): Promise<number> {
 	return Number(result.rows[0].c);
 }
 
+// ── Helpers ────────────────────────────────────────────────
+
+function parseGallery(raw: string | null | undefined): string[] {
+	if (!raw) return [];
+	try {
+		const arr: string[] = JSON.parse(raw);
+		return arr.map(img => img.startsWith('http') ? img : `/img/products/${img}`);
+	} catch {
+		return [];
+	}
+}
+
 // ── Helpers to convert DB row → store Product shape ────────
 
 import type { Product } from '$lib/stores/products.svelte';
@@ -237,7 +250,7 @@ export function toStoreProduct(p: DBProduct): Product {
 		barcode: p.ean || '',
 		categories: [uiCategorySlug],
 		mainImage: p.image ? (p.image.startsWith('http') ? p.image : `/img/products/${p.image}`) : undefined,
-		gallery: [],
+		gallery: parseGallery(p.gallery),
 		status: 'active',
 		inventory: {
 			quantity: p.in_stock ? 10 : 0,

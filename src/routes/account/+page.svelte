@@ -82,7 +82,7 @@
 		{#if !userStore.current}
 			<!-- Login Prompt -->
 			<div class="mx-auto max-w-2xl">
-				<Card class="p-12 text-center">
+				<Card class="p-6 text-center sm:p-12">
 					<div
 						class="mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-full bg-[--ft-accent]/20"
 					>
@@ -104,7 +104,7 @@
 			<div class="space-y-12">
 				<!-- Welcome Section -->
 				<section>
-					<Card class="border-2 border-[--ft-line] bg-linear-to-br from-[--ft-frost] to-[--ft-surface] p-8">
+					<Card class="border-2 border-[--ft-line] bg-linear-to-br from-[--ft-frost] to-[--ft-surface] p-4 sm:p-8">
 						<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
 							<div class="mb-6 lg:mb-0">
 								<div class="mb-4 flex items-center">
@@ -114,7 +114,7 @@
 										<UserIcon class="text-[--ft-accent] h-8 w-8" aria-hidden="true" />
 									</div>
 									<div>
-										<h1 class="text-3xl font-bold text-[--ft-text]">
+										<h1 class="text-xl font-bold text-[--ft-text] sm:text-3xl">
 											Witaj ponownie, {userStore.current?.username || 'Użytkowniku'}!
 										</h1>
 										<p class="mt-1 text-lg text-[--ft-text-muted]">
@@ -233,7 +233,7 @@
 						<p class="text-[--ft-text-muted]">Odblokuj dodatkowe korzyści</p>
 					</div>
 
-					<Card class="p-8">
+					<Card class="p-4 sm:p-8">
 						<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 							{#each accountFeatures as feature (feature)}
 								<div class="flex items-start">
@@ -276,7 +276,7 @@
 				<!-- Support Section -->
 				<section>
 					<Card
-						class="border-2 border-[--ft-line] bg-[--ft-accent]/8 p-8"
+						class="border-2 border-[--ft-line] bg-[--ft-accent]/8 p-4 sm:p-8"
 					>
 						<div class="text-center">
 							<h3 class="mb-4 text-xl font-bold text-[--ft-text]">Potrzebujesz pomocy?</h3>

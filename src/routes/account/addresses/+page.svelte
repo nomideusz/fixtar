@@ -82,8 +82,8 @@
 </svelte:head>
 
 <div>
-	<div class="mb-6 flex items-center justify-between">
-		<h1 class="text-2xl font-bold text-[--ft-text]">Moje adresy</h1>
+	<div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+		<h1 class="text-xl font-bold text-[--ft-text] sm:text-2xl">Moje adresy</h1>
 		<Button href="/account/addresses/new">Dodaj nowy adres</Button>
 	</div>
 

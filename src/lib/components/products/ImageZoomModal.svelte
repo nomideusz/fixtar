@@ -84,7 +84,7 @@
 			case 'ArrowLeft':
 				navigateImage(-1);
 				break;
-			case 'ArrowRightIcon':
+			case 'ArrowRight':
 				navigateImage(1);
 				break;
 		}
@@ -193,12 +193,18 @@
 		<XIcon size={20} weight="light" aria-hidden="true" />
 	</button>
 
+	<!-- Backdrop click to close -->
+	<!-- svelte-ignore a11y_no_static_element_interactions -->
+	<div
+		class="absolute inset-0"
+		onclick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+		onkeydown={(e) => { if (e.key === 'Escape') onClose(); }}
+	></div>
+
 	<!-- Image container -->
 	<div
-		class="relative flex h-full w-full items-center justify-center overflow-hidden p-4 cursor-{zoomLevel >
-		1
-			? 'grab'
-			: 'zoom-in'} {isDragging ? 'cursor-grabbing' : ''}"
+		class="relative flex h-full w-full items-center justify-center overflow-hidden p-4"
+		style="cursor: {isDragging ? 'grabbing' : zoomLevel > 1 ? 'grab' : 'zoom-in'}"
 		role="button"
 		tabindex="0"
 		onwheel={handleWheel}
@@ -206,7 +212,12 @@
 		onmousemove={handleMouseMove}
 		onmouseup={handleMouseUp}
 		onmouseleave={handleMouseUp}
-		onclick={zoomLevel === 1 ? zoomIn : undefined}
+		onclick={(e) => {
+			// Only zoom if clicking directly on the image
+			if (zoomLevel === 1 && (e.target as HTMLElement).tagName === 'IMG') zoomIn();
+			// Close if clicking the empty area around the image
+			else if ((e.target as HTMLElement).tagName !== 'IMG' && zoomLevel === 1) onClose();
+		}}
 		onkeydown={(e) => {
 			if (e.key === 'Enter' || e.key === ' ') {
 				e.preventDefault();
@@ -218,7 +229,7 @@
 		<img
 			src={images[selectedIndex]}
 			alt={productName}
-			class="max-w-none transition-transform duration-200 select-none"
+			class="max-h-[85vh] max-w-[90vw] object-contain transition-transform duration-200 select-none"
 			style="transform: scale({zoomLevel}) translate({panX / zoomLevel}px, {panY / zoomLevel}px)"
 			draggable="false"
 		/>

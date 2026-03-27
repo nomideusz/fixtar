@@ -253,7 +253,7 @@
 				<!-- Left Column: Form Sections -->
 				<div class="space-y-8 xl:col-span-2">
 					<!-- Contact Information -->
-					<div class="border border-[--ft-line] rounded-xl p-8">
+					<div class="border border-[--ft-line] rounded-xl p-4 sm:p-8">
 						<SectionHeader title="Dane kontaktowe" iconBgClass="bg-[--ft-frost]" iconColorClass="text-[--ft-accent]">
 							{#snippet icon()}
 								<EnvelopeIcon class="h-4 w-4" aria-hidden="true" />
@@ -287,7 +287,7 @@
 					</div>
 
 					<!-- Shipping Address -->
-					<div class="border border-[--ft-line] rounded-xl p-8">
+					<div class="border border-[--ft-line] rounded-xl p-4 sm:p-8">
 						<SectionHeader title="Adres dostawy" iconBgClass="bg-accent-100" iconColorClass="text-success">
 							{#snippet icon()}
 								<MapPinIcon class="h-4 w-4" aria-hidden="true" />
@@ -427,7 +427,7 @@
 					</div>
 
 					<!-- Shipping Method -->
-					<div class="border border-[--ft-line] rounded-xl p-8">
+					<div class="border border-[--ft-line] rounded-xl p-4 sm:p-8">
 						<SectionHeader title="Metoda dostawy" iconBgClass="bg-accent-100" iconColorClass="text-accent-600">
 							{#snippet icon()}
 								<ArrowsLeftRightIcon class="h-4 w-4" aria-hidden="true" />
@@ -491,7 +491,7 @@
 					</div>
 
 					<!-- Payment Method -->
-					<div class="border border-[--ft-line] rounded-xl p-8">
+					<div class="border border-[--ft-line] rounded-xl p-4 sm:p-8">
 						<SectionHeader title="Metoda płatności" iconBgClass="bg-[--ft-frost]" iconColorClass="text-[--ft-accent]">
 							{#snippet icon()}
 								<CreditCardIcon class="h-4 w-4" aria-hidden="true" />
@@ -539,7 +539,7 @@
 					</div>
 
 					<!-- Additional Notes -->
-					<div class="border border-[--ft-line] rounded-xl p-8">
+					<div class="border border-[--ft-line] rounded-xl p-4 sm:p-8">
 						<SectionHeader title="Dodatkowe informacje">
 							{#snippet icon()}
 								<PencilIcon class="h-4 w-4" aria-hidden="true" />
@@ -576,7 +576,7 @@
 <!-- Error Toast -->
 {#if form?.message}
 	<div
-		class="bg-danger fixed right-6 bottom-6 z-50 flex max-w-md items-center space-x-3 rounded-xl px-6 py-4 !text-white shadow-2xl"
+		class="bg-danger fixed right-4 bottom-4 left-4 z-50 flex items-center space-x-3 rounded-xl px-4 py-4 !text-white shadow-2xl sm:left-auto sm:right-6 sm:bottom-6 sm:max-w-md sm:px-6"
 	>
 		<WarningCircleIcon class="h-5 w-5 shrink-0" aria-hidden="true" />
 		<span class="font-medium">{form.message}</span>

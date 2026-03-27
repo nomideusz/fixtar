@@ -229,6 +229,7 @@
 		justify-content: center;
 		width: 100%;
 		padding: 0.75rem;
+		min-height: 44px;
 		border: 1px solid var(--ft-line);
 		border-radius: 0.5rem;
 		background: var(--ft-surface);

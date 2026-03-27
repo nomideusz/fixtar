@@ -10,6 +10,8 @@
 		href: string;
 		image: string;
 		alt: string;
+		/** object-position for mobile crop (subject focus) */
+		mobilePosition: string;
 	}
 
 	const slides: Slide[] = [
@@ -18,21 +20,24 @@
 			subline: 'Szlifierki, wiertarki, piły i młotowiertarki od sprawdzonych producentów.',
 			href: '/products',
 			image: heroWorkshop,
-			alt: 'Wiertarka akumulatorowa Bavaria w warsztacie'
+			alt: 'Wiertarka akumulatorowa Bavaria w warsztacie',
+			mobilePosition: 'center center'
 		},
 		{
 			headline: 'Moc, której potrzebujesz',
 			subline: 'Sprawdzone narzędzia w niższych cenach — ta sama jakość, lepsza oferta.',
 			href: '/deals',
 			image: heroConstruction,
-			alt: 'Młotowiertarka Eurotec na budowie'
+			alt: 'Młotowiertarka Eurotec na budowie',
+			mobilePosition: '65% center'
 		},
 		{
 			headline: 'Narzędzia na lata',
 			subline: 'Pełna gwarancja producenta, 14 dni na zwrot i eksperckie doradztwo.',
 			href: '/about',
 			image: heroForest,
-			alt: 'Mężczyzna rąbiący drewno siekierą w jesiennym lesie'
+			alt: 'Mężczyzna rąbiący drewno siekierą w jesiennym lesie',
+			mobilePosition: 'center 55%'
 		}
 	];
 
@@ -78,6 +83,7 @@
 			class:is-active={i === current}
 			tabindex={i === current ? 0 : -1}
 			aria-hidden={i !== current}
+			style="--mobile-pos:{s.mobilePosition}"
 		>
 			<img
 				src={s.image}
@@ -194,7 +200,7 @@
 		font-size: clamp(0.82rem, 1.2vw, 0.92rem);
 		line-height: 1.5;
 		color: rgba(255, 255, 255, 0.7);
-		max-width: 420px;
+		max-width: min(420px, 100%);
 		animation: fadeIn 0.6s 0.1s ease both;
 	}
 
@@ -263,18 +269,46 @@
 	@media (max-width: 768px) {
 		.hero {
 			aspect-ratio: auto;
-			height: clamp(320px, 55vh, 480px);
+			height: clamp(360px, 65vh, 520px);
+		}
+
+		.hero-bg img {
+			object-position: var(--mobile-pos, center center);
+		}
+
+		.hero-scrim {
+			background: linear-gradient(
+				to top,
+				rgba(0, 0, 0, 0.65) 0%,
+				rgba(0, 0, 0, 0.25) 40%,
+				transparent 65%
+			);
 		}
 
 		.hero-dots {
 			right: auto;
-			left: var(--ft-gutter, clamp(24px, 5vw, 80px));
-			bottom: auto;
-			top: clamp(32px, 5vh, 56px);
+			left: 50%;
+			transform: translateX(-50%);
+			bottom: clamp(16px, 3vh, 24px);
+			top: auto;
 		}
 
 		.hero-text {
-			padding-bottom: clamp(24px, 4vh, 40px);
+			padding-bottom: clamp(56px, 8vh, 80px);
+		}
+
+		.hero-headline {
+			font-size: clamp(1.4rem, 6vw, 2rem);
+		}
+
+		.hero-subline {
+			font-size: 0.85rem;
+		}
+
+		.hero-btn {
+			margin-top: 16px;
+			font-size: 0.75rem;
+			padding: 10px 20px;
 		}
 	}
 

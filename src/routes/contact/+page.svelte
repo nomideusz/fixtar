@@ -165,7 +165,7 @@
 
 		<!-- Contact Form and Map Section -->
 		<section class="mb-20">
-			<div class="grid grid-cols-1 gap-16 lg:grid-cols-2">
+			<div class="grid grid-cols-1 gap-8 lg:gap-16 lg:grid-cols-2">
 				<!-- Contact Form -->
 				<div>
 					<div class="mb-8">
@@ -229,7 +229,7 @@
 								placeholder="Opisz swoje pytanie lub problem..."
 								required
 								disabled={sending}
-								rows="5"
+								rows="3"
 								class="focus:ring-[--ft-accent] w-full resize-none rounded-xl border border-[--ft-line] px-4 py-3 focus:border-transparent focus:ring-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
 							></textarea>
 						</div>
@@ -254,7 +254,7 @@
 				<div class="space-y-6">
 					<div class="rounded-lg overflow-hidden">
 						<div
-							class="flex h-80 items-center justify-center bg-[--ft-frost]"
+							class="flex h-48 items-center justify-center bg-[--ft-frost] sm:h-80"
 						>
 							<div class="p-8 text-center">
 								<MapPinIcon class="mx-auto mb-4 h-16 w-16 text-[--ft-text-muted]" aria-hidden="true" />

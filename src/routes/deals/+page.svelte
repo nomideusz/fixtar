@@ -293,7 +293,7 @@
 	}
 
 	.flash-body {
-		padding: 20px;
+		padding: clamp(14px, 3vw, 20px);
 	}
 
 	.flash-title {

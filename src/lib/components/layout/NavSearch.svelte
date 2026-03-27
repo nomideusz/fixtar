@@ -58,8 +58,10 @@
 
 	$effect(() => {
 		loadRecent();
-		// Focus the input when mounted
-		setTimeout(() => inputRef?.focus(), 50);
+		// Only auto-focus when used in mobile dropdown (onClose is provided)
+		if (onClose) {
+			setTimeout(() => inputRef?.focus(), 50);
+		}
 	});
 
 	async function search(q: string) {

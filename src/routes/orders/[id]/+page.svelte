@@ -109,9 +109,9 @@
 	<div class="ft-container ft-section">
 		<!-- Header -->
 		<div class="mb-8">
-			<div class="flex items-center justify-between">
+			<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 				<div>
-					<h1 class="text-3xl font-bold text-[--ft-text]">
+					<h1 class="text-xl font-bold text-[--ft-text] sm:text-3xl">
 						Zamówienie {order.orderNumber}
 					</h1>
 					<p class="mt-1 text-[--ft-text-muted]">
@@ -119,7 +119,7 @@
 					</p>
 				</div>
 
-				<div class="text-right">
+				<div class="sm:text-right">
 					<p class="mb-1 text-sm text-[--ft-text-muted]">Status zamówienia</p>
 					<CustomBadge customClass={currentStatus.color}>
 						<svg class="mr-1 inline-block h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -140,35 +140,37 @@
 
 					<div class="space-y-4">
 						{#each order.items as item}
-							<div class="flex items-center space-x-4 rounded-lg bg-[--ft-frost] p-4">
-								<div class="shrink-0">
-									{#if item.product?.mainImage}
-										<img
-											src={item.product.mainImage}
-											alt={item.product?.name || 'Produkt'}
-											class="h-16 w-16 rounded-lg object-cover"
-										/>
-									{:else}
-										<div class="flex h-16 w-16 items-center justify-center rounded-lg bg-[--ft-frost]">
-											<ImageSquareIcon class="h-8 w-8 text-[--ft-text-muted]" aria-hidden="true" />
-										</div>
-									{/if}
-								</div>
+							<div class="flex flex-col gap-3 rounded-lg bg-[--ft-frost] p-3 sm:flex-row sm:items-center sm:gap-4 sm:p-4">
+								<div class="flex items-center gap-3">
+									<div class="shrink-0">
+										{#if item.product?.mainImage}
+											<img
+												src={item.product.mainImage}
+												alt={item.product?.name || 'Produkt'}
+												class="h-14 w-14 rounded-lg object-cover sm:h-16 sm:w-16"
+											/>
+										{:else}
+											<div class="flex h-14 w-14 items-center justify-center rounded-lg bg-[--ft-frost] sm:h-16 sm:w-16">
+												<ImageSquareIcon class="h-6 w-6 text-[--ft-text-muted] sm:h-8 sm:w-8" aria-hidden="true" />
+											</div>
+										{/if}
+									</div>
 
-								<div class="flex-1">
-									<h3 class="font-medium text-[--ft-text]">
-										{item.product?.name || `Produkt ID: ${item.productId}`}
-									</h3>
-									{#if item.product?.sku}
-										<p class="text-sm text-[--ft-text-muted]">SKU: {item.product.sku}</p>
-									{/if}
-									<div class="mt-2 flex items-center space-x-4">
-										<span class="text-sm text-[--ft-text-muted]">Ilość: {item.quantity}</span>
-										<span class="text-sm text-[--ft-text-muted]">Cena: {formatPrice(item.price, 'PLN')}</span>
+									<div class="min-w-0 flex-1">
+										<h3 class="font-medium text-[--ft-text] truncate">
+											{item.product?.name || `Produkt ID: ${item.productId}`}
+										</h3>
+										{#if item.product?.sku}
+											<p class="text-sm text-[--ft-text-muted]">SKU: {item.product.sku}</p>
+										{/if}
+										<div class="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 sm:mt-2">
+											<span class="text-sm text-[--ft-text-muted]">Ilość: {item.quantity}</span>
+											<span class="text-sm text-[--ft-text-muted]">Cena: {formatPrice(item.price, 'PLN')}</span>
+										</div>
 									</div>
 								</div>
 
-								<div class="text-right">
+								<div class="text-right sm:shrink-0">
 									<p class="font-semibold text-[--ft-text]">
 										{formatPrice(item.price * item.quantity, 'PLN')}
 									</p>
@@ -272,7 +274,7 @@
 					<div class="space-y-4">
 						<button
 							onclick={downloadInvoice}
-							class="w-full flex items-center gap-2 py-2 text-sm font-medium text-[--ft-text-muted] hover:text-[--ft-accent] transition-colors"
+							class="w-full flex items-center gap-2 py-3 min-h-[44px] text-sm font-medium text-[--ft-text-muted] hover:text-[--ft-accent] transition-colors"
 						>
 							<DownloadSimpleIcon class="h-4 w-4 shrink-0" aria-hidden="true" />
 							Pobierz fakturę
@@ -281,7 +283,7 @@
 						{#if order.status === 'shipped' || order.status === 'processing'}
 							<button
 								onclick={trackShipment}
-								class="w-full flex items-center gap-2 py-2 text-sm font-medium text-[--ft-text-muted] hover:text-[--ft-accent] transition-colors"
+								class="w-full flex items-center gap-2 py-3 min-h-[44px] text-sm font-medium text-[--ft-text-muted] hover:text-[--ft-accent] transition-colors"
 							>
 								<MapPinIcon class="h-4 w-4 shrink-0" aria-hidden="true" />
 								Śledź przesyłkę
@@ -291,7 +293,7 @@
 						{#if order.status === 'delivered'}
 							<button
 								onclick={requestReturn}
-								class="w-full flex items-center gap-2 py-2 text-sm font-medium text-[--ft-text-muted] hover:text-[--ft-accent] transition-colors"
+								class="w-full flex items-center gap-2 py-3 min-h-[44px] text-sm font-medium text-[--ft-text-muted] hover:text-[--ft-accent] transition-colors"
 							>
 								<ArrowCounterClockwiseIcon class="h-4 w-4 shrink-0" aria-hidden="true" />
 								Zgłoś zwrot
@@ -300,7 +302,7 @@
 
 						<a
 							href="/account/orders"
-							class="w-full flex items-center gap-2 py-2 text-sm font-medium text-[--ft-text-muted] hover:text-[--ft-accent] transition-colors"
+							class="w-full flex items-center gap-2 py-3 min-h-[44px] text-sm font-medium text-[--ft-text-muted] hover:text-[--ft-accent] transition-colors"
 						>
 							<ArrowRightIcon class="h-4 w-4 shrink-0" aria-hidden="true" />
 							Wszystkie zamówienia

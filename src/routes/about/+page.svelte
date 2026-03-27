@@ -92,7 +92,7 @@
 	<div class="ft-container ft-section-lg">
 		<!-- Company Story Section -->
 		<section class="mb-20">
-			<div class="grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
+			<div class="grid grid-cols-1 items-center gap-8 lg:gap-16 lg:grid-cols-2">
 				<div class="order-2 lg:order-1">
 					<div class="space-y-6">
 						<div
@@ -102,11 +102,11 @@
 							Nasza Historia
 						</div>
 
-						<h2 class="text-4xl leading-tight font-bold text-[--ft-text]">
+						<h2 class="text-2xl leading-tight font-bold text-[--ft-text] sm:text-3xl lg:text-4xl">
 							Pasja do Narzędzi Od 2024 Roku
 						</h2>
 
-						<div class="space-y-4 text-lg leading-relaxed text-[--ft-text-muted]">
+						<div class="space-y-4 text-base leading-relaxed text-[--ft-text-muted] sm:text-lg">
 							<p>
 								FixTar narodziło się z prostej idei: dostarczanie najlepszych profesjonalnych
 								narzędzi z profesjonalną obsługą i ekspercką wiedzą. Założyliśmy firmę, aby ułatwić
@@ -168,7 +168,7 @@
 					{#each stats as stat (stat)}
 						<div class="text-center">
 							<div
-								class="mb-2 text-4xl font-bold text-[--ft-text-strong] lg:text-5xl"
+								class="mb-2 text-2xl font-bold text-[--ft-text-strong] sm:text-4xl lg:text-5xl"
 							>
 								{stat.value}
 							</div>
@@ -190,16 +190,16 @@
 					<HeartIcon class="mr-2 h-4 w-4" aria-hidden="true" />
 					Nasze Wartości
 				</div>
-				<h2 class="mb-6 text-4xl font-bold text-[--ft-text]">Co Nas Motywuje</h2>
-				<p class="mx-auto max-w-3xl text-xl text-[--ft-text-muted]">
+				<h2 class="mb-6 text-2xl font-bold text-[--ft-text] sm:text-3xl lg:text-4xl">Co Nas Motywuje</h2>
+				<p class="mx-auto max-w-3xl text-base text-[--ft-text-muted] sm:text-xl">
 					Nasze podstawowe wartości kształtują sposób, w jaki prowadzimy biznes i budujemy relacje z
 					klientami
 				</p>
 			</div>
-			<div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+			<div class="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
 				{#each brandValues as value (value)}
 					<div class="group">
-						<div class="p-8 text-center">
+						<div class="p-4 text-center sm:p-8">
 							<div
 								class="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-[--ft-frost] text-[--ft-accent]"
 							>
@@ -238,8 +238,8 @@
 					<UsersThreeIcon class="mr-2 h-4 w-4" aria-hidden="true" />
 					Nasz Zespół
 				</div>
-				<h2 class="mb-6 text-4xl font-bold text-[--ft-text]">Poznaj Ludzi Za FixTar</h2>
-				<p class="mx-auto max-w-3xl text-xl text-[--ft-text-muted]">
+				<h2 class="mb-6 text-2xl font-bold text-[--ft-text] sm:text-3xl lg:text-4xl">Poznaj Ludzi Za FixTar</h2>
+				<p class="mx-auto max-w-3xl text-base text-[--ft-text-muted] sm:text-xl">
 					Nasz zespół składa się z pasjonatów narzędzi, którzy codziennie pracują nad tym, aby
 					dostarczać najlepsze doświadczenia naszym klientom
 				</p>
@@ -250,7 +250,7 @@
 						<div class="text-center">
 							<div class="relative mb-6 inline-block">
 								<div
-									class="mx-auto h-32 w-32 overflow-hidden rounded-full ring-4 ring-[--ft-line]"
+									class="mx-auto h-24 w-24 overflow-hidden rounded-full ring-4 ring-[--ft-line] sm:h-32 sm:w-32"
 								>
 									<img
 										src={member.image}

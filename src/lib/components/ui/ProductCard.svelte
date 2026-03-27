@@ -114,7 +114,7 @@
 		color: inherit;
 		transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 		height: 100%;
-		padding: 16px;
+		padding: clamp(10px, 2vw, 16px);
 	}
 
 	.card:hover {
@@ -224,7 +224,7 @@
 	}
 
 	.card-availability {
-		font-size: 0.72rem;
+		font-size: 0.75rem;
 		font-weight: 600;
 		color: var(--color-success);
 	}
@@ -243,7 +243,7 @@
 	.card-price {
 		font-family: var(--font-display);
 		font-weight: 800;
-		font-size: 1.15rem;
+		font-size: clamp(0.95rem, 2.5vw, 1.15rem);
 		color: var(--ft-dark);
 		font-variant-numeric: tabular-nums;
 	}
@@ -268,7 +268,8 @@
 	.card-add-btn {
 		width: 100%;
 		justify-content: center;
-		padding: 10px;
+		padding: 12px;
+		min-height: 44px;
 		font-size: 0.8rem;
 		font-family: var(--font-display);
 		font-weight: 700;

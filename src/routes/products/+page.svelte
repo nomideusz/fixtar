@@ -5,7 +5,7 @@
 	import ProductCardSkeleton from '$lib/components/ui/ProductCardSkeleton.svelte';
 	import Breadcrumbs from '$lib/components/ui/Breadcrumbs.svelte';
 	import type { Product, Category } from '$lib/stores/products.svelte';
-	import { MagnifyingGlassIcon, CaretLeftIcon, CaretRightIcon } from 'phosphor-svelte';
+	import { CaretLeftIcon, CaretRightIcon } from 'phosphor-svelte';
 
 	interface CategoryWithCount extends Category {
 		productCount: number;
@@ -104,15 +104,7 @@
 		navigateWithFilters();
 	}
 
-	function handleSearchSubmit(e: Event) {
-		e.preventDefault();
-		navigateWithFilters();
-	}
 
-	function clearSearch() {
-		searchQuery = '';
-		navigateWithFilters();
-	}
 </script>
 
 <svelte:head>
@@ -153,31 +145,8 @@
 		</div>
 	</div>
 
-	<!-- Search + Sort -->
+	<!-- Sort -->
 	<div class="toolbar">
-		<form onsubmit={handleSearchSubmit} class="search-form" role="search">
-			<label for="product-search" class="sr-only">Szukaj produktów</label>
-			<div class="search-box">
-				<MagnifyingGlassIcon class="search-icon" aria-hidden="true" />
-				<input
-					id="product-search"
-					type="search"
-					placeholder="Szukaj..."
-					value={searchQuery}
-					oninput={(e) => (searchQuery = (e.target as HTMLInputElement).value)}
-					class="search-input"
-				/>
-				{#if searchQuery}
-					<button
-						type="button"
-						onclick={clearSearch}
-						class="search-clear"
-						aria-label="Wyczyść wyszukiwanie"
-					>&times;</button>
-				{/if}
-			</div>
-		</form>
-
 		<div class="sort-wrap">
 			<label for="product-sort" class="sr-only">Sortuj</label>
 			<select
@@ -355,65 +324,6 @@
 		padding-bottom: 24px;
 	}
 
-	.search-form {
-		flex: 1;
-		min-width: 0;
-	}
-
-	.search-box {
-		position: relative;
-		display: flex;
-		align-items: center;
-	}
-
-	:global(.search-icon) {
-		position: absolute;
-		left: 12px;
-		color: var(--ft-text-faint);
-		pointer-events: none;
-	}
-
-	.search-input {
-		width: 100%;
-		padding: 10px 36px 10px 40px;
-		font-size: 0.88rem;
-		color: var(--ft-text);
-		background: var(--ft-surface);
-		border: 1px solid var(--ft-line);
-		border-radius: 8px;
-		outline: none;
-		transition: border-color 0.15s ease;
-	}
-
-	.search-input::placeholder {
-		color: var(--ft-text-faint);
-	}
-
-	.search-input:focus {
-		border-color: var(--ft-accent);
-	}
-
-	.search-clear {
-		position: absolute;
-		right: 8px;
-		background: none;
-		border: none;
-		color: var(--ft-text-faint);
-		font-size: 1.2rem;
-		cursor: pointer;
-		padding: 4px 6px;
-		line-height: 1;
-		min-width: 44px;
-		min-height: 44px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.search-clear:hover {
-		color: var(--ft-text);
-	}
-
 	.sort-wrap {
 		flex-shrink: 0;
 	}
@@ -441,8 +351,15 @@
 	/* ── Product grid ── */
 	.product-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-		gap: 16px;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 8px;
+	}
+
+	@media (min-width: 480px) {
+		.product-grid {
+			grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+			gap: 16px;
+		}
 	}
 
 	/* ── Pagination ── */
