@@ -1,15 +1,5 @@
 <script lang="ts">
-	import { CheckIcon, ArrowRightIcon } from 'phosphor-svelte';
 	const year = new Date().getFullYear();
-
-	let email = $state('');
-	let subscribed = $state(false);
-
-	function handleNewsletterSubmit(e: Event) {
-		e.preventDefault();
-		if (!email.trim()) return;
-		subscribed = true;
-	}
 </script>
 
 <footer class="footer">
@@ -23,19 +13,16 @@
 				</p>
 				<div class="footer-social">
 					<a href="https://facebook.com" class="social-link" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
-						<!-- Simple Icons: Facebook (CC0) -->
 						<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
 							<path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z" />
 						</svg>
 					</a>
 					<a href="https://instagram.com" class="social-link" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
-						<!-- Simple Icons: Instagram (CC0) -->
 						<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
 							<path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077" />
 						</svg>
 					</a>
 					<a href="https://youtube.com" class="social-link" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
-						<!-- Simple Icons: YouTube (CC0) -->
 						<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
 							<path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
 						</svg>
@@ -49,44 +36,28 @@
 				<nav class="footer-nav" aria-label="Sklep">
 					<a href="/products">Wszystkie produkty</a>
 					<a href="/deals">Promocje</a>
-					<a href="/search">Szukaj</a>
-				</nav>
-			</div>
-
-			<!-- Help links -->
-			<div class="footer-col">
-				<h4 class="footer-col-title">Pomoc</h4>
-				<nav class="footer-nav" aria-label="Pomoc">
 					<a href="/contact">Kontakt</a>
 					<a href="/about">O nas</a>
 				</nav>
 			</div>
 
-			<!-- Newsletter -->
+			<!-- Account links -->
 			<div class="footer-col">
-				<h4 class="footer-col-title">Newsletter</h4>
-				{#if subscribed}
-					<p class="newsletter-ok">
-						<CheckIcon size={14} weight="bold" aria-hidden="true" />
-						Dziękujemy za zapisanie się!
-					</p>
-				{:else}
-					<p class="newsletter-desc">Bądź na bieżąco z nowościami i promocjami.</p>
-					<form class="newsletter-form" onsubmit={handleNewsletterSubmit}>
-						<label for="footer-newsletter-email" class="sr-only">Adres email</label>
-						<input
-							id="footer-newsletter-email"
-							type="email"
-							placeholder="Twój email"
-							bind:value={email}
-							required
-							class="newsletter-input"
-						/>
-						<button type="submit" class="newsletter-btn" aria-label="Zapisz się">
-							<ArrowRightIcon size={14} weight="bold" aria-hidden="true" />
-						</button>
-					</form>
-				{/if}
+				<h4 class="footer-col-title">Konto</h4>
+				<nav class="footer-nav" aria-label="Konto">
+					<a href="/account">Moje konto</a>
+					<a href="/account/orders">Zamówienia</a>
+					<a href="/account/addresses">Adresy</a>
+				</nav>
+			</div>
+
+			<!-- Legal links -->
+			<div class="footer-col">
+				<h4 class="footer-col-title">Informacje</h4>
+				<nav class="footer-nav" aria-label="Informacje">
+					<a href="/regulamin">Regulamin</a>
+					<a href="/polityka-prywatnosci">Polityka prywatności</a>
+				</nav>
 			</div>
 		</div>
 	</div>
@@ -96,33 +67,19 @@
 		<div class="footer-bottom-inner">
 			<span class="footer-copy">&copy; {year} FixTar. Wszelkie prawa zastrzeżone.</span>
 			<div class="footer-payments" aria-label="Metody płatności">
-				<!-- BLIK — no standard icon, text logo -->
 				<span class="pay-chip" aria-label="BLIK">
 					<span class="pay-text-logo">BLIK</span>
 				</span>
-
-				<!-- Simple Icons: Visa (CC0) -->
 				<span class="pay-chip" aria-label="Visa">
 					<svg width="32" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
 						<path d="M9.112 8.262L5.97 15.758H3.92L2.374 9.775c-.094-.368-.175-.503-.461-.658C1.447 8.864.677 8.627 0 8.479l.046-.217h3.3a.904.904 0 01.894.764l.817 4.338 2.018-5.102zm8.033 5.049c.008-1.979-2.736-2.088-2.717-2.972.006-.269.262-.555.822-.628a3.66 3.66 0 011.913.336l.34-1.59a5.207 5.207 0 00-1.814-.333c-1.917 0-3.266 1.02-3.278 2.479-.012 1.079.963 1.68 1.698 2.04.756.367 1.01.603 1.006.931-.005.504-.602.725-1.16.734-.975.015-1.54-.263-1.992-.473l-.351 1.642c.453.208 1.289.39 2.156.398 2.037 0 3.37-1.006 3.377-2.564m5.061 2.447H24l-1.565-7.496h-1.656a.883.883 0 00-.826.55l-2.909 6.946h2.036l.405-1.12h2.488zm-2.163-2.656l1.02-2.815.588 2.815zm-8.16-4.84l-1.603 7.496H8.34l1.605-7.496z" />
 					</svg>
 				</span>
-
-				<!-- Simple Icons: Mastercard (CC0) -->
 				<span class="pay-chip" aria-label="Mastercard">
 					<svg width="20" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
 						<path d="M11.343 18.031c.058.049.12.098.181.146-1.177.783-2.59 1.238-4.107 1.238C3.32 19.416 0 16.096 0 12c0-4.095 3.32-7.416 7.416-7.416 1.518 0 2.931.456 4.105 1.238-.06.051-.12.098-.165.15C9.6 7.489 8.595 9.688 8.595 12c0 2.311 1.001 4.51 2.748 6.031zm5.241-13.447c-1.52 0-2.931.456-4.105 1.238.06.051.12.098.165.15C14.4 7.489 15.405 9.688 15.405 12c0 2.31-1.001 4.507-2.748 6.031-.058.049-.12.098-.181.146 1.177.783 2.588 1.238 4.107 1.238C20.68 19.416 24 16.096 24 12c0-4.094-3.32-7.416-7.416-7.416zM12 6.174c-.096.075-.189.15-.28.231C10.156 7.764 9.169 9.765 9.169 12c0 2.236.987 4.236 2.551 5.595.09.08.185.158.28.232.096-.074.189-.152.28-.232 1.563-1.359 2.551-3.359 2.551-5.595 0-2.235-.987-4.236-2.551-5.595-.09-.08-.184-.156-.28-.231z" />
 					</svg>
 				</span>
-
-				<!-- Simple Icons: PayPal (CC0) -->
-				<span class="pay-chip" aria-label="PayPal">
-					<svg width="16" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-						<path d="M15.607 4.653H8.941L6.645 19.251H1.82L4.862 0h7.995c3.754 0 6.375 2.294 6.473 5.513-.648-.478-2.105-.86-3.722-.86m6.57 5.546c0 3.41-3.01 6.853-6.958 6.853h-2.493L11.595 24H6.74l1.845-11.538h3.592c4.208 0 7.346-3.634 7.153-6.949a5.24 5.24 0 0 1 2.848 4.686M9.653 5.546h6.408c.907 0 1.942.222 2.363.541-.195 2.741-2.655 5.483-6.441 5.483H8.714Z" />
-					</svg>
-				</span>
-
-				<!-- Przelew — bank transfer, text logo -->
 				<span class="pay-chip" aria-label="Przelew bankowy">
 					<span class="pay-text-logo">Przelew</span>
 				</span>
@@ -145,20 +102,13 @@
 
 	.footer-grid {
 		display: grid;
-		grid-template-columns: 1fr;
+		grid-template-columns: 1fr 1fr;
 		gap: 28px;
 	}
 
-	@media (min-width: 640px) {
+	@media (min-width: 768px) {
 		.footer-grid {
-			grid-template-columns: 1fr 1fr;
-			gap: 28px 40px;
-		}
-	}
-
-	@media (min-width: 1024px) {
-		.footer-grid {
-			grid-template-columns: 1.5fr 1fr 1fr 1.5fr;
+			grid-template-columns: 1.5fr 1fr 1fr 1fr;
 			gap: 48px;
 		}
 	}
@@ -191,6 +141,11 @@
 		gap: 6px;
 	}
 
+	.social-link {
+		color: var(--ft-text-faint);
+		transition: color var(--dur-fast) ease;
+	}
+
 	.social-link:hover {
 		color: var(--ft-dark);
 	}
@@ -215,75 +170,12 @@
 	.footer-nav a {
 		font-size: 0.82rem;
 		color: var(--ft-text-muted);
+		text-decoration: none;
 		transition: color var(--dur-fast) ease;
 	}
 
 	.footer-nav a:hover {
 		color: var(--ft-dark);
-	}
-
-	/* ── Newsletter ── */
-	.newsletter-desc {
-		font-size: 0.78rem;
-		color: var(--ft-text-muted);
-		line-height: 1.5;
-		margin-bottom: 10px;
-	}
-
-	.newsletter-form {
-		display: flex;
-		gap: 0;
-	}
-
-	.newsletter-input {
-		flex: 1;
-		min-width: 0;
-		padding: 9px 12px;
-		font-family: var(--font-sans);
-		font-size: 0.82rem;
-		color: var(--ft-text);
-		background: var(--ft-surface);
-		border: 1px solid var(--ft-line);
-		border-right: none;
-		border-radius: var(--radius-sm) 0 0 var(--radius-sm);
-		outline: none;
-		transition: border-color var(--dur-fast) ease;
-	}
-
-	.newsletter-input:focus {
-		border-color: var(--ft-accent);
-	}
-
-	.newsletter-input::placeholder {
-		color: var(--ft-text-faint);
-	}
-
-	.newsletter-btn {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		min-width: 44px;
-		min-height: 44px;
-		background: var(--ft-dark);
-		color: white;
-		border: 1px solid var(--ft-dark);
-		border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-		cursor: pointer;
-		transition: background var(--dur-fast) ease;
-	}
-
-	.newsletter-btn:hover {
-		background: var(--ft-accent);
-		border-color: var(--ft-accent);
-	}
-
-	.newsletter-ok {
-		display: flex;
-		align-items: center;
-		gap: 6px;
-		font-size: 0.78rem;
-		color: var(--color-success);
-		font-weight: 500;
 	}
 
 	/* ── Bottom bar ── */
@@ -319,29 +211,14 @@
 		align-items: center;
 		justify-content: center;
 		height: 28px;
+		color: var(--ft-text-muted);
+	}
+
 	.pay-text-logo {
 		font-family: var(--font-display);
 		font-size: 0.62rem;
 		font-weight: 700;
 		letter-spacing: 0.04em;
 		color: var(--ft-text-muted);
-	}
-		font-family: var(--font-display);
-		font-size: 0.62rem;
-		font-weight: 700;
-		letter-spacing: 0.04em;
-		color: var(--ft-text-muted);
-	}
-
-	.sr-only {
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		padding: 0;
-		margin: -1px;
-		overflow: hidden;
-		clip: rect(0, 0, 0, 0);
-		white-space: nowrap;
-		border: 0;
 	}
 </style>
