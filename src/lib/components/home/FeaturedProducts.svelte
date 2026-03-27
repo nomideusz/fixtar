@@ -22,7 +22,7 @@
 		{:else if products.length === 0}
 			<p class="featured-empty">Brak polecanych produktów.</p>
 		{:else}
-			<div class="grid">
+			<div class="grid ft-stagger">
 				{#each products.slice(0, 8) as product (product.id)}
 					<ProductCard {product} />
 				{/each}

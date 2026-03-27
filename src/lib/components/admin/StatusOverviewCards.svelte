@@ -33,8 +33,8 @@
 			label: 'Draft Products',
 			subtitle: 'Awaiting review',
 			count: statusCounts.draft,
-			colorClass: 'text-brand-600',
-			hoverClass: 'hover:text-brand-800',
+			colorClass: 'text-[--ft-accent]',
+			hoverClass: 'hover:text-[--ft-accent-hover]',
 			iconPath:
 				'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z',
 			filterValue: 'draft'
@@ -43,8 +43,8 @@
 			label: 'Inactive Products',
 			subtitle: 'Hidden from store',
 			count: statusCounts.inactive,
-			colorClass: 'text-neutral-600',
-			hoverClass: 'hover:text-neutral-800',
+			colorClass: 'text-[--ft-text-muted]',
+			hoverClass: 'hover:text-[--ft-text-strong]',
 			iconPath:
 				'M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728',
 			filterValue: 'inactive'
@@ -57,7 +57,7 @@
 		<Card class="p-4">
 			<div class="flex items-center justify-between">
 				<div>
-					<p class="text-sm text-neutral-600">{card.label}</p>
+					<p class="text-sm text-[--ft-text-muted]">{card.label}</p>
 					<p class="text-2xl font-bold {card.colorClass}">{card.count}</p>
 					<p class="mt-1 text-xs text-[--ft-text-muted]">{card.subtitle}</p>
 				</div>

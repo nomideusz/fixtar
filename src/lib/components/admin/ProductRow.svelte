@@ -19,13 +19,13 @@
 	};
 </script>
 
-<tr class="border-b hover:bg-neutral-50">
+<tr class="border-b hover:bg-[--ft-frost]">
 	<td class="px-4 py-3">
 		<input
 			type="checkbox"
 			checked={selected}
 			onchange={onToggleSelect}
-			class="rounded border-neutral-300"
+			class="rounded border-[--ft-line]"
 		/>
 	</td>
 	<td class="px-4 py-3">
@@ -37,7 +37,7 @@
 					class="mr-3 h-12 w-12 rounded object-cover"
 				/>
 			{:else}
-				<div class="mr-3 flex h-12 w-12 items-center justify-center rounded bg-neutral-200">
+				<div class="mr-3 flex h-12 w-12 items-center justify-center rounded bg-[--ft-frost]">
 					<svg
 						class="h-6 w-6 text-[--ft-text-muted]"
 						fill="none"
@@ -54,14 +54,14 @@
 				</div>
 			{/if}
 			<div>
-				<p class="max-w-xs truncate font-medium text-neutral-900">{product.name}</p>
+				<p class="max-w-xs truncate font-medium text-[--ft-text-strong]">{product.name}</p>
 				{#if product.shortDescription}
 					<p class="max-w-xs truncate text-sm text-[--ft-text-muted]">{product.shortDescription}</p>
 				{/if}
 			</div>
 		</div>
 	</td>
-	<td class="px-4 py-3 font-mono text-sm text-neutral-600">
+	<td class="px-4 py-3 font-mono text-sm text-[--ft-text-muted]">
 		{product.sku || '-'}
 	</td>
 	<td class="px-4 py-3 font-medium">
@@ -109,7 +109,7 @@
 			<select
 				value={product.status}
 				onchange={(e) => onStatusChange(product.id, e.currentTarget.value)}
-				class="focus:ring-brand-500 focus:border-brand-500 w-full rounded-md border-neutral-300 text-xs disabled:opacity-50"
+				class="focus:ring-[--ft-accent] focus:border-[--ft-accent] w-full rounded-md border-[--ft-line] text-xs disabled:opacity-50"
 				disabled={isLoading}
 				title="Change product status"
 			>

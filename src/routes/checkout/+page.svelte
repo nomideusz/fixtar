@@ -8,6 +8,7 @@
 	import SelectableMethodCard from '$lib/components/checkout/SelectableMethodCard.svelte';
 	import EmptyMethodsFallback from '$lib/components/checkout/EmptyMethodsFallback.svelte';
 	import OrderSummary from '$lib/components/checkout/OrderSummary.svelte';
+	import PageHeader from '$lib/components/ui/PageHeader.svelte';
 	import type { PageData, ActionData } from './$types';
 
 	// --- Props ---
@@ -190,14 +191,7 @@
 	/>
 </svelte:head>
 
-<section class="border-b border-[--ft-line]">
-	<div class="ft-container" style="padding-top: clamp(40px, 5vh, 56px); padding-bottom: clamp(40px, 5vh, 56px);">
-		<div class="mx-auto max-w-3xl text-center">
-			<h1 style="font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.03em; color: var(--ft-dark); margin-bottom: 12px;">Finalizacja Zamówienia</h1>
-			<p class="text-[--ft-text-muted]" style="font-size: 1rem; line-height: 1.7;">Bezpiecznie sfinalizuj swoje zakupy - potrzebujesz tylko kilku kliknięć</p>
-		</div>
-	</div>
-</section>
+<PageHeader title="Finalizacja Zamówienia" description="Bezpiecznie sfinalizuj swoje zakupy - potrzebujesz tylko kilku kliknięć" />
 
 <div class="min-h-screen">
 	<div class="ft-container ft-section-lg">

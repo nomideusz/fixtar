@@ -17,4 +17,15 @@ declare module '*.md' {
 	export default component;
 }
 
+// View Transitions API
+declare global {
+	interface Document {
+		startViewTransition?(callback: () => Promise<void> | void): {
+			finished: Promise<void>;
+			ready: Promise<void>;
+			updateCallbackDone: Promise<void>;
+		};
+	}
+}
+
 export {};

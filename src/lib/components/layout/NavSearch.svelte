@@ -161,8 +161,16 @@
 		}).format(price);
 	}
 
+	/* Popular categories for empty-state suggestions */
+	const popularCategories = [
+		{ name: 'Szlifierki', slug: 'szlifierki-i-polerki' },
+		{ name: 'Wiertarki', slug: 'wiertarki-i-wkretarki' },
+		{ name: 'Młotowiertarki', slug: 'mlotowiertarki' },
+		{ name: 'Pilarki', slug: 'pily-i-pilarki' }
+	];
+
 	const hasDropdownContent = $derived(
-		showDropdown && (results.length > 0 || loading || (query.trim().length < 2 && recentSearches.length > 0))
+		showDropdown && (results.length > 0 || loading || query.trim().length < 2)
 	);
 </script>
 
@@ -206,26 +214,44 @@
 		<!-- svelte-ignore a11y_no_static_element_interactions -->
 		<div class="search-backdrop" onclick={close} onkeydown={(e) => e.key === 'Escape' && close()}></div>
 		<div class="search-dropdown" id="search-results" role="listbox">
-			{#if query.trim().length < 2 && recentSearches.length > 0}
+			{#if query.trim().length < 2}
 				<!-- Recent searches -->
-				<div class="dropdown-section">
-					<div class="dropdown-section-header">
-						<span class="dropdown-section-title">Ostatnie wyszukiwania</span>
-						<button class="dropdown-clear-btn" onclick={clearRecent}>Wyczyść</button>
+				{#if recentSearches.length > 0}
+					<div class="dropdown-section">
+						<div class="dropdown-section-header">
+							<span class="dropdown-section-title">Ostatnie wyszukiwania</span>
+							<button class="dropdown-clear-btn" onclick={clearRecent}>Wyczyść</button>
+						</div>
+						{#each recentSearches as recent}
+							<button
+								class="dropdown-recent"
+								onclick={() => goToRecentSearch(recent)}
+								role="option"
+								aria-selected={false}
+							>
+								<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+									<polyline points="1 4 1 10 7 10" /><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+								</svg>
+								{recent}
+							</button>
+						{/each}
 					</div>
-					{#each recentSearches as recent}
-						<button
-							class="dropdown-recent"
-							onclick={() => goToRecentSearch(recent)}
-							role="option"
-							aria-selected={false}
-						>
-							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-								<polyline points="1 4 1 10 7 10" /><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
-							</svg>
-							{recent}
-						</button>
-					{/each}
+				{/if}
+
+				<!-- Popular categories -->
+				<div class="dropdown-section" class:has-border={recentSearches.length > 0}>
+					<span class="dropdown-section-title">Popularne kategorie</span>
+					<div class="dropdown-cats">
+						{#each popularCategories as cat}
+							<a
+								href="/products?category={cat.slug}"
+								class="dropdown-cat-chip"
+								onclick={close}
+							>
+								{cat.name}
+							</a>
+						{/each}
+					</div>
 				</div>
 			{:else if loading}
 				<div class="dropdown-loading">
@@ -496,6 +522,44 @@
 	.dropdown-recent svg {
 		flex-shrink: 0;
 		color: var(--ft-text-faint);
+	}
+
+	/* ── Category chips ── */
+	.dropdown-cats {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+		padding: 4px 8px 8px;
+	}
+
+	.dropdown-cat-chip {
+		display: inline-flex;
+		align-items: center;
+		padding: 6px 14px;
+		font-size: 0.75rem;
+		font-weight: 500;
+		color: var(--ft-text);
+		background: var(--ft-frost);
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-full);
+		text-decoration: none;
+		transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+		min-height: 32px;
+	}
+
+	.dropdown-cat-chip:hover {
+		border-color: var(--ft-cta);
+		color: var(--ft-cta);
+		background: var(--ft-cta-light);
+	}
+
+	.dropdown-cat-chip:focus-visible {
+		outline: 2px solid var(--ft-accent);
+		outline-offset: 2px;
+	}
+
+	.dropdown-section.has-border {
+		border-top: 1px solid var(--ft-line);
 	}
 
 	/* ── Result item ── */

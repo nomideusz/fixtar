@@ -14,6 +14,7 @@
 	let mobileMenuOpen = $state(false);
 	let scrolled = $state(false);
 	let searchOpen = $state(false);
+	let darkMode = $state(false);
 
 	function closeMobileMenu() {
 		mobileMenuOpen = false;
@@ -24,6 +25,21 @@
 			scrolled = window.scrollY > 20;
 		};
 		window.addEventListener('scroll', onScroll, { passive: true });
+
+		// Init dark mode from localStorage or system preference
+		const stored = localStorage.getItem('ft-theme');
+		if (stored === 'dark') {
+			darkMode = true;
+			document.documentElement.classList.add('dark');
+			document.documentElement.classList.remove('light');
+		} else if (stored === 'light') {
+			darkMode = false;
+			document.documentElement.classList.add('light-forced');
+		} else {
+			// Follow system preference
+			darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+		}
+
 		return () => window.removeEventListener('scroll', onScroll);
 	});
 
@@ -42,7 +58,19 @@
 
 	function toggleSearch() {
 		searchOpen = !searchOpen;
-		
+	}
+
+	function toggleDarkMode() {
+		darkMode = !darkMode;
+		if (darkMode) {
+			document.documentElement.classList.add('dark');
+			document.documentElement.classList.remove('light', 'light-forced');
+			localStorage.setItem('ft-theme', 'dark');
+		} else {
+			document.documentElement.classList.remove('dark');
+			document.documentElement.classList.add('light-forced');
+			localStorage.setItem('ft-theme', 'light');
+		}
 	}
 
 	async function handleLogout() {
@@ -56,10 +84,10 @@
 
 {#snippet navLinks(mobile = false)}
 	{@const links = [
-		{ href: '/products', label: 'Produkty' },
-		{ href: '/deals', label: 'Promocje' },
-		{ href: '/about', label: 'O Nas' },
-		{ href: '/contact', label: 'Kontakt' }
+		{ href: '/products', label: 'Produkty', badge: false },
+		{ href: '/deals', label: 'Promocje', badge: true },
+		{ href: '/about', label: 'O Nas', badge: false },
+		{ href: '/contact', label: 'Kontakt', badge: false }
 	]}
 	{#each links as link (link.href)}
 		{@const isActive = $page.url.pathname.startsWith(link.href)}
@@ -70,6 +98,9 @@
 			aria-current={isActive ? 'page' : undefined}
 		>
 			{link.label}
+			{#if link.badge && !mobile}
+				<span class="promo-dot" aria-label="Aktywne promocje"></span>
+			{/if}
 		</a>
 	{/each}
 {/snippet}
@@ -95,6 +126,24 @@
 
 		<!-- Actions — minimal icon buttons -->
 		<div class="nav-actions">
+			<!-- Dark mode toggle -->
+			<button
+				onclick={toggleDarkMode}
+				class="nav-icon-btn desktop-only"
+				aria-label={darkMode ? 'Tryb jasny' : 'Tryb ciemny'}
+				title={darkMode ? 'Tryb jasny' : 'Tryb ciemny'}
+			>
+				{#if darkMode}
+					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<circle cx="12" cy="12" r="5" /><line x1="12" y1="1" x2="12" y2="3" /><line x1="12" y1="21" x2="12" y2="23" /><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" /><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" /><line x1="1" y1="12" x2="3" y2="12" /><line x1="21" y1="12" x2="23" y2="12" /><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" /><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+					</svg>
+				{:else}
+					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+					</svg>
+				{/if}
+			</button>
+
 			<button
 				onclick={toggleSearch}
 				class="nav-icon-btn"
@@ -168,6 +217,23 @@
 
 				<div class="mobile-sep" aria-hidden="true"></div>
 
+				<!-- Dark mode toggle (mobile) -->
+				<button class="mobile-link" onclick={() => { toggleDarkMode(); }}>
+					{#if darkMode}
+						<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<circle cx="12" cy="12" r="5" /><line x1="12" y1="1" x2="12" y2="3" /><line x1="12" y1="21" x2="12" y2="23" /><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" /><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" /><line x1="1" y1="12" x2="3" y2="12" /><line x1="21" y1="12" x2="23" y2="12" /><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" /><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+						</svg>
+						Tryb jasny
+					{:else}
+						<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+						</svg>
+						Tryb ciemny
+					{/if}
+				</button>
+
+				<div class="mobile-sep" aria-hidden="true"></div>
+
 				{#if userStore.current}
 					<a href="/account" class="mobile-link" onclick={closeMobileMenu}>Moje Konto</a>
 					{#if userStore.current.isAdmin}
@@ -191,6 +257,7 @@
 		background: var(--ft-surface);
 		border-bottom: 1px solid var(--ft-line);
 		transition: box-shadow 0.2s ease;
+		view-transition-name: navbar;
 	}
 
 	.nav.is-scrolled {
@@ -265,6 +332,17 @@
 	.nav-link:focus-visible {
 		outline: 2px solid var(--ft-accent);
 		outline-offset: 2px;
+	}
+
+	.promo-dot {
+		display: inline-block;
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		background: var(--ft-cta);
+		margin-left: 2px;
+		vertical-align: super;
+		flex-shrink: 0;
 	}
 
 	/* ── Search wrap ── */

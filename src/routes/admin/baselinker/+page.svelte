@@ -77,8 +77,8 @@
 <div class="space-y-6">
 	<div class="flex items-center justify-between">
 		<div>
-			<h2 class="text-2xl font-bold text-neutral-900">Integracja BaseLinker</h2>
-			<p class="mt-1 text-neutral-600">
+			<h2 class="text-2xl font-bold text-[--ft-text-strong]">Integracja BaseLinker</h2>
+			<p class="mt-1 text-[--ft-text-muted]">
 				Synchronizuj produkty i zarządzaj zamówieniami przez BaseLinker
 			</p>
 		</div>
@@ -113,8 +113,8 @@
 	<div class="grid grid-cols-1 gap-4 md:grid-cols-3">
 		<Card class="p-4">
 			<div class="flex items-center gap-3">
-				<div class="bg-brand-100 flex h-10 w-10 items-center justify-center rounded-lg">
-					<svg class="text-brand-600 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<div class="bg-[--ft-frost] flex h-10 w-10 items-center justify-center rounded-lg">
+					<svg class="text-[--ft-accent] h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path
 							stroke-linecap="round"
 							stroke-linejoin="round"
@@ -124,7 +124,7 @@
 					</svg>
 				</div>
 				<div>
-					<p class="text-sm text-neutral-600">Status połączenia</p>
+					<p class="text-sm text-[--ft-text-muted]">Status połączenia</p>
 					<p class="font-semibold {inventories.length > 0 ? 'text-success' : 'text-[--ft-text-muted]'}">
 						{inventories.length > 0 ? 'Połączono' : 'Nie połączono'}
 					</p>
@@ -134,9 +134,9 @@
 
 		<Card class="p-4">
 			<div class="flex items-center gap-3">
-				<div class="bg-accent-100 flex h-10 w-10 items-center justify-center rounded-lg">
+				<div class="bg-[--ft-frost] flex h-10 w-10 items-center justify-center rounded-lg">
 					<svg
-						class="text-accent-600 h-5 w-5"
+						class="text-[--ft-accent] h-5 w-5"
 						fill="none"
 						stroke="currentColor"
 						viewBox="0 0 24 24"
@@ -150,8 +150,8 @@
 					</svg>
 				</div>
 				<div>
-					<p class="text-sm text-neutral-600">Katalogi</p>
-					<p class="font-semibold text-neutral-900">{inventories.length}</p>
+					<p class="text-sm text-[--ft-text-muted]">Katalogi</p>
+					<p class="font-semibold text-[--ft-text-strong]">{inventories.length}</p>
 				</div>
 			</div>
 		</Card>
@@ -169,8 +169,8 @@
 					</svg>
 				</div>
 				<div>
-					<p class="text-sm text-neutral-600">Ostatnia synchronizacja</p>
-					<p class="font-semibold text-neutral-900">
+					<p class="text-sm text-[--ft-text-muted]">Ostatnia synchronizacja</p>
+					<p class="font-semibold text-[--ft-text-strong]">
 						{syncResult?.timestamp
 							? new Date(syncResult.timestamp).toLocaleString('pl-PL')
 							: 'Brak'}
@@ -183,7 +183,7 @@
 	<!-- Sync Controls -->
 	{#if inventories.length > 0}
 		<Card class="p-6">
-			<h3 class="mb-4 text-lg font-semibold text-neutral-900">Synchronizacja produktów</h3>
+			<h3 class="mb-4 text-lg font-semibold text-[--ft-text-strong]">Synchronizacja produktów</h3>
 
 			<div class="space-y-4">
 				<div>
@@ -193,7 +193,7 @@
 					<select
 						id="inventory-select"
 						bind:value={selectedInventory}
-						class="focus:border-brand-500 focus:ring-brand-500 w-full rounded-lg border-neutral-300 shadow-sm"
+						class="focus:border-[--ft-accent] focus:ring-[--ft-accent] w-full rounded-lg border-[--ft-line] shadow-sm"
 					>
 						{#each inventories as inv (inv)}
 							<option value={inv.inventory_id}>
@@ -226,19 +226,19 @@
 	<!-- Sync Results -->
 	{#if syncResult}
 		<Card class="p-6">
-			<h3 class="mb-4 text-lg font-semibold text-neutral-900">Wynik synchronizacji</h3>
+			<h3 class="mb-4 text-lg font-semibold text-[--ft-text-strong]">Wynik synchronizacji</h3>
 
 			<div class="mb-4 grid grid-cols-2 gap-4 md:grid-cols-4">
 				<div class="bg-success/10 rounded-lg p-3 text-center">
 					<p class="text-success text-2xl font-bold">{syncResult.productsAdded}</p>
 					<p class="text-success-dark text-sm">Dodanych</p>
 				</div>
-				<div class="bg-brand-50 rounded-lg p-3 text-center">
-					<p class="text-brand-600 text-2xl font-bold">{syncResult.productsUpdated}</p>
-					<p class="text-brand-700 text-sm">Zaktualizowanych</p>
+				<div class="bg-[--ft-frost] rounded-lg p-3 text-center">
+					<p class="text-[--ft-accent] text-2xl font-bold">{syncResult.productsUpdated}</p>
+					<p class="text-[--ft-accent-hover] text-sm">Zaktualizowanych</p>
 				</div>
-				<div class="rounded-lg bg-neutral-50 p-3 text-center">
-					<p class="text-2xl font-bold text-neutral-600">{syncResult.productsSkipped}</p>
+				<div class="rounded-lg bg-[--ft-frost] p-3 text-center">
+					<p class="text-2xl font-bold text-[--ft-text-muted]">{syncResult.productsSkipped}</p>
 					<p class="text-sm text-[--ft-text]">Pominiętych</p>
 				</div>
 				<div class="bg-danger/5 rounded-lg p-3 text-center">
@@ -261,22 +261,22 @@
 	{/if}
 
 	<!-- Help Section -->
-	<Card class="bg-neutral-50 p-6">
-		<h3 class="mb-3 text-lg font-semibold text-neutral-900">Konfiguracja BaseLinker</h3>
-		<div class="prose prose-sm text-neutral-600">
+	<Card class="bg-[--ft-frost] p-6">
+		<h3 class="mb-3 text-lg font-semibold text-[--ft-text-strong]">Konfiguracja BaseLinker</h3>
+		<div class="prose prose-sm text-[--ft-text-muted]">
 			<ol class="space-y-2">
 				<li>
 					Zaloguj się do <a
 						href="https://baselinker.com"
 						target="_blank"
 						rel="noopener"
-						class="text-brand-600 hover:underline">BaseLinker</a
+						class="text-[--ft-accent] hover:underline">BaseLinker</a
 					>
 				</li>
 				<li>Przejdź do <strong>Moje konto → API</strong></li>
 				<li>Wygeneruj nowy token API</li>
 				<li>
-					Dodaj token do pliku <code class="rounded bg-neutral-200 px-2 py-1">.env</code>:
+					Dodaj token do pliku <code class="rounded bg-[--ft-frost] px-2 py-1">.env</code>:
 					<pre
 						class="mt-2 rounded-lg bg-neutral-800 p-3 text-neutral-100">BASELINKER_API_TOKEN=twoj_token_api</pre>
 				</li>

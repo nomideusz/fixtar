@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '../app.css';
 	import { browser } from '$app/environment';
+	import { onNavigate } from '$app/navigation';
 	import type { Snippet } from 'svelte';
 	import { userStore, languageStore } from '$lib/stores';
 	import Navbar from '$lib/components/layout/Navbar.svelte';
@@ -29,6 +30,19 @@
 		const lang = browser ? languageStore.current : 'en';
 		return translations[lang]?.[key] || translations.en[key] || key;
 	};
+
+	// View Transitions API — cross-fade between pages
+	onNavigate((navigation) => {
+		const startTransition = document.startViewTransition;
+		if (!startTransition) return;
+
+		return new Promise((resolve) => {
+			startTransition.call(document, async () => {
+				resolve();
+				await navigation.complete;
+			});
+		});
+	});
 
 	$effect(() => {
 		if (!cartDrawerRef) return;

@@ -61,11 +61,11 @@
 			case 'processing':
 				return 'bg-warning/10 text-warning-dark';
 			case 'shipped':
-				return 'bg-brand-100 text-brand-800';
+				return 'bg-[--ft-frost] text-[--ft-accent-hover]';
 			case 'cancelled':
 				return 'bg-danger/10 text-danger-dark';
 			default:
-				return 'bg-[--ft-frost] text-neutral-800';
+				return 'bg-[--ft-frost] text-[--ft-text-strong]';
 		}
 	}
 
@@ -86,8 +86,8 @@
 <div class="ft-container ft-section-sm">
 	<!-- Header -->
 	<div class="mb-8">
-		<h1 class="text-3xl font-bold text-neutral-900">Manage Orders</h1>
-		<p class="mt-2 text-neutral-600">{orders.length} total orders</p>
+		<h1 class="text-3xl font-bold text-[--ft-text-strong]">Manage Orders</h1>
+		<p class="mt-2 text-[--ft-text-muted]">{orders.length} total orders</p>
 	</div>
 
 	<!-- Search -->
@@ -117,15 +117,15 @@
 				</thead>
 				<tbody>
 					{#each filteredOrders as order (order)}
-						<tr class="border-b hover:bg-neutral-50">
+						<tr class="border-b hover:bg-[--ft-frost]">
 							<td class="px-4 py-3 font-medium">#{order.id}</td>
 							<td class="px-4 py-3">
 								<div>
 									<p class="font-medium">{order.customer}</p>
-									<p class="text-sm text-neutral-600">{order.email}</p>
+									<p class="text-sm text-[--ft-text-muted]">{order.email}</p>
 								</div>
 							</td>
-							<td class="px-4 py-3 text-neutral-600">{order.date}</td>
+							<td class="px-4 py-3 text-[--ft-text-muted]">{order.date}</td>
 							<td class="px-4 py-3">${order.total.toFixed(2)}</td>
 							<td class="px-4 py-3">
 								<span
@@ -137,7 +137,7 @@
 							<td class="px-4 py-3 text-right">
 								<button
 									onclick={() => (selectedOrder = order)}
-									class="text-brand-600 hover:text-brand-800"
+									class="text-[--ft-accent] hover:text-[--ft-accent-hover]"
 								>
 									View Details
 								</button>
@@ -160,11 +160,11 @@
 				<div class="mb-4 flex items-start justify-between">
 					<div>
 						<h2 class="text-xl font-semibold">Order #{selectedOrder.id}</h2>
-						<p class="text-neutral-600">{selectedOrder.date}</p>
+						<p class="text-[--ft-text-muted]">{selectedOrder.date}</p>
 					</div>
 					<button
 						onclick={() => (selectedOrder = null)}
-						class="text-[--ft-text-muted] hover:text-neutral-600"
+						class="text-[--ft-text-muted] hover:text-[--ft-text-muted]"
 						aria-label="Close modal"
 					>
 						<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -182,7 +182,7 @@
 				<div class="mb-6">
 					<h3 class="mb-2 font-medium">Customer Information</h3>
 					<p>{selectedOrder.customer}</p>
-					<p class="text-neutral-600">{selectedOrder.email}</p>
+					<p class="text-[--ft-text-muted]">{selectedOrder.email}</p>
 				</div>
 
 				<!-- Order Items -->
@@ -193,7 +193,7 @@
 							<div class="flex justify-between border-b py-2">
 								<div>
 									<p>{item.name}</p>
-									<p class="text-sm text-neutral-600">Quantity: {item.quantity}</p>
+									<p class="text-sm text-[--ft-text-muted]">Quantity: {item.quantity}</p>
 								</div>
 								<p class="font-medium">${(item.price * item.quantity).toFixed(2)}</p>
 							</div>
@@ -213,7 +213,7 @@
 					<select
 						value={selectedOrder.status}
 						onchange={(e) => updateOrderStatus(selectedOrder.id, e.currentTarget.value)}
-						class="focus:ring-brand-500 w-full rounded-lg border border-neutral-300 px-3 py-2 focus:ring-2 focus:outline-none"
+						class="focus:ring-[--ft-accent] w-full rounded-lg border border-[--ft-line] px-3 py-2 focus:ring-2 focus:outline-none"
 					>
 						<option value="processing">Processing</option>
 						<option value="shipped">Shipped</option>

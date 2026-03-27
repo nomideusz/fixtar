@@ -3,6 +3,7 @@
 	import { navigating } from '$app/stores';
 	import ProductCard from '$lib/components/ui/ProductCard.svelte';
 	import ProductCardSkeleton from '$lib/components/ui/ProductCardSkeleton.svelte';
+	import Breadcrumbs from '$lib/components/ui/Breadcrumbs.svelte';
 	import type { Product, Category } from '$lib/stores/products.svelte';
 
 	interface CategoryWithCount extends Category {
@@ -58,6 +59,17 @@
 		data.categories.find((cat) => cat.slug === selectedCategory)?.name || ''
 	);
 
+	const breadcrumbItems = $derived.by(() => {
+		const items = [
+			{ label: 'Strona główna', href: '/' },
+			{ label: 'Produkty', href: '/products' }
+		];
+		if (selectedCategoryName) {
+			items.push({ label: selectedCategoryName, href: '#' });
+		}
+		return items;
+	});
+
 	const productCountLabel = $derived.by(() => {
 		const count = data.totalItems;
 		if (count === 1) return '1 produkt';
@@ -111,6 +123,13 @@
 </svelte:head>
 
 <div class="products-page">
+	<!-- Breadcrumbs -->
+	{#if selectedCategoryName || data.searchQuery}
+		<nav class="breadcrumb-wrap">
+			<Breadcrumbs items={breadcrumbItems} />
+		</nav>
+	{/if}
+
 	<!-- Header -->
 	<div class="page-header">
 		<h1 class="page-title">{selectedCategoryName || 'Produkty'}</h1>
@@ -186,7 +205,7 @@
 				<p>{data.error}</p>
 			</div>
 		{:else if data.products.length > 0}
-			<div class="product-grid">
+			<div class="product-grid ft-stagger">
 				{#each data.products as product (product.id)}
 					<ProductCard {product} />
 				{/each}
@@ -240,6 +259,11 @@
 		margin: 0 auto;
 		padding: 0 var(--ft-gutter, clamp(24px, 5vw, 80px));
 		width: 100%;
+	}
+
+	/* ── Breadcrumbs ── */
+	.breadcrumb-wrap {
+		padding-top: clamp(20px, 3vh, 28px);
 	}
 
 	/* ── Header ── */

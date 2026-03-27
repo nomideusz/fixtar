@@ -5,6 +5,7 @@
 	import Input from '$lib/components/ui/Input.svelte';
 	import type { Product } from '$lib/stores/products.svelte';
 	import LoadingSpinner from '$lib/components/ui/LoadingSpinner.svelte';
+	import PageHeader from '$lib/components/ui/PageHeader.svelte';
 	import { navigating } from '$app/state';
 
 	interface Props {
@@ -42,13 +43,12 @@
 	/>
 </svelte:head>
 
-<section class="border-b border-[--ft-line]">
-	<div class="ft-container" style="padding-top: clamp(40px, 5vh, 56px); padding-bottom: clamp(40px, 5vh, 56px);">
+<PageHeader title="Wyszukiwarka" description="Znajdź dokładnie to, czego szukasz w naszej szerokiej ofercie produktów" />
+
+<section>
+	<div class="ft-container" style="padding-bottom: clamp(32px, 4vh, 48px);">
 		<div class="mx-auto max-w-3xl text-center">
-			<h1 style="font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.03em; color: var(--ft-dark); margin-bottom: 12px;">Wyszukiwarka</h1>
-			<p class="text-[--ft-text-muted]" style="font-size: 1rem; line-height: 1.7;">Znajdź dokładnie to, czego szukasz w naszej szerokiej ofercie produktów</p>
-			<!-- Enhanced Search Form -->
-			<div class="mx-auto mt-8 max-w-2xl">
+			<div class="mx-auto max-w-2xl">
 				<form onsubmit={handleSearchSubmit} class="relative">
 					<div class="group relative">
 						<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
@@ -244,7 +244,7 @@
 				</div>
 
 				<!-- Products Grid -->
-				<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+				<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ft-stagger">
 					{#each data.products as product (product)}
 						<ProductCard {product} />
 					{/each}

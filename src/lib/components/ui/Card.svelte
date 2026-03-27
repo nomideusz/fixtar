@@ -45,7 +45,7 @@
 		background: var(--ft-surface);
 		border: 1px solid var(--ft-line);
 		border-radius: var(--radius-md, 10px);
-		transition: border-color 0.25s ease, box-shadow 0.25s ease;
+		transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
 	}
 
 	.ft-card--hover {
@@ -55,5 +55,6 @@
 	.ft-card--hover:hover {
 		border-color: var(--ft-cta);
 		box-shadow: 0 4px 16px color-mix(in srgb, var(--ft-cta) 10%, transparent);
+		transform: translateY(-2px);
 	}
 </style>

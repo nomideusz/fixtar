@@ -4,6 +4,7 @@
 	import { onMount } from 'svelte';
 	import Card from '$lib/components/ui/Card.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
+	import PageHeader from '$lib/components/ui/PageHeader.svelte';
 	import FixTarLogo from '$lib/images/logo/fixtar-logo-primary.webp';
 
 	let logoutStage = $state<'processing' | 'complete' | 'error'>('processing');
@@ -69,14 +70,7 @@
 	<meta name="description" content="Wylogowywanie z konta FixTar" />
 </svelte:head>
 
-<section class="border-b border-[--ft-line]">
-	<div class="ft-container" style="padding-top: clamp(40px, 5vh, 56px); padding-bottom: clamp(40px, 5vh, 56px);">
-		<div class="mx-auto max-w-3xl text-center">
-			<h1 style="font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.03em; color: var(--ft-dark); margin-bottom: 12px;">Do zobaczenia!</h1>
-			<p class="text-[--ft-text-muted]" style="font-size: 1rem; line-height: 1.7;">Wylogowywanie z Twojego konta FixTar - dziękujemy za odwiedziny</p>
-		</div>
-	</div>
-</section>
+<PageHeader title="Do zobaczenia!" description="Wylogowywanie z Twojego konta FixTar - dziękujemy za odwiedziny" />
 
 <div class="min-h-screen">
 	<div class="ft-container ft-section-lg">

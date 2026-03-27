@@ -1,4 +1,5 @@
 <script lang="ts">
+	import PageHeader from '$lib/components/ui/PageHeader.svelte';
 	import type { PageData } from './$types';
 	import { page } from '$app/stores';
 
@@ -49,14 +50,7 @@
 	/>
 </svelte:head>
 
-<section class="border-b border-[--ft-line]">
-	<div class="ft-container" style="padding-top: clamp(40px, 5vh, 56px); padding-bottom: clamp(40px, 5vh, 56px);">
-		<div class="mx-auto max-w-3xl text-center">
-			<h1 style="font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.03em; color: var(--ft-dark); margin-bottom: 12px;">Zamówienie Potwierdzone!</h1>
-			<p class="text-[--ft-text-muted]" style="font-size: 1rem; line-height: 1.7;">Dziękujemy za zakupy w FixTar - Twoje zamówienie zostało pomyślnie złożone i zostanie szybko przetworzone</p>
-		</div>
-	</div>
-</section>
+<PageHeader title="Zamówienie Potwierdzone!" description="Dziękujemy za zakupy w FixTar - Twoje zamówienie zostało pomyślnie złożone i zostanie szybko przetworzone" />
 
 <div class="min-h-screen">
 	<div class="ft-container ft-section-lg">
@@ -82,7 +76,7 @@
 
 			<!-- Order Number Display -->
 			<div class="mb-8 inline-flex items-center gap-4 bg-[--ft-frost] rounded-xl py-4 px-6">
-				<div class="bg-white flex h-12 w-12 items-center justify-center rounded-xl">
+				<div class="bg-[--ft-surface] flex h-12 w-12 items-center justify-center rounded-xl">
 					<svg
 						class="text-[--ft-accent] h-6 w-6"
 						fill="none"
@@ -146,7 +140,7 @@
 			<div class="mx-auto mb-12 max-w-4xl">
 				<div class="bg-[--ft-frost] border border-[--ft-line] rounded-xl p-8">
 					<div class="mb-6 flex items-center">
-						<div class="bg-white mr-4 flex h-12 w-12 items-center justify-center rounded-xl">
+						<div class="bg-[--ft-surface] mr-4 flex h-12 w-12 items-center justify-center rounded-xl">
 							<svg
 								class="text-[--ft-accent] h-6 w-6"
 								fill="none"
@@ -168,7 +162,7 @@
 						<div>
 							<h4 class="mb-2 text-sm font-semibold text-[--ft-text]">Nazwa odbiorcy</h4>
 							<p
-								class="rounded-xl border border-[--ft-line] bg-white p-3 text-lg font-bold text-[--ft-text]"
+								class="rounded-xl border border-[--ft-line] bg-[--ft-surface] p-3 text-lg font-bold text-[--ft-text]"
 							>
 								{data.order.metadata.paymentDetails.bankDetails.accountName}
 							</p>
@@ -177,7 +171,7 @@
 						<div>
 							<h4 class="mb-2 text-sm font-semibold text-[--ft-text]">Bank</h4>
 							<p
-								class="rounded-xl border border-[--ft-line] bg-white p-3 text-lg font-bold text-[--ft-text]"
+								class="rounded-xl border border-[--ft-line] bg-[--ft-surface] p-3 text-lg font-bold text-[--ft-text]"
 							>
 								{data.order.metadata.paymentDetails.bankDetails.bankName}
 							</p>
@@ -186,7 +180,7 @@
 						<div>
 							<h4 class="mb-2 text-sm font-semibold text-[--ft-text]">Numer konta</h4>
 							<p
-								class="rounded-xl border border-[--ft-line] bg-white p-3 font-mono text-lg font-bold tracking-wider text-[--ft-text]"
+								class="rounded-xl border border-[--ft-line] bg-[--ft-surface] p-3 font-mono text-lg font-bold tracking-wider text-[--ft-text]"
 							>
 								{data.order.metadata.paymentDetails.bankDetails.accountNumber}
 							</p>
@@ -195,7 +189,7 @@
 						<div>
 							<h4 class="mb-2 text-sm font-semibold text-[--ft-text]">SWIFT</h4>
 							<p
-								class="rounded-xl border border-[--ft-line] bg-white p-3 font-mono text-lg font-bold text-[--ft-text]"
+								class="rounded-xl border border-[--ft-line] bg-[--ft-surface] p-3 font-mono text-lg font-bold text-[--ft-text]"
 							>
 								{data.order.metadata.paymentDetails.bankDetails.swift}
 							</p>
@@ -213,7 +207,7 @@
 						<div class="md:col-span-2">
 							<h4 class="mb-2 text-sm font-semibold text-[--ft-text]">Kwota do zapłaty</h4>
 							<p
-								class="text-[--ft-accent] rounded-xl border border-[--ft-line] bg-white p-4 text-center text-3xl font-bold"
+								class="text-[--ft-accent] rounded-xl border border-[--ft-line] bg-[--ft-surface] p-4 text-center text-3xl font-bold"
 							>
 								{data.order.metadata.paymentDetails.bankDetails.amount}
 							</p>

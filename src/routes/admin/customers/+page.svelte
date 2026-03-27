@@ -86,8 +86,8 @@
 
 <div class="ft-container ft-section-sm">
 	<div class="mb-8">
-		<h1 class="text-3xl font-bold text-neutral-900">Customers</h1>
-		<p class="mt-2 text-neutral-600">Manage your customer base</p>
+		<h1 class="text-3xl font-bold text-[--ft-text-strong]">Customers</h1>
+		<p class="mt-2 text-[--ft-text-muted]">Manage your customer base</p>
 		{#if error}
 			<div class="bg-danger/5 border-danger/10 mt-4 rounded-md border p-4">
 				<p class="text-danger">Error: {error}</p>
@@ -105,13 +105,13 @@
 					<input
 						id="search"
 						type="text"
-						class="focus:ring-brand-500 focus:border-brand-500 w-full rounded-md border border-neutral-300 px-4 py-2 shadow-sm focus:outline-none"
+						class="focus:ring-[--ft-accent] focus:border-[--ft-accent] w-full rounded-md border border-[--ft-line] px-4 py-2 shadow-sm focus:outline-none"
 						placeholder="Search customers by name or email..."
 						bind:value={searchTerm}
 						onkeydown={(e) => e.key === 'Enter' && handleSearch()}
 					/>
 					<button
-						class="absolute inset-y-0 right-0 flex items-center px-3 text-[--ft-text-muted] hover:text-neutral-600"
+						class="absolute inset-y-0 right-0 flex items-center px-3 text-[--ft-text-muted] hover:text-[--ft-text-muted]"
 						onclick={handleSearch}
 						aria-label="Search"
 					>
@@ -161,15 +161,15 @@
 						d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
 					/>
 				</svg>
-				<h3 class="mt-2 text-sm font-medium text-neutral-900">No customers found</h3>
+				<h3 class="mt-2 text-sm font-medium text-[--ft-text-strong]">No customers found</h3>
 				<p class="mt-1 text-sm text-[--ft-text-muted]">
 					{searchTerm ? 'Try adjusting your search criteria.' : 'No customers have registered yet.'}
 				</p>
 			</div>
 		{:else}
 			<div class="overflow-x-auto">
-				<table class="min-w-full divide-y divide-neutral-200">
-					<thead class="bg-neutral-50">
+				<table class="min-w-full divide-y divide-[--ft-line]">
+					<thead class="bg-[--ft-frost]">
 						<tr>
 							<th
 								class="px-6 py-3 text-left text-xs font-medium tracking-wider text-[--ft-text-muted] uppercase"
@@ -203,16 +203,16 @@
 							</th>
 						</tr>
 					</thead>
-					<tbody class="divide-y divide-neutral-200 bg-white">
+					<tbody class="divide-y divide-[--ft-line] bg-[--ft-surface]">
 						{#each customers as customer (customer.id)}
-							<tr class="hover:bg-neutral-50">
+							<tr class="hover:bg-[--ft-frost]">
 								<td class="px-6 py-4 whitespace-nowrap">
 									<div class="flex items-center">
 										<div class="h-10 w-10 shrink-0">
 											<div
-												class="bg-brand-100 flex h-10 w-10 items-center justify-center rounded-full"
+												class="bg-[--ft-frost] flex h-10 w-10 items-center justify-center rounded-full"
 											>
-												<span class="text-brand-600 text-sm font-medium">
+												<span class="text-[--ft-accent] text-sm font-medium">
 													{customer.name
 														? customer.name.charAt(0).toUpperCase()
 														: customer.email.charAt(0).toUpperCase()}
@@ -220,7 +220,7 @@
 											</div>
 										</div>
 										<div class="ml-4">
-											<div class="text-sm font-medium text-neutral-900">
+											<div class="text-sm font-medium text-[--ft-text-strong]">
 												{customer.name || 'No name provided'}
 											</div>
 											<div class="text-sm text-[--ft-text-muted]">
@@ -230,9 +230,9 @@
 									</div>
 								</td>
 								<td class="px-6 py-4 whitespace-nowrap">
-									<div class="text-sm text-neutral-900">{customer.email}</div>
+									<div class="text-sm text-[--ft-text-strong]">{customer.email}</div>
 									{#if customer.emailVisibility === false}
-										<div class="text-brand-500 text-xs">Email hidden</div>
+										<div class="text-[--ft-accent] text-xs">Email hidden</div>
 									{/if}
 								</td>
 								<td class="px-6 py-4 text-sm whitespace-nowrap text-[--ft-text-muted]">
@@ -263,18 +263,18 @@
 
 			<!-- Pagination -->
 			{#if totalPages > 1}
-				<div class="border-t border-neutral-200 bg-white px-4 py-3 sm:px-6">
+				<div class="border-t border-[--ft-line] bg-[--ft-surface] px-4 py-3 sm:px-6">
 					<div class="flex items-center justify-between">
 						<div class="flex flex-1 justify-between sm:hidden">
 							<button
-								class="relative inline-flex items-center rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-[--ft-text] hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-50"
+								class="relative inline-flex items-center rounded-md border border-[--ft-line] bg-[--ft-surface] px-4 py-2 text-sm font-medium text-[--ft-text] hover:bg-[--ft-frost] disabled:cursor-not-allowed disabled:opacity-50"
 								onclick={() => goToPage(currentPage - 1)}
 								disabled={!hasPrevPage}
 							>
 								Previous
 							</button>
 							<button
-								class="relative ml-3 inline-flex items-center rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-[--ft-text] hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-50"
+								class="relative ml-3 inline-flex items-center rounded-md border border-[--ft-line] bg-[--ft-surface] px-4 py-2 text-sm font-medium text-[--ft-text] hover:bg-[--ft-frost] disabled:cursor-not-allowed disabled:opacity-50"
 								onclick={() => goToPage(currentPage + 1)}
 								disabled={!hasNextPage}
 							>
@@ -294,7 +294,7 @@
 							<div>
 								<nav class="relative z-0 inline-flex -space-x-px rounded-md shadow-sm">
 									<button
-										class="relative inline-flex items-center rounded-l-md border border-neutral-300 bg-white px-2 py-2 text-sm font-medium text-[--ft-text-muted] hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-50"
+										class="relative inline-flex items-center rounded-l-md border border-[--ft-line] bg-[--ft-surface] px-2 py-2 text-sm font-medium text-[--ft-text-muted] hover:bg-[--ft-frost] disabled:cursor-not-allowed disabled:opacity-50"
 										onclick={() => goToPage(currentPage - 1)}
 										disabled={!hasPrevPage}
 										aria-label="Previous page"
@@ -312,8 +312,8 @@
 										<button
 											class="relative inline-flex items-center border px-4 py-2 text-sm font-medium {pageNum ===
 											currentPage
-												? 'bg-brand-50 border-brand-500 text-brand-600 z-10'
-												: 'border-neutral-300 bg-white text-[--ft-text-muted] hover:bg-neutral-50'}"
+												? 'bg-[--ft-frost] border-[--ft-accent] text-[--ft-accent] z-10'
+												: 'border-[--ft-line] bg-[--ft-surface] text-[--ft-text-muted] hover:bg-[--ft-frost]'}"
 											onclick={() => goToPage(pageNum)}
 										>
 											{pageNum}
@@ -321,7 +321,7 @@
 									{/each}
 
 									<button
-										class="relative inline-flex items-center rounded-r-md border border-neutral-300 bg-white px-2 py-2 text-sm font-medium text-[--ft-text-muted] hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-50"
+										class="relative inline-flex items-center rounded-r-md border border-[--ft-line] bg-[--ft-surface] px-2 py-2 text-sm font-medium text-[--ft-text-muted] hover:bg-[--ft-frost] disabled:cursor-not-allowed disabled:opacity-50"
 										onclick={() => goToPage(currentPage + 1)}
 										disabled={!hasNextPage}
 										aria-label="Next page"

@@ -171,35 +171,166 @@ All passing `svelte-check` with **0 errors, 0 warnings** ✅
 
 ---
 
+## Session 14 — Phase 4: Conversion & Trust
+
+### New Components Created
+- **`BrandLogos.svelte`** (`src/lib/components/home/`) — 6 brand names (Bavaria, Magnum, Eurotec, Sterling, Graphite, Yato) as text links. Faint→teal hover. Border-separated strip with "Zaufane marki" label.
+- **`TestimonialsSection.svelte`** (`src/lib/components/home/`) — Stats strip (2,500+ products, 15,000+ orders, 4.8/5 rating, 98% positive reviews) with staggered fade-in. 3 customer testimonial cards: star ratings (orange SVG), blockquote text, avatar initials (frost circle), name + role. Responsive grid 1→2→3 cols.
+- **`NewsletterSection.svelte`** (`src/lib/components/home/`) — Standalone email signup CTA with "5% rabatu" incentive. Envelope icon in circle. Custom email validation, loading spinner, success state with checkmark. Frost bg with border. Input+button inline (stacks on mobile ≤480px). `novalidate` + custom error messages. `aria-invalid`, `aria-describedby` for a11y.
+- **`CountdownTimer.svelte`** (`src/lib/components/ui/`) — Reusable countdown timer. Two modes: full (block layout with day/hour/min/sec boxes + labels) and compact (inline `02h:15m:30s`). `font-variant-numeric: tabular-nums` for stable layout. `role="timer"` + `aria-label`. Expired state text. `onExpired` callback. Cleans up interval on unmount.
+- **`FlashSaleBanner.svelte`** (`src/lib/components/home/`) — Dark navy banner bar above hero. Pulsing orange dot (CSS ping animation), headline text, compact countdown timer, arrow CTA. Auto-hides when countdown expires. Links to /deals. Responsive (dot hidden on mobile). `prefers-reduced-motion` disables ping.
+
+### Redesigned Pages
+- **Deals page** (`/deals`) — Two-tier layout:
+  - **Flash deals**: 2-column grid with product image (badge + discount overlay), title, description, original→sale price with strikethrough, full countdown timer, "Kup teraz" CTA button.
+  - **Seasonal promotions**: 3-column card grid with image zoom on hover, discount badge, title/description, date label, "Sprawdź →" link with arrow animation.
+  - Newsletter CTA bar at bottom linking to homepage `#newsletter` anchor.
+
+### Updated Pages
+- **Homepage** (`+page.svelte`) — New section order:
+  ```
+  [FlashSaleBanner]       ← NEW (dark bar with countdown)
+  [HeroSection]           ← existing
+  [CategoriesSection]     ← existing (image cards)
+  [FeaturedProducts]      ← existing
+  [BrandLogos]            ← NEW (trust logos strip)
+  [TestimonialsSection]   ← NEW (stats + reviews)
+  [NewsletterSection]     ← NEW (email signup with 5% incentive)
+  ```
+
+All passing `svelte-check` with **0 errors, 0 warnings** ✅
+
+---
+
+## Session 15 — Phase 5.1: Animations & Micro-interactions
+
+### View Transitions
+- **`+layout.svelte`** — Added `onNavigate` hook using the View Transitions API (`document.startViewTransition`). Pages cross-fade with subtle vertical slide (4px) on navigation. Falls back gracefully in unsupported browsers.
+- **`app.css`** — Added `::view-transition-old(root)` / `::view-transition-new(root)` keyframes. Old page fades out + slides up, new page fades in + slides down. 150ms out, 200ms in.
+- **`Navbar.svelte`** — Added `view-transition-name: navbar` so navbar stays fixed during page transitions (no flash).
+- **`app.d.ts`** — Added `Document.startViewTransition` type declaration.
+
+### Staggered Card Entry
+- **`app.css`** — New `.ft-stagger` utility class. Children animate in with `ft-card-enter` (opacity 0→1, translateY 12px→0) with 40ms delay increments per child (up to 13+). Uses `--ease-out` cubic-bezier.
+- Applied `.ft-stagger` to:
+  - Product grid (`/products`)
+  - Featured products (homepage)
+  - Categories grid (homepage)
+  - Deals grids (flash + seasonal)
+  - Search results grid
+
+### Button Hover Enhancement
+- **`Button.svelte`** — Added `transform` to transition property list. All button variants now lift on hover:
+  - Primary: `translateY(-1px)` + orange shadow
+  - Secondary: `translateY(-1px)`
+  - Outline: `translateY(-1px)` + orange shadow
+  - All hovers gated with `:not(:disabled)`
+
+### Card Hover Enhancement
+- **`Card.svelte`** — Added `transform` to transition. Hover cards lift `translateY(-2px)`.
+- **`ProductCard.svelte`** — Increased hover lift to `-3px`, uses `--ease-out` easing.
+
+### Footer Icons (Simple Icons integration)
+- **`Footer.svelte`** — Replaced hand-drawn social SVGs with official Simple Icons (CC0):
+  - Facebook: proper filled `f` logo
+  - Instagram: official camera glyph (filled, not stroke)
+  - YouTube: official play button shape (filled)
+- Payment icons: replaced plain text `<span>` with SVG logos in styled `.pay-chip` containers:
+  - Visa, Mastercard, PayPal: Simple Icons SVGs
+  - BLIK, Przelew: kept as styled text logos (no standard SVG exists)
+- Payment chips now have `border + frost bg + border-radius + aria-label`
+
+### Reduced Motion
+- All view transition animations disabled via `prefers-reduced-motion: reduce`
+- Stagger animations respect existing global reduced-motion rule
+
+All passing `svelte-check` with **0 errors, 0 warnings** ✅
+
+---
+
+## Session 16 — Product Experience Polish
+
+### Product Listing Page
+- **Breadcrumbs** — Added `Breadcrumbs` component to `/products` page. Shows "Strona główna → Produkty → {Category}" when a category filter or search is active. Hidden when viewing all products (no redundant crumb).
+
+### Product Card View Transitions
+- **`ProductCard.svelte`** — Each card's image container gets a unique `view-transition-name` via CSS custom property (`--vt-name: product-img-{id}`). When navigating to a product detail page, the image morphs smoothly from card to gallery.
+- **Product detail page** — Gallery wrapper matches the same `view-transition-name` so the View Transitions API creates a seamless morph animation between list and detail views.
+- **`app.css`** — Added `::view-transition-group(*)` with 250ms ease-out timing for all view transition groups.
+
+### Related Products
+- Added `.ft-stagger` to related products carousel for staggered entry animation.
+
+### Cleanup
+- Confirmed spec table, related products carousel, and breadcrumb hierarchy were already implemented in Session 12. Removed from TODO.
+
+All passing `svelte-check` with **0 errors, 0 warnings** ✅
+
+---
+
+## Session 17 — Homepage & Navigation Polish
+
+### CategoriesSection Redesign
+- **Section header** — Added "Przeglądaj" label (ft-label) above "Kategorie" title for hierarchy.
+- **Product count** — Each category card now shows product count below the name (e.g., "42 produktów"). Uses Polish plural rules (1 produkt, 2-4 produkty, 5+ produktów).
+- **Overlay redesign** — Name + count in a flex column. Gradient refined to 50% opacity for better legibility.
+- **Fallback icon** — Categories without mapped images now show a wrench SVG icon (was blank frost). Dark text mode for fallback cards (no gradient needed).
+- **More image mappings** — Added `frezarki`, `odkurzacze`, `kompresory`, `narzedzia-reczne` slugs mapped to existing banner images.
+
+### Navbar — Promocje Badge
+- **`Navbar.svelte`** — "Promocje" nav link now has a small orange dot (`promo-dot`) indicating active deals. 6px circle, `bg-[--ft-cta]`, `vertical-align: super`. Desktop only (hidden in mobile menu).
+
+### NavSearch UX Improvements
+- **Popular categories** — When search input is focused with empty query, shows "Popularne kategorie" section with chip links (Szlifierki, Wiertarki, Młotowiertarki, Pilarki). Clicking navigates to filtered products page.
+- **Combined empty state** — Recent searches (if any) shown above popular categories with a border separator between sections.
+- **Category chips** — Frost bg, border, rounded-full pills. Hover: orange border + text + light bg.
+
+All passing `svelte-check` with **0 errors, 0 warnings** ✅
+
+---
+
+## Session 18 — Optimization & Nice-to-Haves
+
+### Dark Mode
+- **`app.css`** — Full token inversion via `@media (prefers-color-scheme: dark)` and manual `.dark` class. Dark palette: bg `#0f1419`, surface `#1a2028`, text `#c8d1db`, headings `#e2e8f0`, line `#2a3444`, frost `#1e2630`. CTA brightened to `#FF7A1A`, accent to `#56a8a8`. Shadows darkened. Uses `html:not(.light-forced)` to allow manual override.
+- **`app.html`** — Inline `<script>` reads `ft-theme` from `localStorage` and applies `.dark` or `.light-forced` before first paint (prevents FOUC). Dual `<meta name="theme-color">` for light/dark schemes. Trimmed font weights (removed unused 300/400 from Plus Jakarta Sans).
+- **`Navbar.svelte`** — Dark mode toggle button (sun/moon icons). Desktop: icon button in actions bar. Mobile: text button in mobile menu ("Tryb ciemny"/"Tryb jasny"). Reads initial state from `localStorage` → falls back to `prefers-color-scheme`. Saves preference to `localStorage`.
+
+### Lazy-Loading (Intersection Observer)
+- **`src/lib/utils/lazy.ts`** — `lazyReveal` Svelte action. Observes element with configurable threshold/rootMargin. Adds `.is-visible` class when entering viewport. Unobserves after first intersection. Respects `prefers-reduced-motion`.
+- **`app.css`** — `.ft-lazy` class: starts at `opacity: 0; translateY(16px)`, transitions to visible on `.is-visible`. 500ms ease-out. Disabled for reduced motion.
+- **Homepage** — Applied `ft-lazy` + `use:lazyReveal` to below-fold sections: FeaturedProducts, BrandLogos, TestimonialsSection, NewsletterSection. Hero and Categories stay eager (above fold).
+
+### Print Styles
+- **`app.css`** — `@media print` rules: hides nav, footer, buttons, search, filters, pagination, cart, flash banner, newsletter. Resets all backgrounds to white, text to black. Shows URLs after links. Avoids page breaks after headings. Product grid forced to 2 columns. Container padding removed.
+
+### Typography Optimization
+- **`app.html`** — Trimmed Google Fonts request: Plus Jakarta Sans now loads only weights 500–800 (was 300–800). Saves ~20KB of font data. `font-display: swap` already set via URL parameter.
+
+All passing `svelte-check` with **0 errors, 0 warnings** ✅
+
+---
+
 ## TODO — Remaining Work
 
-### 🔴 Homepage
-
-- [ ] Add category photography (replace frost placeholders)
-- [ ] Category name as subtle overlay on image
-
 ---
 
-### 🟠 Navigation
+### 🟢 Conversion & Trust (Phase 4 — remaining)
 
-- [ ] Refine NavSearch UX
-- [ ] Promotion badge on "Promocje" nav item when active deals exist
-
----
-
-### 🟡 Product Experience
-
-- [ ] Product detail: specification table (parse from description/BaseLinker)
-- [ ] Product detail: related products (simple horizontal scroll)
-- [ ] Product detail: full breadcrumb path with category hierarchy
+- [ ] Google Reviews integration (needs API key)
+- [ ] Exit-intent newsletter popup
+- [ ] Discount percentage filter on deals page (needs real DB data)
+- [ ] Connect newsletter form to real backend/email service
 
 ---
 
 ### 🔵 Future (Low Priority)
 
-- [ ] View transitions between pages
-- [ ] Dark mode
-- [ ] Image `srcset`/`sizes` for responsive images
-- [ ] Lazy-loading below-fold sections
-- [ ] Print styles
-- [ ] Admin pages token cleanup (88 stale `neutral-*` references — internal only)
+- [x] ~~Dark mode~~ ✅
+- [ ] Image `srcset`/`sizes` for responsive images (product images are external URLs — needs image proxy)
+- [x] ~~Lazy-loading below-fold sections (Intersection Observer)~~ ✅
+- [ ] Virtualized product grid for 50+ items (deferred — current pagination handles scale)
+- [x] ~~Bundle splitting audit~~ ✅ (SvelteKit auto-splits well, largest client chunk 96KB = Svelte runtime)
+- [x] ~~Print styles~~ ✅
+- [ ] Admin pages token cleanup (73 stale `neutral-*` references — internal only)
+- [x] ~~Typography review~~ ✅ (trimmed font weights, `font-display: swap` confirmed)

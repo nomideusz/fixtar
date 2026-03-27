@@ -52,7 +52,7 @@
 		letter-spacing: 0.1em;
 		border-radius: var(--radius-sm, 4px);
 		cursor: pointer;
-		transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+		transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
 		text-decoration: none;
 		border: 1px solid transparent;
 	}
@@ -74,10 +74,11 @@
 		color: white;
 		border-color: var(--ft-cta);
 	}
-	.btn--primary:hover {
+	.btn--primary:hover:not(:disabled) {
 		background: var(--ft-cta-hover);
 		border-color: var(--ft-cta-hover);
 		box-shadow: 0 4px 16px color-mix(in srgb, var(--ft-cta) 20%, transparent);
+		transform: translateY(-1px);
 	}
 
 	.btn--secondary {
@@ -85,9 +86,10 @@
 		color: var(--ft-dark);
 		border-color: var(--ft-line);
 	}
-	.btn--secondary:hover {
+	.btn--secondary:hover:not(:disabled) {
 		border-color: var(--ft-cta);
 		color: var(--ft-cta);
+		transform: translateY(-1px);
 	}
 
 	.btn--outline {
@@ -95,16 +97,18 @@
 		color: var(--ft-cta);
 		border-color: var(--ft-cta);
 	}
-	.btn--outline:hover {
+	.btn--outline:hover:not(:disabled) {
 		background: var(--ft-cta);
 		color: white;
+		transform: translateY(-1px);
+		box-shadow: 0 4px 16px color-mix(in srgb, var(--ft-cta) 20%, transparent);
 	}
 
 	.btn--ghost {
 		background: transparent;
 		color: var(--ft-text-muted);
 	}
-	.btn--ghost:hover {
+	.btn--ghost:hover:not(:disabled) {
 		color: var(--ft-dark);
 		background: var(--ft-frost);
 	}

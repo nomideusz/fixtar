@@ -12,7 +12,7 @@
 	const isActive = $derived(currentField === field);
 </script>
 
-<button onclick={() => onSort(field)} class="hover:text-brand-600 flex items-center">
+<button onclick={() => onSort(field)} class="hover:text-[--ft-accent] flex items-center">
 	{label}
 	{#if isActive}
 		<svg

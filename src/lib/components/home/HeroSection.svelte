@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import heroWorkshop from '$lib/images/hero/hero-workshop-cordless-drill-01.webp';
 	import heroConstruction from '$lib/images/hero/hero-construction-hammer-drill-01.webp';
-	import heroForest from '$lib/images/hero/hero-man-casual-01.webp';
+	import heroForest from '$lib/images/hero/hero-man-casual-02.webp';
 
 	interface Slide {
 		headline: string;
@@ -198,8 +198,12 @@
 	}
 
 	@keyframes fadeIn {
-		from { opacity: 0; }
-		to { opacity: 1; }
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
 	}
 
 	/* ── Dot indicators ── */
@@ -237,7 +241,9 @@
 		height: 8px;
 		border-radius: 50%;
 		background: rgba(255, 255, 255, 0.35);
-		transition: background 0.3s ease, transform 0.3s ease;
+		transition:
+			background 0.3s ease,
+			transform 0.3s ease;
 	}
 
 	.hero-dot.is-active::after {

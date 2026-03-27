@@ -146,7 +146,81 @@
 	--font-heading: var(--font-display);
 }
 
-/* Dark mode disabled — light only for now */
+/* ==========================================================================
+   2b. DARK MODE
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+	html:not(.light-forced) {
+		--ft-bg: #0f1419;
+		--ft-surface: #1a2028;
+		--ft-dark: #e2e8f0;
+		--ft-text: #c8d1db;
+		--ft-text-strong: #e2e8f0;
+		--ft-text-muted: #8a95a8;
+		--ft-text-faint: #5a6578;
+
+		--ft-cta: #FF7A1A;
+		--ft-cta-hover: #FF8F3D;
+		--ft-cta-light: rgba(255, 122, 26, 0.12);
+
+		--ft-accent: #56a8a8;
+		--ft-accent-hover: #6fc0c0;
+
+		--ft-line: #2a3444;
+		--ft-frost: #1e2630;
+
+		--ft-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
+		--ft-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
+		--ft-shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.4);
+
+		--ft-surface-overlay: rgba(0, 0, 0, 0.6);
+
+		/* Legacy aliases for dark */
+		--ft-card: #1a2028;
+		--ft-card-hover: #1e2630;
+		--ft-card-solid: #1a2028;
+		--ft-surface-elevated: #1e2630;
+		--ft-text-inverse: #0f1419;
+
+		color-scheme: dark;
+	}
+}
+
+/* Manual dark toggle via class */
+html.dark {
+	--ft-bg: #0f1419;
+	--ft-surface: #1a2028;
+	--ft-dark: #e2e8f0;
+	--ft-text: #c8d1db;
+	--ft-text-strong: #e2e8f0;
+	--ft-text-muted: #8a95a8;
+	--ft-text-faint: #5a6578;
+
+	--ft-cta: #FF7A1A;
+	--ft-cta-hover: #FF8F3D;
+	--ft-cta-light: rgba(255, 122, 26, 0.12);
+
+	--ft-accent: #56a8a8;
+	--ft-accent-hover: #6fc0c0;
+
+	--ft-line: #2a3444;
+	--ft-frost: #1e2630;
+
+	--ft-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
+	--ft-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
+	--ft-shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.4);
+
+	--ft-surface-overlay: rgba(0, 0, 0, 0.6);
+
+	--ft-card: #1a2028;
+	--ft-card-hover: #1e2630;
+	--ft-card-solid: #1a2028;
+	--ft-surface-elevated: #1e2630;
+	--ft-text-inverse: #0f1419;
+
+	color-scheme: dark;
+}
 
 /* ==========================================================================
    3. BASE STYLES
@@ -416,7 +490,76 @@ h4 {
 }
 
 /* ==========================================================================
-   6. REDUCED MOTION
+   6. VIEW TRANSITIONS
+   ========================================================================== */
+
+/* Cross-fade for page content during navigation */
+@keyframes ft-vt-fade-in {
+	from { opacity: 0; transform: translateY(4px); }
+	to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ft-vt-fade-out {
+	from { opacity: 1; transform: translateY(0); }
+	to { opacity: 0; transform: translateY(-4px); }
+}
+
+::view-transition-old(root) {
+	animation: ft-vt-fade-out 0.15s ease-in forwards;
+}
+
+::view-transition-new(root) {
+	animation: ft-vt-fade-in 0.2s ease-out forwards;
+}
+
+/* Navbar stays in place during transitions */
+::view-transition-old(navbar),
+::view-transition-new(navbar) {
+	animation: none;
+}
+
+/* Product image — smooth morph between card and detail */
+::view-transition-group(*) {
+	animation-duration: 0.25s;
+	animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ==========================================================================
+   7. STAGGER ANIMATIONS
+   ========================================================================== */
+
+/* Product card stagger — applied via .ft-stagger on grid children */
+@keyframes ft-card-enter {
+	from {
+		opacity: 0;
+		transform: translateY(12px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.ft-stagger > * {
+	animation: ft-card-enter 0.35s var(--ease-out) both;
+}
+
+.ft-stagger > *:nth-child(1) { animation-delay: 0ms; }
+.ft-stagger > *:nth-child(2) { animation-delay: 40ms; }
+.ft-stagger > *:nth-child(3) { animation-delay: 80ms; }
+.ft-stagger > *:nth-child(4) { animation-delay: 120ms; }
+.ft-stagger > *:nth-child(5) { animation-delay: 160ms; }
+.ft-stagger > *:nth-child(6) { animation-delay: 200ms; }
+.ft-stagger > *:nth-child(7) { animation-delay: 240ms; }
+.ft-stagger > *:nth-child(8) { animation-delay: 280ms; }
+.ft-stagger > *:nth-child(9) { animation-delay: 320ms; }
+.ft-stagger > *:nth-child(10) { animation-delay: 360ms; }
+.ft-stagger > *:nth-child(11) { animation-delay: 400ms; }
+.ft-stagger > *:nth-child(12) { animation-delay: 440ms; }
+.ft-stagger > *:nth-child(n+13) { animation-delay: 480ms; }
+
+/* ==========================================================================
+   8. REDUCED MOTION
    ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
@@ -427,5 +570,106 @@ h4 {
 		animation-iteration-count: 1 !important;
 		transition-duration: 0.01ms !important;
 		scroll-behavior: auto !important;
+	}
+
+	::view-transition-old(root),
+	::view-transition-new(root) {
+		animation: none !important;
+	}
+}
+
+/* ==========================================================================
+   9. LAZY SECTIONS (Intersection Observer)
+   ========================================================================== */
+
+.ft-lazy {
+	opacity: 0;
+	transform: translateY(16px);
+	transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.ft-lazy.is-visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.ft-lazy {
+		opacity: 1;
+		transform: none;
+		transition: none;
+	}
+}
+
+/* ==========================================================================
+   10. PRINT STYLES
+   ========================================================================== */
+
+@media print {
+	/* Hide non-essential UI */
+	nav,
+	footer,
+	.cart-backdrop,
+	.cart-drawer,
+	.flash-banner,
+	.skip-link,
+	button,
+	.newsletter,
+	.search-form,
+	.sort-wrap,
+	.chips-wrap,
+	.toolbar,
+	.pagination {
+		display: none !important;
+	}
+
+	/* Reset backgrounds */
+	body {
+		background: white !important;
+		color: black !important;
+		font-size: 12pt;
+		line-height: 1.5;
+	}
+
+	* {
+		background: transparent !important;
+		color: black !important;
+		box-shadow: none !important;
+		text-shadow: none !important;
+	}
+
+	/* Show URLs after links */
+	a[href]::after {
+		content: " (" attr(href) ")";
+		font-size: 0.8em;
+		color: #666 !important;
+	}
+
+	a[href^="#"]::after,
+	a[href^="javascript"]::after {
+		content: "";
+	}
+
+	/* Sensible page breaks */
+	h1, h2, h3 {
+		page-break-after: avoid;
+		orphans: 3;
+		widows: 3;
+	}
+
+	img {
+		max-width: 100% !important;
+		page-break-inside: avoid;
+	}
+
+	.ft-container {
+		max-width: 100% !important;
+		padding: 0 !important;
+	}
+
+	/* Product grid: 2 columns for print */
+	.product-grid {
+		grid-template-columns: repeat(2, 1fr) !important;
+		gap: 16px !important;
 	}
 }

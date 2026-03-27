@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Input from '$lib/components/ui/Input.svelte';
+	import PageHeader from '$lib/components/ui/PageHeader.svelte';
 	import { notifications } from '$lib/stores';
 
 	let formData = $state({
@@ -96,14 +97,7 @@
 	/>
 </svelte:head>
 
-<section class="border-b border-[--ft-line]">
-	<div class="ft-container" style="padding-top: clamp(40px, 5vh, 56px); padding-bottom: clamp(40px, 5vh, 56px);">
-		<div class="mx-auto max-w-3xl text-center">
-			<h1 style="font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.03em; color: var(--ft-dark); margin-bottom: 12px;">Kontakt</h1>
-			<p class="text-[--ft-text-muted]" style="font-size: 1rem; line-height: 1.7;">Jesteśmy tutaj, aby pomóc! Skontaktuj się z nami w sprawie pytań, wsparcia lub po prostu by porozmawiać o technologii.</p>
-		</div>
-	</div>
-</section>
+<PageHeader title="Kontakt" description="Jesteśmy tutaj, aby pomóc! Skontaktuj się z nami w sprawie pytań, wsparcia lub po prostu by porozmawiać o technologii." />
 
 <!-- Main Content -->
 <div>

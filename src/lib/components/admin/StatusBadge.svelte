@@ -15,14 +15,14 @@
 			},
 			draft: {
 				label: 'Draft',
-				bgClass: 'bg-brand-100',
-				textClass: 'text-brand-800',
+				bgClass: 'bg-[--ft-frost]',
+				textClass: 'text-[--ft-accent-hover]',
 				icon: 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z'
 			},
 			inactive: {
 				label: 'Inactive',
 				bgClass: 'bg-[--ft-frost]',
-				textClass: 'text-neutral-800',
+				textClass: 'text-[--ft-text-strong]',
 				icon: 'M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728'
 			}
 		};

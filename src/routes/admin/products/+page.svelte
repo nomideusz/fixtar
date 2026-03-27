@@ -218,12 +218,12 @@
 	<!-- Header -->
 	<div class="mb-8 flex items-center justify-between">
 		<div>
-			<h1 class="text-3xl font-bold text-neutral-900">Manage Products</h1>
-			<p class="mt-2 text-neutral-600">{data.pagination.totalItems} products in catalog</p>
+			<h1 class="text-3xl font-bold text-[--ft-text-strong]">Manage Products</h1>
+			<p class="mt-2 text-[--ft-text-muted]">{data.pagination.totalItems} products in catalog</p>
 			<div class="mt-2 flex items-center gap-4 text-sm text-[--ft-text-muted]">
 				<span>• Change product statuses and visibility</span>
 				<span>• Search and filter all products</span>
-				<a href="/admin/baselinker" class="text-brand-600 hover:text-brand-800 font-medium">
+				<a href="/admin/baselinker" class="text-[--ft-accent] hover:text-[--ft-accent-hover] font-medium">
 					→ Open BaseLinker Integration
 				</a>
 			</div>
@@ -272,8 +272,8 @@
 	<!-- Filters -->
 	<Card class="mb-6 p-6">
 		<div class="mb-4">
-			<h3 class="mb-2 text-lg font-medium text-neutral-900">Search & Filter Products</h3>
-			<p class="text-sm text-neutral-600">
+			<h3 class="mb-2 text-lg font-medium text-[--ft-text-strong]">Search & Filter Products</h3>
+			<p class="text-sm text-[--ft-text-muted]">
 				Find products by name, SKU, or filter by status and category
 			</p>
 		</div>
@@ -303,7 +303,7 @@
 							statusFilter = e.currentTarget.value;
 							navigateWithFilters();
 						}}
-						class="focus:ring-brand-500 w-full rounded-md border border-neutral-300 px-3 py-2 focus:ring-2 focus:outline-none"
+						class="focus:ring-[--ft-accent] w-full rounded-md border border-[--ft-line] px-3 py-2 focus:ring-2 focus:outline-none"
 					>
 						<option value="">All Statuses</option>
 						<option value="active">✅ Active (visible)</option>
@@ -323,7 +323,7 @@
 							categoryFilter = e.currentTarget.value;
 							navigateWithFilters();
 						}}
-						class="focus:ring-brand-500 w-full rounded-md border border-neutral-300 px-3 py-2 focus:ring-2 focus:outline-none"
+						class="focus:ring-[--ft-accent] w-full rounded-md border border-[--ft-line] px-3 py-2 focus:ring-2 focus:outline-none"
 					>
 						<option value="">All Categories</option>
 						{#each data.categories as category (category)}
@@ -350,12 +350,12 @@
 
 	<!-- Bulk Actions Bar -->
 	{#if selectedProducts.size > 0}
-		<Card class="bg-brand-50 border-brand-200 mb-6 p-4">
+		<Card class="bg-[--ft-frost] border-[--ft-accent]/20 mb-6 p-4">
 			<div class="flex items-center justify-between">
 				<div class="flex items-center space-x-4">
 					<div class="flex items-center">
 						<svg
-							class="text-brand-600 mr-2 h-5 w-5"
+							class="text-[--ft-accent] mr-2 h-5 w-5"
 							fill="none"
 							stroke="currentColor"
 							viewBox="0 0 24 24"
@@ -367,12 +367,12 @@
 								d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
 							/>
 						</svg>
-						<p class="text-brand-900 font-medium">{selectedProducts.size} products selected</p>
+						<p class="text-[--ft-text-strong] font-medium">{selectedProducts.size} products selected</p>
 					</div>
 					<select
 						value={bulkAction}
 						onchange={(e) => (bulkAction = e.currentTarget.value)}
-						class="border-brand-300 rounded-md border bg-white px-3 py-1 text-sm"
+						class="border-[--ft-accent]/30 rounded-md border bg-[--ft-surface] px-3 py-1 text-sm"
 						disabled={isLoading}
 					>
 						<option value="">Choose action...</option>
@@ -403,13 +403,13 @@
 		<div class="overflow-x-auto">
 			<table class="w-full">
 				<thead>
-					<tr class="border-b bg-neutral-50">
+					<tr class="border-b bg-[--ft-frost]">
 						<th class="w-8 px-4 py-3 text-left">
 							<input
 								type="checkbox"
 								checked={allSelected}
 								onchange={toggleSelectAll}
-								class="rounded border-neutral-300"
+								class="rounded border-[--ft-line]"
 							/>
 						</th>
 						<th class="px-4 py-3 text-left">
@@ -515,7 +515,7 @@
 
 <!-- Bulk Action Confirmation Modal -->
 <Modal open={showBulkConfirm} onClose={cancelBulkAction} title="Confirm Bulk Action">
-	<p class="mb-6 text-neutral-600">
+	<p class="mb-6 text-[--ft-text-muted]">
 		Are you sure you want to set {selectedProducts.size} selected products to "{bulkAction}" status?
 	</p>
 	<div class="flex justify-end space-x-3">
@@ -528,7 +528,7 @@
 
 <!-- Toast Notification Modal -->
 <Modal open={showToast} onClose={() => (showToast = false)} title={toastIcon}>
-	<p class="mb-6 text-neutral-600">{toastMessage}</p>
+	<p class="mb-6 text-[--ft-text-muted]">{toastMessage}</p>
 	<div class="flex justify-end">
 		<Button variant="ghost" onclick={() => (showToast = false)}>Close</Button>
 	</div>
