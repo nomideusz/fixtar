@@ -236,7 +236,7 @@ export function toStoreProduct(p: DBProduct): Product {
 		sku: p.sku || '',
 		barcode: p.ean || '',
 		categories: [uiCategorySlug],
-		mainImage: p.image || undefined,
+		mainImage: p.image ? (p.image.startsWith('http') ? p.image : `/img/products/${p.image}`) : undefined,
 		gallery: [],
 		status: 'active',
 		inventory: {

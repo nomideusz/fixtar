@@ -160,12 +160,12 @@
 		--ft-text-muted: #8a95a8;
 		--ft-text-faint: #5a6578;
 
-		--ft-cta: #FF7A1A;
-		--ft-cta-hover: #FF8F3D;
-		--ft-cta-light: rgba(255, 122, 26, 0.12);
+		--ft-cta: #EB3B3B;             /* Slightly brighter Signal Red for dark mode visibility */
+		--ft-cta-hover: #ff4d4d;
+		--ft-cta-light: rgba(235, 59, 59, 0.15);
 
-		--ft-accent: #56a8a8;
-		--ft-accent-hover: #6fc0c0;
+		--ft-accent: #378a92;           /* Brand Teal */
+		--ft-accent-hover: #48a6af;
 
 		--ft-line: #2a3444;
 		--ft-frost: #1e2630;
@@ -197,12 +197,12 @@ html.dark {
 	--ft-text-muted: #8a95a8;
 	--ft-text-faint: #5a6578;
 
-	--ft-cta: #FF7A1A;
-	--ft-cta-hover: #FF8F3D;
-	--ft-cta-light: rgba(255, 122, 26, 0.12);
+	--ft-cta: #EB3B3B;
+	--ft-cta-hover: #ff4d4d;
+	--ft-cta-light: rgba(235, 59, 59, 0.15);
 
-	--ft-accent: #56a8a8;
-	--ft-accent-hover: #6fc0c0;
+	--ft-accent: #378a92;
+	--ft-accent-hover: #48a6af;
 
 	--ft-line: #2a3444;
 	--ft-frost: #1e2630;

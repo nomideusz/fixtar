@@ -282,11 +282,13 @@ All passing `svelte-check` with **0 errors, 0 warnings** ✅
 - **ProductCard**: Removed gray internal bounds, letting white-background product shots float. Implemented 'Ghost/Target' style CTA button that instantly fills solid Red on hover for maximum friction-less buying interaction.
 - **Navbar**: Cleaned header spacing, pushing Search bar prominently to the left (`max-width: 720px`) and organizing navigation text links tightly alongside cart/account icons on the far right. Hover states changed to Brand Teal instead of Red to preserve semantic clarity. Logo transparent pixels automatically trimmed using Sharp to maximize header footprint.
 - **Hero/Categories**: Added direct Call to Action inside Hero block. Transformed Category blocks from soft gradients into solid white structural blocks with 4px left-hand Teal border stripes.
-- **Toast Notifications**: Rebulit from 16px soft-bubbles into rigid left-bordered hardware panels using precise typography and squared progress bars.
+- **Toast Notifications**: Rebuilt from 16px soft-bubbles into rigid left-bordered hardware panels using precise typography and squared progress bars. Backgrounds forced to solid white for separation.
+- **Dark Mode**: Synchronized dark mode tokens with light mode; swapped old orange for a visibility-optimized Signal Red (`#EB3B3B`) and updated accent colors to the official brand Teal (`#378a92`).
 
-### Image Optimization
-- Processed 150MB of raw `.png` imagery from `/banners` and `/products/power-tools` with `sharp`, converting them into highly compressed `.webp` files.
-- Automatically cleaned legacy `hero-` prefixes from category banners and relinked imports across Svelte components.
+### Image Engineering
+- **Production Stills**: Generated high-fidelity Bavaria, Magnum, and Graphite product shots in e-commerce style (front-facing, pure white #ffffff background).
+- **Automation**: Processed ~150MB of raw `.png` imagery with `sharp`, converting them into highly compressed `.webp` files and trimming transparent margins from the logo for maximum footprint.
+- **DB Injection**: Wrote a custom script (`scripts/update-images.ts`) that mapped locally generated WebP images directly into the SQLite database based on name/category logic, serving them via `/static/img/products/`.
 
 All passing `svelte-check` with **0 errors, 0 warnings** ✅
 
