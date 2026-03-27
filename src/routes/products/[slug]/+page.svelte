@@ -4,6 +4,7 @@
 	import Card from '$lib/components/ui/Card.svelte';
 	import Breadcrumbs from '$lib/components/ui/Breadcrumbs.svelte';
 	import ProductGallery from '$lib/components/products/ProductGallery.svelte';
+	import ImageZoomModal from '$lib/components/products/ImageZoomModal.svelte';
 	import SpecTable from '$lib/components/products/SpecTable.svelte';
 	import RelatedProducts from '$lib/components/products/RelatedProducts.svelte';
 	import PurchaseCard from '$lib/components/products/PurchaseCard.svelte';
@@ -45,6 +46,14 @@
 	const primaryCategory = $derived(product.expand?.categories?.[0]);
 	const specTable = $derived(extractSpecTable(product.description));
 	const isWishlisted = $derived(wishlist.has(product.id));
+
+	let zoomOpen = $state(false);
+	let zoomIndex = $state(0);
+
+	function openZoom(index: number) {
+		zoomIndex = index;
+		zoomOpen = true;
+	}
 
 	const breadcrumbItems = $derived.by(() => {
 		const items = [
@@ -88,7 +97,7 @@
 		<div class="grid grid-cols-1 gap-5 sm:gap-8 lg:grid-cols-2">
 			<!-- Product Images -->
 			<div style="view-transition-name:product-img-{product.id.slice(0, 8)}">
-				<ProductGallery images={allImages} productName={product.name} badges={imageBadges} />
+				<ProductGallery images={allImages} productName={product.name} badges={imageBadges} onZoomRequest={openZoom} />
 			</div>
 
 			<!-- Product InfoIcon -->
@@ -178,6 +187,15 @@
 		<RelatedProducts products={relatedProducts} categorySlug={primaryCategory?.slug} />
 	</div>
 </div>
+
+{#if zoomOpen && allImages.length > 0}
+	<ImageZoomModal
+		images={allImages}
+		bind:selectedIndex={zoomIndex}
+		productName={product.name}
+		onClose={() => (zoomOpen = false)}
+	/>
+{/if}
 
 <style>
 	.product-description :global(p) {

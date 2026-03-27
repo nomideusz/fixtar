@@ -1,14 +1,15 @@
 <script lang="ts">
-	import ImageZoomModal from './ImageZoomModal.svelte';
 	import { MagnifyingGlassPlusIcon, ImageSquareIcon, CaretLeftIcon, CaretRightIcon } from 'phosphor-svelte';
 
 	interface Props {
 		images: string[];
 		productName: string;
 		badges?: Array<{ label: string; class: string }>;
+		selectedImageIndex?: number;
+		onZoomRequest?: (index: number) => void;
 	}
 
-	let { images, productName, badges = [] }: Props = $props();
+	let { images, productName, badges = [], selectedImageIndex: externalIndex, onZoomRequest }: Props = $props();
 
 	let selectedImageIndex = $state(0);
 	let imageZoomed = $state(false);
@@ -76,7 +77,7 @@
 			<!-- Main clickable image -->
 			<button
 				class="main-image-btn"
-				onclick={() => (imageZoomed = true)}
+				onclick={() => onZoomRequest ? onZoomRequest(selectedImageIndex) : (imageZoomed = true)}
 				aria-label="Powiększ zdjęcie produktu"
 			>
 				<img
@@ -138,14 +139,7 @@
 	</div>
 {/if}
 
-{#if imageZoomed && images.length > 0}
-	<ImageZoomModal
-		{images}
-		bind:selectedIndex={selectedImageIndex}
-		{productName}
-		onClose={() => (imageZoomed = false)}
-	/>
-{/if}
+
 
 <style>
 	/* ── Layout ── */
