@@ -2,7 +2,7 @@
 declare global {
 	namespace App {
 		interface Locals {
-			user: import('better-auth').User | null;
+			user: (import('better-auth').User & { isAdmin?: boolean }) | null;
 			session: import('better-auth').Session | null;
 			isAuthenticated: boolean;
 			isBot?: boolean;

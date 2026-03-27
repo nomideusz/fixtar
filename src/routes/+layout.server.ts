@@ -10,8 +10,16 @@ export const load: LayoutServerLoad = async ({ locals }) => {
 		count: Number(c.count)
 	}));
 
+	const user = locals.user;
 	return {
-		user: locals.user ?? null,
+		user: user
+			? {
+					id: user.id,
+					username: user.name || '',
+					email: user.email || '',
+					isAdmin: (user as any).isAdmin ?? false
+				}
+			: null,
 		isAuthenticated: locals.isAuthenticated ?? false,
 		categories
 	};

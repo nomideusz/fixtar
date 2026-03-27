@@ -6,6 +6,7 @@ export const user = sqliteTable('user', {
 	email: text('email').notNull().unique(),
 	emailVerified: integer('email_verified', { mode: 'boolean' }).notNull().default(false),
 	image: text('image'),
+	isAdmin: integer('is_admin', { mode: 'boolean' }).notNull().default(false),
 	createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
 	updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull()
 });
@@ -118,6 +119,17 @@ export const shippingMethods = sqliteTable('shipping_methods', {
 	baselinkerName: text('baselinker_name'),
 	enabled: integer('enabled', { mode: 'boolean' }).notNull().default(true),
 	sortOrder: integer('sort_order').notNull().default(0)
+});
+
+export const magicLink = sqliteTable('magic_link', {
+	id: text('id').primaryKey(),
+	token: text('token').notNull().unique(),
+	userId: text('user_id')
+		.notNull()
+		.references(() => user.id, { onDelete: 'cascade' }),
+	expiresAt: integer('expires_at', { mode: 'timestamp_ms' }).notNull(),
+	used: integer('used', { mode: 'boolean' }).notNull().default(false),
+	createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull()
 });
 
 export const verification = sqliteTable('verification', {

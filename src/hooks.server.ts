@@ -2,6 +2,9 @@ import { sequence } from '@sveltejs/kit/hooks';
 import type { Handle } from '@sveltejs/kit';
 import { building } from '$app/environment';
 import { auth } from '$lib/server/auth';
+import { db } from '$lib/server/db';
+import { user as userTable } from '$lib/server/schema';
+import { eq } from 'drizzle-orm';
 import { svelteKitHandler } from 'better-auth/svelte-kit';
 
 // Security headers to improve site security
@@ -23,7 +26,17 @@ const populateLocals: Handle = async ({ event, resolve }) => {
 	const session = await auth.api.getSession({ headers: event.request.headers });
 
 	if (session) {
-		event.locals.user = session.user;
+		// Check admin flag from DB (not in better-auth session)
+		let isAdmin = false;
+		try {
+			const [dbUser] = await db
+				.select({ isAdmin: userTable.isAdmin })
+				.from(userTable)
+				.where(eq(userTable.id, session.user.id));
+			isAdmin = dbUser?.isAdmin ?? false;
+		} catch { /* column may not exist yet */ }
+
+		event.locals.user = { ...session.user, isAdmin };
 		event.locals.session = session.session;
 		event.locals.isAuthenticated = true;
 	} else {
