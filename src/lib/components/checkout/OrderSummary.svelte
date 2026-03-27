@@ -17,7 +17,7 @@
 	let { items, subtotal, shippingCost, paymentFee, tax, total, processing }: Props = $props();
 
 	function formatPrice(value: number): string {
-		return value.toFixed(2) + ' zł';
+		return value.toFixed(2).replace('.', ',') + ' zł';
 	}
 </script>
 
@@ -45,7 +45,7 @@
 					<div class="min-w-0 flex-1">
 						<h3 class="truncate text-sm font-semibold text-[--ft-text]">{item.name}</h3>
 						<p class="text-sm text-[--ft-text-muted]">Ilość: {item.quantity}</p>
-						<p class="text-[--ft-accent] text-sm font-bold">
+						<p class="text-money text-sm font-bold">
 							{formatPrice(item.price * item.quantity)}
 						</p>
 					</div>
@@ -77,7 +77,7 @@
 			</div>
 			<div class="flex justify-between border-t border-[--ft-line] pt-4 text-xl font-bold">
 				<span class="text-[--ft-text]">Do zapłaty</span>
-				<span class="text-[--ft-accent]">{formatPrice(total)}</span>
+				<span class="text-money">{formatPrice(total)}</span>
 			</div>
 		</div>
 
@@ -87,7 +87,7 @@
 			fullWidth
 			size="lg"
 			disabled={processing}
-			class="mt-8 rounded-2xl bg-[--ft-accent] py-4 text-lg font-bold text-white hover:bg-[--ft-accent-hover] transition-colors duration-200"
+			class="mt-8 bg-[--ft-cta] py-4 text-lg font-bold text-white hover:bg-[--ft-cta-hover] transition-colors duration-200"
 		>
 			{#if processing}
 				<SpinnerGapIcon size={20} weight="bold" class="mr-3 -ml-1 h-5 w-5 animate-spin" aria-hidden="true" />

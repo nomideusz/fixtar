@@ -175,7 +175,7 @@
 	}
 
 	.footer-brand:hover {
-		color: var(--ft-accent);
+		color: var(--ft-cta);
 	}
 
 	.footer-desc {
@@ -189,17 +189,6 @@
 	.footer-social {
 		display: flex;
 		gap: 6px;
-	}
-
-	.social-link {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 34px;
-		height: 34px;
-		border-radius: 50%;
-		color: var(--ft-text-muted);
-		transition: color var(--dur-fast) ease;
 	}
 
 	.social-link:hover {
@@ -330,14 +319,13 @@
 		align-items: center;
 		justify-content: center;
 		height: 28px;
-		padding: 0 10px;
-		background: var(--ft-frost);
-		border: 1px solid var(--ft-line);
-		border-radius: var(--radius-sm);
+	.pay-text-logo {
+		font-family: var(--font-display);
+		font-size: 0.62rem;
+		font-weight: 700;
+		letter-spacing: 0.04em;
 		color: var(--ft-text-muted);
 	}
-
-	.pay-text-logo {
 		font-family: var(--font-display);
 		font-size: 0.62rem;
 		font-weight: 700;

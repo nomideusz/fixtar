@@ -1,8 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import heroWorkshop from '$lib/images/hero/hero-workshop-cordless-drill-01.webp';
 	import heroConstruction from '$lib/images/hero/hero-construction-hammer-drill-01.webp';
 	import heroForest from '$lib/images/hero/hero-man-casual-02.webp';
+	import heroTool from '$lib/images/hero/hero-person-tool-01.webp';
+
+	import bannerGrinder1 from '$lib/images/hero/banner-grinder-sparks-1.webp';
+	import bannerImpact1 from '$lib/images/hero/banner-impact-wrench-wheel.webp';
+	import bannerWorkshopDrill2 from '$lib/images/hero/banner-workshop-cordless-drill-2.webp';
 
 	interface Slide {
 		headline: string;
@@ -12,32 +16,68 @@
 		alt: string;
 		/** object-position for mobile crop (subject focus) */
 		mobilePosition: string;
+		/** object-position for desktop crop */
+		desktopPosition: string;
+		/** Whether to flip the image horizontally */
+		flipped?: boolean;
+		/** Whether the image should be slightly zoomed out */
+		zoomedOut?: boolean;
 	}
 
 	const slides: Slide[] = [
 		{
-			headline: 'Precyzja w każdym cięciu',
-			subline: 'Szlifierki, wiertarki, piły i młotowiertarki od sprawdzonych producentów.',
-			href: '/products',
-			image: heroWorkshop,
-			alt: 'Wiertarka akumulatorowa Bavaria w warsztacie',
-			mobilePosition: 'center center'
-		},
-		{
-			headline: 'Moc, której potrzebujesz',
-			subline: 'Sprawdzone narzędzia w niższych cenach — ta sama jakość, lepsza oferta.',
+			headline: 'Młotowiertarka Eurotec PRO-EX',
+			subline: 'Maksymalna siła uderzenia do najcięższych prac w betonie.',
 			href: '/deals',
 			image: heroConstruction,
 			alt: 'Młotowiertarka Eurotec na budowie',
-			mobilePosition: '65% center'
+			mobilePosition: '65% center',
+			desktopPosition: 'center 75%'
 		},
 		{
-			headline: 'Narzędzia na lata',
-			subline: 'Pełna gwarancja producenta, 14 dni na zwrot i eksperckie doradztwo.',
-			href: '/about',
+			headline: 'Szlifierka Kątowa Eurotec 125mm',
+			subline: 'Iskry profesjonalizmu. Moc 2000W do najcięższych przecinań.',
+			href: '/deals',
+			image: bannerGrinder1,
+			alt: 'Szlifierka kątowa Eurotec w akcji',
+			mobilePosition: 'center center',
+			desktopPosition: 'center center'
+		},
+		{
+			headline: 'System Cordless PRO',
+			subline: 'Pracuj bez kabli, bez ograniczeń. Moc sieciowa w wersji akumulatorowej.',
+			href: '/products',
+			image: bannerWorkshopDrill2,
+			alt: 'Warsztatowa wiertarka akumulatorowa',
+			mobilePosition: 'center center',
+			desktopPosition: 'center 40%'
+		},
+		{
+			headline: 'Wyposażenie Warsztatu',
+			subline: 'Kompletne zestawy i akcesoria, które podniosą Twój profesjonalizm.',
+			href: '/products',
 			image: heroForest,
-			alt: 'Mężczyzna rąbiący drewno siekierą w jesiennym lesie',
-			mobilePosition: 'center 55%'
+			alt: 'Mężczyzna rąbiący drewno siekierą',
+			mobilePosition: 'center 55%',
+			desktopPosition: 'center 40%'
+		},
+		{
+			headline: 'Klucz Udarowy Pneumatyczny',
+			subline: 'Niezastąpiony w serwisie opon. Moment obrotowy, który nie zna granic.',
+			href: '/products',
+			image: bannerImpact1,
+			alt: 'Klucz udarowy przy kole samochodu',
+			mobilePosition: 'center center',
+			desktopPosition: 'center 70%'
+		},
+		{
+			headline: 'Precyzja i Niezawodność',
+			subline: 'Profesjonalne elektronarzędzia dla ekspertów, którzy nie uznają kompromisów.',
+			href: '/products',
+			image: heroTool,
+			alt: 'Szlifierka kątowa Eurotec w serwisie',
+			mobilePosition: 'center center',
+			desktopPosition: 'center 90%'
 		}
 	];
 
@@ -52,6 +92,28 @@
 
 	function next() {
 		current = (current + 1) % slides.length;
+		resetTimer();
+	}
+
+	function prev() {
+		current = (current - 1 + slides.length) % slides.length;
+		resetTimer();
+	}
+
+	let touchStartX = 0;
+
+	function handleTouchStart(e: TouchEvent) {
+		touchStartX = e.touches[0].clientX;
+	}
+
+	function handleTouchEnd(e: TouchEvent) {
+		const touchEndX = e.changedTouches[0].clientX;
+		const diff = touchStartX - touchEndX;
+		
+		if (Math.abs(diff) > 50) {
+			if (diff > 0) next();
+			else prev();
+		}
 	}
 
 	function resetTimer() {
@@ -74,6 +136,8 @@
 	aria-label="Baner główny"
 	onmouseenter={() => (paused = true)}
 	onmouseleave={() => (paused = false)}
+	ontouchstart={handleTouchStart}
+	ontouchend={handleTouchEnd}
 >
 	<!-- Background images -->
 	{#each slides as s, i}
@@ -83,7 +147,7 @@
 			class:is-active={i === current}
 			tabindex={i === current ? 0 : -1}
 			aria-hidden={i !== current}
-			style="--mobile-pos:{s.mobilePosition}"
+			style="--mobile-pos:{s.mobilePosition}; --desktop-pos:{s.desktopPosition}"
 		>
 			<img
 				src={s.image}
@@ -93,7 +157,8 @@
 				loading={i === 0 ? 'eager' : 'lazy'}
 				fetchpriority={i === 0 ? 'high' : 'auto'}
 				decoding="async"
-				draggable="false"
+				class:is-flipped={s.flipped}
+				class:is-zoomed-out={s.zoomedOut}
 			/>
 		</a>
 	{/each}
@@ -106,7 +171,7 @@
 		{#key current}
 			<h1 class="hero-headline">{slide.headline}</h1>
 			<p class="hero-subline">{slide.subline}</p>
-			<a href={slide.href} class="btn-primary hero-btn" tabindex={current === current ? 0 : -1}>SPRAWDŹ OFERTĘ</a>
+			<a href={slide.href} class="btn-cta hero-btn" tabindex={current === current ? 0 : -1}>SPRAWDŹ OFERTĘ</a>
 		{/key}
 	</div>
 
@@ -129,8 +194,8 @@
 	.hero {
 		position: relative;
 		width: 100%;
-		aspect-ratio: 1920 / 1072;
-		max-height: 80vh;
+		height: calc(100svh - 150px); /* Fill standard desktop viewport (minus ~104px nav + 46px promo banner) */
+		min-height: 480px;
 		overflow: hidden;
 		background: var(--ft-frost);
 	}
@@ -154,7 +219,15 @@
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-		object-position: center 30%;
+		object-position: var(--desktop-pos, center 30%);
+	}
+
+	.hero-bg img.is-flipped {
+		transform: scaleX(-1);
+	}
+
+	.hero-bg img.is-zoomed-out {
+		transform: scale(0.9);
 	}
 
 	/* ── Scrim — subtle bottom gradient only ── */
@@ -164,9 +237,9 @@
 		z-index: 2;
 		background: linear-gradient(
 			to top,
-			rgba(0, 0, 0, 0.5) 0%,
-			rgba(0, 0, 0, 0.15) 35%,
-			transparent 60%
+			rgba(0, 0, 0, 0.7) 0%,
+			rgba(0, 0, 0, 0.2) 40%,
+			transparent 65%
 		);
 		pointer-events: none;
 	}
@@ -268,8 +341,8 @@
 	/* ── Responsive ── */
 	@media (max-width: 768px) {
 		.hero {
-			aspect-ratio: auto;
-			height: clamp(360px, 65vh, 520px);
+			height: calc(100svh - 110px); /* Fill mobile viewport (minus 64px nav + 46px promo banner) */
+			min-height: 400px;
 		}
 
 		.hero-bg img {
@@ -279,9 +352,9 @@
 		.hero-scrim {
 			background: linear-gradient(
 				to top,
-				rgba(0, 0, 0, 0.65) 0%,
-				rgba(0, 0, 0, 0.25) 40%,
-				transparent 65%
+				rgba(0, 0, 0, 0.8) 0%,
+				rgba(0, 0, 0, 0.3) 45%,
+				transparent 75%
 			);
 		}
 

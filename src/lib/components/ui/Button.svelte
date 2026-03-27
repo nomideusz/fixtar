@@ -77,8 +77,6 @@
 	.btn--primary:hover:not(:disabled) {
 		background: var(--ft-cta-hover);
 		border-color: var(--ft-cta-hover);
-		box-shadow: 0 4px 16px color-mix(in srgb, var(--ft-cta) 20%, transparent);
-		transform: translateY(-1px);
 	}
 
 	.btn--secondary {
@@ -87,9 +85,9 @@
 		border-color: var(--ft-line);
 	}
 	.btn--secondary:hover:not(:disabled) {
-		border-color: var(--ft-cta);
-		color: var(--ft-cta);
-		transform: translateY(-1px);
+		border-color: var(--ft-dark);
+		color: var(--ft-dark);
+		background: var(--ft-frost);
 	}
 
 	.btn--outline {
@@ -100,8 +98,6 @@
 	.btn--outline:hover:not(:disabled) {
 		background: var(--ft-cta);
 		color: white;
-		transform: translateY(-1px);
-		box-shadow: 0 4px 16px color-mix(in srgb, var(--ft-cta) 20%, transparent);
 	}
 
 	.btn--ghost {

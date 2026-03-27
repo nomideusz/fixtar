@@ -115,7 +115,7 @@
 	// --- Cart Helpers ---
 
 	function formatPrice(value: number): string {
-		return '$' + value.toFixed(2);
+		return value.toFixed(2).replace('.', ',') + ' zł';
 	}
 
 	function itemTotal(item: CartItem): string {
@@ -135,7 +135,7 @@
 		class="cart-backdrop"
 		onclick={close}
 		onkeydown={handleKeydown}
-		transition:fade={{ duration: 150 }}
+		transition:fade={{ duration: 100 }}
 		onintrostart={handleTransitionStart}
 		onintroend={handleTransitionEnd}
 		onoutrostart={handleTransitionStart}
@@ -148,8 +148,8 @@
 		class="cart-drawer"
 		role="dialog"
 		aria-label={t('yourCart')}
-		in:fly={{ duration: 300, x: 400 }}
-		out:fly={{ duration: 300, x: 400 }}
+		in:fly={{ duration: 150, x: 400 }}
+		out:fly={{ duration: 150, x: 400 }}
 		onintrostart={handleTransitionStart}
 		onintroend={handleTransitionEnd}
 		onoutrostart={handleTransitionStart}
@@ -273,7 +273,6 @@
 		inset: 0;
 		z-index: 150;
 		background-color: var(--ft-surface-overlay);
-		backdrop-filter: blur(4px);
 	}
 
 	.cart-drawer {
@@ -286,7 +285,6 @@
 		width: min(100%, 36rem);
 		flex-direction: column;
 		background-color: var(--ft-surface);
-		box-shadow: 0 10px 30px -12px color-mix(in srgb, black 22%, transparent);
 		border-left: 1px solid var(--ft-line);
 		overscroll-behavior: contain;
 	}
@@ -336,7 +334,6 @@
 
 	.cart-drawer__icon-btn:hover {
 		background-color: var(--ft-frost);
-		transform: translateY(-1px);
 	}
 
 	.cart-drawer__icon-btn--close:hover {
@@ -477,7 +474,7 @@
 
 	:global(.cart-drawer__checkout-btn:hover),
 	:global(.cart-drawer__footer .btn-outline:hover) {
-		transform: translateY(-1px);
+		opacity: 0.9;
 	}
 
 	.cart-item__quantity-btn--minus {

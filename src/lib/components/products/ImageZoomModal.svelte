@@ -417,7 +417,7 @@
 	}
 	.lb-thumb.is-active {
 		opacity: 1;
-		border-color: var(--ft-accent, #378a92);
+		border-color: var(--ft-accent, #0050A0);
 	}
 
 	/* ── Mobile adjustments ── */

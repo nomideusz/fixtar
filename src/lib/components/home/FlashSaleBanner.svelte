@@ -76,7 +76,7 @@
 	}
 
 	.flash-inner:hover .flash-arrow {
-		transform: translateX(3px);
+		opacity: 0.8;
 	}
 
 	/* ── Pulse dot ── */

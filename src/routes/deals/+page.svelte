@@ -119,7 +119,7 @@
 
 							<div class="flash-pricing">
 								<span class="flash-original">{formatPrice(deal.originalPrice)}</span>
-								<span class="flash-sale">{formatPrice(deal.salePrice)}</span>
+								<span class="flash-sale text-money">{formatPrice(deal.salePrice)}</span>
 							</div>
 
 							<div class="flash-countdown">
@@ -386,8 +386,7 @@
 	}
 
 	.seasonal-card:hover {
-		transform: translateY(-2px);
-		box-shadow: var(--ft-shadow-md);
+		opacity: 0.95;
 	}
 
 	.seasonal-image {
@@ -456,16 +455,6 @@
 	.seasonal-date {
 		font-size: 0.72rem;
 		color: var(--ft-text-faint);
-	}
-
-	.seasonal-cta {
-		display: flex;
-		align-items: center;
-		gap: 4px;
-		font-size: 0.78rem;
-		font-weight: 600;
-		color: var(--ft-cta);
-		transition: gap var(--dur-fast) ease;
 	}
 
 	.seasonal-card:hover .seasonal-cta {

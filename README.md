@@ -93,8 +93,7 @@ packages/
 - **Semantic tokens:** `--ft-*` family in `src/app.css`
 - **Theme:** Utilitarian, flat, industrial hardware aesthetic (inspired by Scheppach).
 - **Color Hierarchy:**
-  - **Navy (`#111827` / `#014783`):** Authority, Typography, Structure.
-  - **Teal (`#378a92`):** Primary Brand Identity, Interactive Focus, Structural Borders.
-  - **Signal Red (`#D92727`):** Strict Conversion/Action (Buy buttons, Prices, Alerts).
-- **Typography:** Chakra Petch (Headings/Display, max weight 700), Barlow (Body).
+  - **Black (#111827):** Authority, Typography, Structure.
+  - **Honda Blue (#0050A0):** Primary Brand Identity, Interactive Focus, Structural Borders.
+  - **Signal Red (#D92727):** Strict Conversion/Action (Buy buttons, Prices, Alerts).- **Typography:** Chakra Petch (Headings/Display, max weight 700), Barlow (Body).
 - **Geometry:** Hard machined edges (`0px` to `2px` border radius), thin 1px structural borders over soft drop-shadows.

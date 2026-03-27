@@ -1,7 +1,7 @@
 /* ==========================================================================
    FixTar — Minimal Design System
-   Inspired by scheppach.co.uk: clean, light, photography-first.
-   3-color hierarchy: Orange (action) + Navy (authority) + Teal (info).
+   Inspired by Honda Motorcycles: bold, mechanical, premium.
+   4-color hierarchy: Black (authority) + Gray (structure) + Red (action) + Blue (accent).
    Plus Jakarta Sans headlines + Inter body.
    ========================================================================== */
 
@@ -12,36 +12,37 @@
    ========================================================================== */
 
 @theme {
-	/* Primary Brand Color -> from README */
-	--color-brand-500: #378a92;
-	--color-brand-600: #2c6e75;
-	--color-brand-700: #215358;
+	/* Honda HRC-inspired Premium Color System: Pure White / Carbon Black / Metallic Gray / Racing Red / Deep Navy */
+	--color-brand-500: #E31837;     /* High-Octane Racing Red */
+	--color-brand-600: #C2122C;
+	--color-brand-700: #9E0E23;
 	
-	--color-cta: #378a92;
-	--color-cta-hover: #2c6e75;
-	--color-cta-light: rgba(55, 138, 146, 0.1);
+	--color-cta: #E31837;           /* Signal Red - primary actions */
+	--color-cta-hover: #C2122C;
+	--color-cta-light: rgba(227, 24, 55, 0.08);
 
-	/* Navy — headings, authority */
-	--color-navy: #014783;
-	--color-navy-light: #0a5a9e;
+	/* Honda HRC Aggressive: Red, Black, Silver */
+	--color-blue: #0A0F1A;          /* Carbon Black */
+	--color-blue-light: #1F2937;    /* Slate Dark */
 
-	--color-warm: #c49a6c;
-	--color-warm-bg: #f5ede4;
+	--color-warm: #8C96A6;          /* Clean Metallic Gray */
+	--color-warm-bg: #F0F2F5;
 
 	--color-success: #16a34a;
 	--color-warning: #f59e0b;
-	--color-danger: #dc2626;
+	--color-danger: #E31837;
 
 	--font-sans: 'Barlow', system-ui, -apple-system, sans-serif;
 	--font-display: 'Chakra Petch', system-ui, -apple-system, sans-serif;
 	--font-mono: 'Barlow', system-ui, sans-serif;
 
-	/* Scheppach-style Rigid Geometry */
+	/* Rigid Geometry */
 	--radius-sm: 0px;
 	--radius-md: 2px;
 	--radius-lg: 2px;
 	--radius-xl: 4px;
 	--radius-2xl: 4px;
+	--radius-3xl: 4px;
 	--radius-full: 9999px;
 }
 
@@ -50,43 +51,43 @@
    ========================================================================== */
 
 :root {
-	/* ── Core palette — pure white, no tints ── */
+	/* ── Core palette — pure white for that sterile showroom feel ── */
 	--ft-bg: #ffffff;
 	--ft-surface: #ffffff;
-	--ft-dark: #111827;             /* Dark almost black */
-	--ft-text: #374151;             /* Body text */
-	--ft-text-strong: #111827;      
-	--ft-text-muted: #6b7280;       
-	--ft-text-faint: #9ca3af;       
+	--ft-dark: #0A0F1A;             /* Carbon Black/Navy */
+	--ft-text: #3E4652;             /* Cool gray body text */
+	--ft-text-strong: #0A0F1A;      
+	--ft-text-muted: #8492A6;       
+	--ft-text-faint: #CBD5E0;       
 
 	/* ── Action colors ── */
-	--ft-cta: #D92727;              /* Signal Red (replaces Teal/Orange for maximum urgency) */
-	--ft-cta-hover: #b91c1c;
-	--ft-cta-light: rgba(217, 39, 39, 0.1);
+	--ft-cta: #E31837;              /* Racing Red */
+	--ft-cta-hover: #C2122C;
+	--ft-cta-light: rgba(227, 24, 55, 0.08);
 
-	--ft-accent: #014783;           /* Secondary Accent (Navy) */
-	--ft-accent-hover: #0a5a9e;
+	--ft-accent: #0A0F1A;           /* Carbon Black */
+	--ft-accent-hover: #1F2937;
 
-	--ft-warm: #c49a6c;
-	--ft-warm-bg: #f5ede4;
+	--ft-warm: #8C96A6;             /* Replaced clashing tan/beige with metallic sliver/gray */
+	--ft-warm-bg: #F4F5F7;          /* Crisp metallic surface */
 
 	/* ── Surfaces & borders ── */
-	--ft-line: #e2e8f0;
-	--ft-frost: #f1f5f9;
+	--ft-line: #E2E8F0;
+	--ft-frost: #F7FAFC;
 
-	/* ── Elevation — Scheppach relies on flat borders instead of soft shadows ── */
+	/* ── Elevation — Flat borders instead of shadows ── */
 	--ft-shadow-sm: none;
 	--ft-shadow-md: none;
-	--ft-shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.08);
+	--ft-shadow-lg: none;
 
 	/* ── Layout ── */
 	--ft-container: 1760px;
 	--ft-gutter: clamp(24px, 5vw, 80px);
 
-	/* ── Motion ── */
-	--dur-fast: 0.15s;
-	--dur-med: 0.25s;
-	--ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+	/* ── Motion — Sharp and Mechanical ── */
+	--dur-fast: 0.1s;
+	--dur-med: 0.15s;
+	--ease-out: ease-out;
 
 	/*
 	 * Legacy aliases — for components not yet migrated to canonical tokens.
@@ -115,18 +116,18 @@
 	--ft-focus-offset: 2px;
 	--ft-border-focus: var(--ft-cta);
 
-	/* Old brand overlay tokens (teal-based) */
-	--ft-brand-subtle: rgba(62, 139, 139, 0.03);
-	--ft-brand-muted: rgba(62, 139, 139, 0.08);
-	--ft-brand-light: rgba(62, 139, 139, 0.12);
-	--ft-brand-medium: rgba(62, 139, 139, 0.15);
-	--ft-brand-border: rgba(62, 139, 139, 0.15);
-	--ft-brand-glow: rgba(62, 139, 139, 0.1);
-	--ft-grid-line: rgba(62, 139, 139, 0.04);
-	--ft-grid-line-subtle: rgba(62, 139, 139, 0.03);
-	--ft-divider: rgba(62, 139, 139, 0.2);
-	--ft-shadow: rgba(0, 0, 0, 0.08);
-	--ft-shadow-heavy: rgba(0, 0, 0, 0.15);
+	/* Brand overlay tokens (Carbon-based) */
+	--ft-brand-subtle: rgba(10, 15, 26, 0.03);
+	--ft-brand-muted: rgba(10, 15, 26, 0.08);
+	--ft-brand-light: rgba(10, 15, 26, 0.12);
+	--ft-brand-medium: rgba(10, 15, 26, 0.15);
+	--ft-brand-border: rgba(10, 15, 26, 0.15);
+	--ft-brand-glow: rgba(10, 15, 26, 0.1);
+	--ft-grid-line: rgba(10, 15, 26, 0.05);
+	--ft-grid-line-subtle: rgba(10, 15, 26, 0.02);
+	--ft-divider: rgba(10, 15, 26, 0.15);
+	--ft-shadow: rgba(10, 15, 26, 0.08);
+	--ft-shadow-heavy: rgba(10, 15, 26, 0.15);
 
 	/* Old dark theme aliases */
 	--ft-dark-deeper: var(--ft-bg);
@@ -152,29 +153,29 @@
 
 @media (prefers-color-scheme: dark) {
 	html:not(.light-forced) {
-		--ft-bg: #0f1419;
-		--ft-surface: #1a2028;
-		--ft-dark: #e2e8f0;
-		--ft-text: #c8d1db;
-		--ft-text-strong: #e2e8f0;
-		--ft-text-muted: #8a95a8;
-		--ft-text-faint: #5a6578;
+		--ft-bg: #0A0F1A;               /* Deep Carbon */
+		--ft-surface: #121926;          /* Slightly elevated dashboard base */
+		--ft-dark: #FFFFFF;
+		--ft-text: #A0ABC0;             /* Cool gray text */
+		--ft-text-strong: #F7FAFC;
+		--ft-text-muted: #718096;
+		--ft-text-faint: #4A5568;
 
-		--ft-cta: #EB3B3B;             /* Slightly brighter Signal Red for dark mode visibility */
-		--ft-cta-hover: #ff4d4d;
-		--ft-cta-light: rgba(235, 59, 59, 0.15);
+		--ft-cta: #FF2B45;              /* Glowing Racing Red */
+		--ft-cta-hover: #FF4D63;
+		--ft-cta-light: rgba(255, 43, 69, 0.15);
 
-		--ft-accent: #378a92;           /* Brand Teal */
-		--ft-accent-hover: #48a6af;
+		--ft-accent: #FFFFFF;           /* Crisp White for contrast in dark mode */
+		--ft-accent-hover: #E2E8F0;
 
-		--ft-line: #2a3444;
-		--ft-frost: #1e2630;
+		--ft-line: #1F2937;
+		--ft-frost: #151D2C;
 
-		--ft-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
-		--ft-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
-		--ft-shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.4);
+		--ft-shadow-sm: none;
+		--ft-shadow-md: none;
+		--ft-shadow-lg: none;
 
-		--ft-surface-overlay: rgba(0, 0, 0, 0.6);
+		--ft-surface-overlay: rgba(0, 0, 0, 0.75);
 
 		/* Legacy aliases for dark */
 		--ft-card: #1a2028;
@@ -189,29 +190,29 @@
 
 /* Manual dark toggle via class */
 html.dark {
-	--ft-bg: #0f1419;
-	--ft-surface: #1a2028;
-	--ft-dark: #e2e8f0;
-	--ft-text: #c8d1db;
-	--ft-text-strong: #e2e8f0;
-	--ft-text-muted: #8a95a8;
-	--ft-text-faint: #5a6578;
+	--ft-bg: #0A0F1A;               /* Deep Carbon */
+	--ft-surface: #121926;          /* Slightly elevated dashboard base */
+	--ft-dark: #FFFFFF;
+	--ft-text: #A0ABC0;             /* Cool gray text */
+	--ft-text-strong: #F7FAFC;
+	--ft-text-muted: #718096;
+	--ft-text-faint: #4A5568;
 
-	--ft-cta: #EB3B3B;
-	--ft-cta-hover: #ff4d4d;
-	--ft-cta-light: rgba(235, 59, 59, 0.15);
+	--ft-cta: #FF2B45;              /* Glowing Racing Red */
+	--ft-cta-hover: #FF4D63;
+	--ft-cta-light: rgba(255, 43, 69, 0.15);
 
-	--ft-accent: #378a92;
-	--ft-accent-hover: #48a6af;
+	--ft-accent: #FFFFFF;           /* Crisp White for contrast in dark mode */
+	--ft-accent-hover: #E2E8F0;
 
-	--ft-line: #2a3444;
-	--ft-frost: #1e2630;
+	--ft-line: #1F2937;
+	--ft-frost: #151D2C;
 
-	--ft-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
-	--ft-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
-	--ft-shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.4);
+	--ft-shadow-sm: none;
+	--ft-shadow-md: none;
+	--ft-shadow-lg: none;
 
-	--ft-surface-overlay: rgba(0, 0, 0, 0.6);
+	--ft-surface-overlay: rgba(0, 0, 0, 0.75);
 
 	--ft-card: #1a2028;
 	--ft-card-hover: #1e2630;
@@ -341,16 +342,14 @@ h4 {
 @keyframes ft-fade-up {
 	from {
 		opacity: 0;
-		transform: translateY(6px);
 	}
 	to {
 		opacity: 1;
-		transform: translateY(0);
 	}
 }
 
 .ft-animate {
-	animation: ft-fade-up 0.35s var(--ease-out) both;
+	animation: ft-fade-up 0.15s linear both;
 }
 
 } /* end @layer base */
@@ -359,10 +358,40 @@ h4 {
    4. COMPONENT CLASSES
    ========================================================================== */
 
+@theme {
+	/* ... rest of theme ... */
+}
+
 @layer components {
 	.btn-primary {
 		display: inline-flex;
 		align-items: center;
+		justify-content: center;
+		gap: 8px;
+		background-color: var(--ft-accent); /* Carbon Black in Light Mode, White in Dark Mode */
+		color: var(--ft-surface); /* Inverse of accent intuitively, but we map to surface for ease */
+		font-family: var(--font-display);
+		font-weight: 700;
+		font-size: 0.78rem;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		padding: 14px 32px;
+		border: 1px solid var(--ft-accent);
+		border-radius: var(--radius-sm);
+		cursor: pointer;
+		transition: background-color var(--dur-fast) ease, border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease, transform var(--dur-fast) ease;
+	}
+
+	.btn-primary:hover {
+		background-color: var(--ft-accent-hover);
+		border-color: var(--ft-accent-hover);
+	}
+
+	/* Signal Red Button - for Deals, Flash Sales, Urgent Actions */
+	.btn-cta {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
 		gap: 8px;
 		background-color: var(--ft-cta);
 		color: #ffffff;
@@ -375,18 +404,18 @@ h4 {
 		border: 1px solid var(--ft-cta);
 		border-radius: var(--radius-sm);
 		cursor: pointer;
-		transition: background-color var(--dur-fast) ease, border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
+		transition: background-color var(--dur-fast) ease, border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease, transform var(--dur-fast) ease;
 	}
 
-	.btn-primary:hover {
+	.btn-cta:hover {
 		background-color: var(--ft-cta-hover);
 		border-color: var(--ft-cta-hover);
-		box-shadow: 0 4px 16px rgba(255, 107, 0, 0.2);
 	}
 
 	.btn-secondary {
 		display: inline-flex;
 		align-items: center;
+		justify-content: center;
 		gap: 8px;
 		background: transparent;
 		color: var(--ft-dark);
@@ -403,8 +432,8 @@ h4 {
 	}
 
 	.btn-secondary:hover {
-		border-color: var(--ft-cta);
-		color: var(--ft-cta);
+		border-color: var(--ft-accent);
+		color: var(--ft-accent);
 	}
 
 	.input {
@@ -422,8 +451,8 @@ h4 {
 	}
 
 	.input:focus {
-		border-color: var(--ft-cta);
-		box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.1);
+		border-color: var(--ft-accent);
+		box-shadow: 0 0 0 3px rgba(0, 80, 160, 0.1);
 	}
 }
 
@@ -482,6 +511,11 @@ h4 {
 	.animate-notification-progress {
 		animation: notification-progress linear forwards;
 	}
+
+	.text-money {
+		color: var(--ft-cta);
+		font-variant-numeric: tabular-nums;
+	}
 }
 
 @keyframes notification-progress {
@@ -532,16 +566,14 @@ h4 {
 @keyframes ft-card-enter {
 	from {
 		opacity: 0;
-		transform: translateY(12px);
 	}
 	to {
 		opacity: 1;
-		transform: translateY(0);
 	}
 }
 
 .ft-stagger > * {
-	animation: ft-card-enter 0.35s var(--ease-out) both;
+	animation: ft-card-enter 0.15s linear both;
 }
 
 .ft-stagger > *:nth-child(1) { animation-delay: 0ms; }

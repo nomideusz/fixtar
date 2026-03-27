@@ -38,11 +38,11 @@ SvelteKit e-commerce for professional power tools (Polish language).
 | `--ft-frost` | `#f1f5f9` | Subtle fills, hover states |
 | `--ft-line` | `#e2e8f0` | Borders, dividers |
 | `--ft-text` | `#374151` | Body text |
-| `--ft-text-strong` | `#111827` | Headings (navy) |
-| `--ft-text-muted` | `#6b7280` | Secondary text |
-| `--ft-text-faint` | `#9ca3af` | Hints, placeholders |
-| `--ft-cta` | `#D92727` | Prices, active states, buttons |
-| `--ft-accent` | `#014783` | Labels, status, links |
+| --ft-text-strong | #111827 | Headings (Black) |
+| --ft-text-muted | #6b7280 | Secondary text |
+| --ft-text-faint | #9ca3af | Hints, placeholders |
+| --ft-cta | #D92727 | Prices, active states, buttons |
+| --ft-accent | #0050A0 | Labels, status, links |
 
 ### Spacing
 
@@ -273,9 +273,9 @@ All passing `svelte-check` with **0 errors, 0 warnings** ✅
 ### Utilitarian Aesthetic 
 - **Typography**: Swapped Inter/Plus Jakarta Sans for the strict brand fonts `Chakra Petch` (structured Sci-Fi display) and `Barlow` (legible body).
 - **Color Hierarchy**: Adopted a rigid 3-color palette:
-  - **Navy**: text and structure.
-  - **Brand Teal (`#378a92`)**: interactive brand elements, structural borders, hovers.
-  - **Signal Red (`#D92727`)**: hard conversion actions (buy buttons, pricing alerts).
+  - **Black**: text and structure.
+  - **Honda Blue (#0050A0)**: interactive brand elements, structural borders, hovers.
+  - **Signal Red (#D92727)**: hard conversion actions (buy buttons, pricing alerts).
 - **Rigid Geometry**: Stripped global border-radii (`0px-2px`) and flattened shadow overlays for sharp 1px borders to mimic machined hardware (inspired heavily by Scheppach.com).
 
 ### Components Polish
@@ -283,7 +283,7 @@ All passing `svelte-check` with **0 errors, 0 warnings** ✅
 - **Navbar**: Cleaned header spacing, pushing Search bar prominently to the left (`max-width: 720px`) and organizing navigation text links tightly alongside cart/account icons on the far right. Hover states changed to Brand Teal instead of Red to preserve semantic clarity. Logo transparent pixels automatically trimmed using Sharp to maximize header footprint.
 - **Hero/Categories**: Added direct Call to Action inside Hero block. Transformed Category blocks from soft gradients into solid white structural blocks with 4px left-hand Teal border stripes.
 - **Toast Notifications**: Rebuilt from 16px soft-bubbles into rigid left-bordered hardware panels using precise typography and squared progress bars. Backgrounds forced to solid white for separation.
-- **Dark Mode**: Synchronized dark mode tokens with light mode; swapped old orange for a visibility-optimized Signal Red (`#EB3B3B`) and updated accent colors to the official brand Teal (`#378a92`).
+- **Dark Mode**: Synchronized dark mode tokens with light mode; swapped old orange for a visibility-optimized Signal Red (`#EB3B3B`) and updated accent colors to Honda Blue (`#3b95ff`).
 
 ### Image Engineering
 - **Production Stills**: Generated high-fidelity Bavaria, Magnum, and Graphite product shots in e-commerce style (front-facing, pure white #ffffff background).

@@ -22,18 +22,18 @@
 	}
 </script>
 
-<Card class="border-[--ft-accent]/20 border bg-[--ft-frost] p-6">
+<Card class="border-[--ft-line] border bg-[--ft-surface] p-6 shadow-none">
 	<div class="space-y-6">
 		<!-- Quantity Selector -->
 		<div>
 			<label for="quantity" class="mb-3 block text-sm font-semibold text-[--ft-text]">Ilość</label>
 			<div class="flex items-center gap-4">
-				<div class="flex items-center rounded-xl border border-[--ft-line] bg-[--ft-surface] shadow-sm">
-					<Button variant="ghost" size="sm" onclick={() => adjustQuantity(-1)} disabled={quantity <= 1} class="rounded-l-xl rounded-r-none border-0">
+				<div class="flex items-center border border-[--ft-line] bg-[--ft-surface]">
+					<Button variant="ghost" size="sm" onclick={() => adjustQuantity(-1)} disabled={quantity <= 1} class="border-0">
 						<MinusIcon size={16} weight="bold" aria-hidden="true" />
 					</Button>
 					<div class="min-w-15 px-4 py-2 text-center text-lg font-semibold text-[--ft-text]">{quantity}</div>
-					<Button variant="ghost" size="sm" onclick={() => adjustQuantity(1)} disabled={quantity >= maxQuantity} class="rounded-l-none rounded-r-xl border-0">
+					<Button variant="ghost" size="sm" onclick={() => adjustQuantity(1)} disabled={quantity >= maxQuantity} class="border-0">
 						<PlusIcon size={16} weight="bold" aria-hidden="true" />
 					</Button>
 				</div>
@@ -46,8 +46,8 @@
 
 		<!-- Total Price -->
 		<div class="flex items-center justify-between rounded-xl border border-[--ft-line] bg-[--ft-surface] px-4 py-4">
-			<span class="text-lg font-semibold text-[--ft-text]">Łączna cena:</span>
-			<span class="text-[--ft-accent] text-2xl font-bold">{(price * quantity).toFixed(2)} zł</span>
+			<span class="text-sm font-semibold uppercase tracking-wider text-[--ft-text-muted]">Łączna cena:</span>
+			<span class="text-money text-2xl font-bold">{(price * quantity).toFixed(2).replace('.', ',')} zł</span>
 		</div>
 
 		<!-- Add to Cart -->
@@ -97,6 +97,6 @@
 
 	.buy-now-btn:hover {
 		background: var(--ft-accent);
-		color: white;
+		color: var(--ft-bg);
 	}
 </style>

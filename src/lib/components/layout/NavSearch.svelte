@@ -203,7 +203,7 @@
 			</button>
 		{/if}
 
-		<button class="search-submit-btn" aria-hidden="true">Szukaj</button>
+		<button class="search-submit-btn" onclick={() => { if (query.trim()) goToSearch() }} aria-label="Szukaj">Szukaj</button>
 		
 		<button class="search-close" onclick={close} aria-label="Zamknij wyszukiwanie">
 			<kbd>ESC</kbd>
@@ -364,7 +364,15 @@
 		letter-spacing: 0.05em;
 		padding: 0 24px;
 		cursor: pointer;
-		pointer-events: none; /* Just decorative for the search input */
+		transition: background-color 0.2s ease, transform 0.1s ease;
+	}
+
+	.search-submit-btn:hover {
+		background: var(--ft-cta-hover);
+	}
+	
+	.search-submit-btn:active {
+		transform: scale(0.97);
 	}
 
 	.search-clear {

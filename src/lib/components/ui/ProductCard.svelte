@@ -91,7 +91,7 @@
 				{@render actions()}
 			{:else}
 				<button 
-					class="btn-primary card-add-btn" 
+					class="btn-cta card-add-btn" 
 					onclick={addToCart} 
 					disabled={!inStock}
 					aria-label="Dodaj do koszyka"
@@ -119,8 +119,7 @@
 
 	.card:hover {
 		background: var(--ft-surface);
-		border-color: var(--ft-line);
-		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+		border-color: var(--ft-dark);
 	}
 
 	.card.is-out {
@@ -155,7 +154,7 @@
 	}
 
 	.card:hover .card-img img {
-		transform: scale(1.04);
+		opacity: 0.9;
 	}
 
 	.card-img-empty {
@@ -273,7 +272,7 @@
 		font-size: 0.8rem;
 		font-family: var(--font-display);
 		font-weight: 700;
-		color: var(--ft-cta);
+		color: var(--ft-cta); /* Red - CTA Action */
 		background: transparent;
 		border: 2px solid var(--ft-cta);
 		transition: all 0.2s ease;

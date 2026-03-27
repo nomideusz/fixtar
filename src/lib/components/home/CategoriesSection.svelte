@@ -90,7 +90,7 @@
 		color: var(--ft-dark);
 		letter-spacing: -0.02em;
 		margin-top: 6px;
-		border-left: 4px solid var(--color-brand-500);
+		border-left: 4px solid var(--ft-accent);
 		padding-left: 14px;
 		text-transform: uppercase;
 	}

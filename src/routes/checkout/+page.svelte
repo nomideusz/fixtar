@@ -200,7 +200,7 @@
 			<!-- Empty Cart -->
 			<div class="mx-auto max-w-2xl py-16 text-center">
 				<div
-					class="mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-3xl bg-[--ft-frost]"
+					class="mx-auto mb-8 flex h-20 w-20 items-center justify-center bg-[--ft-frost]"
 				>
 					<ShoppingCartSimpleIcon class="h-10 w-10 text-[--ft-text-muted]" aria-hidden="true" />
 				</div>
@@ -209,7 +209,7 @@
 					Dodaj produkty do koszyka, aby przejść do finalizacji zamówienia
 				</p>
 				<div class="flex flex-col justify-center gap-6 sm:flex-row">
-					<a href="/products" class="text-[--ft-accent] font-medium hover:underline">Przeglądaj produkty</a>
+					<a href="/products" class="text-money font-semibold hover:underline">Przeglądaj produkty</a>
 					<a href="/" class="text-[--ft-text-muted] hover:text-[--ft-text]">Wróć do strony głównej</a>
 				</div>
 			</div>
@@ -253,8 +253,8 @@
 				<!-- Left Column: Form Sections -->
 				<div class="space-y-8 xl:col-span-2">
 					<!-- Contact Information -->
-					<div class="border border-[--ft-line] rounded-xl p-4 sm:p-8">
-						<SectionHeader title="Dane kontaktowe" iconBgClass="bg-[--ft-frost]" iconColorClass="text-[--ft-accent]">
+					<div class="border border-[--ft-line] p-4 sm:p-8">
+						<SectionHeader title="Dane kontaktowe" iconBgClass="bg-[--ft-frost]" iconColorClass="text-[--ft-cta]">
 							{#snippet icon()}
 								<EnvelopeIcon class="h-4 w-4" aria-hidden="true" />
 							{/snippet}
@@ -287,8 +287,8 @@
 					</div>
 
 					<!-- Shipping Address -->
-					<div class="border border-[--ft-line] rounded-xl p-4 sm:p-8">
-						<SectionHeader title="Adres dostawy" iconBgClass="bg-accent-100" iconColorClass="text-success">
+					<div class="border border-[--ft-line] p-4 sm:p-8">
+						<SectionHeader title="Adres dostawy" iconBgClass="bg-[--ft-frost]" iconColorClass="text-success">
 							{#snippet icon()}
 								<MapPinIcon class="h-4 w-4" aria-hidden="true" />
 							{/snippet}
@@ -371,7 +371,7 @@
 										name="voivodeship"
 										value={formData.voivodeship}
 										onchange={bindField('voivodeship')}
-										class="focus:ring-success focus:border-success w-full rounded-xl border border-[--ft-line] px-4 py-3 shadow-sm transition-colors focus:ring-2 {errors.voivodeship
+										class="focus:ring-success focus:border-success w-full border border-[--ft-line] px-4 py-3 transition-colors focus:ring-1 {errors.voivodeship
 											? 'border-danger focus:ring-danger'
 											: ''}"
 										required
@@ -427,8 +427,8 @@
 					</div>
 
 					<!-- Shipping Method -->
-					<div class="border border-[--ft-line] rounded-xl p-4 sm:p-8">
-						<SectionHeader title="Metoda dostawy" iconBgClass="bg-accent-100" iconColorClass="text-accent-600">
+					<div class="border border-[--ft-line] p-4 sm:p-8">
+						<SectionHeader title="Metoda dostawy" iconBgClass="bg-[--ft-frost]" iconColorClass="text-[--ft-cta]">
 							{#snippet icon()}
 								<ArrowsLeftRightIcon class="h-4 w-4" aria-hidden="true" />
 							{/snippet}
@@ -491,8 +491,8 @@
 					</div>
 
 					<!-- Payment Method -->
-					<div class="border border-[--ft-line] rounded-xl p-4 sm:p-8">
-						<SectionHeader title="Metoda płatności" iconBgClass="bg-[--ft-frost]" iconColorClass="text-[--ft-accent]">
+					<div class="border border-[--ft-line] p-4 sm:p-8">
+						<SectionHeader title="Metoda płatności" iconBgClass="bg-[--ft-frost]" iconColorClass="text-[--ft-cta]">
 							{#snippet icon()}
 								<CreditCardIcon class="h-4 w-4" aria-hidden="true" />
 							{/snippet}
@@ -539,7 +539,7 @@
 					</div>
 
 					<!-- Additional Notes -->
-					<div class="border border-[--ft-line] rounded-xl p-4 sm:p-8">
+					<div class="border border-[--ft-line] p-4 sm:p-8">
 						<SectionHeader title="Dodatkowe informacje">
 							{#snippet icon()}
 								<PencilIcon class="h-4 w-4" aria-hidden="true" />
@@ -551,7 +551,7 @@
 							oninput={bindField('notes')}
 							placeholder="Uwagi do zamówienia, specjalne instrukcje dostawy (opcjonalnie)"
 							rows="4"
-							class="focus:ring-[--ft-accent] focus:border-[--ft-accent] w-full resize-none rounded-xl border border-[--ft-line] px-4 py-3 shadow-sm transition-colors focus:ring-2"
+							class="focus:ring-[--ft-cta] focus:border-[--ft-cta] w-full resize-none border border-[--ft-line] px-4 py-3 transition-colors focus:ring-1"
 						></textarea>
 					</div>
 				</div>

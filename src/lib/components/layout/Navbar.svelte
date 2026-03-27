@@ -3,7 +3,9 @@
 	import { page } from '$app/stores';
 	import { cart, userStore } from '$lib/stores';
 	import FixTarLogo from '$lib/images/logo/fixtar-logo-black-trimmed.png';
+	import FixTarLogoWhite from '$lib/images/logo/fixtar-logo-white.webp';
 	import FixTarIcon from '$lib/images/logo/fixtar-icon-black.png';
+	import FixTarIconWhite from '$lib/images/logo/fixtar-icon-white.png';
 	import NavSearch from './NavSearch.svelte';
 	import { SunIcon, MoonIcon, XIcon, MagnifyingGlassIcon, ToteIcon, UserCircleIcon, UserGearIcon, SignOutIcon } from 'phosphor-svelte';
 
@@ -111,8 +113,10 @@
 	<div class="nav-inner">
 		<!-- Logo -->
 		<a href="/" class="nav-logo" aria-label="FixTar — Strona główna">
-			<img src={FixTarLogo} alt="" class="logo-img logo-full" />
-			<img src={FixTarIcon} alt="" class="logo-img logo-icon" />
+			<img src={FixTarLogo} alt="" class="logo-img logo-full" class:hidden={darkMode} />
+			<img src={FixTarLogoWhite} alt="" class="logo-img logo-full" class:hidden={!darkMode} />
+			<img src={FixTarIcon} alt="" class="logo-img logo-icon" class:hidden={darkMode} />
+			<img src={FixTarIconWhite} alt="" class="logo-img logo-icon" class:hidden={!darkMode} />
 		</a>
 
 		<!-- Desktop inline search (Always visible) -->
@@ -235,7 +239,8 @@
 		<div class="mobile-overlay" role="dialog" aria-modal="true" aria-label="Menu nawigacji">
 			<div class="mobile-menu-header">
 				<a href="/" class="nav-logo" aria-label="FixTar — Strona główna" onclick={closeMobileMenu}>
-					<img src={FixTarIcon} alt="" class="logo-img logo-icon" style="display:block" />
+					<img src={FixTarIcon} alt="" class="logo-img logo-icon" class:hidden={darkMode} style="display:block" />
+					<img src={FixTarIconWhite} alt="" class="logo-img logo-icon" class:hidden={!darkMode} style="display:block" />
 				</a>
 				<button
 					onclick={closeMobileMenu}
@@ -272,13 +277,14 @@
 		top: 0;
 		z-index: 50;
 		background: var(--ft-surface);
+		border-top: 4px solid var(--ft-cta);
 		border-bottom: 1px solid var(--ft-line);
-		transition: box-shadow 0.2s ease;
+		transition: box-shadow 0.2s ease, transform 0.2s ease;
 		view-transition-name: navbar;
 	}
 
 	.nav.is-scrolled {
-		box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
 	}
 
 	.nav-inner {
@@ -330,6 +336,10 @@
 		height: 36px;
 	}
 
+	.logo-img.hidden {
+		display: none !important;
+	}
+
 	@media (min-width: 768px) {
 		.logo-full {
 			display: block;
@@ -368,12 +378,12 @@
 	}
 
 	.nav-link:hover {
-		color: var(--color-brand-500);
+		color: var(--ft-accent);
 		background: var(--ft-frost);
 	}
 
 	.nav-link.is-active {
-		color: var(--color-brand-500);
+		color: var(--ft-accent);
 		font-weight: 800;
 	}
 
@@ -456,7 +466,7 @@
 		}
 	}
 
-	.nav-action-btn:hover { color: var(--color-brand-500); }
+	.nav-action-btn:hover { color: var(--ft-accent); }
 
 	.nav-action-icon-wrap {
 		position: relative;

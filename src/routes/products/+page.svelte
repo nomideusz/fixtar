@@ -60,16 +60,11 @@
 		data.categories.find((cat) => cat.slug === selectedCategory)?.name || ''
 	);
 
-	const breadcrumbItems = $derived.by(() => {
-		const items = [
-			{ label: 'Strona główna', href: '/' },
-			{ label: 'Produkty', href: '/products' }
-		];
-		if (selectedCategoryName) {
-			items.push({ label: selectedCategoryName, href: '#' });
-		}
-		return items;
-	});
+	const breadcrumbItems = $derived([
+		{ label: 'Strona główna', href: '/' },
+		{ label: 'Produkty', href: '/products' }
+		// Category name removed - it's shown in H1 title and selected pill below
+	]);
 
 	const productCountLabel = $derived.by(() => {
 		const count = data.totalItems;
@@ -284,8 +279,8 @@
 		gap: 6px;
 		padding: 8px 16px;
 		background: transparent;
-		border: 1px solid transparent;
-		border-radius: 24px;
+		border: 1px solid var(--ft-line);
+		border-radius: 2px;
 		font-size: 0.82rem;
 		font-weight: 400;
 		color: var(--ft-text-muted);
@@ -301,10 +296,10 @@
 	}
 
 	.chip--selected {
-		background: var(--ft-text-strong);
-		border-color: var(--ft-text-strong);
+		background: var(--ft-cta);
+		border-color: var(--ft-cta);
 		color: white;
-		font-weight: 500;
+		font-weight: 600;
 	}
 
 	.chip-count {
@@ -334,7 +329,7 @@
 		color: var(--ft-text);
 		background: var(--ft-surface);
 		border: 1px solid var(--ft-line);
-		border-radius: 8px;
+		border-radius: 2px;
 		outline: none;
 		cursor: pointer;
 		min-height: 44px;
@@ -382,7 +377,7 @@
 		color: var(--ft-text-muted);
 		background: none;
 		border: 1px solid var(--ft-line);
-		border-radius: 8px;
+		border-radius: 2px;
 		cursor: pointer;
 		transition: border-color 0.15s ease, color 0.15s ease;
 	}
@@ -393,8 +388,8 @@
 	}
 
 	.page-btn--active {
-		background: var(--ft-text-strong);
-		border-color: var(--ft-text-strong);
+		background: var(--ft-cta);
+		border-color: var(--ft-cta);
 		color: white;
 	}
 
@@ -413,7 +408,7 @@
 		color: var(--ft-text-muted);
 		background: none;
 		border: 1px solid var(--ft-line);
-		border-radius: 8px;
+		border-radius: 2px;
 		cursor: pointer;
 		min-height: 44px;
 		transition: border-color 0.15s ease, color 0.15s ease;

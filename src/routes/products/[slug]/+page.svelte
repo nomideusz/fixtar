@@ -63,7 +63,7 @@
 		if (primaryCategory) {
 			items.push({ label: primaryCategory.name, href: `/products?category=${primaryCategory.slug}` });
 		}
-		items.push({ label: product.name, href: '#' });
+		// Product name removed from breadcrumbs - it's shown in H1 title below
 		return items;
 	});
 
@@ -107,10 +107,10 @@
 					<h1 class="mb-4 text-2xl leading-tight font-bold text-[--ft-text] sm:text-3xl lg:text-4xl">{product.name}</h1>
 
 					<div class="mb-4 flex flex-wrap items-center gap-3 sm:gap-4">
-						<span class="text-[--ft-accent] text-2xl font-bold sm:text-4xl">{product.price.toFixed(2)} zł</span>
+						<span class="text-money text-2xl font-bold sm:text-4xl">{product.price.toFixed(2).replace('.', ',')} zł</span>
 						{#if hasDiscount}
-							<span class="text-xl text-[--ft-text-muted] line-through">{product.compareAtPrice?.toFixed(2)} zł</span>
-							<span class="bg-danger rounded-lg px-2 py-1 text-sm font-semibold !text-white">-{discountPercent}%</span>
+							<span class="text-xl text-[--ft-text-muted] line-through">{product.compareAtPrice?.toFixed(2).replace('.', ',')} zł</span>
+							<span class="bg-danger px-2 py-1 text-sm font-semibold !text-white">-{discountPercent}%</span>
 						{/if}
 					</div>
 
