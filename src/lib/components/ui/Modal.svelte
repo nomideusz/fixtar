@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { Snippet } from 'svelte';
+	import { XIcon } from 'phosphor-svelte';
 
 	interface Props {
 		open: boolean;
@@ -61,14 +62,7 @@
 					class="focus:ring-[--ft-accent] rounded-lg p-1 text-[--ft-text-muted] hover:text-[--ft-text] focus:ring-2 focus:outline-none"
 					aria-label="Zamknij"
 				>
-					<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M6 18L18 6M6 6l12 12"
-						/>
-					</svg>
+					<XIcon size={20} weight="light" aria-hidden="true" />
 				</button>
 			</div>
 		{/if}

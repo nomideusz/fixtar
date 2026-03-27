@@ -9,6 +9,7 @@
 	import imgImpact from '$lib/images/banners/hero-impact-wrench-wheel.png';
 	import imgProfessional from '$lib/images/banners/hero-professional-1.png';
 	import imgWomanDrill from '$lib/images/banners/hero-woman-drill-shelf-1.png';
+	import { WrenchIcon } from 'phosphor-svelte';
 
 	interface Category {
 		id: string;
@@ -25,22 +26,11 @@
 
 	const categoryImages: Record<string, { src: string; alt: string }> = {
 		'wiertarki-i-wkretarki': { src: imgDrill, alt: 'Wiertarka akumulatorowa w warsztacie' },
+		'mlotowiertarki-i-mloty': { src: imgHammer, alt: 'Młoty i młotowiertarki' },
 		'szlifierki-i-polerki': { src: imgGrinder, alt: 'Szlifierka kątowa z iskrami' },
-		'mloty-i-mlotowiertarki': { src: imgHammer, alt: 'Młotowiertarka na budowie' },
-		'mlotowiertarki': { src: imgHammer, alt: 'Młotowiertarka na budowie' },
-		'mloty': { src: imgHammer, alt: 'Młot udarowy' },
-		'dom-i-ogrod': { src: imgGarden, alt: 'Narzędzia ogrodowe' },
-		'ogrod': { src: imgGarden, alt: 'Narzędzia ogrodowe' },
 		'pily-i-pilarki': { src: imgSaw, alt: 'Pilarki i piły — warsztat profesjonalny' },
-		'pilarki': { src: imgSaw, alt: 'Pilarki i piły' },
-		'zestawy-i-akcesoria': { src: imgAccessories, alt: 'Akcesoria i zestawy narzędziowe' },
-		'akcesoria': { src: imgAccessories, alt: 'Akcesoria narzędziowe' },
-		'klucze-udarowe': { src: imgImpact, alt: 'Klucz udarowy przy kole' },
-		'spawarki': { src: imgFlatlay, alt: 'Profesjonalne narzędzia spawalnicze' },
-		'frezarki': { src: imgProfessional, alt: 'Frezarka profesjonalna' },
-		'odkurzacze': { src: imgWomanDrill, alt: 'Odkurzacz warsztatowy' },
-		'kompresory': { src: imgProfessional, alt: 'Kompresor warsztatowy' },
-		'narzedzia-reczne': { src: imgFlatlay, alt: 'Narzędzia ręczne' }
+		'pneumatyczne-i-budowlane': { src: imgProfessional, alt: 'Narzędzia dla profesjonalistów' },
+		'ogrod-i-akcesoria': { src: imgGarden, alt: 'Narzędzia ogrodowe i akcesoria' }
 	};
 
 	function pluralProducts(count: number): string {
@@ -74,9 +64,7 @@
 						{:else}
 							<!-- Fallback icon for unmapped categories -->
 							<div class="cat-fallback" aria-hidden="true">
-								<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-									<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
-								</svg>
+								<WrenchIcon size={32} weight="light" />
 							</div>
 						{/if}
 						<div class="cat-overlay">
@@ -118,7 +106,7 @@
 
 	@media (min-width: 1024px) {
 		.categories-grid {
-			grid-template-columns: repeat(5, 1fr);
+			grid-template-columns: repeat(6, 1fr);
 		}
 	}
 

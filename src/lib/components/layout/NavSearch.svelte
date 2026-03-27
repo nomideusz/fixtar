@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { MagnifyingGlassIcon, XIcon, ClockCounterClockwiseIcon, ImageSquareIcon, ArrowRightIcon } from 'phosphor-svelte';
 
 	interface SearchResult {
 		id: string;
@@ -176,9 +177,7 @@
 
 <div class="nav-search">
 	<div class="search-input-wrap">
-		<svg class="search-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-			<circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
-		</svg>
+		<MagnifyingGlassIcon class="search-input-icon" size={16} aria-hidden="true" />
 
 		<input
 			bind:this={inputRef}
@@ -199,9 +198,7 @@
 
 		{#if query}
 			<button class="search-clear" onclick={() => { query = ''; results = []; inputRef?.focus(); }} aria-label="Wyczyść wyszukiwanie">
-				<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-					<line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
-				</svg>
+				<XIcon size={14} aria-hidden="true" />
 			</button>
 		{/if}
 
@@ -229,9 +226,7 @@
 								role="option"
 								aria-selected={false}
 							>
-								<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-									<polyline points="1 4 1 10 7 10" /><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
-								</svg>
+								<ClockCounterClockwiseIcon size={14} aria-hidden="true" />
 								{recent}
 							</button>
 						{/each}
@@ -284,9 +279,7 @@
 								/>
 							{:else}
 								<div class="result-thumb-placeholder">
-									<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-										<rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" />
-									</svg>
+									<ImageSquareIcon size={16} aria-hidden="true" />
 								</div>
 							{/if}
 							<div class="result-info">
@@ -301,9 +294,7 @@
 				<!-- Search all link -->
 				<button class="dropdown-all" onclick={goToSearch}>
 					Pokaż wszystkie wyniki dla „{query.trim()}"
-					<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-						<path d="M5 12h14" /><path d="M12 5l7 7-7 7" />
-					</svg>
+					<ArrowRightIcon size={14} aria-hidden="true" />
 				</button>
 			{:else if query.trim().length >= 2}
 				<div class="dropdown-empty">

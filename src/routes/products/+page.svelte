@@ -5,6 +5,7 @@
 	import ProductCardSkeleton from '$lib/components/ui/ProductCardSkeleton.svelte';
 	import Breadcrumbs from '$lib/components/ui/Breadcrumbs.svelte';
 	import type { Product, Category } from '$lib/stores/products.svelte';
+	import { MagnifyingGlassIcon, CaretLeftIcon, CaretRightIcon } from 'phosphor-svelte';
 
 	interface CategoryWithCount extends Category {
 		productCount: number;
@@ -157,9 +158,7 @@
 		<form onsubmit={handleSearchSubmit} class="search-form" role="search">
 			<label for="product-search" class="sr-only">Szukaj produktów</label>
 			<div class="search-box">
-				<svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-					<circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
-				</svg>
+				<MagnifyingGlassIcon class="search-icon" aria-hidden="true" />
 				<input
 					id="product-search"
 					type="search"
@@ -216,7 +215,7 @@
 				<nav class="pagination" aria-label="Paginacja">
 					{#if data.currentPage > 1}
 						<button class="page-btn" aria-label="Poprzednia strona" onclick={() => navigateWithFilters({ page: data.currentPage - 1 })}>
-							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 19l-7-7 7-7"/></svg>
+							<CaretLeftIcon aria-hidden="true" />
 						</button>
 					{/if}
 
@@ -235,7 +234,7 @@
 
 					{#if data.currentPage < data.totalPages}
 						<button class="page-btn" aria-label="Następna strona" onclick={() => navigateWithFilters({ page: data.currentPage + 1 })}>
-							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+							<CaretRightIcon aria-hidden="true" />
 						</button>
 					{/if}
 				</nav>
@@ -367,7 +366,7 @@
 		align-items: center;
 	}
 
-	.search-icon {
+	:global(.search-icon) {
 		position: absolute;
 		left: 12px;
 		color: var(--ft-text-faint);

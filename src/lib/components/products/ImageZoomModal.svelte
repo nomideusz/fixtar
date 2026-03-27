@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { XIcon, MagnifyingGlassMinusIcon, MagnifyingGlassPlusIcon, ArrowsOutIcon, CaretLeftIcon, CaretRightIcon } from 'phosphor-svelte';
+
 	interface Props {
 		images: string[];
 		selectedIndex: number;
@@ -82,7 +84,7 @@
 			case 'ArrowLeft':
 				navigateImage(-1);
 				break;
-			case 'ArrowRight':
+			case 'ArrowRightIcon':
 				navigateImage(1);
 				break;
 		}
@@ -149,21 +151,12 @@
 					class="zoom-control-button disabled:cursor-not-allowed disabled:opacity-50"
 					aria-label="Poprzednie zdjęcie"
 				>
-					<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M15 19l-7-7 7-7"
-						/>
-					</svg>
+					<CaretLeftIcon size={20} weight="light" aria-hidden="true" />
 				</button>
 			{/if}
 
 			<button onclick={zoomOut} class="zoom-control-button" aria-label="Pomniejsz">
-				<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
-				</svg>
+				<MagnifyingGlassMinusIcon size={20} weight="light" aria-hidden="true" />
 			</button>
 
 			<span class="min-w-15 px-2 text-center text-sm font-medium text-[--ft-text]">
@@ -171,25 +164,11 @@
 			</span>
 
 			<button onclick={zoomIn} class="zoom-control-button" aria-label="Powiększ">
-				<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M12 4v16m8-8H4"
-					/>
-				</svg>
+				<MagnifyingGlassPlusIcon size={20} weight="light" aria-hidden="true" />
 			</button>
 
 			<button onclick={resetZoom} class="zoom-control-button" aria-label="Resetuj powiększenie">
-				<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-					/>
-				</svg>
+				<ArrowsOutIcon size={20} weight="light" aria-hidden="true" />
 			</button>
 
 			{#if hasMultiple}
@@ -199,14 +178,7 @@
 					class="zoom-control-button disabled:cursor-not-allowed disabled:opacity-50"
 					aria-label="Następne zdjęcie"
 				>
-					<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M9 5l7 7-7 7"
-						/>
-					</svg>
+					<CaretRightIcon size={20} weight="light" aria-hidden="true" />
 				</button>
 			{/if}
 		</div>
@@ -218,14 +190,7 @@
 		class="absolute top-4 right-4 z-10 rounded-lg bg-[--ft-frost] p-2 text-[--ft-text] backdrop-blur-sm transition-colors hover:text-[--ft-text-muted]"
 		aria-label="Zamknij podgląd"
 	>
-		<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-			<path
-				stroke-linecap="round"
-				stroke-linejoin="round"
-				stroke-width="2"
-				d="M6 18L18 6M6 6l12 12"
-			/>
-		</svg>
+		<XIcon size={20} weight="light" aria-hidden="true" />
 	</button>
 
 	<!-- Image container -->

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Card from '$lib/components/ui/Card.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
+	import { CaretLeftIcon, WarningCircleIcon } from 'phosphor-svelte';
 	import { notifications } from '$lib/stores';
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
@@ -32,9 +33,7 @@
 <div>
 	<div class="mb-6 flex items-center gap-4">
 		<Button href="/account/addresses" variant="ghost" size="sm">
-			<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-			</svg>
+			<CaretLeftIcon class="mr-2 h-4 w-4" aria-hidden="true" />
 			Powrót do adresów
 		</Button>
 		<h1 class="text-2xl font-bold text-[--ft-text]">Edytuj adres</h1>
@@ -171,19 +170,7 @@
 	{:else}
 		<Card>
 			<div class="py-12 text-center">
-				<svg
-					class="text-danger mx-auto mb-4 h-16 w-16"
-					fill="none"
-					stroke="currentColor"
-					viewBox="0 0 24 24"
-				>
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-					/>
-				</svg>
+				<WarningCircleIcon class="text-danger mx-auto mb-4 h-16 w-16" aria-hidden="true" />
 				<h3 class="mb-2 text-lg font-medium text-[--ft-text]">Nie znaleziono adresu</h3>
 				<p class="mb-6 text-[--ft-text-muted]">Adres, który próbujesz edytować, nie istnieje.</p>
 				<Button href="/account/addresses">Powrót do adresów</Button>

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Button from '$lib/components/ui/Button.svelte';
 	import Card from '$lib/components/ui/Card.svelte';
+	import { MinusIcon, PlusIcon, ShoppingCartSimpleIcon, LightningIcon, CheckIcon, ShieldCheckIcon } from 'phosphor-svelte';
 
 	interface Props {
 		price: number;
@@ -29,11 +30,11 @@
 			<div class="flex items-center gap-4">
 				<div class="flex items-center rounded-xl border border-[--ft-line] bg-[--ft-surface] shadow-sm">
 					<Button variant="ghost" size="sm" onclick={() => adjustQuantity(-1)} disabled={quantity <= 1} class="rounded-l-xl rounded-r-none border-0">
-						<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" /></svg>
+						<MinusIcon size={16} weight="bold" aria-hidden="true" />
 					</Button>
 					<div class="min-w-15 px-4 py-2 text-center text-lg font-semibold text-[--ft-text]">{quantity}</div>
 					<Button variant="ghost" size="sm" onclick={() => adjustQuantity(1)} disabled={quantity >= maxQuantity} class="rounded-l-none rounded-r-xl border-0">
-						<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+						<PlusIcon size={16} weight="bold" aria-hidden="true" />
 					</Button>
 				</div>
 
@@ -51,32 +52,24 @@
 
 		<!-- Add to Cart -->
 		<Button onclick={() => onAddToCart(quantity)} class="w-full py-4 text-lg font-semibold transition-colors duration-200" size="lg">
-			<svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-			</svg>
+			<ShoppingCartSimpleIcon size={20} weight="light" class="mr-2" aria-hidden="true" />
 			Dodaj do koszyka
 		</Button>
 
 		<!-- Buy Now -->
 		<button class="buy-now-btn" onclick={() => onBuyNow(quantity)}>
-			<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-			</svg>
+			<LightningIcon size={20} weight="fill" aria-hidden="true" />
 			Kup teraz
 		</button>
 
 		<!-- Perks -->
 		<div class="grid grid-cols-1 gap-4 text-sm text-[--ft-text-faint] sm:grid-cols-2">
 			<div class="flex items-center gap-2">
-				<svg class="text-success h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-				</svg>
+				<CheckIcon size={16} weight="bold" class="text-success" aria-hidden="true" />
 				Darmowa dostawa od 200 zł
 			</div>
 			<div class="flex items-center gap-2">
-				<svg class="text-[--ft-accent] h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-				</svg>
+				<ShieldCheckIcon size={16} weight="light" class="text-[--ft-accent]" aria-hidden="true" />
 				Gwarancja producenta
 			</div>
 		</div>

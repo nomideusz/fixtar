@@ -2,6 +2,7 @@
 	import Input from '$lib/components/ui/Input.svelte';
 	import PageHeader from '$lib/components/ui/PageHeader.svelte';
 	import { notifications } from '$lib/stores';
+	import { MapPinIcon, PhoneIcon, EnvelopeIcon, ClockIcon, ArrowRightIcon, SpinnerGapIcon, PaperPlaneTiltIcon, BuildingsIcon, ChatCircleIcon, QuestionIcon } from 'phosphor-svelte';
 
 	let formData = $state({
 		name: '',
@@ -108,20 +109,7 @@
 				<div
 					class="bg-[--ft-frost] text-[--ft-accent] mb-4 inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold"
 				>
-					<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-						/>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-						/>
-					</svg>
+					<MapPinIcon class="mr-2 h-4 w-4" aria-hidden="true" />
 					Informacje Kontaktowe
 				</div>
 				<h2 class="mb-4 text-3xl font-bold text-[--ft-text]">Skontaktuj Się Z Nami</h2>
@@ -139,67 +127,13 @@
 								class="bg-[--ft-frost] mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl"
 							>
 								{#if info.icon === 'location'}
-									<svg
-										class="text-[--ft-accent] h-8 w-8"
-										fill="none"
-										stroke="currentColor"
-										viewBox="0 0 24 24"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-										/>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-										/>
-									</svg>
+									<MapPinIcon class="text-[--ft-accent] h-8 w-8" aria-hidden="true" />
 								{:else if info.icon === 'phone'}
-									<svg
-										class="text-[--ft-accent] h-8 w-8"
-										fill="none"
-										stroke="currentColor"
-										viewBox="0 0 24 24"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-										/>
-									</svg>
+									<PhoneIcon class="text-[--ft-accent] h-8 w-8" aria-hidden="true" />
 								{:else if info.icon === 'email'}
-									<svg
-										class="text-[--ft-accent] h-8 w-8"
-										fill="none"
-										stroke="currentColor"
-										viewBox="0 0 24 24"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-										/>
-									</svg>
+									<EnvelopeIcon class="text-[--ft-accent] h-8 w-8" aria-hidden="true" />
 								{:else if info.icon === 'clock'}
-									<svg
-										class="text-[--ft-accent] h-8 w-8"
-										fill="none"
-										stroke="currentColor"
-										viewBox="0 0 24 24"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-										/>
-									</svg>
+									<ClockIcon class="text-[--ft-accent] h-8 w-8" aria-hidden="true" />
 								{/if}
 							</div>
 
@@ -213,26 +147,14 @@
 								{/each}
 							</div>
 
-							<!-- Action Link -->
+							<!-- Action LinkIcon -->
 							{#if info.action}
 								<a
 									href={info.action.href}
 									class="text-[--ft-accent] inline-flex items-center text-sm font-medium transition-colors duration-200 hover:underline"
 								>
 									{info.action.text}
-									<svg
-										class="ml-1 h-4 w-4"
-										fill="none"
-										stroke="currentColor"
-										viewBox="0 0 24 24"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M9 5l7 7-7 7"
-										/>
-									</svg>
+									<ArrowRightIcon class="ml-1 h-4 w-4" aria-hidden="true" />
 								</a>
 							{/if}
 						</div>
@@ -318,67 +240,24 @@
 							class="w-full flex items-center justify-center gap-2 py-4 px-6 font-semibold text-white rounded-xl bg-[--ft-text-strong] hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
 						>
 							{#if sending}
-								<svg
-									class="h-5 w-5 animate-spin"
-									fill="none"
-									viewBox="0 0 24 24"
-								>
-									<circle
-										class="opacity-25"
-										cx="12"
-										cy="12"
-										r="10"
-										stroke="currentColor"
-										stroke-width="4"
-									></circle>
-									<path
-										class="opacity-75"
-										fill="currentColor"
-										d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-									></path>
-								</svg>
+								<SpinnerGapIcon class="h-5 w-5 animate-spin" aria-hidden="true" />
 								Wysyłanie...
 							{:else}
-								<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-									/>
-								</svg>
+								<PaperPlaneTiltIcon class="h-5 w-5" aria-hidden="true" />
 								Wyślij Wiadomość
 							{/if}
 						</button>
 					</form>
 				</div>
 
-				<!-- Map / Office Info -->
+				<!-- Map / Office InfoIcon -->
 				<div class="space-y-6">
 					<div class="rounded-lg overflow-hidden">
 						<div
 							class="flex h-80 items-center justify-center bg-[--ft-frost]"
 						>
 							<div class="p-8 text-center">
-								<svg
-									class="mx-auto mb-4 h-16 w-16 text-[--ft-text-muted]"
-									fill="none"
-									stroke="currentColor"
-									viewBox="0 0 24 24"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-									/>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-									/>
-								</svg>
+								<MapPinIcon class="mx-auto mb-4 h-16 w-16 text-[--ft-text-muted]" aria-hidden="true" />
 								<p class="font-medium text-[--ft-text-muted]">Mapa do naszego biura</p>
 								<p class="mt-2 text-sm text-[--ft-text-muted]">ul. Technologiczna 15, Warszawa</p>
 							</div>
@@ -389,57 +268,15 @@
 						<h4 class="mb-4 text-lg font-bold text-[--ft-text]">Odwiedź Nas</h4>
 						<div class="space-y-3 text-sm">
 							<div class="flex items-center">
-								<svg
-									class="text-[--ft-accent] mr-3 h-5 w-5"
-									fill="none"
-									stroke="currentColor"
-									viewBox="0 0 24 24"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-									/>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-									/>
-								</svg>
+								<MapPinIcon class="text-[--ft-accent] mr-3 h-5 w-5" aria-hidden="true" />
 								<span class="text-[--ft-text]">ul. Technologiczna 15, 00-001 Warszawa</span>
 							</div>
 							<div class="flex items-center">
-								<svg
-									class="text-[--ft-accent] mr-3 h-5 w-5"
-									fill="none"
-									stroke="currentColor"
-									viewBox="0 0 24 24"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M8 7V3a1 1 0 011-1h6a1 1 0 011 1v4m-8 0V7a1 1 0 011-1h6a1 1 0 011 1v0m-8 0h8M9 21v-4a1 1 0 011-1h4a1 1 0 011 1v4M9 21H5a1 1 0 01-1-1v-4a1 1 0 011-1h4m0 0h4m0 0h4a1 1 0 011 1v4a1 1 0 01-1 1h-4"
-									/>
-								</svg>
+								<BuildingsIcon class="text-[--ft-accent] mr-3 h-5 w-5" aria-hidden="true" />
 								<span class="text-[--ft-text]">2 piętro, pokój 205</span>
 							</div>
 							<div class="flex items-center">
-								<svg
-									class="text-[--ft-accent] mr-3 h-5 w-5"
-									fill="none"
-									stroke="currentColor"
-									viewBox="0 0 24 24"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-									/>
-								</svg>
+								<ChatCircleIcon class="text-[--ft-accent] mr-3 h-5 w-5" aria-hidden="true" />
 								<span class="text-[--ft-text]">Parking dostępny na terenie budynku</span>
 							</div>
 						</div>
@@ -454,14 +291,7 @@
 				<div
 					class="bg-[--ft-frost] text-[--ft-accent] mb-4 inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold"
 				>
-					<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-						/>
-					</svg>
+					<QuestionIcon class="mr-2 h-4 w-4" aria-hidden="true" />
 					Często Zadawane Pytania
 				</div>
 				<h2 class="mb-4 text-3xl font-bold text-[--ft-text]">Masz Pytanie?</h2>
@@ -492,28 +322,14 @@
 							href="tel:+48221234567"
 							class="inline-flex items-center gap-2 text-sm font-medium text-[--ft-accent] hover:underline"
 						>
-							<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-								/>
-							</svg>
+							<PhoneIcon class="h-4 w-4" aria-hidden="true" />
 							Zadzwoń
 						</a>
 						<a
 							href="mailto:kontakt@FixTar.pl"
 							class="inline-flex items-center gap-2 text-sm font-medium text-[--ft-accent] hover:underline"
 						>
-							<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-								/>
-							</svg>
+							<EnvelopeIcon class="h-4 w-4" aria-hidden="true" />
 							Napisz Email
 						</a>
 					</div>

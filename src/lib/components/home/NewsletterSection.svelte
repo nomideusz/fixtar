@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { EnvelopeIcon, CheckCircleIcon, ArrowRightIcon } from 'phosphor-svelte';
+
 	let email = $state('');
 	let status = $state<'idle' | 'loading' | 'success' | 'error'>('idle');
 	let errorMsg = $state('');
@@ -36,10 +38,7 @@
 		<div class="newsletter-inner">
 			<!-- Icon -->
 			<div class="newsletter-icon" aria-hidden="true">
-				<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-					<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-					<polyline points="22,6 12,13 2,6" />
-				</svg>
+				<EnvelopeIcon size={28} weight="light" />
 			</div>
 
 			<h2 class="newsletter-title">Zapisz się i otrzymaj <span class="highlight">5% rabatu</span></h2>
@@ -49,10 +48,7 @@
 
 			{#if status === 'success'}
 				<div class="newsletter-success" role="status">
-					<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-						<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-						<polyline points="22 4 12 14.01 9 11.01" />
-					</svg>
+					<CheckCircleIcon size={20} weight="fill" aria-hidden="true" />
 					<div>
 						<p class="success-title">Dziękujemy za zapisanie się!</p>
 						<p class="success-desc">Kod rabatowy został wysłany na Twój adres e-mail.</p>
@@ -84,9 +80,7 @@
 									Wysyłanie…
 								{:else}
 									Zapisz się
-									<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-										<line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
-									</svg>
+									<ArrowRightIcon size={14} weight="bold" aria-hidden="true" />
 								{/if}
 							</button>
 						</div>
@@ -264,7 +258,7 @@
 		animation: ft-fade-up 0.35s var(--ease-out) both;
 	}
 
-	.newsletter-success svg {
+	.newsletter-success :global(svg) {
 		flex-shrink: 0;
 		margin-top: 2px;
 	}

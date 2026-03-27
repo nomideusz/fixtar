@@ -2,6 +2,7 @@
 	import { userStore } from '$lib/stores';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Card from '$lib/components/ui/Card.svelte';
+	import { UserIcon, CheckCircleIcon, ShoppingBagIcon, CurrencyDollarIcon, HeartIcon, StarIcon, MapPinIcon, GearIcon, CheckIcon, PlusIcon } from 'phosphor-svelte';
 	import StatCard from '$lib/components/account/StatCard.svelte';
 	import QuickActionCard from '$lib/components/account/QuickActionCard.svelte';
 	import RecentOrdersTable from '$lib/components/account/RecentOrdersTable.svelte';
@@ -85,19 +86,7 @@
 					<div
 						class="mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-full bg-[--ft-accent]/20"
 					>
-						<svg
-							class="text-[--ft-accent] h-10 w-10"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-							/>
-						</svg>
+						<UserIcon class="text-[--ft-accent] h-10 w-10" aria-hidden="true" />
 					</div>
 					<h2 class="mb-4 text-3xl font-bold text-[--ft-text]">Witaj w Swoim Koncie</h2>
 					<p class="mx-auto mb-8 max-w-md text-lg text-[--ft-text-muted]">
@@ -122,19 +111,7 @@
 									<div
 										class="mr-4 flex h-16 w-16 items-center justify-center rounded-full bg-[--ft-accent]/20"
 									>
-										<svg
-											class="text-[--ft-accent] h-8 w-8"
-											fill="none"
-											stroke="currentColor"
-											viewBox="0 0 24 24"
-										>
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												stroke-width="2"
-												d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-											/>
-										</svg>
+										<UserIcon class="text-[--ft-accent] h-8 w-8" aria-hidden="true" />
 									</div>
 									<div>
 										<h1 class="text-3xl font-bold text-[--ft-text]">
@@ -149,19 +126,7 @@
 									<div
 										class="bg-success/10 text-success-dark inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold"
 									>
-										<svg
-											class="mr-2 h-4 w-4"
-											fill="none"
-											stroke="currentColor"
-											viewBox="0 0 24 24"
-										>
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												stroke-width="2"
-												d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-											/>
-										</svg>
+										<CheckCircleIcon class="mr-2 h-4 w-4" aria-hidden="true" />
 										Zweryfikowany klient
 									</div>
 								{/if}
@@ -179,9 +144,7 @@
 					<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
 						<StatCard value={stats.totalOrders} label="Łączne zamówienia">
 							{#snippet icon()}
-								<svg class="text-[--ft-accent] h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-								</svg>
+								<ShoppingBagIcon class="text-[--ft-accent] h-8 w-8" aria-hidden="true" />
 							{/snippet}
 						</StatCard>
 
@@ -191,9 +154,7 @@
 							valueClass="text-[--ft-accent]"
 						>
 							{#snippet icon()}
-								<svg class="text-success h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-								</svg>
+								<CurrencyDollarIcon class="text-success h-8 w-8" aria-hidden="true" />
 							{/snippet}
 						</StatCard>
 
@@ -203,17 +164,13 @@
 							valueClass="text-[--ft-accent]"
 						>
 							{#snippet icon()}
-								<svg class="text-accent-600 h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-								</svg>
+								<HeartIcon class="text-accent-600 h-8 w-8" aria-hidden="true" />
 							{/snippet}
 						</StatCard>
 
 						<StatCard value={stats.rewardPoints} label="Punkty lojalnościowe">
 							{#snippet icon()}
-								<svg class="text-[--ft-accent] h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-								</svg>
+								<StarIcon class="text-[--ft-accent] h-8 w-8" aria-hidden="true" />
 							{/snippet}
 						</StatCard>
 					</div>
@@ -233,9 +190,7 @@
 							href="/account/orders"
 						>
 							{#snippet icon()}
-								<svg class="h-6 w-6 text-[--ft-text]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-								</svg>
+								<ShoppingBagIcon class="h-6 w-6 text-[--ft-text]" aria-hidden="true" />
 							{/snippet}
 						</QuickActionCard>
 
@@ -245,10 +200,7 @@
 							href="/account/addresses"
 						>
 							{#snippet icon()}
-								<svg class="h-6 w-6 text-[--ft-text]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-								</svg>
+								<MapPinIcon class="h-6 w-6 text-[--ft-text]" aria-hidden="true" />
 							{/snippet}
 						</QuickActionCard>
 
@@ -258,9 +210,7 @@
 							href="/account/favorites"
 						>
 							{#snippet icon()}
-								<svg class="h-6 w-6 text-[--ft-text]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-								</svg>
+								<HeartIcon class="h-6 w-6 text-[--ft-text]" aria-hidden="true" />
 							{/snippet}
 						</QuickActionCard>
 
@@ -270,10 +220,7 @@
 							href="/account/settings"
 						>
 							{#snippet icon()}
-								<svg class="h-6 w-6 text-[--ft-text]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-								</svg>
+								<GearIcon class="h-6 w-6 text-[--ft-text]" aria-hidden="true" />
 							{/snippet}
 						</QuickActionCard>
 					</div>
@@ -296,19 +243,11 @@
 												? 'bg-success/10'
 												: 'bg-[--ft-frost]'}"
 										>
-											<svg
-												class="h-4 w-4 {feature.completed ? 'text-success' : 'text-[--ft-text-muted]'}"
-												fill="none"
-												stroke="currentColor"
-												viewBox="0 0 24 24"
-											>
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													stroke-width="2"
-													d={feature.completed ? 'M5 13l4 4L19 7' : 'M12 6v6m0 0v6m0-6h6m-6 0H6'}
-												/>
-											</svg>
+											{#if feature.completed}
+												<CheckIcon class="h-4 w-4 text-success" aria-hidden="true" />
+											{:else}
+												<PlusIcon class="h-4 w-4 text-[--ft-text-muted]" aria-hidden="true" />
+											{/if}
 										</div>
 									</div>
 									<div class="ml-4">

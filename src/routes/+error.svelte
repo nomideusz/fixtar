@@ -2,6 +2,7 @@
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
 	import { onMount } from 'svelte';
+	import { GearIcon, WrenchIcon, ScissorsIcon, HouseIcon, PackageIcon } from 'phosphor-svelte';
 
 	let showDecorations = $state(false);
 
@@ -13,11 +14,11 @@
 
 	// Popular categories with SVG icons
 	const popularCategories = [
-		{ id: 'szlifierki-i-polerki', name: 'Szlifierki i polerki', iconPath: 'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z' },
-		{ id: 'wiertarki-i-wkretarki', name: 'Wiertarki i wkrętarki', iconPath: 'M14.121 14.121L19 19m-7-7l7-7m-7 7l-2.879 2.879M12 12L4.939 4.939m7.061 7.061l-2.879-2.879' },
-		{ id: 'pily-i-pilarki', name: 'Piły i pilarki', iconPath: 'M4 6h16M4 10h16M4 14h16M4 18h16' },
-		{ id: 'dom-i-ogrod', name: 'Dom i ogród', iconPath: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' },
-		{ id: 'zestawy-i-akcesoria', name: 'Zestawy i akcesoria', iconPath: 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4' }
+		{ id: 'szlifierki-i-polerki', name: 'Szlifierki i polerki', icon: GearIcon },
+		{ id: 'wiertarki-i-wkretarki', name: 'Wiertarki i wkrętarki', icon: WrenchIcon },
+		{ id: 'pily-i-pilarki', name: 'Piły i pilarki', icon: ScissorsIcon },
+		{ id: 'dom-i-ogrod', name: 'Dom i ogród', icon: HouseIcon },
+		{ id: 'zestawy-i-akcesoria', name: 'Zestawy i akcesoria', icon: PackageIcon }
 	];
 
 	let searchQuery = $state('');
@@ -86,13 +87,12 @@
 
 				<div class="flex flex-wrap gap-2">
 					{#each popularCategories as category (category.id)}
+						{@const Icon = category.icon}
 						<a
 							href="/products?category={category.id}"
 							class="inline-flex items-center gap-1.5 rounded-full border border-[--ft-line] bg-[--ft-frost] px-3 py-1.5 text-sm font-medium text-[--ft-text] transition-colors hover:border-[--ft-cta] hover:text-[--ft-cta]"
 						>
-							<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={category.iconPath} />
-							</svg>
+							<Icon class="h-4 w-4" aria-hidden="true" />
 							{category.name}
 						</a>
 					{/each}

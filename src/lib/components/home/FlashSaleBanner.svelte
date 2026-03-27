@@ -1,12 +1,13 @@
 <script lang="ts">
 	import CountdownTimer from '$lib/components/ui/CountdownTimer.svelte';
+	import { ArrowRightIcon } from 'phosphor-svelte';
 
 	interface Props {
 		/** ISO date string when the sale ends */
 		endsAt?: string;
 		/** Headline text */
 		headline?: string;
-		/** Link destination */
+		/** LinkIcon destination */
 		href?: string;
 	}
 
@@ -45,9 +46,9 @@
 				</span>
 
 				<!-- Arrow -->
-				<svg class="flash-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-					<line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
-				</svg>
+				<span class="flash-arrow" aria-hidden="true">
+					<ArrowRightIcon size={16} weight="bold" />
+				</span>
 			</a>
 		</div>
 	</section>

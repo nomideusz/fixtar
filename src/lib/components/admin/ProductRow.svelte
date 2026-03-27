@@ -1,6 +1,7 @@
 <script lang="ts">
 	import StatusBadge from './StatusBadge.svelte';
 	import LoadingSpinner from '$lib/components/ui/LoadingSpinner.svelte';
+	import { ImageSquareIcon, SpinnerGapIcon } from 'phosphor-svelte';
 
 	interface Props {
 		product: any;
@@ -38,19 +39,7 @@
 				/>
 			{:else}
 				<div class="mr-3 flex h-12 w-12 items-center justify-center rounded bg-[--ft-frost]">
-					<svg
-						class="h-6 w-6 text-[--ft-text-muted]"
-						fill="none"
-						stroke="currentColor"
-						viewBox="0 0 24 24"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-						/>
-					</svg>
+					<ImageSquareIcon class="h-6 w-6 text-[--ft-text-muted]" aria-hidden="true" />
 				</div>
 			{/if}
 			<div>
@@ -90,19 +79,7 @@
 			<div class="flex items-center">
 				<StatusBadge status={product.status} />
 				{#if isLoading}
-					<svg
-						class="ml-2 h-4 w-4 animate-spin text-[--ft-text-muted]"
-						fill="none"
-						stroke="currentColor"
-						viewBox="0 0 24 24"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-						/>
-					</svg>
+					<SpinnerGapIcon class="ml-2 h-4 w-4 animate-spin text-[--ft-text-muted]" aria-hidden="true" />
 				{/if}
 			</div>
 

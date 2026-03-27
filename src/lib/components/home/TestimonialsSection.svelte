@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { StarIcon } from 'phosphor-svelte';
+
 	const stats = [
 		{ value: '2 500+', label: 'Produktów w ofercie' },
 		{ value: '15 000+', label: 'Zrealizowanych zamówień' },
@@ -52,17 +54,9 @@
 					<!-- Stars -->
 					<div class="stars" aria-label="Ocena {t.rating} z 5">
 						{#each Array(5) as _, s}
-							<svg
-								width="14"
-								height="14"
-								viewBox="0 0 24 24"
-								fill={s < t.rating ? 'var(--ft-cta)' : 'none'}
-								stroke={s < t.rating ? 'var(--ft-cta)' : 'var(--ft-line)'}
-								stroke-width="2"
-								aria-hidden="true"
-							>
-								<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-							</svg>
+							<span style="color: {s < t.rating ? 'var(--ft-cta)' : 'var(--ft-line)'}">
+								<StarIcon size={14} weight="fill" aria-hidden="true" />
+							</span>
 						{/each}
 					</div>
 

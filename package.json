@@ -51,6 +51,7 @@
 		"@sveltejs/kit": "^2.53.0",
 		"better-auth": "^1.4.19",
 		"drizzle-orm": "^0.45.1",
+		"phosphor-svelte": "^3.1.0",
 		"runed": "^0.37.1"
 	},
 	"pnpm": {

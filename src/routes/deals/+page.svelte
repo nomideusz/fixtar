@@ -1,5 +1,6 @@
 <script lang="ts">
 	import CountdownTimer from '$lib/components/ui/CountdownTimer.svelte';
+	import { LightningIcon, ArrowRightIcon, BellIcon } from 'phosphor-svelte';
 
 	// Mock deals data — will be replaced with real DB data
 	const flashDeals = [
@@ -96,9 +97,7 @@
 		<section class="deals-section" aria-label="Oferty błyskawiczne">
 			<div class="section-header">
 				<h2 class="section-title">
-					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-						<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-					</svg>
+					<LightningIcon weight="fill" aria-hidden="true" />
 					Oferty błyskawiczne
 				</h2>
 				<p class="section-hint">Ograniczony czas — kupuj zanim wygasną!</p>
@@ -130,9 +129,7 @@
 
 							<a href="/products" class="flash-cta btn-primary">
 								Kup teraz
-								<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-									<line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
-								</svg>
+								<ArrowRightIcon weight="bold" aria-hidden="true" />
 							</a>
 						</div>
 					</article>
@@ -163,9 +160,7 @@
 							<span class="seasonal-date">Do {formatDate(deal.validUntil)}</span>
 							<span class="seasonal-cta">
 								Sprawdź
-								<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-									<line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
-								</svg>
+								<ArrowRightIcon weight="bold" aria-hidden="true" />
 							</span>
 						</div>
 					</div>
@@ -177,10 +172,7 @@
 	<!-- Newsletter CTA -->
 	<section class="deals-newsletter" aria-label="Newsletter">
 		<div class="newsletter-inner">
-			<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="newsletter-icon">
-				<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-				<path d="M13.73 21a2 2 0 0 1-3.46 0" />
-			</svg>
+			<BellIcon class="newsletter-icon" aria-hidden="true" />
 			<div>
 				<h3 class="newsletter-title">Nie chcesz przegapić kolejnej promocji?</h3>
 				<p class="newsletter-desc">Zapisz się do newslettera i otrzymaj <strong>5% rabatu</strong> na pierwsze zamówienie.</p>
@@ -232,7 +224,7 @@
 		letter-spacing: -0.02em;
 	}
 
-	.section-title svg {
+	.section-title :global(svg) {
 		color: var(--ft-cta);
 	}
 
@@ -493,7 +485,7 @@
 		flex-wrap: wrap;
 	}
 
-	.newsletter-icon {
+	:global(.newsletter-icon) {
 		color: var(--ft-accent);
 		flex-shrink: 0;
 	}

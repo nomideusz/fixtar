@@ -4,6 +4,7 @@
 	import { goto } from '$app/navigation';
 	import Card from '$lib/components/ui/Card.svelte';
 	import AccountNavIcon from '$lib/components/account/AccountNavIcon.svelte';
+	import { UserIcon, CheckIcon, CheckCircleIcon, CaretRightIcon, ListIcon, XIcon } from 'phosphor-svelte';
 	import type { Snippet } from 'svelte';
 	import type { LayoutData } from './$types';
 
@@ -43,26 +44,20 @@
 				<div class="shrink-0 lg:w-80">
 					<div class="sticky top-8">
 						<Card class="p-6">
-							<!-- User Profile -->
+							<!-- UserIcon Profile -->
 							<div class="mb-8 text-center">
 								<div class="relative mb-4 inline-block">
 									<div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-[--ft-accent]/20 ring-4 ring-[--ft-line]">
-										<svg class="text-[--ft-accent] h-10 w-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-										</svg>
+										<UserIcon class="text-[--ft-accent] h-10 w-10" aria-hidden="true" />
 									</div>
 									<div class="bg-success absolute -right-1 -bottom-1 flex h-6 w-6 items-center justify-center rounded-full border-3 border-[--ft-surface]">
-										<svg class="h-3 w-3 text-[--ft-text]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-										</svg>
+										<CheckIcon class="h-3 w-3 text-[--ft-text]" aria-hidden="true" />
 									</div>
 								</div>
 								<h3 class="mb-1 text-xl font-bold text-[--ft-text]">{user.name || 'Użytkownik'}</h3>
 								<p class="mb-3 text-sm text-[--ft-text-muted]">{user.email}</p>
 								<div class="bg-[--ft-frost] text-[--ft-accent] inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold">
-									<svg class="mr-1 h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-									</svg>
+									<CheckCircleIcon class="mr-1 h-3 w-3" aria-hidden="true" />
 									Aktywne konto
 								</div>
 							</div>
@@ -80,9 +75,7 @@
 												<div class="truncate text-xs text-[--ft-text-muted]">{item.description}</div>
 											</div>
 											{#if isActive(item.href)}
-												<svg class="ml-2 h-4 w-4 text-[--ft-accent]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-													<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-												</svg>
+												<CaretRightIcon class="ml-2 h-4 w-4 text-[--ft-accent]" aria-hidden="true" />
 											{/if}
 										</div>
 									</a>
@@ -107,9 +100,7 @@
 				<!-- Mobile Navigation Button -->
 				<div class="fixed right-6 bottom-6 z-50 lg:hidden">
 					<button onclick={() => (mobileMenuOpen = true)} class="bg-[--ft-accent] hover:bg-[--ft-accent-hover] flex h-14 w-14 items-center justify-center rounded-full !text-white shadow-lg transition-colors duration-200" aria-label="Otwórz menu konta">
-						<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-						</svg>
+						<ListIcon class="h-6 w-6" aria-hidden="true" />
 					</button>
 				</div>
 
@@ -124,19 +115,15 @@
 								<div class="flex items-center justify-between border-b border-[--ft-line] bg-[--ft-surface] p-6">
 									<h3 class="text-lg font-bold text-[--ft-text]">Menu konta</h3>
 									<button onclick={() => (mobileMenuOpen = false)} class="rounded-lg p-2 transition-colors duration-200 hover:bg-[--ft-frost]" aria-label="Zamknij menu konta">
-										<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-										</svg>
+										<XIcon class="h-5 w-5" aria-hidden="true" />
 									</button>
 								</div>
 
-								<!-- User Profile -->
+								<!-- UserIcon Profile -->
 								<div class="border-b border-[--ft-line] p-6">
 									<div class="flex items-center">
 										<div class="mr-3 flex h-12 w-12 items-center justify-center rounded-full bg-[--ft-accent]/20">
-											<svg class="text-[--ft-accent] h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-											</svg>
+											<UserIcon class="text-[--ft-accent] h-6 w-6" aria-hidden="true" />
 										</div>
 										<div>
 											<h4 class="font-semibold text-[--ft-text]">{user.name || 'Użytkownik'}</h4>

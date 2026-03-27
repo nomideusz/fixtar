@@ -1,6 +1,7 @@
 <script lang="ts">
 	import StatCard from '$lib/components/account/StatCard.svelte';
 	import { getOrderStatus } from '$lib/utils/order-status';
+	import { WarningIcon, ShoppingBagIcon, CheckIcon, ClockIcon, CurrencyDollarIcon } from 'phosphor-svelte';
 	import type { PageData } from './$types';
 
 	const { data } = $props<{ data: PageData }>();
@@ -93,19 +94,7 @@
 			<div
 				class="bg-danger/10 mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl"
 			>
-				<svg
-					class="text-danger h-8 w-8"
-					fill="none"
-					stroke="currentColor"
-					viewBox="0 0 24 24"
-				>
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-					/>
-				</svg>
+				<WarningIcon class="text-danger h-8 w-8" aria-hidden="true" />
 			</div>
 			<h3 class="mb-2 text-xl font-bold text-[--ft-text]">Wystąpił błąd</h3>
 			<p class="mb-6 text-[--ft-text-muted]">{data.error}</p>
@@ -117,33 +106,25 @@
 			<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
 				<StatCard value={orderStats.total} label="Łączne zamówienia">
 					{#snippet icon()}
-						<svg class="text-[--ft-accent] h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-						</svg>
+						<ShoppingBagIcon class="text-[--ft-accent] h-6 w-6" aria-hidden="true" />
 					{/snippet}
 				</StatCard>
 
 				<StatCard value={orderStats.delivered} label="Dostarczone" valueClass="text-[--ft-accent]">
 					{#snippet icon()}
-						<svg class="text-success h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-						</svg>
+						<CheckIcon class="text-success h-6 w-6" aria-hidden="true" />
 					{/snippet}
 				</StatCard>
 
 				<StatCard value={orderStats.processing} label="W trakcie">
 					{#snippet icon()}
-						<svg class="text-[--ft-accent] h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-						</svg>
+						<ClockIcon class="text-[--ft-accent] h-6 w-6" aria-hidden="true" />
 					{/snippet}
 				</StatCard>
 
 				<StatCard value="{orderStats.totalSpent.toFixed(2)} zł" label="Łączne wydatki" valueClass="text-[--ft-accent]">
 					{#snippet icon()}
-						<svg class="text-[--ft-accent] h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-						</svg>
+						<CurrencyDollarIcon class="text-[--ft-accent] h-6 w-6" aria-hidden="true" />
 					{/snippet}
 				</StatCard>
 			</div>
@@ -183,14 +164,12 @@
 			</div>
 		</section>
 
-		<!-- Orders List -->
+		<!-- Orders ListIcon -->
 		<section>
 			{#if filteredOrders.length === 0}
 				<div class="py-12 text-center">
 					<div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-[--ft-frost]">
-						<svg class="h-8 w-8 text-[--ft-text-muted]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-						</svg>
+						<ShoppingBagIcon class="h-8 w-8 text-[--ft-text-muted]" aria-hidden="true" />
 					</div>
 					<h3 class="mb-2 text-xl font-bold text-[--ft-text]">
 						{statusFilter === 'all' ? 'Brak zamówień' : 'Brak zamówień z wybranym statusem'}

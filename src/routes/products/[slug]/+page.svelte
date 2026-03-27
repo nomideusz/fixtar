@@ -11,6 +11,7 @@
 	import { formatProductDescription } from '$lib/utils/html';
 	import { extractSpecTable } from '$lib/utils/specs';
 	import type { Product } from '$lib/stores/products.svelte';
+	import { HeartIcon, TagIcon, WarningCircleIcon } from 'phosphor-svelte';
 
 	interface Props {
 		data: {
@@ -90,7 +91,7 @@
 				<ProductGallery images={allImages} productName={product.name} badges={imageBadges} />
 			</div>
 
-			<!-- Product Info -->
+			<!-- Product InfoIcon -->
 			<div class="flex flex-col gap-5">
 				<!-- Header -->
 				<div class="pb-5 border-b border-[--ft-line]">
@@ -113,9 +114,7 @@
 							<div class="text-sm text-[--ft-text-muted]">SKU: <span class="font-mono">{product.sku}</span></div>
 						{/if}
 						<button class="wishlist-btn" class:is-active={isWishlisted} onclick={toggleWishlist}>
-							<svg width="16" height="16" viewBox="0 0 24 24" fill={isWishlisted ? 'currentColor' : 'none'} stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-								<path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
-							</svg>
+							<HeartIcon weight={isWishlisted ? 'fill' : 'regular'} class="h-4 w-4" aria-hidden="true" />
 							{isWishlisted ? 'W ulubionych' : 'Dodaj do ulubionych'}
 						</button>
 					</div>
@@ -128,9 +127,7 @@
 						<div class="flex flex-wrap gap-2">
 							{#each product.expand.categories as category (category.id)}
 								<a href="/products?category={category.slug}" class="category-pill">
-									<svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-									</svg>
+									<TagIcon class="h-3.5 w-3.5" aria-hidden="true" />
 									{category.name}
 								</a>
 							{/each}
@@ -167,9 +164,7 @@
 				{:else}
 					<Card class="bg-danger-500/10 border-danger-500/20 border p-6">
 						<div class="text-center">
-							<svg class="text-danger mx-auto mb-4 h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-							</svg>
+							<WarningCircleIcon class="text-danger mx-auto mb-4 h-12 w-12" aria-hidden="true" />
 							<h3 class="mb-2 text-lg font-semibold text-[--ft-text]">Produkt niedostępny</h3>
 							<p class="mb-4 text-[--ft-text-faint]">Ten produkt jest obecnie wyprzedany</p>
 							<Button disabled class="w-full" size="lg">Wyprzedane</Button>
@@ -274,12 +269,12 @@
 		box-shadow: var(--ft-shadow-sm);
 	}
 
-	.category-pill svg {
+	.category-pill :global(svg) {
 		color: var(--ft-text-muted);
 		transition: color 0.15s ease;
 	}
 
-	.category-pill:hover svg {
+	.category-pill:hover :global(svg) {
 		color: var(--ft-cta);
 	}
 

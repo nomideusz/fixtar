@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Card from '$lib/components/ui/Card.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
+	import { CaretLeftIcon } from 'phosphor-svelte';
 	import { notifications } from '$lib/stores';
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
@@ -29,9 +30,7 @@
 <div>
 	<div class="mb-6 flex items-center gap-4">
 		<Button href="/account/addresses" variant="ghost" size="sm">
-			<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-			</svg>
+			<CaretLeftIcon class="mr-2 h-4 w-4" aria-hidden="true" />
 			Powrót do adresów
 		</Button>
 		<h1 class="text-2xl font-bold text-[--ft-text]">Dodaj nowy adres</h1>

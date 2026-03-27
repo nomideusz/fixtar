@@ -2,6 +2,7 @@
 	import { cart } from '$lib/stores';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
+	import { ShoppingCartSimpleIcon, ImageSquareIcon, MinusIcon, PlusIcon } from 'phosphor-svelte';
 
 	let couponCode = $state('');
 	let discount = $state(0);
@@ -32,19 +33,7 @@
 
 	{#if cart.items.length === 0}
 		<div class="py-16 text-center">
-			<svg
-				class="mx-auto h-24 w-24 text-[--ft-text-muted]"
-				fill="none"
-				stroke="currentColor"
-				viewBox="0 0 24 24"
-			>
-				<path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					stroke-width="1"
-					d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-				/>
-			</svg>
+			<ShoppingCartSimpleIcon class="mx-auto h-24 w-24 text-[--ft-text-muted]" weight="thin" aria-hidden="true" />
 			<h2 class="mt-4 text-xl font-semibold text-[--ft-text]">Your cart is empty</h2>
 			<p class="mt-2 text-[--ft-text-muted]">Start shopping to add items to your cart</p>
 			<Button href="/products" class="mt-6">Browse Products</Button>
@@ -62,19 +51,7 @@
 									<img src={item.image} alt={item.name} class="h-20 w-20 rounded object-cover" width="80" height="80" loading="lazy" />
 								{:else}
 									<div class="flex h-20 w-20 items-center justify-center rounded bg-[--ft-frost]">
-										<svg
-											class="h-8 w-8 text-[--ft-text-muted]"
-											fill="none"
-											stroke="currentColor"
-											viewBox="0 0 24 24"
-										>
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												stroke-width="2"
-												d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-											/>
-										</svg>
+										<ImageSquareIcon class="h-8 w-8 text-[--ft-text-muted]" aria-hidden="true" />
 									</div>
 								{/if}
 
@@ -89,14 +66,7 @@
 										class="rounded border border-[--ft-line] p-1 hover:bg-[--ft-frost]"
 										aria-label="Decrease quantity"
 									>
-										<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												stroke-width="2"
-												d="M20 12H4"
-											/>
-										</svg>
+										<MinusIcon class="h-4 w-4" aria-hidden="true" />
 									</button>
 									<span class="w-12 text-center font-medium">{item.quantity}</span>
 									<button
@@ -104,14 +74,7 @@
 										class="rounded border border-[--ft-line] p-1 hover:bg-[--ft-frost]"
 										aria-label="Increase quantity"
 									>
-										<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												stroke-width="2"
-												d="M12 4v16m8-8H4"
-											/>
-										</svg>
+										<PlusIcon class="h-4 w-4" aria-hidden="true" />
 									</button>
 								</div>
 

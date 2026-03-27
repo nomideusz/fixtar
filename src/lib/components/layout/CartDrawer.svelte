@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { fade, fly } from 'svelte/transition';
 	import Button from '$lib/components/ui/Button.svelte';
+	import { TrashIcon, XIcon } from 'phosphor-svelte';
 	import type { TranslationKey } from '$lib/i18n/translations';
 	import { cart } from '$lib/stores';
 	import type { CartItem } from '$lib/stores';
@@ -166,18 +167,14 @@
 					title={t('clearCart')}
 					aria-label={t('clearCart')}
 				>
-					<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-					</svg>
+					<TrashIcon size={16} aria-hidden="true" />
 				</button>
 				<button
 					onclick={close}
 					class="cart-drawer__icon-btn cart-drawer__icon-btn--close"
 					aria-label={t('closeCartDrawer')}
 				>
-					<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-					</svg>
+					<XIcon size={16} aria-hidden="true" />
 				</button>
 			</div>
 		</div>
@@ -237,9 +234,7 @@
 								class="cart-drawer__icon-btn cart-drawer__icon-btn--remove"
 								aria-label={t('remove')}
 							>
-								<svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-								</svg>
+								<XIcon size={14} aria-hidden="true" />
 							</button>
 						</div>
 					{/each}

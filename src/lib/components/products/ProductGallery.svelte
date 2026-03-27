@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Card from '$lib/components/ui/Card.svelte';
 	import ImageZoomModal from './ImageZoomModal.svelte';
+	import { MagnifyingGlassPlusIcon, ImageSquareIcon } from 'phosphor-svelte';
 
 	interface Props {
 		images: string[];
@@ -42,19 +43,7 @@
 					<div
 						class="rounded-lg bg-[--ft-surface] px-3 py-2 text-sm font-medium text-[--ft-text] backdrop-blur-sm"
 					>
-						<svg
-							class="mr-1 inline h-4 w-4"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-							/>
-						</svg>
+						<MagnifyingGlassPlusIcon size={16} weight="light" class="mr-1 inline" aria-hidden="true" />
 						Kliknij aby powiększyć
 					</div>
 				</div>
@@ -100,19 +89,7 @@
 	{:else}
 		<div class="flex h-96 items-center justify-center rounded-xl bg-[--ft-frost]">
 			<div class="text-center">
-				<svg
-					class="mx-auto mb-4 h-16 w-16 text-[--ft-text-faint]"
-					fill="none"
-					stroke="currentColor"
-					viewBox="0 0 24 24"
-				>
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-					/>
-				</svg>
+				<ImageSquareIcon size={64} weight="light" class="mx-auto mb-4 text-[--ft-text-faint]" aria-hidden="true" />
 				<p class="text-[--ft-text-muted]">Brak zdjęcia produktu</p>
 			</div>
 		</div>

@@ -19,6 +19,28 @@ function getClient(): Client {
 
 export { getClient };
 
+// ── Category Mappings ──────────────────────────────────────
+
+const NATIVE_TO_APP_CATEGORIES: Record<string, { slug: string, name: string }> = {
+	'wiertarki-i-wkretarki': { slug: 'wiertarki-i-wkretarki', name: 'Wiertarki i wkrętarki' },
+	'mlotowiertarki-i-mloty': { slug: 'mlotowiertarki-i-mloty', name: 'Młoty i młotowiertarki' },
+	'szlifierki-i-polerki': { slug: 'szlifierki-i-polerki', name: 'Szlifierki i polerki' },
+	'pily-i-pilarki': { slug: 'pily-i-pilarki', name: 'Piły i pilarki' },
+	'narzedzia-pneumatyczne': { slug: 'pneumatyczne-i-budowlane', name: 'Narzędzia pneumatyczne i budowlane' },
+	'mieszadla-i-budowlane': { slug: 'pneumatyczne-i-budowlane', name: 'Narzędzia pneumatyczne i budowlane' },
+	'dom-i-ogrod': { slug: 'ogrod-i-akcesoria', name: 'Ogród i akcesoria' },
+	'zestawy-i-akcesoria': { slug: 'ogrod-i-akcesoria', name: 'Ogród i akcesoria' }
+};
+
+const APP_TO_NATIVE_CATEGORIES: Record<string, string[]> = {
+	'wiertarki-i-wkretarki': ['wiertarki-i-wkretarki'],
+	'mlotowiertarki-i-mloty': ['mlotowiertarki-i-mloty'],
+	'szlifierki-i-polerki': ['szlifierki-i-polerki'],
+	'pily-i-pilarki': ['pily-i-pilarki'],
+	'pneumatyczne-i-budowlane': ['narzedzia-pneumatyczne', 'mieszadla-i-budowlane'],
+	'ogrod-i-akcesoria': ['dom-i-ogrod', 'zestawy-i-akcesoria']
+};
+
 // ── Types ──────────────────────────────────────────────────
 
 export interface DBProduct {
@@ -82,8 +104,10 @@ export async function getAllProducts(opts: {
 	}
 
 	if (category) {
-		where += ' AND category_slug = ?';
-		args.push(category);
+		const nativeSlugs = APP_TO_NATIVE_CATEGORIES[category] || [category];
+		const placeholders = nativeSlugs.map(() => '?').join(',');
+		where += ` AND category_slug IN (${placeholders})`;
+		args.push(...nativeSlugs);
 	}
 
 	if (minPrice !== undefined) {
@@ -147,10 +171,12 @@ export async function getProductById(id: string): Promise<DBProduct | null> {
 
 export async function getRelatedProducts(categorySlug: string, excludeId: string, limit = 4): Promise<DBProduct[]> {
 	const db = getClient();
+	const nativeSlugs = APP_TO_NATIVE_CATEGORIES[categorySlug] || [categorySlug];
+	const placeholders = nativeSlugs.map(() => '?').join(',');
 	const result = await db.execute({
 		sql: `SELECT id, name, slug, description, price, original_price, image, category, category_slug, tags, in_stock, sku, ean, weight
-		      FROM products WHERE category_slug = ? AND id != ? LIMIT ?`,
-		args: [categorySlug, excludeId, limit]
+		      FROM products WHERE category_slug IN (${placeholders}) AND id != ? LIMIT ?`,
+		args: [...nativeSlugs, excludeId, limit]
 	});
 	return result.rows as unknown as DBProduct[];
 }
@@ -161,10 +187,25 @@ export async function getCategories(): Promise<DBCategory[]> {
 		`SELECT category, category_slug, COUNT(*) as count
 		 FROM products
 		 WHERE category != ''
-		 GROUP BY category, category_slug
-		 ORDER BY count DESC`
+		 GROUP BY category, category_slug`
 	);
-	return result.rows as unknown as DBCategory[];
+
+	const map = new Map<string, DBCategory>();
+
+	for (const row of result.rows as any) {
+		const mapping = NATIVE_TO_APP_CATEGORIES[row.category_slug];
+		const slug = mapping ? mapping.slug : row.category_slug;
+		const name = mapping ? mapping.name : row.category;
+
+		const existing = map.get(slug);
+		if (existing) {
+			existing.count += Number(row.count);
+		} else {
+			map.set(slug, { category: name, category_slug: slug, count: Number(row.count) });
+		}
+	}
+
+	return Array.from(map.values()).sort((a, b) => b.count - a.count);
 }
 
 export async function getTotalProducts(): Promise<number> {
@@ -181,6 +222,10 @@ export function toStoreProduct(p: DBProduct): Product {
 	let tags: string[] = [];
 	try { tags = JSON.parse(p.tags || '[]'); } catch { /* */ }
 
+	const mapping = NATIVE_TO_APP_CATEGORIES[p.category_slug];
+	const uiCategoryName = mapping ? mapping.name : p.category;
+	const uiCategorySlug = mapping ? mapping.slug : p.category_slug;
+
 	return {
 		id: p.id,
 		name: p.name,
@@ -190,7 +235,7 @@ export function toStoreProduct(p: DBProduct): Product {
 		compareAtPrice: p.original_price ?? undefined,
 		sku: p.sku || '',
 		barcode: p.ean || '',
-		categories: [p.category_slug],
+		categories: [uiCategorySlug],
 		mainImage: p.image || undefined,
 		gallery: [],
 		status: 'active',
@@ -205,7 +250,7 @@ export function toStoreProduct(p: DBProduct): Product {
 		featured: false,
 		expand: {
 			categories: p.category
-				? [{ id: p.category_slug, name: p.category, slug: p.category_slug }]
+				? [{ id: uiCategorySlug, name: uiCategoryName, slug: uiCategorySlug }]
 				: []
 		}
 	};

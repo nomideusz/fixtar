@@ -5,6 +5,7 @@
 	import Card from '$lib/components/ui/Card.svelte';
 	import Modal from '$lib/components/ui/Modal.svelte';
 	import { userStore } from '$lib/stores';
+	import { LinkIcon, WarningCircleIcon, CheckCircleIcon } from 'phosphor-svelte';
 	import { SvelteSet, SvelteURLSearchParams } from 'svelte/reactivity';
 	import StatusOverviewCards from '$lib/components/admin/StatusOverviewCards.svelte';
 	import SortableHeader from '$lib/components/admin/SortableHeader.svelte';
@@ -91,7 +92,7 @@
 	);
 
 	const toastIcon = $derived(
-		toastType === 'success' ? '✅ Success' : toastType === 'error' ? '❌ Error' : 'ℹ️ Info'
+		toastType === 'success' ? '✅ Success' : toastType === 'error' ? '❌ Error' : 'ℹ️ InfoIcon'
 	);
 
 	// --- URL / Navigation ---
@@ -230,14 +231,7 @@
 		</div>
 		<div class="flex gap-4">
 			<Button href="/admin/baselinker" variant="secondary">
-				<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
-					/>
-				</svg>
+				<LinkIcon class="mr-2 h-4 w-4" aria-hidden="true" />
 				BaseLinker
 			</Button>
 			<Button href="/admin/baselinker" variant="secondary">Sync Products</Button>
@@ -248,19 +242,7 @@
 	{#if data.error}
 		<div class="bg-danger/5 border-danger/10 mb-6 rounded-md border p-4">
 			<div class="flex items-center">
-				<svg
-					class="text-danger mr-3 h-5 w-5"
-					fill="none"
-					stroke="currentColor"
-					viewBox="0 0 24 24"
-				>
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-					/>
-				</svg>
+				<WarningCircleIcon class="text-danger mr-3 h-5 w-5" aria-hidden="true" />
 				<p class="text-danger">Error: {data.error}</p>
 			</div>
 		</div>
@@ -354,19 +336,7 @@
 			<div class="flex items-center justify-between">
 				<div class="flex items-center space-x-4">
 					<div class="flex items-center">
-						<svg
-							class="text-[--ft-accent] mr-2 h-5 w-5"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-							/>
-						</svg>
+						<CheckCircleIcon class="text-[--ft-accent] mr-2 h-5 w-5" aria-hidden="true" />
 						<p class="text-[--ft-text-strong] font-medium">{selectedProducts.size} products selected</p>
 					</div>
 					<select

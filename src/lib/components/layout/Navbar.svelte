@@ -4,6 +4,7 @@
 	import { cart, userStore } from '$lib/stores';
 	import FixTarLogo from '$lib/images/logo/fixtar-logo-primary.webp';
 	import NavSearch from './NavSearch.svelte';
+	import { SunIcon, MoonIcon, XIcon, MagnifyingGlassIcon, ShoppingCartSimpleIcon, UserIcon, SignInIcon } from 'phosphor-svelte';
 
 	interface Props {
 		onCartOpen?: () => void;
@@ -13,7 +14,7 @@
 
 	let mobileMenuOpen = $state(false);
 	let scrolled = $state(false);
-	let searchOpen = $state(false);
+	let mobileSearchOpen = $state(false);
 	let darkMode = $state(false);
 
 	function closeMobileMenu() {
@@ -56,8 +57,8 @@
 
 	const cartCount = $derived(cart.count);
 
-	function toggleSearch() {
-		searchOpen = !searchOpen;
+	function toggleMobileSearch() {
+		mobileSearchOpen = !mobileSearchOpen;
 	}
 
 	function toggleDarkMode() {
@@ -109,22 +110,20 @@
 	<div class="nav-inner">
 		<!-- Logo -->
 		<a href="/" class="nav-logo" aria-label="FixTar — Strona główna">
-			<img src={FixTarLogo} alt="" class="logo-img" width="120" height="32" />
+			<img src={FixTarLogo} alt="" class="logo-img" width="140" height="38" />
 		</a>
 
-		<!-- Desktop links — clean text, no icons -->
+		<!-- Desktop inline search (Always visible) -->
+		<div class="nav-search-wrap">
+			<NavSearch />
+		</div>
+
+		<!-- Desktop links — clean text -->
 		<div class="nav-links" role="menubar">
 			{@render navLinks()}
 		</div>
 
-		<!-- Desktop inline search -->
-		{#if searchOpen}
-			<div class="nav-search-wrap">
-				<NavSearch onClose={() => (searchOpen = false)} />
-			</div>
-		{/if}
-
-		<!-- Actions — minimal icon buttons -->
+		<!-- Actions -->
 		<div class="nav-actions">
 			<!-- Dark mode toggle -->
 			<button
@@ -134,61 +133,56 @@
 				title={darkMode ? 'Tryb jasny' : 'Tryb ciemny'}
 			>
 				{#if darkMode}
-					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-						<circle cx="12" cy="12" r="5" /><line x1="12" y1="1" x2="12" y2="3" /><line x1="12" y1="21" x2="12" y2="23" /><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" /><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" /><line x1="1" y1="12" x2="3" y2="12" /><line x1="21" y1="12" x2="23" y2="12" /><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" /><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-					</svg>
+					<SunIcon size={20} weight="bold" aria-hidden="true" />
 				{:else}
-					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-						<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-					</svg>
+					<MoonIcon size={20} weight="bold" aria-hidden="true" />
 				{/if}
 			</button>
 
 			<button
-				onclick={toggleSearch}
-				class="nav-icon-btn"
-				class:is-active={searchOpen}
+				onclick={toggleMobileSearch}
+				class="nav-icon-btn mobile-search-btn"
+				class:is-active={mobileSearchOpen}
 				aria-label="Szukaj"
 				title="Szukaj"
 			>
-				{#if searchOpen}
-					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-						<line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
-					</svg>
+				{#if mobileSearchOpen}
+					<XIcon size={22} weight="bold" aria-hidden="true" />
 				{:else}
-					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-						<circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
-					</svg>
+					<MagnifyingGlassIcon size={22} weight="bold" aria-hidden="true" />
 				{/if}
 			</button>
 
 			<!-- Cart -->
 			<button
 				onclick={() => onCartOpen?.()}
-				class="nav-icon-btn"
+				class="nav-icon-btn nav-action-btn"
 				aria-label="Koszyk{cartCount > 0 ? ` (${cartCount})` : ''}"
 				title="Koszyk"
 			>
-				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-					<path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" /><line x1="3" y1="6" x2="21" y2="6" /><path d="M16 10a4 4 0 01-8 0" />
-				</svg>
-				{#if cartCount > 0}
-					<span class="cart-badge" aria-hidden="true">{cartCount}</span>
-				{/if}
+				<div class="nav-action-icon-wrap">
+					<ShoppingCartSimpleIcon size={24} weight="bold" aria-hidden="true" />
+					{#if cartCount > 0}
+						<span class="cart-badge" aria-hidden="true">{cartCount}</span>
+					{/if}
+				</div>
+				<span class="nav-action-label desktop-only">Koszyk</span>
 			</button>
 
 			<!-- Account -->
 			{#if userStore.current}
-				<a href="/account" class="nav-icon-btn" aria-label="Moje konto" title="Moje konto">
-					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-						<path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" />
-					</svg>
+				<a href="/account" class="nav-icon-btn nav-action-btn" aria-label="Moje konto" title="Moje konto">
+					<div class="nav-action-icon-wrap">
+						<UserIcon size={24} weight="bold" aria-hidden="true" />
+					</div>
+					<span class="nav-action-label desktop-only">Konto</span>
 				</a>
 			{:else}
-				<a href="/auth/login" class="nav-icon-btn desktop-only" aria-label="Zaloguj się" title="Zaloguj się">
-					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-						<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" /><polyline points="10 17 15 12 10 7" /><line x1="15" y1="12" x2="3" y2="12" />
-					</svg>
+				<a href="/auth/login" class="nav-icon-btn nav-action-btn desktop-only" aria-label="Zaloguj się" title="Zaloguj się">
+					<div class="nav-action-icon-wrap">
+						<SignInIcon size={24} weight="bold" aria-hidden="true" />
+					</div>
+					<span class="nav-action-label desktop-only">Zaloguj</span>
 				</a>
 			{/if}
 
@@ -208,6 +202,13 @@
 		</div>
 	</div>
 
+	<!-- Mobile dropdown search -->
+	{#if mobileSearchOpen}
+		<div class="mobile-search-bar">
+			<NavSearch onClose={() => (mobileSearchOpen = false)} />
+		</div>
+	{/if}
+
 	<!-- Mobile menu -->
 	{#if mobileMenuOpen}
 		<div class="mobile-overlay" role="dialog" aria-modal="true" aria-label="Menu nawigacji">
@@ -220,14 +221,10 @@
 				<!-- Dark mode toggle (mobile) -->
 				<button class="mobile-link" onclick={() => { toggleDarkMode(); }}>
 					{#if darkMode}
-						<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-							<circle cx="12" cy="12" r="5" /><line x1="12" y1="1" x2="12" y2="3" /><line x1="12" y1="21" x2="12" y2="23" /><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" /><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" /><line x1="1" y1="12" x2="3" y2="12" /><line x1="21" y1="12" x2="23" y2="12" /><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" /><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-						</svg>
+						<SunIcon size={18} aria-hidden="true" />
 						Tryb jasny
 					{:else}
-						<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-							<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-						</svg>
+						<MoonIcon size={18} aria-hidden="true" />
 						Tryb ciemny
 					{/if}
 				</button>
@@ -268,10 +265,10 @@
 		max-width: var(--ft-container);
 		margin: 0 auto;
 		padding: 0 var(--ft-gutter);
-		height: 60px;
+		height: 80px;
 		display: flex;
 		align-items: center;
-		gap: 32px;
+		gap: 24px;
 	}
 
 	/* ── Logo ── */
@@ -300,33 +297,36 @@
 	.nav-links {
 		display: none;
 		align-items: center;
-		gap: 4px;
-		flex: 1;
+		gap: 8px;
 	}
 
-	@media (min-width: 768px) {
+	@media (min-width: 1024px) {
 		.nav-links { display: flex; }
 	}
 
 	.nav-link {
 		position: relative;
-		font-size: 0.82rem;
-		font-weight: 500;
-		color: var(--ft-text-muted);
-		padding: 8px 14px;
+		font-family: var(--font-display);
+		font-size: 0.88rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--ft-text-strong);
+		padding: 10px 14px;
 		border-radius: var(--radius-sm);
 		cursor: pointer;
 		text-decoration: none;
-		transition: color var(--dur-fast) ease;
+		transition: background-color var(--dur-fast) ease, color var(--dur-fast) ease;
 	}
 
 	.nav-link:hover {
-		color: var(--ft-dark);
+		color: var(--ft-cta);
+		background: var(--ft-frost);
 	}
 
 	.nav-link.is-active {
-		color: var(--ft-dark);
-		font-weight: 600;
+		color: var(--ft-cta);
+		font-weight: 800;
 	}
 
 	.nav-link:focus-visible {
@@ -349,11 +349,21 @@
 	.nav-search-wrap {
 		display: none;
 		flex: 1;
-		max-width: 480px;
+		max-width: 580px;
 	}
 
 	@media (min-width: 768px) {
 		.nav-search-wrap { display: block; }
+	}
+
+	.mobile-search-bar {
+		display: block;
+		padding: 12px var(--ft-gutter);
+		background: var(--ft-surface);
+		border-bottom: 1px solid var(--ft-line);
+	}
+	@media (min-width: 768px) {
+		.mobile-search-bar { display: none; }
 	}
 
 	/* ── Action icons ── */
@@ -366,12 +376,14 @@
 
 	.nav-icon-btn {
 		display: flex;
+		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		min-width: 44px;
-		min-height: 44px;
+		gap: 4px;
+		min-width: 48px;
+		min-height: 48px;
 		border-radius: var(--radius-sm);
-		color: var(--ft-text-muted);
+		color: var(--ft-text-strong);
 		background: transparent;
 		border: none;
 		cursor: pointer;
@@ -380,9 +392,24 @@
 		transition: color var(--dur-fast) ease;
 	}
 
-	.nav-icon-btn:hover { color: var(--ft-dark); }
+	.nav-action-btn:hover { color: var(--ft-cta); }
 
-	.nav-icon-btn.is-active { color: var(--ft-dark); }
+	.nav-action-icon-wrap {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.nav-action-label {
+		font-size: 0.65rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	.mobile-search-btn { display: flex; }
+	@media (min-width: 768px) { .mobile-search-btn { display: none; } }
 
 	.nav-icon-btn:focus-visible {
 		outline: 2px solid var(--ft-accent);
@@ -395,8 +422,8 @@
 	/* ── Cart badge ── */
 	.cart-badge {
 		position: absolute;
-		top: 6px;
-		right: 6px;
+		top: -6px;
+		right: -10px;
 		min-width: 16px;
 		height: 16px;
 		display: flex;

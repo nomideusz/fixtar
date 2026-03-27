@@ -10,6 +10,7 @@
 	import OrderSummary from '$lib/components/checkout/OrderSummary.svelte';
 	import PageHeader from '$lib/components/ui/PageHeader.svelte';
 	import type { PageData, ActionData } from './$types';
+	import { ShoppingCartSimpleIcon, EnvelopeIcon, MapPinIcon, ClockIcon, ArrowsLeftRightIcon, CreditCardIcon, PencilIcon, WarningCircleIcon } from 'phosphor-svelte';
 
 	// --- Props ---
 
@@ -201,19 +202,7 @@
 				<div
 					class="mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-3xl bg-[--ft-frost]"
 				>
-					<svg
-						class="h-10 w-10 text-[--ft-text-muted]"
-						fill="none"
-						stroke="currentColor"
-						viewBox="0 0 24 24"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-						/>
-					</svg>
+					<ShoppingCartSimpleIcon class="h-10 w-10 text-[--ft-text-muted]" aria-hidden="true" />
 				</div>
 				<h2 class="mb-4 text-3xl font-bold text-[--ft-text]">Twój koszyk jest pusty</h2>
 				<p class="mb-8 text-lg text-[--ft-text-muted]">
@@ -267,14 +256,7 @@
 					<div class="border border-[--ft-line] rounded-xl p-8">
 						<SectionHeader title="Dane kontaktowe" iconBgClass="bg-[--ft-frost]" iconColorClass="text-[--ft-accent]">
 							{#snippet icon()}
-								<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="h-4 w-4">
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
-									/>
-								</svg>
+								<EnvelopeIcon class="h-4 w-4" aria-hidden="true" />
 							{/snippet}
 						</SectionHeader>
 
@@ -308,20 +290,7 @@
 					<div class="border border-[--ft-line] rounded-xl p-8">
 						<SectionHeader title="Adres dostawy" iconBgClass="bg-accent-100" iconColorClass="text-success">
 							{#snippet icon()}
-								<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="h-4 w-4">
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-									/>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-									/>
-								</svg>
+								<MapPinIcon class="h-4 w-4" aria-hidden="true" />
 							{/snippet}
 						</SectionHeader>
 
@@ -461,14 +430,7 @@
 					<div class="border border-[--ft-line] rounded-xl p-8">
 						<SectionHeader title="Metoda dostawy" iconBgClass="bg-accent-100" iconColorClass="text-accent-600">
 							{#snippet icon()}
-								<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="h-4 w-4">
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
-									/>
-								</svg>
+								<ArrowsLeftRightIcon class="h-4 w-4" aria-hidden="true" />
 							{/snippet}
 						</SectionHeader>
 
@@ -489,19 +451,7 @@
 													<p class="mt-1 text-sm text-[--ft-text-muted]">{method.description}</p>
 													{#if method.estimatedDeliveryDays}
 														<div class="mt-2 flex items-center">
-															<svg
-																class="mr-1 h-4 w-4 text-[--ft-text-muted]"
-																fill="none"
-																stroke="currentColor"
-																viewBox="0 0 24 24"
-															>
-																<path
-																	stroke-linecap="round"
-																	stroke-linejoin="round"
-																	stroke-width="2"
-																	d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-																/>
-															</svg>
+															<ClockIcon class="mr-1 h-4 w-4 text-[--ft-text-muted]" aria-hidden="true" />
 															<span class="text-sm text-[--ft-text-muted]">
 																Dostawa: {method.estimatedDeliveryDays} dni roboczych
 															</span>
@@ -544,14 +494,7 @@
 					<div class="border border-[--ft-line] rounded-xl p-8">
 						<SectionHeader title="Metoda płatności" iconBgClass="bg-[--ft-frost]" iconColorClass="text-[--ft-accent]">
 							{#snippet icon()}
-								<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="h-4 w-4">
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-									/>
-								</svg>
+								<CreditCardIcon class="h-4 w-4" aria-hidden="true" />
 							{/snippet}
 						</SectionHeader>
 
@@ -599,14 +542,7 @@
 					<div class="border border-[--ft-line] rounded-xl p-8">
 						<SectionHeader title="Dodatkowe informacje">
 							{#snippet icon()}
-								<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="h-4 w-4">
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-									/>
-								</svg>
+								<PencilIcon class="h-4 w-4" aria-hidden="true" />
 							{/snippet}
 						</SectionHeader>
 						<textarea
@@ -642,14 +578,7 @@
 	<div
 		class="bg-danger fixed right-6 bottom-6 z-50 flex max-w-md items-center space-x-3 rounded-xl px-6 py-4 !text-white shadow-2xl"
 	>
-		<svg class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-			<path
-				stroke-linecap="round"
-				stroke-linejoin="round"
-				stroke-width="2"
-				d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-			/>
-		</svg>
+		<WarningCircleIcon class="h-5 w-5 shrink-0" aria-hidden="true" />
 		<span class="font-medium">{form.message}</span>
 	</div>
 {/if}

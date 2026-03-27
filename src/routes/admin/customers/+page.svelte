@@ -6,8 +6,9 @@
 	import { onMount } from 'svelte';
 	import LoadingSpinner from '$lib/components/ui/LoadingSpinner.svelte';
 	import { formatDate } from '$lib/utils/date';
+	import { MagnifyingGlassIcon, UsersIcon, CaretLeftIcon, CaretRightIcon } from 'phosphor-svelte';
 
-	// Check if user is admin
+	// CheckIcon if user is admin
 	$effect(() => {
 		if (!userStore.current || !userStore.current.isAdmin) {
 			goto('/');
@@ -115,14 +116,7 @@
 						onclick={handleSearch}
 						aria-label="Search"
 					>
-						<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-							/>
-						</svg>
+						<MagnifyingGlassIcon class="h-5 w-5" aria-hidden="true" />
 					</button>
 				</div>
 			</div>
@@ -148,19 +142,7 @@
 			</div>
 		{:else if customers.length === 0}
 			<div class="py-12 text-center">
-				<svg
-					class="mx-auto h-12 w-12 text-[--ft-text-muted]"
-					fill="none"
-					viewBox="0 0 24 24"
-					stroke="currentColor"
-				>
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-					/>
-				</svg>
+				<UsersIcon class="mx-auto h-12 w-12 text-[--ft-text-muted]" aria-hidden="true" />
 				<h3 class="mt-2 text-sm font-medium text-[--ft-text-strong]">No customers found</h3>
 				<p class="mt-1 text-sm text-[--ft-text-muted]">
 					{searchTerm ? 'Try adjusting your search criteria.' : 'No customers have registered yet.'}
@@ -299,13 +281,7 @@
 										disabled={!hasPrevPage}
 										aria-label="Previous page"
 									>
-										<svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-											<path
-												fill-rule="evenodd"
-												d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-												clip-rule="evenodd"
-											/>
-										</svg>
+										<CaretLeftIcon class="h-5 w-5" aria-hidden="true" />
 									</button>
 
 									{#each Array.from({ length: Math.min(5, totalPages) }, (_, i) => i + Math.max(1, currentPage - 2)).filter((p) => p <= totalPages) as pageNum (pageNum)}
@@ -326,13 +302,7 @@
 										disabled={!hasNextPage}
 										aria-label="Next page"
 									>
-										<svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-											<path
-												fill-rule="evenodd"
-												d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-												clip-rule="evenodd"
-											/>
-										</svg>
+										<CaretRightIcon class="h-5 w-5" aria-hidden="true" />
 									</button>
 								</nav>
 							</div>

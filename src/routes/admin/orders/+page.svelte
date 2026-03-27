@@ -2,6 +2,7 @@
 	import Card from '$lib/components/ui/Card.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
+	import { XIcon } from 'phosphor-svelte';
 
 	// Mock orders data
 	let orders = $state([
@@ -167,18 +168,11 @@
 						class="text-[--ft-text-muted] hover:text-[--ft-text-muted]"
 						aria-label="Close modal"
 					>
-						<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M6 18L18 6M6 6l12 12"
-							/>
-						</svg>
+						<XIcon class="h-6 w-6" aria-hidden="true" />
 					</button>
 				</div>
 
-				<!-- Customer Info -->
+				<!-- Customer InfoIcon -->
 				<div class="mb-6">
 					<h3 class="mb-2 font-medium">Customer Information</h3>
 					<p>{selectedOrder.customer}</p>

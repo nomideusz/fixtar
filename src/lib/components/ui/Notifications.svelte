@@ -3,6 +3,7 @@
 	import { fly } from 'svelte/transition';
 	import { SvelteMap } from 'svelte/reactivity';
 	import type { Notification } from '$lib/stores/notifications.svelte';
+	import { CheckCircleIcon, XCircleIcon, WarningCircleIcon, InfoIcon, XIcon } from 'phosphor-svelte';
 
 	const typeClasses: Record<string, string> = {
 		success: 'bg-success text-[--ft-text] border-success/40',
@@ -23,14 +24,6 @@
 		error: 'bg-[--ft-frost] hover:bg-[--ft-line] text-[--ft-text]/70 hover:text-[--ft-text]',
 		info: 'bg-[--ft-frost] hover:bg-[--ft-line] text-[--ft-text]/70 hover:text-[--ft-text]',
 		warning: 'bg-black/5 hover:bg-black/10 text-[--ft-text] hover:text-[--ft-text-strong]'
-	};
-
-	const iconPaths: Record<string, string> = {
-		success: 'M5 13l4 4L19 7',
-		error: 'M6 18L18 6M6 6l12 12',
-		info: 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
-		warning:
-			'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z'
 	};
 
 	// Auto-dismiss timer
@@ -84,19 +77,15 @@
 				<!-- Icon -->
 				<div class="relative shrink-0">
 					<div class="relative flex h-8 w-8 items-center justify-center rounded-full bg-[--ft-frost]">
-						<svg
-							class="h-4 w-4"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-							stroke-width="2"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								d={iconPaths[notification.type] || iconPaths.info}
-							/>
-						</svg>
+						{#if notification.type === 'success'}
+							<CheckCircleIcon size={16} weight="fill" aria-hidden="true" />
+						{:else if notification.type === 'error'}
+							<XCircleIcon size={16} weight="fill" aria-hidden="true" />
+						{:else if notification.type === 'warning'}
+							<WarningCircleIcon size={16} weight="fill" aria-hidden="true" />
+						{:else}
+							<InfoIcon size={16} weight="fill" aria-hidden="true" />
+						{/if}
 					</div>
 				</div>
 
@@ -118,19 +107,7 @@
 					] || closeButtonClasses.info}"
 					aria-label="Zamknij powiadomienie"
 				>
-					<svg
-						class="h-4 w-4 transition-colors"
-						fill="none"
-						stroke="currentColor"
-						viewBox="0 0 24 24"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M6 18L18 6M6 6l12 12"
-						/>
-					</svg>
+					<XIcon size={16} weight="light" aria-hidden="true" />
 				</button>
 			</div>
 

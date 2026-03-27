@@ -1,5 +1,6 @@
 <script lang="ts">
 	import PageHeader from '$lib/components/ui/PageHeader.svelte';
+	import { InfoIcon, CheckIcon, HeartIcon, UsersThreeIcon, EnvelopeIcon, TargetIcon, LightningIcon, TrophyIcon, RocketIcon, WrenchIcon } from 'phosphor-svelte';
 
 	// Team members data
 	const teamMembers = [
@@ -97,14 +98,7 @@
 						<div
 							class="bg-[--ft-frost] text-[--ft-accent] inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold"
 						>
-							<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-								/>
-							</svg>
+							<InfoIcon class="mr-2 h-4 w-4" aria-hidden="true" />
 							Nasza Historia
 						</div>
 
@@ -125,7 +119,7 @@
 							</p>
 						</div>
 
-						<!-- Features List -->
+						<!-- Features ListIcon -->
 						<div class="space-y-4">
 							{#each [{ title: 'Eksperckie Doradztwo', desc: 'Personalizowane rekomendacje od naszych specjalistów' }, { title: 'Gwarancja Jakości', desc: 'Każdy produkt jest starannie testowany i wybrany' }, { title: 'Wsparcie Techniczne', desc: 'Ciągłe wsparcie długo po dokonaniu zakupu' }, { title: 'Szybka Dostawa', desc: 'Realizacja zamówień w 24 godziny' }] as item (item.title)}
 								<div class="group flex items-start">
@@ -133,19 +127,7 @@
 										<div
 											class="bg-[--ft-accent] flex h-6 w-6 items-center justify-center rounded-full"
 										>
-											<svg
-												class="h-3 w-3 text-white"
-												fill="none"
-												stroke="currentColor"
-												viewBox="0 0 24 24"
-											>
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													stroke-width="2"
-													d="M5 13l4 4L19 7"
-												/>
-											</svg>
+											<CheckIcon class="h-3 w-3 text-white" aria-hidden="true" />
 										</div>
 									</div>
 									<div class="ml-4">
@@ -205,14 +187,7 @@
 				<div
 					class="bg-[--ft-frost] text-[--ft-accent] mb-4 inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold"
 				>
-					<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-						/>
-					</svg>
+					<HeartIcon class="mr-2 h-4 w-4" aria-hidden="true" />
 					Nasze Wartości
 				</div>
 				<h2 class="mb-6 text-4xl font-bold text-[--ft-text]">Co Nas Motywuje</h2>
@@ -229,40 +204,17 @@
 								class="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-[--ft-frost] text-[--ft-accent]"
 							>
 								{#if value.icon === 'target'}
-									<svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8">
-										<circle cx="12" cy="12" r="10" />
-										<circle cx="12" cy="12" r="6" />
-										<circle cx="12" cy="12" r="2" />
-									</svg>
+									<TargetIcon class="h-8 w-8" aria-hidden="true" />
 								{:else if value.icon === 'lightning'}
-									<svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8">
-										<path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-									</svg>
+									<LightningIcon class="h-8 w-8" aria-hidden="true" />
 								{:else if value.icon === 'users'}
-									<svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8">
-										<path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
-										<circle cx="9" cy="7" r="4" />
-										<path d="M23 21v-2a4 4 0 00-3-3.87" />
-										<path d="M16 3.13a4 4 0 010 7.75" />
-									</svg>
+									<UsersThreeIcon class="h-8 w-8" aria-hidden="true" />
 								{:else if value.icon === 'trophy'}
-									<svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8">
-										<path d="M8 21h8M12 17v4" />
-										<path d="M7 4H4a1 1 0 00-1 1v3a4 4 0 004 4h1" />
-										<path d="M17 4h3a1 1 0 011 1v3a4 4 0 01-4 4h-1" />
-										<path d="M7 4h10v8a5 5 0 01-10 0V4z" />
-									</svg>
+									<TrophyIcon class="h-8 w-8" aria-hidden="true" />
 								{:else if value.icon === 'rocket'}
-									<svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8">
-										<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 00-2.91-.09z" />
-										<path d="M12 15l-3-3a22 22 0 012-3.95A12.88 12.88 0 0122 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 01-4 2z" />
-										<path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0" />
-										<path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" />
-									</svg>
+									<RocketIcon class="h-8 w-8" aria-hidden="true" />
 								{:else if value.icon === 'wrench'}
-									<svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8">
-										<path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" />
-									</svg>
+									<WrenchIcon class="h-8 w-8" aria-hidden="true" />
 								{/if}
 							</div>
 							<h3 class="mb-4 text-xl font-bold text-[--ft-text]">
@@ -283,14 +235,7 @@
 				<div
 					class="bg-[--ft-frost] text-[--ft-accent] mb-4 inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold"
 				>
-					<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-						/>
-					</svg>
+					<UsersThreeIcon class="mr-2 h-4 w-4" aria-hidden="true" />
 					Nasz Zespół
 				</div>
 				<h2 class="mb-6 text-4xl font-bold text-[--ft-text]">Poznaj Ludzi Za FixTar</h2>
@@ -326,14 +271,7 @@
 									href="mailto:{member.email}"
 									class="text-sm font-medium text-[--ft-accent] hover:underline inline-flex items-center gap-1"
 								>
-									<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-										/>
-									</svg>
+									<EnvelopeIcon class="h-4 w-4" aria-hidden="true" />
 									Email
 								</a>
 								<a

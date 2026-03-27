@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Button from '$lib/components/ui/Button.svelte';
 	import Card from '$lib/components/ui/Card.svelte';
+	import { WarningCircleIcon, LinkIcon, TagIcon, ArrowsClockwiseIcon } from 'phosphor-svelte';
 
 	interface Inventory {
 		inventory_id: number;
@@ -90,14 +91,7 @@
 	{#if error}
 		<div class="bg-danger/5 border-danger/10 rounded-lg border p-4">
 			<div class="flex items-center">
-				<svg class="text-danger mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-					/>
-				</svg>
+				<WarningCircleIcon class="text-danger mr-2 h-5 w-5" aria-hidden="true" />
 				<p class="text-danger-dark">{error}</p>
 			</div>
 			{#if error.includes('API token')}
@@ -114,14 +108,7 @@
 		<Card class="p-4">
 			<div class="flex items-center gap-3">
 				<div class="bg-[--ft-frost] flex h-10 w-10 items-center justify-center rounded-lg">
-					<svg class="text-[--ft-accent] h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
-						/>
-					</svg>
+					<LinkIcon class="text-[--ft-accent] h-5 w-5" aria-hidden="true" />
 				</div>
 				<div>
 					<p class="text-sm text-[--ft-text-muted]">Status połączenia</p>
@@ -135,19 +122,7 @@
 		<Card class="p-4">
 			<div class="flex items-center gap-3">
 				<div class="bg-[--ft-frost] flex h-10 w-10 items-center justify-center rounded-lg">
-					<svg
-						class="text-[--ft-accent] h-5 w-5"
-						fill="none"
-						stroke="currentColor"
-						viewBox="0 0 24 24"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-						/>
-					</svg>
+					<TagIcon class="text-[--ft-accent] h-5 w-5" aria-hidden="true" />
 				</div>
 				<div>
 					<p class="text-sm text-[--ft-text-muted]">Katalogi</p>
@@ -159,14 +134,7 @@
 		<Card class="p-4">
 			<div class="flex items-center gap-3">
 				<div class="bg-success/10 flex h-10 w-10 items-center justify-center rounded-lg">
-					<svg class="text-success h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-						/>
-					</svg>
+					<ArrowsClockwiseIcon class="text-success h-5 w-5" aria-hidden="true" />
 				</div>
 				<div>
 					<p class="text-sm text-[--ft-text-muted]">Ostatnia synchronizacja</p>

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Card from '$lib/components/ui/Card.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
+	import { ShoppingBagIcon } from 'phosphor-svelte';
 	import { getOrderStatus } from '$lib/utils/order-status';
 
 	interface RecentOrder {
@@ -32,19 +33,7 @@
 			<div
 				class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-[--ft-frost]"
 			>
-				<svg
-					class="h-8 w-8 text-[--ft-text-muted]"
-					fill="none"
-					stroke="currentColor"
-					viewBox="0 0 24 24"
-				>
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-					/>
-				</svg>
+				<ShoppingBagIcon class="h-8 w-8 text-[--ft-text-muted]" aria-hidden="true" />
 			</div>
 			<h3 class="mb-2 text-lg font-semibold text-[--ft-text]">Brak zamówień</h3>
 			<p class="mb-6 text-[--ft-text-muted]">Rozpocznij zakupy i zobacz swoje zamówienia tutaj</p>

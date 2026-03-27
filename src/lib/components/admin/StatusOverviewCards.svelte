@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Card from '$lib/components/ui/Card.svelte';
+	import { CheckCircleIcon, WarningCircleIcon, XCircleIcon } from 'phosphor-svelte';
 
 	interface StatusCard {
 		label: string;
@@ -7,7 +8,6 @@
 		count: number;
 		colorClass: string;
 		hoverClass: string;
-		iconPath: string;
 		filterValue: string;
 	}
 
@@ -25,8 +25,6 @@
 			count: statusCounts.active,
 			colorClass: 'text-success',
 			hoverClass: 'hover:text-success-dark',
-			iconPath:
-				'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
 			filterValue: 'active'
 		},
 		{
@@ -35,8 +33,6 @@
 			count: statusCounts.draft,
 			colorClass: 'text-[--ft-accent]',
 			hoverClass: 'hover:text-[--ft-accent-hover]',
-			iconPath:
-				'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z',
 			filterValue: 'draft'
 		},
 		{
@@ -45,8 +41,6 @@
 			count: statusCounts.inactive,
 			colorClass: 'text-[--ft-text-muted]',
 			hoverClass: 'hover:text-[--ft-text-strong]',
-			iconPath:
-				'M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728',
 			filterValue: 'inactive'
 		}
 	]);
@@ -66,14 +60,13 @@
 					class="{card.colorClass} {card.hoverClass} transition-colors"
 					title="View {card.label.toLowerCase()}"
 				>
-					<svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d={card.iconPath}
-						/>
-					</svg>
+					{#if card.filterValue === 'active'}
+						<CheckCircleIcon class="h-8 w-8" aria-hidden="true" />
+					{:else if card.filterValue === 'draft'}
+						<WarningCircleIcon class="h-8 w-8" aria-hidden="true" />
+					{:else}
+						<XCircleIcon class="h-8 w-8" aria-hidden="true" />
+					{/if}
 				</button>
 			</div>
 		</Card>

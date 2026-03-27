@@ -1,6 +1,7 @@
 <script lang="ts">
 	import CustomBadge from '$lib/components/ui/CustomBadge.svelte';
 	import { formatPrice } from '$lib/utils';
+	import { ImageSquareIcon, DownloadSimpleIcon, MapPinIcon, ArrowCounterClockwiseIcon, ArrowRightIcon, CheckIcon } from 'phosphor-svelte';
 
 	interface Props {
 		data: {
@@ -149,9 +150,7 @@
 										/>
 									{:else}
 										<div class="flex h-16 w-16 items-center justify-center rounded-lg bg-[--ft-frost]">
-											<svg class="h-8 w-8 text-[--ft-text-muted]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-											</svg>
+											<ImageSquareIcon class="h-8 w-8 text-[--ft-text-muted]" aria-hidden="true" />
 										</div>
 									{/if}
 								</div>
@@ -187,9 +186,7 @@
 						{#each timelineSteps as step (step.label)}
 							<div class="flex items-center space-x-4">
 								<div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full {step.bgClass}">
-									<svg class="h-4 w-4 {step.iconClass}" fill="currentColor" viewBox="0 0 20 20">
-										<path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-									</svg>
+									<CheckIcon class="h-4 w-4 {step.iconClass}" weight="bold" aria-hidden="true" />
 								</div>
 								<div>
 									<p class="font-medium text-[--ft-text]">{step.label}</p>
@@ -231,7 +228,7 @@
 					</div>
 				</div>
 
-				<!-- Payment & Shipping Info -->
+				<!-- Payment & Shipping InfoIcon -->
 				<div class="border border-[--ft-line] rounded-xl p-6">
 					<h2 class="mb-6 text-xl font-semibold text-[--ft-text]">Informacje o płatności i dostawie</h2>
 
@@ -277,9 +274,7 @@
 							onclick={downloadInvoice}
 							class="w-full flex items-center gap-2 py-2 text-sm font-medium text-[--ft-text-muted] hover:text-[--ft-accent] transition-colors"
 						>
-							<svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-							</svg>
+							<DownloadSimpleIcon class="h-4 w-4 shrink-0" aria-hidden="true" />
 							Pobierz fakturę
 						</button>
 
@@ -288,10 +283,7 @@
 								onclick={trackShipment}
 								class="w-full flex items-center gap-2 py-2 text-sm font-medium text-[--ft-text-muted] hover:text-[--ft-accent] transition-colors"
 							>
-								<svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-								</svg>
+								<MapPinIcon class="h-4 w-4 shrink-0" aria-hidden="true" />
 								Śledź przesyłkę
 							</button>
 						{/if}
@@ -301,9 +293,7 @@
 								onclick={requestReturn}
 								class="w-full flex items-center gap-2 py-2 text-sm font-medium text-[--ft-text-muted] hover:text-[--ft-accent] transition-colors"
 							>
-								<svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
-								</svg>
+								<ArrowCounterClockwiseIcon class="h-4 w-4 shrink-0" aria-hidden="true" />
 								Zgłoś zwrot
 							</button>
 						{/if}
@@ -312,9 +302,7 @@
 							href="/account/orders"
 							class="w-full flex items-center gap-2 py-2 text-sm font-medium text-[--ft-text-muted] hover:text-[--ft-accent] transition-colors"
 						>
-							<svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-							</svg>
+							<ArrowRightIcon class="h-4 w-4 shrink-0" aria-hidden="true" />
 							Wszystkie zamówienia
 						</a>
 					</div>

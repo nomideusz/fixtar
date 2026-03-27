@@ -2,6 +2,7 @@
 	import type { Product } from '$lib/stores/products.svelte';
 	import type { Snippet } from 'svelte';
 	import { cart, notifications } from '$lib/stores';
+	import { ImageSquareIcon } from 'phosphor-svelte';
 
 	interface Props {
 		product: Product;
@@ -54,9 +55,7 @@
 					<img src={mainImageUrl} alt={product.name} loading="lazy" width="320" height="240" />
 				{:else}
 					<div class="card-img-empty" aria-hidden="true">
-						<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-							<rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="M21 15l-5-5L5 21" />
-						</svg>
+						<ImageSquareIcon size={28} weight="light" aria-hidden="true" />
 					</div>
 				{/if}
 
@@ -70,7 +69,7 @@
 			</div>
 		</a>
 
-		<!-- Info -->
+		<!-- InfoIcon -->
 		<div class="card-info">
 			<h3 class="card-name">
 				<a href={productUrl} class="card-name-link">{product.name}</a>
@@ -107,9 +106,7 @@
 				<img src={mainImageUrl} alt={product.name} loading="lazy" width="320" height="240" />
 			{:else}
 				<div class="card-img-empty" aria-hidden="true">
-					<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-						<rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="M21 15l-5-5L5 21" />
-					</svg>
+					<ImageSquareIcon size={28} weight="light" aria-hidden="true" />
 				</div>
 			{/if}
 
@@ -118,7 +115,7 @@
 			{/if}
 		</div>
 
-		<!-- Info -->
+		<!-- InfoIcon -->
 		<div class="card-info">
 			<h3 class="card-name">{product.name}</h3>
 
@@ -220,7 +217,7 @@
 		border-radius: var(--radius-sm);
 	}
 
-	/* ── Info ── */
+	/* ── InfoIcon ── */
 	.card-info {
 		padding: 12px 4px 4px;
 		display: flex;

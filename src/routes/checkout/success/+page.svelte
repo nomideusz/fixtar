@@ -2,11 +2,12 @@
 	import PageHeader from '$lib/components/ui/PageHeader.svelte';
 	import type { PageData } from './$types';
 	import { page } from '$app/stores';
+	import { CheckIcon, FileTextIcon, WarningCircleIcon, CreditCardIcon, PackageIcon, MapPinIcon, LightningIcon, ArrowRightIcon, ShoppingBagIcon, InfoIcon, ImageSquareIcon } from 'phosphor-svelte';
 
 	// Get data from server
 	const { data } = $props<{ data: PageData }>();
 
-	// Check if payment method fell back
+	// CheckIcon if payment method fell back
 	const isFallback = $derived($page.url.searchParams.get('fallback') === 'true');
 
 	// Use real order number or generate a placeholder
@@ -63,33 +64,14 @@
 				<div
 					class="bg-success relative mx-auto flex h-24 w-24 items-center justify-center rounded-full shadow-xl"
 				>
-					<svg class="h-12 w-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="3"
-							d="M5 13l4 4L19 7"
-						/>
-					</svg>
+					<CheckIcon class="h-12 w-12 text-white" weight="bold" aria-hidden="true" />
 				</div>
 			</div>
 
 			<!-- Order Number Display -->
 			<div class="mb-8 inline-flex items-center gap-4 bg-[--ft-frost] rounded-xl py-4 px-6">
 				<div class="bg-[--ft-surface] flex h-12 w-12 items-center justify-center rounded-xl">
-					<svg
-						class="text-[--ft-accent] h-6 w-6"
-						fill="none"
-						stroke="currentColor"
-						viewBox="0 0 24 24"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-						/>
-					</svg>
+					<FileTextIcon class="text-[--ft-accent] h-6 w-6" aria-hidden="true" />
 				</div>
 				<div class="text-left">
 					<p class="text-sm font-medium text-[--ft-text-muted]">Numer zamówienia</p>
@@ -105,19 +87,7 @@
 					<div class="flex items-start space-x-4">
 						<div class="shrink-0">
 							<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/20">
-								<svg
-									class="h-5 w-5 text-amber-600"
-									fill="none"
-									stroke="currentColor"
-									viewBox="0 0 24 24"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-									/>
-								</svg>
+								<WarningCircleIcon class="h-5 w-5 text-amber-600" aria-hidden="true" />
 							</div>
 						</div>
 						<div>
@@ -141,19 +111,7 @@
 				<div class="bg-[--ft-frost] border border-[--ft-line] rounded-xl p-8">
 					<div class="mb-6 flex items-center">
 						<div class="bg-[--ft-surface] mr-4 flex h-12 w-12 items-center justify-center rounded-xl">
-							<svg
-								class="text-[--ft-accent] h-6 w-6"
-								fill="none"
-								stroke="currentColor"
-								viewBox="0 0 24 24"
-							>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-								/>
-							</svg>
+							<CreditCardIcon class="text-[--ft-accent] h-6 w-6" aria-hidden="true" />
 						</div>
 						<h3 class="text-[--ft-text-strong] text-2xl font-bold">Dane do przelewu</h3>
 					</div>
@@ -216,19 +174,7 @@
 
 					<div class="bg-warning/10 border-warning/30 mt-6 rounded-xl border p-4">
 						<div class="flex items-start space-x-3">
-							<svg
-								class="text-warning mt-0.5 h-5 w-5 shrink-0"
-								fill="none"
-								stroke="currentColor"
-								viewBox="0 0 24 24"
-							>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-								/>
-							</svg>
+							<WarningCircleIcon class="text-warning mt-0.5 h-5 w-5 shrink-0" aria-hidden="true" />
 							<div>
 								<p class="text-warning-dark mb-1 font-bold">Ważne instrukcje płatności:</p>
 								<ul class="text-warning-dark space-y-1 text-sm">
@@ -254,28 +200,14 @@
 					href="/account/orders"
 					class="inline-flex items-center gap-2 text-[--ft-accent] font-medium hover:underline"
 				>
-					<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-						/>
-					</svg>
+					<FileTextIcon class="h-5 w-5" aria-hidden="true" />
 					Moje zamówienia
 				</a>
 				<a
 					href="/products"
 					class="inline-flex items-center gap-2 text-[--ft-text-muted] hover:text-[--ft-text]"
 				>
-					<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-						/>
-					</svg>
+					<ShoppingBagIcon class="h-5 w-5" aria-hidden="true" />
 					Kontynuuj zakupy
 				</a>
 			</div>
@@ -287,19 +219,7 @@
 				<div class="border border-[--ft-line] rounded-xl p-8">
 					<div class="mb-6 flex items-center">
 						<div class="bg-success/10 mr-3 flex h-10 w-10 items-center justify-center rounded-xl">
-							<svg
-								class="text-success h-5 w-5"
-								fill="none"
-								stroke="currentColor"
-								viewBox="0 0 24 24"
-							>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M9 5l7 7-7 7"
-								/>
-							</svg>
+							<PackageIcon class="text-success h-5 w-5" aria-hidden="true" />
 						</div>
 						<h3 class="text-2xl font-bold text-[--ft-text]">Zamówione produkty</h3>
 					</div>
@@ -318,19 +238,7 @@
 										<div
 											class="flex h-20 w-20 shrink-0 items-center justify-center rounded-xl bg-[--ft-frost]"
 										>
-											<svg
-												class="h-10 w-10 text-[--ft-text-muted]"
-												fill="none"
-												stroke="currentColor"
-												viewBox="0 0 24 24"
-											>
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													stroke-width="2"
-													d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-												/>
-											</svg>
+											<ImageSquareIcon class="h-10 w-10 text-[--ft-text-muted]" aria-hidden="true" />
 										</div>
 									{/if}
 
@@ -359,50 +267,20 @@
 							<div
 								class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-[--ft-frost]"
 							>
-								<svg
-									class="h-8 w-8 text-[--ft-text-muted]"
-									fill="none"
-									stroke="currentColor"
-									viewBox="0 0 24 24"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M9 5l7 7-7 7"
-									/>
-								</svg>
+								<PackageIcon class="h-8 w-8 text-[--ft-text-muted]" aria-hidden="true" />
 							</div>
 							<p class="text-[--ft-text-muted]">Brak szczegółów produktów w zamówieniu</p>
 						</div>
 					{/if}
 				</div>
 
-				<!-- Shipping & Payment Info -->
+				<!-- Shipping & Payment InfoIcon -->
 				<div class="space-y-8">
 					<!-- Shipping Address -->
 					<div class="border border-[--ft-line] rounded-xl p-8">
 						<div class="mb-6 flex items-center">
 							<div class="bg-[--ft-frost] mr-3 flex h-10 w-10 items-center justify-center rounded-xl">
-								<svg
-									class="text-[--ft-accent] h-5 w-5"
-									fill="none"
-									stroke="currentColor"
-									viewBox="0 0 24 24"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-									/>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-									/>
-								</svg>
+								<MapPinIcon class="text-[--ft-accent] h-5 w-5" aria-hidden="true" />
 							</div>
 							<h3 class="text-2xl font-bold text-[--ft-text]">Adres dostawy</h3>
 						</div>
@@ -439,19 +317,7 @@
 					<div class="border border-[--ft-line] rounded-xl p-8">
 						<div class="mb-6 flex items-center">
 							<div class="bg-[--ft-frost] mr-3 flex h-10 w-10 items-center justify-center rounded-xl">
-								<svg
-									class="text-[--ft-accent] h-5 w-5"
-									fill="none"
-									stroke="currentColor"
-									viewBox="0 0 24 24"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M13 10V3L4 14h7v7l9-11h-7z"
-									/>
-								</svg>
+								<LightningIcon class="text-[--ft-accent] h-5 w-5" aria-hidden="true" />
 							</div>
 							<h3 class="text-2xl font-bold text-[--ft-text]">Szczegóły zamówienia</h3>
 						</div>
@@ -459,19 +325,7 @@
 						<div class="space-y-6">
 							<div class="flex items-center justify-between rounded-xl bg-[--ft-frost] p-4">
 								<div class="flex items-center">
-									<svg
-										class="mr-3 h-5 w-5 text-[--ft-text-muted]"
-										fill="none"
-										stroke="currentColor"
-										viewBox="0 0 24 24"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-										/>
-									</svg>
+									<CreditCardIcon class="mr-3 h-5 w-5 text-[--ft-text-muted]" aria-hidden="true" />
 									<span class="font-medium text-[--ft-text]">Płatność</span>
 								</div>
 								<span class="font-bold text-[--ft-text]">
@@ -481,19 +335,7 @@
 
 							<div class="flex items-center justify-between rounded-xl bg-[--ft-frost] p-4">
 								<div class="flex items-center">
-									<svg
-										class="mr-3 h-5 w-5 text-[--ft-text-muted]"
-										fill="none"
-										stroke="currentColor"
-										viewBox="0 0 24 24"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
-										/>
-									</svg>
+									<ArrowRightIcon class="mr-3 h-5 w-5 text-[--ft-text-muted]" aria-hidden="true" />
 									<span class="font-medium text-[--ft-text]">Dostawa</span>
 								</div>
 								<span class="font-bold text-[--ft-text]">
@@ -506,19 +348,7 @@
 									class="bg-success/5 border-success/20 flex items-center justify-between rounded-xl border-2 p-4"
 								>
 									<div class="flex items-center">
-										<svg
-											class="text-success mr-3 h-5 w-5"
-											fill="none"
-											stroke="currentColor"
-											viewBox="0 0 24 24"
-										>
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												stroke-width="2"
-												d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
-											/>
-										</svg>
+										<CreditCardIcon class="text-success mr-3 h-5 w-5" aria-hidden="true" />
 										<span class="text-success font-semibold">Łączna kwota</span>
 									</div>
 									<span class="text-success text-xl font-bold">
@@ -539,19 +369,7 @@
 					<div
 						class="bg-[--ft-frost] mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl"
 					>
-						<svg
-							class="text-[--ft-accent] h-8 w-8"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-							/>
-						</svg>
+						<InfoIcon class="text-[--ft-accent] h-8 w-8" aria-hidden="true" />
 					</div>
 					<h3 class="mb-4 text-2xl font-bold text-[--ft-text]">Co dalej?</h3>
 					<div class="grid grid-cols-1 gap-6 text-left md:grid-cols-3">
