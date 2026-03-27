@@ -177,7 +177,6 @@
 
 <div class="nav-search">
 	<div class="search-input-wrap">
-		<MagnifyingGlassIcon class="search-input-icon" size={16} aria-hidden="true" />
 
 		<input
 			bind:this={inputRef}
@@ -202,6 +201,8 @@
 			</button>
 		{/if}
 
+		<button class="search-submit-btn" aria-hidden="true">Szukaj</button>
+		
 		<button class="search-close" onclick={close} aria-label="Zamknij wyszukiwanie">
 			<kbd>ESC</kbd>
 		</button>
@@ -319,49 +320,65 @@
 		align-items: center;
 	}
 
-	.search-input-icon {
-		position: absolute;
-		left: 12px;
-		color: var(--ft-text-muted);
-		pointer-events: none;
-	}
+
 
 	.search-input {
 		width: 100%;
-		padding: 10px 80px 10px 36px;
-		font-size: 0.85rem;
-		color: var(--ft-text);
+		padding: 12px 140px 12px 18px;
+		font-size: 0.95rem;
+		font-weight: 500;
+		color: var(--ft-text-strong);
 		background: var(--ft-frost);
-		border: 1px solid transparent;
-		border-radius: var(--radius-full);
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-sm);
 		outline: none;
-		transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+		transition: border-color 0.2s ease, box-shadow 0.2s ease;
 	}
 
 	.search-input::placeholder {
-		color: var(--ft-text-faint);
+		color: var(--ft-text-muted);
+		font-weight: 400;
 	}
 
 	.search-input:focus {
 		background: var(--ft-surface);
-		border-color: var(--ft-line);
-		box-shadow: 0 0 0 3px color-mix(in srgb, var(--ft-accent) 8%, transparent);
+		border-color: var(--color-brand-500);
+		box-shadow: 0 0 0 2px rgba(55, 138, 146, 0.2);
+	}
+
+	.search-submit-btn {
+		position: absolute;
+		right: 4px;
+		top: 4px;
+		bottom: 4px;
+		background: var(--ft-cta);
+		color: #fff;
+		border: none;
+		border-radius: 2px;
+		font-family: var(--font-display);
+		font-weight: 700;
+		font-size: 0.75rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		padding: 0 24px;
+		cursor: pointer;
+		pointer-events: none; /* Just decorative for the search input */
 	}
 
 	.search-clear {
 		position: absolute;
-		right: 52px;
+		right: 90px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 24px;
-		height: 24px;
+		width: 28px;
+		height: 28px;
 		padding: 0;
 		border: none;
 		background: transparent;
 		color: var(--ft-text-muted);
 		cursor: pointer;
-		border-radius: 50%;
+		border-radius: var(--radius-sm);
 		transition: background-color 0.15s ease, color 0.15s ease;
 	}
 
@@ -376,14 +393,7 @@
 	}
 
 	.search-close {
-		position: absolute;
-		right: 10px;
-		display: flex;
-		align-items: center;
-		padding: 0;
-		border: none;
-		background: transparent;
-		cursor: pointer;
+		display: none;
 	}
 
 	.search-close kbd {
@@ -510,7 +520,7 @@
 		outline-offset: -2px;
 	}
 
-	.dropdown-recent svg {
+	:global(.dropdown-recent svg) {
 		flex-shrink: 0;
 		color: var(--ft-text-faint);
 	}

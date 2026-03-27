@@ -1,14 +1,14 @@
 <script lang="ts">
-	import imgDrill from '$lib/images/banners/hero-workshop-cordless-drill-1.png';
-	import imgGrinder from '$lib/images/banners/hero-grinder-sparks-1.png';
-	import imgHammer from '$lib/images/banners/hero-construction-hammer-drill-1.png';
-	import imgGarden from '$lib/images/banners/hero-garden-trimmer.png';
-	import imgSaw from '$lib/images/banners/hero-dramatic-workshop-1.png';
-	import imgAccessories from '$lib/images/banners/hero-extreme-closeup-1.png';
-	import imgFlatlay from '$lib/images/banners/hero-topdown-flatlay-1.png';
-	import imgImpact from '$lib/images/banners/hero-impact-wrench-wheel.png';
-	import imgProfessional from '$lib/images/banners/hero-professional-1.png';
-	import imgWomanDrill from '$lib/images/banners/hero-woman-drill-shelf-1.png';
+	import imgDrill from '$lib/images/banners/banner-workshop-cordless-drill-1.webp';
+	import imgGrinder from '$lib/images/banners/banner-grinder-sparks-1.webp';
+	import imgHammer from '$lib/images/banners/banner-construction-hammer-drill-1.webp';
+	import imgGarden from '$lib/images/banners/banner-garden-trimmer.webp';
+	import imgSaw from '$lib/images/banners/banner-dramatic-workshop-1.webp';
+	import imgAccessories from '$lib/images/banners/banner-extreme-closeup-1.webp';
+	import imgFlatlay from '$lib/images/banners/banner-topdown-flatlay-1.webp';
+	import imgImpact from '$lib/images/banners/banner-impact-wrench-wheel.webp';
+	import imgProfessional from '$lib/images/banners/banner-professional-1.webp';
+	import imgWomanDrill from '$lib/images/banners/banner-woman-drill-shelf-1.webp';
 	import { WrenchIcon } from 'phosphor-svelte';
 
 	interface Category {
@@ -67,10 +67,10 @@
 								<WrenchIcon size={32} weight="light" />
 							</div>
 						{/if}
-						<div class="cat-overlay">
-							<span class="cat-name">{category.name}</span>
-							<span class="cat-count">{pluralProducts(category.count)}</span>
-						</div>
+					</div>
+					<div class="cat-info">
+						<span class="cat-name">{category.name}</span>
+						<span class="cat-count">{pluralProducts(category.count)}</span>
 					</div>
 				</a>
 			{/each}
@@ -90,6 +90,9 @@
 		color: var(--ft-dark);
 		letter-spacing: -0.02em;
 		margin-top: 6px;
+		border-left: 4px solid var(--color-brand-500);
+		padding-left: 14px;
+		text-transform: uppercase;
 	}
 
 	.categories-grid {
@@ -111,10 +114,18 @@
 	}
 
 	.cat-card {
-		display: block;
+		display: flex;
+		flex-direction: column;
 		text-decoration: none;
-		border-radius: var(--radius-md);
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-sm);
 		overflow: hidden;
+		background: var(--ft-surface);
+		transition: border-color var(--dur-fast) ease;
+	}
+
+	.cat-card:hover {
+		border-color: var(--ft-dark);
 	}
 
 	.cat-image {
@@ -122,7 +133,7 @@
 		aspect-ratio: 4 / 3;
 		background: var(--ft-frost);
 		overflow: hidden;
-		border-radius: var(--radius-md);
+		border-bottom: 1px solid var(--ft-line);
 	}
 
 	.cat-photo {
@@ -148,43 +159,27 @@
 		color: var(--ft-text-faint);
 	}
 
-	.cat-overlay {
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		padding: 28px 12px 10px;
-		background: linear-gradient(transparent 0%, rgba(0, 0, 0, 0.5) 100%);
+	.cat-info {
+		padding: 16px;
 		display: flex;
 		flex-direction: column;
-		gap: 1px;
+		gap: 6px;
 	}
 
 	.cat-name {
 		font-family: var(--font-display);
-		font-size: 0.78rem;
-		font-weight: 600;
-		color: #ffffff;
-		letter-spacing: 0.01em;
-		line-height: 1.2;
+		font-size: 0.95rem;
+		font-weight: 700;
+		color: var(--ft-dark);
+		letter-spacing: 0.02em;
+		line-height: 1.25;
+		text-transform: uppercase;
 	}
 
 	.cat-count {
-		font-size: 0.62rem;
-		color: rgba(255, 255, 255, 0.65);
-		font-weight: 400;
-	}
-
-	/* Frost fallback: no gradient needed, dark text */
-	.cat-image:has(.cat-fallback) .cat-overlay {
-		background: none;
-	}
-
-	.cat-image:has(.cat-fallback) .cat-name {
-		color: var(--ft-dark);
-	}
-
-	.cat-image:has(.cat-fallback) .cat-count {
+		font-size: 0.8rem;
+		font-weight: 600;
 		color: var(--ft-text-muted);
 	}
 </style>
+

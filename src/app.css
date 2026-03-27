@@ -12,19 +12,18 @@
    ========================================================================== */
 
 @theme {
-	/* Orange — primary action (CTAs, prices, active states) */
-	--color-cta: #FF6B00;
-	--color-cta-hover: #E55F00;
-	--color-cta-light: rgba(255, 107, 0, 0.1);
+	/* Primary Brand Color -> from README */
+	--color-brand-500: #378a92;
+	--color-brand-600: #2c6e75;
+	--color-brand-700: #215358;
+	
+	--color-cta: #378a92;
+	--color-cta-hover: #2c6e75;
+	--color-cta-light: rgba(55, 138, 146, 0.1);
 
-	/* Navy — headings, brand, authority */
+	/* Navy — headings, authority */
 	--color-navy: #014783;
 	--color-navy-light: #0a5a9e;
-
-	/* Teal — secondary accent (labels, status, links) */
-	--color-brand-500: #3E8B8B;
-	--color-brand-600: #327272;
-	--color-brand-700: #275a5a;
 
 	--color-warm: #c49a6c;
 	--color-warm-bg: #f5ede4;
@@ -33,15 +32,16 @@
 	--color-warning: #f59e0b;
 	--color-danger: #dc2626;
 
-	--font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-	--font-display: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-	--font-mono: 'Inter', system-ui, sans-serif;
+	--font-sans: 'Barlow', system-ui, -apple-system, sans-serif;
+	--font-display: 'Chakra Petch', system-ui, -apple-system, sans-serif;
+	--font-mono: 'Barlow', system-ui, sans-serif;
 
-	--radius-sm: 4px;
-	--radius-md: 8px;
-	--radius-lg: 12px;
-	--radius-xl: 12px;
-	--radius-2xl: 16px;
+	/* Scheppach-style Rigid Geometry */
+	--radius-sm: 0px;
+	--radius-md: 2px;
+	--radius-lg: 2px;
+	--radius-xl: 4px;
+	--radius-2xl: 4px;
 	--radius-full: 9999px;
 }
 
@@ -53,19 +53,19 @@
 	/* ── Core palette — pure white, no tints ── */
 	--ft-bg: #ffffff;
 	--ft-surface: #ffffff;
-	--ft-dark: #014783;             /* Navy — headings, brand */
-	--ft-text: #2e3a46;             /* Body text */
-	--ft-text-strong: #014783;      /* Navy for headings */
-	--ft-text-muted: #6b7d8e;       /* Secondary text */
-	--ft-text-faint: #9baab8;       /* Hints, placeholders */
+	--ft-dark: #111827;             /* Dark almost black */
+	--ft-text: #374151;             /* Body text */
+	--ft-text-strong: #111827;      
+	--ft-text-muted: #6b7280;       
+	--ft-text-faint: #9ca3af;       
 
 	/* ── Action colors ── */
-	--ft-cta: #FF6B00;              /* Orange — primary actions (CTAs, prices) */
-	--ft-cta-hover: #E55F00;
-	--ft-cta-light: rgba(255, 107, 0, 0.08);
+	--ft-cta: #D92727;              /* Signal Red (replaces Teal/Orange for maximum urgency) */
+	--ft-cta-hover: #b91c1c;
+	--ft-cta-light: rgba(217, 39, 39, 0.1);
 
-	--ft-accent: #3E8B8B;           /* Teal — secondary accent (labels, status, links) */
-	--ft-accent-hover: #327272;
+	--ft-accent: #014783;           /* Secondary Accent (Navy) */
+	--ft-accent-hover: #0a5a9e;
 
 	--ft-warm: #c49a6c;
 	--ft-warm-bg: #f5ede4;
@@ -74,13 +74,13 @@
 	--ft-line: #e2e8f0;
 	--ft-frost: #f1f5f9;
 
-	/* ── Elevation ── */
-	--ft-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
-	--ft-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
-	--ft-shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.08);
+	/* ── Elevation — Scheppach relies on flat borders instead of soft shadows ── */
+	--ft-shadow-sm: none;
+	--ft-shadow-md: none;
+	--ft-shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.08);
 
 	/* ── Layout ── */
-	--ft-container: 1440px;
+	--ft-container: 1760px;
 	--ft-gutter: clamp(24px, 5vw, 80px);
 
 	/* ── Motion ── */

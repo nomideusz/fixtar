@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { cart, userStore } from '$lib/stores';
-	import FixTarLogo from '$lib/images/logo/fixtar-logo-primary.webp';
+	import FixTarLogo from '$lib/images/logo/fixtar-logo-black-trimmed.png';
 	import NavSearch from './NavSearch.svelte';
 	import { SunIcon, MoonIcon, XIcon, MagnifyingGlassIcon, ShoppingCartSimpleIcon, UserIcon, SignInIcon } from 'phosphor-svelte';
 
@@ -87,7 +87,6 @@
 	{@const links = [
 		{ href: '/products', label: 'Produkty', badge: false },
 		{ href: '/deals', label: 'Promocje', badge: true },
-		{ href: '/about', label: 'O Nas', badge: false },
 		{ href: '/contact', label: 'Kontakt', badge: false }
 	]}
 	{#each links as link (link.href)}
@@ -110,7 +109,7 @@
 	<div class="nav-inner">
 		<!-- Logo -->
 		<a href="/" class="nav-logo" aria-label="FixTar — Strona główna">
-			<img src={FixTarLogo} alt="" class="logo-img" width="140" height="38" />
+			<img src={FixTarLogo} alt="" class="logo-img" />
 		</a>
 
 		<!-- Desktop inline search (Always visible) -->
@@ -125,20 +124,6 @@
 
 		<!-- Actions -->
 		<div class="nav-actions">
-			<!-- Dark mode toggle -->
-			<button
-				onclick={toggleDarkMode}
-				class="nav-icon-btn desktop-only"
-				aria-label={darkMode ? 'Tryb jasny' : 'Tryb ciemny'}
-				title={darkMode ? 'Tryb jasny' : 'Tryb ciemny'}
-			>
-				{#if darkMode}
-					<SunIcon size={20} weight="bold" aria-hidden="true" />
-				{:else}
-					<MoonIcon size={20} weight="bold" aria-hidden="true" />
-				{/if}
-			</button>
-
 			<button
 				onclick={toggleMobileSearch}
 				class="nav-icon-btn mobile-search-btn"
@@ -218,19 +203,6 @@
 
 				<div class="mobile-sep" aria-hidden="true"></div>
 
-				<!-- Dark mode toggle (mobile) -->
-				<button class="mobile-link" onclick={() => { toggleDarkMode(); }}>
-					{#if darkMode}
-						<SunIcon size={18} aria-hidden="true" />
-						Tryb jasny
-					{:else}
-						<MoonIcon size={18} aria-hidden="true" />
-						Tryb ciemny
-					{/if}
-				</button>
-
-				<div class="mobile-sep" aria-hidden="true"></div>
-
 				{#if userStore.current}
 					<a href="/account" class="mobile-link" onclick={closeMobileMenu}>Moje Konto</a>
 					{#if userStore.current.isAdmin}
@@ -265,10 +237,10 @@
 		max-width: var(--ft-container);
 		margin: 0 auto;
 		padding: 0 var(--ft-gutter);
-		height: 80px;
+		height: 100px;
 		display: flex;
 		align-items: center;
-		gap: 24px;
+		gap: 32px;
 	}
 
 	/* ── Logo ── */
@@ -288,9 +260,10 @@
 	}
 
 	.logo-img {
-		height: 28px;
+		height: 56px;
 		width: auto;
 		display: block;
+		object-fit: contain;
 	}
 
 	/* ── Desktop nav links — plain text, no icons ── */
@@ -320,12 +293,12 @@
 	}
 
 	.nav-link:hover {
-		color: var(--ft-cta);
+		color: var(--color-brand-500);
 		background: var(--ft-frost);
 	}
 
 	.nav-link.is-active {
-		color: var(--ft-cta);
+		color: var(--color-brand-500);
 		font-weight: 800;
 	}
 
@@ -349,7 +322,8 @@
 	.nav-search-wrap {
 		display: none;
 		flex: 1;
-		max-width: 580px;
+		max-width: 720px;
+		margin-right: auto;
 	}
 
 	@media (min-width: 768px) {
@@ -370,8 +344,8 @@
 	.nav-actions {
 		display: flex;
 		align-items: center;
-		gap: 2px;
-		margin-left: auto;
+		gap: 8px;
+		margin-left: 12px;
 	}
 
 	.nav-icon-btn {
@@ -392,7 +366,7 @@
 		transition: color var(--dur-fast) ease;
 	}
 
-	.nav-action-btn:hover { color: var(--ft-cta); }
+	.nav-action-btn:hover { color: var(--color-brand-500); }
 
 	.nav-action-icon-wrap {
 		position: relative;

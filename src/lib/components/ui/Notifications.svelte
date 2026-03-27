@@ -6,24 +6,17 @@
 	import { CheckCircleIcon, XCircleIcon, WarningCircleIcon, InfoIcon, XIcon } from 'phosphor-svelte';
 
 	const typeClasses: Record<string, string> = {
-		success: 'bg-success text-[--ft-text] border-success/40',
-		error: 'bg-danger !text-white border-danger/40',
-		info: 'bg-info text-[--ft-text] border-info/40',
-		warning: 'bg-warning text-[--ft-text-strong] border-warning/60'
+		success: 'border-l-[4px] border-l-[--color-success] bg-white border-y border-r border-[--ft-line] text-[--ft-dark] shadow-[0_4px_24px_rgba(0,0,0,0.08)]',
+		error: 'border-l-[4px] border-l-[--color-danger] bg-white border-y border-r border-[--ft-line] text-[--ft-dark] shadow-[0_4px_24px_rgba(0,0,0,0.08)]',
+		info: 'border-l-[4px] border-l-[--color-brand-500] bg-white border-y border-r border-[--ft-line] text-[--ft-dark] shadow-[0_4px_24px_rgba(0,0,0,0.08)]',
+		warning: 'border-l-[4px] border-l-[--color-warning] bg-white border-y border-r border-[--ft-line] text-[--ft-dark] shadow-[0_4px_24px_rgba(0,0,0,0.08)]'
 	};
 
-	const messageClasses: Record<string, string> = {
-		success: 'text-[--ft-text]/90',
-		error: 'text-[--ft-text]/90',
-		info: 'text-[--ft-text]/90',
-		warning: 'text-[--ft-text-strong]/90'
-	};
-
-	const closeButtonClasses: Record<string, string> = {
-		success: 'bg-[--ft-frost] hover:bg-[--ft-line] text-[--ft-text]/70 hover:text-[--ft-text]',
-		error: 'bg-[--ft-frost] hover:bg-[--ft-line] text-[--ft-text]/70 hover:text-[--ft-text]',
-		info: 'bg-[--ft-frost] hover:bg-[--ft-line] text-[--ft-text]/70 hover:text-[--ft-text]',
-		warning: 'bg-black/5 hover:bg-black/10 text-[--ft-text] hover:text-[--ft-text-strong]'
+	const iconColorClasses: Record<string, string> = {
+		success: 'text-[--color-success]',
+		error: 'text-[--color-danger]',
+		info: 'text-[--color-brand-500]',
+		warning: 'text-[--color-warning]'
 	};
 
 	// Auto-dismiss timer
@@ -60,10 +53,10 @@
 	}
 </script>
 
-<div class="fixed top-6 right-6 z-9999 max-w-sm space-y-3">
+<div class="fixed top-6 right-6 z-[9999] w-full max-w-sm space-y-3 px-4 sm:px-0 pointer-events-none">
 	{#each notifications.items as notification, index (notification.id)}
 		<div
-			class="group relative transform overflow-hidden rounded-2xl border shadow-xl {typeClasses[
+			class="group relative transform overflow-hidden rounded-[--radius-sm] pointer-events-auto {typeClasses[
 				notification.type
 			] || typeClasses.info}"
 			transition:fly={{ x: 400, duration: 400, delay: index * 100 }}
@@ -73,28 +66,31 @@
 			aria-live="polite"
 		>
 			<!-- Content -->
-			<div class="relative flex items-start gap-3 p-4">
+			<div class="relative flex items-start gap-4 p-4 pb-5">
 				<!-- Icon -->
-				<div class="relative shrink-0">
-					<div class="relative flex h-8 w-8 items-center justify-center rounded-full bg-[--ft-frost]">
+				<div class="relative shrink-0 pt-0.5">
+					<div class="{iconColorClasses[notification.type] || iconColorClasses.info}">
 						{#if notification.type === 'success'}
-							<CheckCircleIcon size={16} weight="fill" aria-hidden="true" />
+							<CheckCircleIcon size={24} weight="fill" aria-hidden="true" />
 						{:else if notification.type === 'error'}
-							<XCircleIcon size={16} weight="fill" aria-hidden="true" />
+							<XCircleIcon size={24} weight="fill" aria-hidden="true" />
 						{:else if notification.type === 'warning'}
-							<WarningCircleIcon size={16} weight="fill" aria-hidden="true" />
+							<WarningCircleIcon size={24} weight="fill" aria-hidden="true" />
 						{:else}
-							<InfoIcon size={16} weight="fill" aria-hidden="true" />
+							<InfoIcon size={24} weight="fill" aria-hidden="true" />
 						{/if}
 					</div>
 				</div>
 
 				<!-- Message -->
 				<div class="min-w-0 flex-1">
-					<p
-						class="text-sm leading-relaxed {messageClasses[notification.type] ||
-							messageClasses.info}"
-					>
+					<p class="font-display text-[0.8rem] font-bold uppercase tracking-wide text-[--ft-dark] mb-1">
+						{#if notification.type === 'success'}Sukces
+						{:else if notification.type === 'error'}Błąd
+						{:else if notification.type === 'warning'}Uwaga
+						{:else}Informacja{/if}
+					</p>
+					<p class="text-[0.85rem] font-medium leading-snug text-[--ft-text-muted]">
 						{notification.message}
 					</p>
 				</div>
@@ -102,20 +98,18 @@
 				<!-- Close button -->
 				<button
 					onclick={() => notifications.remove(notification.id)}
-					class="shrink-0 rounded-lg p-1.5 transition-colors duration-200 {closeButtonClasses[
-						notification.type
-					] || closeButtonClasses.info}"
+					class="shrink-0 p-1 text-[--ft-text-faint] hover:text-[--ft-dark] transition-colors"
 					aria-label="Zamknij powiadomienie"
 				>
-					<XIcon size={16} weight="light" aria-hidden="true" />
+					<XIcon size={16} weight="bold" aria-hidden="true" />
 				</button>
 			</div>
 
 			<!-- Progress bar for auto-dismiss -->
 			{#if notification.duration && notification.duration > 0}
-				<div class="absolute right-0 bottom-0 left-0 h-1 overflow-hidden bg-[--ft-frost]">
+				<div class="absolute right-0 bottom-0 left-0 h-1 overflow-hidden bg-[--ft-line]">
 					<div
-						class="animate-notification-progress h-full rounded-full bg-white/60"
+						class="animate-notification-progress h-full bg-[--ft-dark]"
 						style="animation-duration: {notification.duration}ms"
 					></div>
 				</div>

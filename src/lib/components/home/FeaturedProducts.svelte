@@ -23,7 +23,7 @@
 			<p class="featured-empty">Brak polecanych produktów.</p>
 		{:else}
 			<div class="grid ft-stagger">
-				{#each products.slice(0, 8) as product (product.id)}
+				{#each products.slice(0, 12) as product (product.id)}
 					<ProductCard {product} />
 				{/each}
 			</div>
@@ -43,8 +43,11 @@
 		font-family: var(--font-display);
 		font-size: clamp(1.1rem, 2vw, 1.35rem);
 		font-weight: 700;
-		color: var(--ft-text-strong);
+		color: var(--ft-dark);
 		letter-spacing: -0.02em;
+		border-left: 4px solid var(--color-brand-500);
+		padding-left: 12px;
+		text-transform: uppercase;
 	}
 
 	.featured-link {
@@ -60,8 +63,26 @@
 
 	.grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+		grid-template-columns: repeat(2, 1fr);
 		gap: 16px;
+	}
+
+	@media (min-width: 640px) {
+		.grid {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.grid {
+			grid-template-columns: repeat(4, 1fr);
+		}
+	}
+
+	@media (min-width: 1440px) {
+		.grid {
+			grid-template-columns: repeat(6, 1fr);
+		}
 	}
 
 	.featured-empty {

@@ -100,6 +100,7 @@
 		{#key current}
 			<h1 class="hero-headline">{slide.headline}</h1>
 			<p class="hero-subline">{slide.subline}</p>
+			<a href={slide.href} class="btn-primary hero-btn" tabindex={current === current ? 0 : -1}>SPRAWDŹ OFERTĘ</a>
 		{/key}
 	</div>
 
@@ -200,10 +201,17 @@
 	@keyframes fadeIn {
 		from {
 			opacity: 0;
+			transform: translateY(8px);
 		}
 		to {
 			opacity: 1;
+			transform: translateY(0);
 		}
+	}
+
+	.hero-btn {
+		margin-top: 28px;
+		animation: fadeIn 0.6s 0.2s ease both;
 	}
 
 	/* ── Dot indicators ── */

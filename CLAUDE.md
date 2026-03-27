@@ -37,12 +37,12 @@ SvelteKit e-commerce for professional power tools (Polish language).
 | `--ft-surface` | `#ffffff` | Cards, panels |
 | `--ft-frost` | `#f1f5f9` | Subtle fills, hover states |
 | `--ft-line` | `#e2e8f0` | Borders, dividers |
-| `--ft-text` | `#2e3a46` | Body text |
-| `--ft-text-strong` | `#014783` | Headings (navy) |
-| `--ft-text-muted` | `#6b7d8e` | Secondary text |
-| `--ft-text-faint` | `#9baab8` | Hints, placeholders |
-| `--ft-cta` | `#FF6B00` | Prices, active states |
-| `--ft-accent` | `#3E8B8B` | Labels, status, links |
+| `--ft-text` | `#374151` | Body text |
+| `--ft-text-strong` | `#111827` | Headings (navy) |
+| `--ft-text-muted` | `#6b7280` | Secondary text |
+| `--ft-text-faint` | `#9ca3af` | Hints, placeholders |
+| `--ft-cta` | `#D92727` | Prices, active states, buttons |
+| `--ft-accent` | `#014783` | Labels, status, links |
 
 ### Spacing
 
@@ -263,6 +263,30 @@ All passing `svelte-check` with **0 errors, 0 warnings** ✅
 
 ### Cleanup
 - Confirmed spec table, related products carousel, and breadcrumb hierarchy were already implemented in Session 12. Removed from TODO.
+
+All passing `svelte-check` with **0 errors, 0 warnings** ✅
+
+---
+
+## Session 19 — Scheppach Industrial Redesign & Image Optimization
+
+### Utilitarian Aesthetic 
+- **Typography**: Swapped Inter/Plus Jakarta Sans for the strict brand fonts `Chakra Petch` (structured Sci-Fi display) and `Barlow` (legible body).
+- **Color Hierarchy**: Adopted a rigid 3-color palette:
+  - **Navy**: text and structure.
+  - **Brand Teal (`#378a92`)**: interactive brand elements, structural borders, hovers.
+  - **Signal Red (`#D92727`)**: hard conversion actions (buy buttons, pricing alerts).
+- **Rigid Geometry**: Stripped global border-radii (`0px-2px`) and flattened shadow overlays for sharp 1px borders to mimic machined hardware (inspired heavily by Scheppach.com).
+
+### Components Polish
+- **ProductCard**: Removed gray internal bounds, letting white-background product shots float. Implemented 'Ghost/Target' style CTA button that instantly fills solid Red on hover for maximum friction-less buying interaction.
+- **Navbar**: Cleaned header spacing, pushing Search bar prominently to the left (`max-width: 720px`) and organizing navigation text links tightly alongside cart/account icons on the far right. Hover states changed to Brand Teal instead of Red to preserve semantic clarity. Logo transparent pixels automatically trimmed using Sharp to maximize header footprint.
+- **Hero/Categories**: Added direct Call to Action inside Hero block. Transformed Category blocks from soft gradients into solid white structural blocks with 4px left-hand Teal border stripes.
+- **Toast Notifications**: Rebulit from 16px soft-bubbles into rigid left-bordered hardware panels using precise typography and squared progress bars.
+
+### Image Optimization
+- Processed 150MB of raw `.png` imagery from `/banners` and `/products/power-tools` with `sharp`, converting them into highly compressed `.webp` files.
+- Automatically cleaned legacy `hero-` prefixes from category banners and relinked imports across Svelte components.
 
 All passing `svelte-check` with **0 errors, 0 warnings** ✅
 

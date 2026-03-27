@@ -8,7 +8,7 @@ import {
 
 export const load: PageServerLoad = async () => {
 	const [dbProducts, totalProducts, dbCategories] = await Promise.all([
-		getFeaturedProducts(8),
+		getFeaturedProducts(12),
 		getTotalProducts(),
 		getCategories()
 	]);

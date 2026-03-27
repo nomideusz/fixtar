@@ -90,7 +90,11 @@ packages/
 
 ## Design System
 
-- Semantic tokens: `--ft-*` family in `src/app.css`
-- Dark industrial theme with teal accent (`--color-brand-500: #378a92`)
-- Typography: Chakra Petch headings (max weight 700), Barlow body
-- Component primitives: `Button`, `Card`, `Input`, `Hero`, `ProductCard`
+- **Semantic tokens:** `--ft-*` family in `src/app.css`
+- **Theme:** Utilitarian, flat, industrial hardware aesthetic (inspired by Scheppach).
+- **Color Hierarchy:**
+  - **Navy (`#111827` / `#014783`):** Authority, Typography, Structure.
+  - **Teal (`#378a92`):** Primary Brand Identity, Interactive Focus, Structural Borders.
+  - **Signal Red (`#D92727`):** Strict Conversion/Action (Buy buttons, Prices, Alerts).
+- **Typography:** Chakra Petch (Headings/Display, max weight 700), Barlow (Body).
+- **Geometry:** Hard machined edges (`0px` to `2px` border radius), thin 1px structural borders over soft drop-shadows.
