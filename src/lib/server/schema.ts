@@ -108,6 +108,18 @@ export const orders = sqliteTable('orders', {
 	updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull()
 });
 
+export const shippingMethods = sqliteTable('shipping_methods', {
+	id: text('id').primaryKey(),
+	name: text('name').notNull(),
+	description: text('description'),
+	cost: integer('cost').notNull().default(0),
+	freeShippingThreshold: integer('free_shipping_threshold'),
+	estimatedDays: integer('estimated_days'),
+	baselinkerName: text('baselinker_name'),
+	enabled: integer('enabled', { mode: 'boolean' }).notNull().default(true),
+	sortOrder: integer('sort_order').notNull().default(0)
+});
+
 export const verification = sqliteTable('verification', {
 	id: text('id').primaryKey(),
 	identifier: text('identifier').notNull(),

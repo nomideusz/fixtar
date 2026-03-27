@@ -1,58 +1,33 @@
 <script lang="ts">
-	import CountdownTimer from '$lib/components/ui/CountdownTimer.svelte';
 	import { ArrowRightIcon } from 'phosphor-svelte';
 
 	interface Props {
-		/** ISO date string when the sale ends */
-		endsAt?: string;
-		/** Headline text */
 		headline?: string;
-		/** LinkIcon destination */
 		href?: string;
 	}
 
 	let {
-		endsAt = getDefaultEndDate(),
-		headline = 'Oferta Błyskawiczna — do -30% na szlifierki',
+		headline = 'Sprawdź aktualne promocje',
 		href = '/deals'
 	}: Props = $props();
-
-	let expired = $state(false);
-
-	function getDefaultEndDate(): string {
-		const d = new Date();
-		d.setDate(d.getDate() + 3);
-		d.setHours(23, 59, 59, 0);
-		return d.toISOString();
-	}
 </script>
 
-{#if !expired}
-	<section class="flash-banner" aria-label="Oferta specjalna">
-		<div class="ft-container">
-			<a {href} class="flash-inner">
-				<!-- Pulse dot -->
-				<span class="flash-dot" aria-hidden="true">
-					<span class="flash-dot-ping"></span>
-					<span class="flash-dot-core"></span>
-				</span>
+<section class="flash-banner" aria-label="Promocje">
+	<div class="ft-container">
+		<a {href} class="flash-inner">
+			<span class="flash-dot" aria-hidden="true">
+				<span class="flash-dot-ping"></span>
+				<span class="flash-dot-core"></span>
+			</span>
 
-				<!-- Text -->
-				<span class="flash-text">
-					<span class="flash-headline">{headline}</span>
-					<span class="flash-timer">
-						<CountdownTimer targetDate={endsAt} compact onExpired={() => (expired = true)} />
-					</span>
-				</span>
+			<span class="flash-headline">{headline}</span>
 
-				<!-- Arrow -->
-				<span class="flash-arrow" aria-hidden="true">
-					<ArrowRightIcon size={16} weight="bold" />
-				</span>
-			</a>
-		</div>
-	</section>
-{/if}
+			<span class="flash-arrow" aria-hidden="true">
+				<ArrowRightIcon size={16} weight="bold" />
+			</span>
+		</a>
+	</div>
+</section>
 
 <style>
 	.flash-banner {
@@ -79,7 +54,6 @@
 		opacity: 0.8;
 	}
 
-	/* ── Pulse dot ── */
 	.flash-dot {
 		position: relative;
 		width: 8px;
@@ -109,15 +83,6 @@
 		}
 	}
 
-	/* ── Text ── */
-	.flash-text {
-		display: flex;
-		align-items: center;
-		gap: 10px;
-		flex-wrap: wrap;
-		justify-content: center;
-	}
-
 	.flash-headline {
 		font-family: var(--font-display);
 		font-size: 0.78rem;
@@ -126,25 +91,9 @@
 		letter-spacing: 0.01em;
 	}
 
-	.flash-timer {
-		display: flex;
-		align-items: center;
-	}
-
-	/* Override countdown compact colors for dark bg */
-	.flash-timer :global(.countdown-compact) {
-		color: var(--ft-cta);
-	}
-
-	.flash-timer :global(.cd-sep) {
-		color: rgba(255, 255, 255, 0.3);
-	}
-
-	/* ── Arrow ── */
 	.flash-arrow {
 		color: rgba(255, 255, 255, 0.5);
 		flex-shrink: 0;
-		transition: transform var(--dur-fast) ease;
 	}
 
 	@media (max-width: 480px) {

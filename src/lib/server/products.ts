@@ -83,6 +83,14 @@ export async function getFeaturedProducts(limit = 8): Promise<DBProduct[]> {
 	return result.rows as unknown as DBProduct[];
 }
 
+export async function getDealsCount(): Promise<number> {
+	const db = getClient();
+	const result = await db.execute(
+		'SELECT COUNT(*) as cnt FROM products WHERE original_price IS NOT NULL AND original_price > price'
+	);
+	return Number(result.rows[0]?.cnt ?? 0);
+}
+
 export async function getAllProducts(opts: {
 	search?: string;
 	category?: string;

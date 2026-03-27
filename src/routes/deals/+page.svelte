@@ -1,37 +1,22 @@
 <script lang="ts">
-	import CountdownTimer from '$lib/components/ui/CountdownTimer.svelte';
-	import { LightningIcon, ArrowRightIcon, BellIcon } from 'phosphor-svelte';
-	import ProductCard from '$lib/components/ui/ProductCard.svelte';
+	import { ArrowRightIcon, BellIcon, TagIcon } from 'phosphor-svelte';
 
-	interface FlashDeal {
+	interface Deal {
 		id: string;
 		slug: string;
-		title: string;
+		name: string;
 		description: string;
-		originalPrice: number;
-		salePrice: number;
-		discount: number;
-		image: string;
-		validUntil: string;
-		badge: string;
-	}
-
-	interface SeasonalDeal {
-		id: string;
-		slug: string;
-		title: string;
-		description: string;
-		discount: number;
-		image: string;
-		validUntil: string;
-		href: string;
+		price: number;
+		compareAtPrice: number;
+		discountPercent: number;
+		image?: string;
+		category: string;
+		inStock: boolean;
 	}
 
 	interface Props {
 		data: {
-			flashDeals: FlashDeal[];
-			seasonalDeals: SeasonalDeal[];
-			hasMoreDeals: boolean;
+			deals: Deal[];
 			error?: string;
 		};
 	}
@@ -41,19 +26,11 @@
 	function formatPrice(price: number): string {
 		return price.toFixed(2).replace('.', ',') + ' zł';
 	}
-
-	function formatDate(iso: string): string {
-		return new Date(iso).toLocaleDateString('pl-PL', {
-			day: 'numeric',
-			month: 'long',
-			year: 'numeric'
-		});
-	}
 </script>
 
 <svelte:head>
 	<title>Promocje — FixTar</title>
-	<meta name="description" content="Sprawdź aktualne promocje i oferty specjalne na elektronarzędzia. Oferty błyskawiczne, wyprzedaże sezonowe i zestawy w niższych cenach." />
+	<meta name="description" content="Sprawdź aktualne promocje i oferty specjalne na elektronarzędzia." />
 </svelte:head>
 
 <div class="ft-container ft-section">
@@ -61,106 +38,61 @@
 	<div class="page-header">
 		<h4 class="ft-label">Oferty specjalne</h4>
 		<h1 class="page-title">Promocje</h1>
-		<p class="page-desc">Nie przegap okazji — sprawdź nasze aktualne promocje i oferty limitowane.</p>
+		<p class="page-desc">Produkty z obniżoną ceną — promocje zarządzane bezpośrednio przez nasz magazyn.</p>
 	</div>
 
 	{#if data.error}
-		<div class="error-state">
+		<div class="empty-state">
 			<p>{data.error}</p>
 			<a href="/products" class="btn-secondary">Przeglądaj produkty</a>
 		</div>
-	{:else if data.flashDeals.length === 0 && data.seasonalDeals.length === 0}
+	{:else if data.deals.length === 0}
 		<div class="empty-state">
-			<p>Aktualnie brak aktywnych promocji.</p>
-			<a href="/products" class="btn-primary">Przeglądaj produkty</a>
+			<TagIcon size={48} weight="light" aria-hidden="true" />
+			<h2 class="empty-title">Aktualnie brak promocji</h2>
+			<p>Nowe promocje pojawiają się regularnie — wróć wkrótce lub zapisz się do newslettera.</p>
+			<div class="empty-actions">
+				<a href="/products" class="btn-primary">Przeglądaj produkty</a>
+				<a href="/#newsletter" class="btn-secondary">Zapisz się do newslettera</a>
+			</div>
 		</div>
 	{:else}
-		<!-- Flash deals -->
-		{#if data.flashDeals.length > 0}
-			<section class="deals-section" aria-label="Oferty błyskawiczne">
-				<div class="section-header">
-					<h2 class="section-title">
-						<LightningIcon weight="fill" aria-hidden="true" />
-						Oferty błyskawiczne
-					</h2>
-					<p class="section-hint">Ograniczony czas — kupuj zanim wygasną!</p>
-				</div>
+		<p class="deals-count">{data.deals.length} {data.deals.length === 1 ? 'produkt' : data.deals.length < 5 ? 'produkty' : 'produktów'} w promocji</p>
 
-				<div class="flash-grid ft-stagger">
-					{#each data.flashDeals as deal (deal.id)}
-						<article class="flash-card ft-card">
-							<div class="flash-image">
-								<img src={deal.image} alt={deal.title} width="400" height="240" loading="lazy" />
-								{#if deal.badge}
-									<span class="flash-badge">{deal.badge}</span>
-								{/if}
-								<span class="flash-discount">-{deal.discount}%</span>
-							</div>
-							<div class="flash-body">
-								<h3 class="flash-title">{deal.title}</h3>
-								<p class="flash-desc">{deal.description}</p>
-
-								<div class="flash-pricing">
-									<span class="flash-original">{formatPrice(deal.originalPrice)}</span>
-									<span class="flash-sale text-money">{formatPrice(deal.salePrice)}</span>
-								</div>
-
-								<div class="flash-countdown">
-									<span class="flash-countdown-label">Oferta kończy się za:</span>
-									<CountdownTimer targetDate={deal.validUntil} />
-								</div>
-
-								<a href="/products/{deal.slug}" class="flash-cta btn-primary">
-									Kup teraz
-									<ArrowRightIcon weight="bold" aria-hidden="true" />
-								</a>
-							</div>
-						</article>
-					{/each}
-				</div>
-			</section>
-		{/if}
-
-		<!-- Seasonal promotions -->
-		{#if data.seasonalDeals.length > 0}
-			<section class="deals-section" aria-label="Promocje sezonowe">
-				<div class="section-header">
-					<h2 class="section-title">Promocje sezonowe</h2>
-				</div>
-
-				<div class="seasonal-grid ft-stagger">
-					{#each data.seasonalDeals as deal (deal.id)}
-						<a href={deal.href} class="seasonal-card ft-card">
-							<div class="seasonal-image">
-								<img src={deal.image} alt={deal.title} width="400" height="200" loading="lazy" />
-								<span class="seasonal-badge">-{deal.discount}%</span>
-							</div>
-							<div class="seasonal-body">
-								<h3 class="seasonal-title">{deal.title}</h3>
-								<p class="seasonal-desc">{deal.description}</p>
-								<div class="seasonal-footer">
-									<span class="seasonal-date">Do {formatDate(deal.validUntil)}</span>
-									<span class="seasonal-cta">
-										Sprawdź
-										<ArrowRightIcon weight="bold" aria-hidden="true" />
-									</span>
-								</div>
-							</div>
-						</a>
-					{/each}
-				</div>
-			</section>
-		{/if}
-
-		<!-- More deals link -->
-		{#if data.hasMoreDeals}
-			<div class="more-deals">
-				<a href="/products?sort=price-low" class="btn-secondary">
-					Zobacz wszystkie promocje
-					<ArrowRightIcon weight="bold" aria-hidden="true" />
+		<div class="deals-grid ft-stagger">
+			{#each data.deals as deal (deal.id)}
+				<a href="/products/{deal.slug}" class="deal-card ft-card">
+					<div class="deal-image">
+						{#if deal.image}
+							<img src={deal.image} alt={deal.name} width="400" height="300" loading="lazy" />
+						{:else}
+							<div class="deal-image-placeholder"></div>
+						{/if}
+						<span class="deal-badge">-{deal.discountPercent}%</span>
+					</div>
+					<div class="deal-body">
+						{#if deal.category}
+							<span class="deal-category">{deal.category}</span>
+						{/if}
+						<h3 class="deal-name">{deal.name}</h3>
+						<div class="deal-pricing">
+							<span class="deal-original">{formatPrice(deal.compareAtPrice)}</span>
+							<span class="deal-sale">{formatPrice(deal.price)}</span>
+						</div>
+						{#if !deal.inStock}
+							<span class="deal-oos">Niedostępny</span>
+						{/if}
+					</div>
 				</a>
-			</div>
-		{/if}
+			{/each}
+		</div>
+
+		<div class="more-link">
+			<a href="/products" class="btn-secondary">
+				Zobacz wszystkie produkty
+				<ArrowRightIcon weight="bold" aria-hidden="true" />
+			</a>
+		</div>
 	{/if}
 
 	<!-- Newsletter CTA -->
@@ -198,283 +130,181 @@
 		max-width: 480px;
 	}
 
-	/* ── Empty/Error states ── */
-	.empty-state,
-	.error-state {
+	/* ── Empty state ── */
+	.empty-state {
 		text-align: center;
 		padding: clamp(48px, 8vh, 80px) 0;
 		color: var(--ft-text-muted);
 	}
 
-	.empty-state p,
-	.error-state p {
-		font-size: 1rem;
-		margin-bottom: 24px;
-	}
-
-	/* ── Section ── */
-	.deals-section {
-		margin-bottom: clamp(40px, 5vh, 56px);
-	}
-
-	.section-header {
-		margin-bottom: 24px;
-	}
-
-	.section-title {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		font-family: var(--font-display);
-		font-size: clamp(1.1rem, 2vw, 1.35rem);
-		font-weight: 700;
-		color: var(--ft-dark);
-		letter-spacing: -0.02em;
-	}
-
-	.section-title :global(svg) {
-		color: var(--ft-cta);
-	}
-
-	.section-hint {
-		font-size: 0.78rem;
-		color: var(--ft-text-muted);
-		margin-top: 4px;
-	}
-
-	/* ── Flash deals ── */
-	.flash-grid {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: 20px;
-	}
-
-	@media (min-width: 768px) {
-		.flash-grid {
-			grid-template-columns: repeat(2, 1fr);
-		}
-	}
-
-	.flash-card {
-		overflow: hidden;
-	}
-
-	.flash-image {
-		position: relative;
-		aspect-ratio: 5 / 3;
-		overflow: hidden;
-		background: var(--ft-frost);
-	}
-
-	.flash-image img {
-		width: 100%;
-		height: 100%;
-		object-fit: contain;
-		padding: 8px;
-		background: var(--ft-frost);
-	}
-
-	.flash-badge {
-		position: absolute;
-		top: 12px;
-		left: 12px;
-		font-family: var(--font-display);
-		font-size: 0.62rem;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.08em;
-		color: white;
-		background: var(--ft-dark);
-		padding: 5px 10px;
-		border-radius: var(--radius-sm);
-	}
-
-	.flash-discount {
-		position: absolute;
-		top: 12px;
-		right: 12px;
-		font-family: var(--font-display);
-		font-size: 0.88rem;
-		font-weight: 800;
-		color: white;
-		background: var(--ft-cta);
-		padding: 4px 10px;
-		border-radius: var(--radius-sm);
-	}
-
-	.flash-body {
-		padding: clamp(14px, 3vw, 20px);
-	}
-
-	.flash-title {
-		font-family: var(--font-display);
-		font-size: 1rem;
-		font-weight: 700;
-		color: var(--ft-dark);
-		letter-spacing: -0.01em;
-	}
-
-	.flash-desc {
-		font-size: 0.82rem;
-		color: var(--ft-text-muted);
-		line-height: 1.5;
-		margin-top: 6px;
-	}
-
-	.flash-pricing {
-		display: flex;
-		align-items: baseline;
-		gap: 10px;
-		margin-top: 14px;
-	}
-
-	.flash-original {
-		font-size: 0.82rem;
+	.empty-state :global(svg) {
 		color: var(--ft-text-faint);
-		text-decoration: line-through;
+		margin-bottom: 16px;
 	}
 
-	.flash-sale {
+	.empty-title {
 		font-family: var(--font-display);
-		font-size: 1.3rem;
-		font-weight: 800;
-		color: var(--ft-cta);
-		letter-spacing: -0.02em;
+		font-size: 1.2rem;
+		font-weight: 700;
+		color: var(--ft-dark);
+		margin-bottom: 6px;
 	}
 
-	.flash-countdown {
-		margin-top: 16px;
-		padding-top: 16px;
-		border-top: 1px solid var(--ft-line);
+	.empty-state p {
+		font-size: 0.88rem;
+		margin-bottom: 24px;
 	}
 
-	.flash-countdown-label {
-		display: block;
-		font-size: 0.68rem;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.08em;
-		color: var(--ft-text-muted);
-		margin-bottom: 8px;
-	}
-
-	.flash-cta {
+	.empty-actions {
 		display: flex;
-		align-items: center;
+		gap: 12px;
 		justify-content: center;
-		gap: 8px;
-		width: 100%;
-		margin-top: 16px;
-		text-decoration: none;
+		flex-wrap: wrap;
 	}
 
-	/* ── Seasonal deals ── */
-	.seasonal-grid {
+	/* ── Deals count ── */
+	.deals-count {
+		font-size: 0.82rem;
+		color: var(--ft-text-muted);
+		margin-bottom: 20px;
+	}
+
+	/* ── Deals grid ── */
+	.deals-grid {
 		display: grid;
-		grid-template-columns: 1fr;
+		grid-template-columns: repeat(2, 1fr);
 		gap: 16px;
 	}
 
 	@media (min-width: 640px) {
-		.seasonal-grid {
-			grid-template-columns: repeat(2, 1fr);
-		}
-	}
-
-	@media (min-width: 1024px) {
-		.seasonal-grid {
+		.deals-grid {
 			grid-template-columns: repeat(3, 1fr);
 		}
 	}
 
-	.seasonal-card {
+	@media (min-width: 1024px) {
+		.deals-grid {
+			grid-template-columns: repeat(4, 1fr);
+			gap: 20px;
+		}
+	}
+
+	/* ── Deal card ── */
+	.deal-card {
 		overflow: hidden;
 		text-decoration: none;
 		display: flex;
 		flex-direction: column;
-		transition: border-color var(--dur-med) ease, box-shadow var(--dur-med) ease, transform var(--dur-med) ease;
+		transition: border-color var(--dur-med) ease, transform var(--dur-med) var(--ease-out);
 	}
 
-	.seasonal-card:hover {
-		opacity: 0.95;
+	.deal-card:hover {
+		border-color: var(--ft-accent);
+		transform: translateY(-2px);
 	}
 
-	.seasonal-image {
+	.deal-image {
 		position: relative;
-		aspect-ratio: 2 / 1;
+		aspect-ratio: 1 / 1;
 		overflow: hidden;
 		background: var(--ft-frost);
 	}
 
-	.seasonal-image img {
+	.deal-image img {
 		width: 100%;
 		height: 100%;
 		object-fit: contain;
 		padding: 8px;
-		background: var(--ft-frost);
 		transition: transform 350ms ease;
 	}
 
-	.seasonal-card:hover .seasonal-image img {
-		transform: scale(1.03);
+	.deal-card:hover .deal-image img {
+		transform: scale(1.04);
 	}
 
-	.seasonal-badge {
+	.deal-image-placeholder {
+		width: 100%;
+		height: 100%;
+		background: var(--ft-frost);
+	}
+
+	.deal-badge {
 		position: absolute;
-		top: 10px;
-		right: 10px;
+		top: 8px;
+		right: 8px;
 		font-family: var(--font-display);
 		font-size: 0.72rem;
 		font-weight: 800;
 		color: white;
 		background: var(--ft-cta);
-		padding: 4px 10px;
+		padding: 3px 8px;
 		border-radius: var(--radius-sm);
 	}
 
-	.seasonal-body {
-		padding: 16px 20px 20px;
+	.deal-body {
+		padding: 12px 14px 16px;
 		flex: 1;
 		display: flex;
 		flex-direction: column;
+		gap: 4px;
 	}
 
-	.seasonal-title {
-		font-family: var(--font-display);
-		font-size: 0.95rem;
-		font-weight: 700;
-		color: var(--ft-dark);
-		letter-spacing: -0.01em;
-	}
-
-	.seasonal-desc {
-		font-size: 0.82rem;
-		color: var(--ft-text-muted);
-		line-height: 1.5;
-		margin-top: 4px;
-		flex: 1;
-	}
-
-	.seasonal-footer {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		margin-top: 14px;
-		padding-top: 14px;
-		border-top: 1px solid var(--ft-line);
-	}
-
-	.seasonal-date {
-		font-size: 0.72rem;
+	.deal-category {
+		font-size: 0.68rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
 		color: var(--ft-text-faint);
 	}
 
-	.seasonal-card:hover .seasonal-cta {
-		gap: 7px;
+	.deal-name {
+		font-family: var(--font-display);
+		font-size: 0.85rem;
+		font-weight: 700;
+		color: var(--ft-dark);
+		letter-spacing: -0.01em;
+		line-height: 1.3;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
 	}
 
-	/* ── More deals link ── */
-	.more-deals {
+	.deal-pricing {
+		display: flex;
+		align-items: baseline;
+		gap: 8px;
+		margin-top: auto;
+		padding-top: 8px;
+	}
+
+	.deal-original {
+		font-size: 0.78rem;
+		color: var(--ft-text-faint);
+		text-decoration: line-through;
+	}
+
+	.deal-sale {
+		font-family: var(--font-display);
+		font-size: 1.05rem;
+		font-weight: 800;
+		color: var(--ft-cta);
+		letter-spacing: -0.02em;
+	}
+
+	.deal-oos {
+		font-size: 0.68rem;
+		font-weight: 600;
+		color: var(--ft-text-muted);
+		background: var(--ft-frost);
+		padding: 2px 8px;
+		border-radius: var(--radius-sm);
+		width: fit-content;
+		margin-top: 4px;
+	}
+
+	/* ── More link ── */
+	.more-link {
 		text-align: center;
 		margin: clamp(32px, 4vh, 48px) 0;
 	}

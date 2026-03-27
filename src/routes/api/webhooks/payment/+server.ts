@@ -1,10 +1,13 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { PaymentService } from '$lib/services/payment';
+import { db } from '$lib/server/db';
+import { orders } from '$lib/server/schema';
+import { eq } from 'drizzle-orm';
+
+const paymentService = new PaymentService();
 
 export const POST: RequestHandler = async ({ request, url }) => {
-	const paymentService = new PaymentService();
-
 	try {
 		const provider = url.searchParams.get('provider');
 
@@ -13,27 +16,28 @@ export const POST: RequestHandler = async ({ request, url }) => {
 		}
 
 		const data = await request.json();
+		const orderId = data.sessionId || data.orderId || data.order_id;
 
-		// Verify payment with the appropriate provider
 		const verification = await paymentService.verifyPayment(provider, data);
 
-		if (verification.success) {
-			const orderId = data.sessionId || data.orderId || data.order_id;
+		if (verification.success && orderId) {
+			// Update order status to completed
+			await db
+				.update(orders)
+				.set({
+					status: 'processing',
+					updatedAt: new Date()
+				})
+				.where(eq(orders.id, orderId));
 
-			if (orderId) {
-				// TODO: Update order status in Turso DB
-				console.warn('[TODO] webhooks/payment: update order', orderId, 'status in DB');
-				// TODO: Send confirmation email
-				// TODO: Clear cart (if we have user session)
-				// TODO: Update inventory
-			}
-
+			console.log(`[webhook] Order ${orderId} payment verified via ${provider}`);
 			return json({ status: 'OK' });
 		}
 
+		console.error(`[webhook] Verification failed for ${orderId}:`, verification.error);
 		return json({ status: 'ERROR', message: 'Verification failed' }, { status: 400 });
 	} catch (error) {
-		console.error('Webhook error:', error);
+		console.error('[webhook] Error:', error);
 		return json({ status: 'ERROR', message: 'Internal server error' }, { status: 500 });
 	}
 };

@@ -14,6 +14,7 @@
 			featuredProducts: Product[];
 			totalProducts: number;
 			categories: Array<{ id: string; name: string; slug: string; count: number }>;
+			dealsCount: number;
 			error?: string;
 		};
 	}
@@ -29,7 +30,11 @@
 	/>
 </svelte:head>
 
-<FlashSaleBanner />
+{#if data.dealsCount > 0}
+	<FlashSaleBanner headline="Promocje — {data.dealsCount} {data.dealsCount === 1 ? 'produkt' : data.dealsCount < 5 ? 'produkty' : 'produktów'} w niższej cenie" />
+{:else}
+	<FlashSaleBanner headline="Darmowa dostawa od 299 zł — sprawdź naszą ofertę" href="/products" />
+{/if}
 <HeroSection />
 <CategoriesSection categories={data.categories} />
 <div class="ft-lazy" use:lazyReveal>

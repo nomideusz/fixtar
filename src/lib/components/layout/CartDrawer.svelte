@@ -392,8 +392,8 @@
 
 	.cart-drawer__icon-btn--clear:hover,
 	.cart-drawer__icon-btn--remove:hover {
-		color: var(--ft-danger);
-		background-color: color-mix(in srgb, var(--ft-danger) 12%, transparent);
+		color: var(--color-danger);
+		background-color: color-mix(in srgb, var(--color-danger) 12%, transparent);
 	}
 
 	/* --- Confirmation UI --- */
@@ -402,7 +402,7 @@
 		font-family: var(--font-display);
 		font-size: 0.9rem;
 		font-weight: 600;
-		color: var(--ft-danger);
+		color: var(--color-danger);
 	}
 
 	.cart-drawer__confirm-btn {
@@ -422,7 +422,7 @@
 	}
 
 	.cart-drawer__confirm-btn--yes {
-		background-color: var(--ft-danger);
+		background-color: var(--color-danger);
 		color: #fff;
 	}
 
@@ -440,8 +440,8 @@
 	}
 
 	.cart-item--pending {
-		border-color: color-mix(in srgb, var(--ft-danger) 30%, transparent);
-		background-color: color-mix(in srgb, var(--ft-danger) 3%, var(--ft-surface));
+		border-color: color-mix(in srgb, var(--color-danger) 30%, transparent);
+		background-color: color-mix(in srgb, var(--color-danger) 3%, var(--ft-surface));
 	}
 
 	/* --- Drawer body --- */

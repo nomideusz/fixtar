@@ -1,19 +1,27 @@
 import type { PaymentProvider, PaymentOrder } from './types';
 import { BankTransferProvider } from './bank-transfer';
 import { CashOnDeliveryProvider } from './cash-on-delivery';
+import { Przelewy24Provider } from './przelewy24';
 
 export * from './types';
 
 export class PaymentService {
 	private providers: Map<string, PaymentProvider> = new Map();
+	private p24: Przelewy24Provider;
 
 	constructor() {
-		// Register available payment providers
 		this.registerProvider(new BankTransferProvider());
 		this.registerProvider(new CashOnDeliveryProvider());
 
-		// TODO: Add Przelewy24Provider when credentials are available
-		// TODO: Add PayUProvider when credentials are available
+		// P24 is always instantiated but only routes to it if configured
+		this.p24 = new Przelewy24Provider();
+		if (this.p24.isConfigured) {
+			this.registerProvider(this.p24);
+		}
+	}
+
+	get isP24Available(): boolean {
+		return this.p24.isConfigured;
 	}
 
 	registerProvider(provider: PaymentProvider) {
@@ -25,19 +33,16 @@ export class PaymentService {
 	}
 
 	async processPayment(paymentMethod: string, order: PaymentOrder) {
-		// Map payment methods to providers
 		let providerName = paymentMethod;
 
-		// Route specific payment methods through appropriate gateways
-		if (paymentMethod === 'blik' || paymentMethod === 'card') {
-			// Try Przelewy24 first for BLIK and cards
-			if (this.providers.has('przelewy24')) {
+		// Route online payment methods through P24
+		if (paymentMethod === 'blik' || paymentMethod === 'card' || paymentMethod === 'przelewy24') {
+			if (this.isP24Available) {
 				providerName = 'przelewy24';
 			} else {
-				// If P24 not available, these methods can't be processed
 				return {
 					success: false,
-					error: `${paymentMethod === 'blik' ? 'BLIK' : 'Karta płatnicza'} integration not configured. Please use bank transfer or cash on delivery.`
+					error: 'Płatności online nie są jeszcze dostępne. Wybierz płatność przy odbiorze.'
 				};
 			}
 		}
@@ -47,7 +52,7 @@ export class PaymentService {
 		if (!provider) {
 			return {
 				success: false,
-				error: `Payment method ${paymentMethod} not supported`
+				error: `Metoda płatności "${paymentMethod}" nie jest obsługiwana.`
 			};
 		}
 
@@ -57,7 +62,7 @@ export class PaymentService {
 			console.error(`Payment error with ${paymentMethod}:`, error);
 			return {
 				success: false,
-				error: 'Payment processing failed'
+				error: 'Przetwarzanie płatności nie powiodło się.'
 			};
 		}
 	}
@@ -68,7 +73,7 @@ export class PaymentService {
 		if (!provider) {
 			return {
 				success: false,
-				error: `Payment method ${paymentMethod} not supported`
+				error: `Metoda płatności "${paymentMethod}" nie jest obsługiwana.`
 			};
 		}
 
@@ -78,7 +83,7 @@ export class PaymentService {
 			console.error(`Verification error with ${paymentMethod}:`, error);
 			return {
 				success: false,
-				error: 'Payment verification failed'
+				error: 'Weryfikacja płatności nie powiodła się.'
 			};
 		}
 	}
