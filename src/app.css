@@ -148,84 +148,9 @@
 }
 
 /* ==========================================================================
-   2b. DARK MODE
-   ========================================================================== */
-
-@media (prefers-color-scheme: dark) {
-	html:not(.light-forced) {
-		--ft-bg: #0A0F1A;               /* Deep Carbon */
-		--ft-surface: #121926;          /* Slightly elevated dashboard base */
-		--ft-dark: #FFFFFF;
-		--ft-text: #A0ABC0;             /* Cool gray text */
-		--ft-text-strong: #F7FAFC;
-		--ft-text-muted: #718096;
-		--ft-text-faint: #4A5568;
-
-		--ft-cta: #FF2B45;              /* Glowing Racing Red */
-		--ft-cta-hover: #FF4D63;
-		--ft-cta-light: rgba(255, 43, 69, 0.15);
-
-		--ft-accent: #FFFFFF;           /* Crisp White for contrast in dark mode */
-		--ft-accent-hover: #E2E8F0;
-
-		--ft-line: #1F2937;
-		--ft-frost: #151D2C;
-
-		--ft-shadow-sm: none;
-		--ft-shadow-md: none;
-		--ft-shadow-lg: none;
-
-		--ft-surface-overlay: rgba(0, 0, 0, 0.75);
-
-		/* Legacy aliases for dark */
-		--ft-card: #1a2028;
-		--ft-card-hover: #1e2630;
-		--ft-card-solid: #1a2028;
-		--ft-surface-elevated: #1e2630;
-		--ft-text-inverse: #0f1419;
-
-		color-scheme: dark;
-	}
-}
-
-/* Manual dark toggle via class */
-html.dark {
-	--ft-bg: #0A0F1A;               /* Deep Carbon */
-	--ft-surface: #121926;          /* Slightly elevated dashboard base */
-	--ft-dark: #FFFFFF;
-	--ft-text: #A0ABC0;             /* Cool gray text */
-	--ft-text-strong: #F7FAFC;
-	--ft-text-muted: #718096;
-	--ft-text-faint: #4A5568;
-
-	--ft-cta: #FF2B45;              /* Glowing Racing Red */
-	--ft-cta-hover: #FF4D63;
-	--ft-cta-light: rgba(255, 43, 69, 0.15);
-
-	--ft-accent: #FFFFFF;           /* Crisp White for contrast in dark mode */
-	--ft-accent-hover: #E2E8F0;
-
-	--ft-line: #1F2937;
-	--ft-frost: #151D2C;
-
-	--ft-shadow-sm: none;
-	--ft-shadow-md: none;
-	--ft-shadow-lg: none;
-
-	--ft-surface-overlay: rgba(0, 0, 0, 0.75);
-
-	--ft-card: #1a2028;
-	--ft-card-hover: #1e2630;
-	--ft-card-solid: #1a2028;
-	--ft-surface-elevated: #1e2630;
-	--ft-text-inverse: #0f1419;
-
-	color-scheme: dark;
-}
-
-/* ==========================================================================
    3. BASE STYLES
    ========================================================================== */
+
 
 @layer base {
 

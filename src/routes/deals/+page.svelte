@@ -1,70 +1,42 @@
 <script lang="ts">
 	import CountdownTimer from '$lib/components/ui/CountdownTimer.svelte';
 	import { LightningIcon, ArrowRightIcon, BellIcon } from 'phosphor-svelte';
+	import ProductCard from '$lib/components/ui/ProductCard.svelte';
 
-	// Mock deals data — will be replaced with real DB data
-	const flashDeals = [
-		{
-			id: 1,
-			title: 'Szlifierka kątowa Bavaria 2000W',
-			description: 'Profesjonalna szlifierka z regulacją obrotów i tarczą 125mm.',
-			originalPrice: 349,
-			salePrice: 249,
-			discount: 29,
-			image: 'https://images.unsplash.com/photo-1504148455328-c376907d081c?w=400',
-			validUntil: getRelativeDate(2),
-			badge: 'Oferta błyskawiczna'
-		},
-		{
-			id: 2,
-			title: 'Wiertarka udarowa Eurotec 1100W',
-			description: 'Wiertarka z uchwytem szybkozaciskowym i funkcją udaru.',
-			originalPrice: 279,
-			salePrice: 199,
-			discount: 29,
-			image: 'https://images.unsplash.com/photo-1590479773265-7464e5d48118?w=400',
-			validUntil: getRelativeDate(1),
-			badge: 'Ostatnie sztuki'
-		}
-	];
-
-	const seasonalDeals = [
-		{
-			id: 3,
-			title: 'Wyprzedaż sezonowa',
-			description: 'Do -50% na wybrane elektronarzędzia z kolekcji wiosna 2026.',
-			discount: 50,
-			image: 'https://images.unsplash.com/photo-1504148455328-c376907d081c?w=400',
-			validUntil: getRelativeDate(30),
-			href: '/products'
-		},
-		{
-			id: 4,
-			title: 'Kup 2 — trzeci gratis',
-			description: 'Na wszystkie akcesoria i osprzęt. Najtańszy produkt gratis.',
-			discount: 0,
-			image: 'https://images.unsplash.com/photo-1590479773265-7464e5d48118?w=400',
-			validUntil: getRelativeDate(14),
-			href: '/products?category=zestawy-i-akcesoria',
-			label: 'B2G1'
-		},
-		{
-			id: 5,
-			title: 'Zestawy startowe -20%',
-			description: 'Kompletne zestawy narzędzi dla początkujących i profesjonalistów.',
-			discount: 20,
-			image: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=400',
-			validUntil: getRelativeDate(21),
-			href: '/products'
-		}
-	];
-
-	function getRelativeDate(daysFromNow: number): string {
-		const d = new Date();
-		d.setDate(d.getDate() + daysFromNow);
-		d.setHours(23, 59, 59, 0);
-		return d.toISOString();
+	interface FlashDeal {
+		id: string;
+		slug: string;
+		title: string;
+		description: string;
+		originalPrice: number;
+		salePrice: number;
+		discount: number;
+		image: string;
+		validUntil: string;
+		badge: string;
 	}
+
+	interface SeasonalDeal {
+		id: string;
+		slug: string;
+		title: string;
+		description: string;
+		discount: number;
+		image: string;
+		validUntil: string;
+		href: string;
+	}
+
+	interface Props {
+		data: {
+			flashDeals: FlashDeal[];
+			seasonalDeals: SeasonalDeal[];
+			hasMoreDeals: boolean;
+			error?: string;
+		};
+	}
+
+	let { data }: Props = $props();
 
 	function formatPrice(price: number): string {
 		return price.toFixed(2).replace('.', ',') + ' zł';
@@ -92,82 +64,104 @@
 		<p class="page-desc">Nie przegap okazji — sprawdź nasze aktualne promocje i oferty limitowane.</p>
 	</div>
 
-	<!-- Flash deals -->
-	{#if flashDeals.length > 0}
-		<section class="deals-section" aria-label="Oferty błyskawiczne">
-			<div class="section-header">
-				<h2 class="section-title">
-					<LightningIcon weight="fill" aria-hidden="true" />
-					Oferty błyskawiczne
-				</h2>
-				<p class="section-hint">Ograniczony czas — kupuj zanim wygasną!</p>
-			</div>
-
-			<div class="flash-grid ft-stagger">
-				{#each flashDeals as deal (deal.id)}
-					<article class="flash-card ft-card">
-						<div class="flash-image">
-							<img src={deal.image} alt={deal.title} width="400" height="240" loading="lazy" />
-							{#if deal.badge}
-								<span class="flash-badge">{deal.badge}</span>
-							{/if}
-							<span class="flash-discount">-{deal.discount}%</span>
-						</div>
-						<div class="flash-body">
-							<h3 class="flash-title">{deal.title}</h3>
-							<p class="flash-desc">{deal.description}</p>
-
-							<div class="flash-pricing">
-								<span class="flash-original">{formatPrice(deal.originalPrice)}</span>
-								<span class="flash-sale text-money">{formatPrice(deal.salePrice)}</span>
-							</div>
-
-							<div class="flash-countdown">
-								<span class="flash-countdown-label">Oferta kończy się za:</span>
-								<CountdownTimer targetDate={deal.validUntil} />
-							</div>
-
-							<a href="/products" class="flash-cta btn-primary">
-								Kup teraz
-								<ArrowRightIcon weight="bold" aria-hidden="true" />
-							</a>
-						</div>
-					</article>
-				{/each}
-			</div>
-		</section>
-	{/if}
-
-	<!-- Seasonal promotions -->
-	<section class="deals-section" aria-label="Promocje sezonowe">
-		<div class="section-header">
-			<h2 class="section-title">Promocje sezonowe</h2>
+	{#if data.error}
+		<div class="error-state">
+			<p>{data.error}</p>
+			<a href="/products" class="btn-secondary">Przeglądaj produkty</a>
 		</div>
+	{:else if data.flashDeals.length === 0 && data.seasonalDeals.length === 0}
+		<div class="empty-state">
+			<p>Aktualnie brak aktywnych promocji.</p>
+			<a href="/products" class="btn-primary">Przeglądaj produkty</a>
+		</div>
+	{:else}
+		<!-- Flash deals -->
+		{#if data.flashDeals.length > 0}
+			<section class="deals-section" aria-label="Oferty błyskawiczne">
+				<div class="section-header">
+					<h2 class="section-title">
+						<LightningIcon weight="fill" aria-hidden="true" />
+						Oferty błyskawiczne
+					</h2>
+					<p class="section-hint">Ograniczony czas — kupuj zanim wygasną!</p>
+				</div>
 
-		<div class="seasonal-grid ft-stagger">
-			{#each seasonalDeals as deal (deal.id)}
-				<a href={deal.href} class="seasonal-card ft-card">
-					<div class="seasonal-image">
-						<img src={deal.image} alt={deal.title} width="400" height="200" loading="lazy" />
-						<span class="seasonal-badge">
-							{deal.label || `-${deal.discount}%`}
-						</span>
-					</div>
-					<div class="seasonal-body">
-						<h3 class="seasonal-title">{deal.title}</h3>
-						<p class="seasonal-desc">{deal.description}</p>
-						<div class="seasonal-footer">
-							<span class="seasonal-date">Do {formatDate(deal.validUntil)}</span>
-							<span class="seasonal-cta">
-								Sprawdź
-								<ArrowRightIcon weight="bold" aria-hidden="true" />
-							</span>
-						</div>
-					</div>
+				<div class="flash-grid ft-stagger">
+					{#each data.flashDeals as deal (deal.id)}
+						<article class="flash-card ft-card">
+							<div class="flash-image">
+								<img src={deal.image} alt={deal.title} width="400" height="240" loading="lazy" />
+								{#if deal.badge}
+									<span class="flash-badge">{deal.badge}</span>
+								{/if}
+								<span class="flash-discount">-{deal.discount}%</span>
+							</div>
+							<div class="flash-body">
+								<h3 class="flash-title">{deal.title}</h3>
+								<p class="flash-desc">{deal.description}</p>
+
+								<div class="flash-pricing">
+									<span class="flash-original">{formatPrice(deal.originalPrice)}</span>
+									<span class="flash-sale text-money">{formatPrice(deal.salePrice)}</span>
+								</div>
+
+								<div class="flash-countdown">
+									<span class="flash-countdown-label">Oferta kończy się za:</span>
+									<CountdownTimer targetDate={deal.validUntil} />
+								</div>
+
+								<a href="/products/{deal.slug}" class="flash-cta btn-primary">
+									Kup teraz
+									<ArrowRightIcon weight="bold" aria-hidden="true" />
+								</a>
+							</div>
+						</article>
+					{/each}
+				</div>
+			</section>
+		{/if}
+
+		<!-- Seasonal promotions -->
+		{#if data.seasonalDeals.length > 0}
+			<section class="deals-section" aria-label="Promocje sezonowe">
+				<div class="section-header">
+					<h2 class="section-title">Promocje sezonowe</h2>
+				</div>
+
+				<div class="seasonal-grid ft-stagger">
+					{#each data.seasonalDeals as deal (deal.id)}
+						<a href={deal.href} class="seasonal-card ft-card">
+							<div class="seasonal-image">
+								<img src={deal.image} alt={deal.title} width="400" height="200" loading="lazy" />
+								<span class="seasonal-badge">-{deal.discount}%</span>
+							</div>
+							<div class="seasonal-body">
+								<h3 class="seasonal-title">{deal.title}</h3>
+								<p class="seasonal-desc">{deal.description}</p>
+								<div class="seasonal-footer">
+									<span class="seasonal-date">Do {formatDate(deal.validUntil)}</span>
+									<span class="seasonal-cta">
+										Sprawdź
+										<ArrowRightIcon weight="bold" aria-hidden="true" />
+									</span>
+								</div>
+							</div>
+						</a>
+					{/each}
+				</div>
+			</section>
+		{/if}
+
+		<!-- More deals link -->
+		{#if data.hasMoreDeals}
+			<div class="more-deals">
+				<a href="/products?sort=price-low" class="btn-secondary">
+					Zobacz wszystkie promocje
+					<ArrowRightIcon weight="bold" aria-hidden="true" />
 				</a>
-			{/each}
-		</div>
-	</section>
+			</div>
+		{/if}
+	{/if}
 
 	<!-- Newsletter CTA -->
 	<section class="deals-newsletter" aria-label="Newsletter">
@@ -202,6 +196,20 @@
 		color: var(--ft-text-muted);
 		margin-top: 6px;
 		max-width: 480px;
+	}
+
+	/* ── Empty/Error states ── */
+	.empty-state,
+	.error-state {
+		text-align: center;
+		padding: clamp(48px, 8vh, 80px) 0;
+		color: var(--ft-text-muted);
+	}
+
+	.empty-state p,
+	.error-state p {
+		font-size: 1rem;
+		margin-bottom: 24px;
 	}
 
 	/* ── Section ── */
@@ -261,7 +269,9 @@
 	.flash-image img {
 		width: 100%;
 		height: 100%;
-		object-fit: cover;
+		object-fit: contain;
+		padding: 8px;
+		background: var(--ft-frost);
 	}
 
 	.flash-badge {
@@ -399,7 +409,9 @@
 	.seasonal-image img {
 		width: 100%;
 		height: 100%;
-		object-fit: cover;
+		object-fit: contain;
+		padding: 8px;
+		background: var(--ft-frost);
 		transition: transform 350ms ease;
 	}
 
@@ -459,6 +471,12 @@
 
 	.seasonal-card:hover .seasonal-cta {
 		gap: 7px;
+	}
+
+	/* ── More deals link ── */
+	.more-deals {
+		text-align: center;
+		margin: clamp(32px, 4vh, 48px) 0;
 	}
 
 	/* ── Newsletter CTA ── */

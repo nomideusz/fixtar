@@ -3,11 +3,9 @@
 	import { page } from '$app/stores';
 	import { cart, userStore } from '$lib/stores';
 	import FixTarLogo from '$lib/images/logo/fixtar-logo-black-trimmed.png';
-	import FixTarLogoWhite from '$lib/images/logo/fixtar-logo-white.webp';
 	import FixTarIcon from '$lib/images/logo/fixtar-icon-black.png';
-	import FixTarIconWhite from '$lib/images/logo/fixtar-icon-white.png';
 	import NavSearch from './NavSearch.svelte';
-	import { SunIcon, MoonIcon, XIcon, MagnifyingGlassIcon, ToteIcon, UserCircleIcon, UserGearIcon, SignOutIcon } from 'phosphor-svelte';
+	import { XIcon, MagnifyingGlassIcon, ShoppingCartSimpleIcon, UserIcon, UserGearIcon, SignOutIcon } from 'phosphor-svelte';
 
 	interface Props {
 		onCartOpen?: () => void;
@@ -18,7 +16,6 @@
 	let mobileMenuOpen = $state(false);
 	let scrolled = $state(false);
 	let mobileSearchOpen = $state(false);
-	let darkMode = $state(false);
 	let accountMenuOpen = $state(false);
 
 	function closeMobileMenu() {
@@ -30,21 +27,6 @@
 			scrolled = window.scrollY > 20;
 		};
 		window.addEventListener('scroll', onScroll, { passive: true });
-
-		// Init dark mode from localStorage or system preference
-		const stored = localStorage.getItem('ft-theme');
-		if (stored === 'dark') {
-			darkMode = true;
-			document.documentElement.classList.add('dark');
-			document.documentElement.classList.remove('light');
-		} else if (stored === 'light') {
-			darkMode = false;
-			document.documentElement.classList.add('light-forced');
-		} else {
-			// Follow system preference
-			darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-		}
-
 		return () => window.removeEventListener('scroll', onScroll);
 	});
 
@@ -63,19 +45,6 @@
 
 	function toggleMobileSearch() {
 		mobileSearchOpen = !mobileSearchOpen;
-	}
-
-	function toggleDarkMode() {
-		darkMode = !darkMode;
-		if (darkMode) {
-			document.documentElement.classList.add('dark');
-			document.documentElement.classList.remove('light', 'light-forced');
-			localStorage.setItem('ft-theme', 'dark');
-		} else {
-			document.documentElement.classList.remove('dark');
-			document.documentElement.classList.add('light-forced');
-			localStorage.setItem('ft-theme', 'light');
-		}
 	}
 
 	async function handleLogout() {
@@ -113,10 +82,8 @@
 	<div class="nav-inner">
 		<!-- Logo -->
 		<a href="/" class="nav-logo" aria-label="FixTar — Strona główna">
-			<img src={FixTarLogo} alt="" class="logo-img logo-full" class:hidden={darkMode} />
-			<img src={FixTarLogoWhite} alt="" class="logo-img logo-full" class:hidden={!darkMode} />
-			<img src={FixTarIcon} alt="" class="logo-img logo-icon" class:hidden={darkMode} />
-			<img src={FixTarIconWhite} alt="" class="logo-img logo-icon" class:hidden={!darkMode} />
+			<img src={FixTarLogo} alt="" class="logo-img logo-full" />
+			<img src={FixTarIcon} alt="" class="logo-img logo-icon" />
 		</a>
 
 		<!-- Desktop inline search (Always visible) -->
@@ -153,7 +120,7 @@
 				title="Koszyk"
 			>
 				<div class="nav-action-icon-wrap">
-					<ToteIcon size={24} weight="bold" aria-hidden="true" />
+					<ShoppingCartSimpleIcon size={22} weight="bold" aria-hidden="true" />
 					{#if cartCount > 0}
 						<span class="cart-badge" aria-hidden="true">{cartCount}</span>
 					{/if}
@@ -177,7 +144,7 @@
 						onclick={() => (accountMenuOpen = !accountMenuOpen)}
 					>
 						<div class="nav-action-icon-wrap">
-							<UserCircleIcon size={24} weight="bold" aria-hidden="true" />
+							<UserIcon size={22} weight="bold" aria-hidden="true" />
 						</div>
 						<span class="nav-action-label">Konto</span>
 					</button>
@@ -199,13 +166,13 @@
 				<!-- Mobile: icon only, no dropdown -->
 				<a href="/account" class="nav-icon-btn nav-action-btn mobile-only" aria-label="Moje konto" title="Moje konto">
 					<div class="nav-action-icon-wrap">
-						<UserCircleIcon size={24} weight="bold" aria-hidden="true" />
+						<UserIcon size={22} weight="bold" aria-hidden="true" />
 					</div>
 				</a>
 			{:else}
 				<a href="/auth/login" class="nav-icon-btn nav-action-btn desktop-only" aria-label="Zaloguj się" title="Zaloguj się">
 					<div class="nav-action-icon-wrap">
-						<UserCircleIcon size={24} weight="bold" aria-hidden="true" />
+						<UserIcon size={22} weight="bold" aria-hidden="true" />
 					</div>
 					<span class="nav-action-label">Zaloguj</span>
 				</a>
@@ -239,8 +206,7 @@
 		<div class="mobile-overlay" role="dialog" aria-modal="true" aria-label="Menu nawigacji">
 			<div class="mobile-menu-header">
 				<a href="/" class="nav-logo" aria-label="FixTar — Strona główna" onclick={closeMobileMenu}>
-					<img src={FixTarIcon} alt="" class="logo-img logo-icon" class:hidden={darkMode} style="display:block" />
-					<img src={FixTarIconWhite} alt="" class="logo-img logo-icon" class:hidden={!darkMode} style="display:block" />
+					<img src={FixTarIcon} alt="" class="logo-img logo-icon" style="display:block" />
 				</a>
 				<button
 					onclick={closeMobileMenu}
@@ -334,10 +300,6 @@
 	.logo-icon {
 		display: block;
 		height: 36px;
-	}
-
-	.logo-img.hidden {
-		display: none !important;
 	}
 
 	@media (min-width: 768px) {

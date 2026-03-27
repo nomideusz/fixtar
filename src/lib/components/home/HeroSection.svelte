@@ -341,12 +341,18 @@
 	/* ── Responsive ── */
 	@media (max-width: 768px) {
 		.hero {
-			height: calc(100svh - 110px); /* Fill mobile viewport (minus 64px nav + 46px promo banner) */
-			min-height: 400px;
+			height: auto;
+			aspect-ratio: 4 / 5; /* Better mobile aspect ratio - not too tall */
+			min-height: 480px;
+			max-height: 680px;
 		}
 
 		.hero-bg img {
+			object-fit: cover;
 			object-position: var(--mobile-pos, center center);
+			/* Ensure image covers properly on mobile */
+			width: 100%;
+			height: 100%;
 		}
 
 		.hero-scrim {

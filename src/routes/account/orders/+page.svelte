@@ -226,7 +226,7 @@
 
 								<div class="flex flex-col gap-3 sm:flex-row">
 									<a
-										href="/account/orders/{order.id}"
+										href="/orders/{order.id}"
 										class="text-sm font-medium text-[--ft-accent] hover:underline"
 									>
 										Zobacz szczegóły

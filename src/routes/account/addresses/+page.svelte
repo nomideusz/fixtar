@@ -4,10 +4,11 @@
 	import { WarningCircleIcon, MapPinIcon, PencilSimpleIcon, TrashIcon } from 'phosphor-svelte';
 	import { notifications } from '$lib/stores';
 	import { enhance } from '$app/forms';
-	import type { PageData, ActionData } from './$types';
+	import { invalidateAll } from '$app/navigation';
+	import type { PageData } from './$types';
 
 	// Get real data from server
-	const { data, form } = $props<{ data: PageData; form?: ActionData }>();
+	const { data } = $props<{ data: PageData }>();
 
 	// Use real addresses data from server
 	let addresses = $derived(data.addresses || []);
@@ -15,47 +16,11 @@
 	const hasError = $derived(!!data.error);
 	const errorMessage = $derived(data.error || '');
 
-	// Handle form results
-	$effect(() => {
-		if (form?.success) {
-			notifications.success('Akcja zakończona pomyślnie');
-			// Reload the page to get fresh data
-			window.location.reload();
-		} else if (form?.message) {
-			notifications.error(form.message);
-		}
-	});
-
 	function handleSetDefault(addressId: string) {
-		isSubmitting = true;
-
-		const formData = new FormData();
-		formData.append('id', addressId);
-
-		// Use fetch to call the server action
-		fetch('?/setDefaultAddress', {
-			method: 'POST',
-			body: formData
-		})
-			.then((response) => {
-				if (response.ok) {
-					// Update local state immediately for better UX
-					addresses = addresses.map((addr: any) => ({
-						...addr,
-						default: addr.id === addressId
-					}));
-					notifications.success('Domyślny adres zaktualizowany');
-				} else {
-					notifications.error('Nie udało się zaktualizować domyślnego adresu');
-				}
-			})
-			.catch((err) => {
-				console.error('Error setting default address:', err);
-				notifications.error('Nie udało się zaktualizować domyślnego adresu');
-			})
-			.finally(() => {
-				isSubmitting = false;
-			});
+		const form = document.getElementById(`default-form-${addressId}`) as HTMLFormElement;
+		if (form) {
+			form.requestSubmit();
+		}
 	}
 
 	function handleDelete(addressId: string) {
@@ -73,6 +38,32 @@
 		if (deleteForm) {
 			deleteForm.requestSubmit();
 		}
+	}
+
+	function deleteEnhance() {
+		isSubmitting = true;
+		return async ({ result }: any) => {
+			isSubmitting = false;
+			if (result.type === 'success') {
+				notifications.success('Adres usunięty');
+				await invalidateAll();
+			} else if (result.type === 'failure') {
+				notifications.error(result.data?.message || 'Wystąpił błąd');
+			}
+		};
+	}
+
+	function setDefaultEnhance() {
+		isSubmitting = true;
+		return async ({ result }: any) => {
+			isSubmitting = false;
+			if (result.type === 'success') {
+				notifications.success('Domyślny adres zaktualizowany');
+				await invalidateAll();
+			} else if (result.type === 'failure') {
+				notifications.error(result.data?.message || 'Wystąpił błąd');
+			}
+		};
 	}
 </script>
 
@@ -140,13 +131,7 @@
 								id="delete-form-{address.id}"
 								method="POST"
 								action="?/removeAddress"
-								use:enhance={() => {
-									isSubmitting = true;
-									return async ({ update }) => {
-										isSubmitting = false;
-										await update();
-									};
-								}}
+								use:enhance={deleteEnhance}
 								style="display: none;"
 							>
 								<input type="hidden" name="id" value={address.id} />
@@ -161,15 +146,24 @@
 					</div>
 
 					{#if !address.default}
-						<Button
-							onclick={() => handleSetDefault(address.id)}
-							disabled={isSubmitting}
-							variant="secondary"
-							size="sm"
-							fullWidth
+						<form
+							id="default-form-{address.id}"
+							method="POST"
+							action="?/setDefault"
+							use:enhance={setDefaultEnhance}
+							style="display: contents;"
 						>
-							{isSubmitting ? 'Ustawianie...' : 'Ustaw jako domyślny'}
-						</Button>
+							<input type="hidden" name="id" value={address.id} />
+							<Button
+								type="submit"
+								disabled={isSubmitting}
+								variant="secondary"
+								size="sm"
+								fullWidth
+							>
+								{isSubmitting ? 'Ustawianie...' : 'Ustaw jako domyślny'}
+							</Button>
+						</form>
 					{/if}
 				</Card>
 			{/each}

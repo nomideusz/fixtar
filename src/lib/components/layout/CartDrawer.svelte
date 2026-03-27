@@ -112,6 +112,39 @@
 		return () => window.removeEventListener('cartStateChange', handleCartStateChange);
 	});
 
+	// --- Removal Confirmation ---
+
+	let pendingRemoveId = $state<string | null>(null);
+	let pendingClearAll = $state(false);
+
+	function requestRemove(productId: string) {
+		pendingRemoveId = productId;
+	}
+
+	function confirmRemove() {
+		if (pendingRemoveId) {
+			cart.removeItem(pendingRemoveId);
+			pendingRemoveId = null;
+		}
+	}
+
+	function cancelRemove() {
+		pendingRemoveId = null;
+	}
+
+	function requestClearAll() {
+		pendingClearAll = true;
+	}
+
+	function confirmClearAll() {
+		cart.clear();
+		pendingClearAll = false;
+	}
+
+	function cancelClearAll() {
+		pendingClearAll = false;
+	}
+
 	// --- Cart Helpers ---
 
 	function formatPrice(value: number): string {
@@ -157,26 +190,36 @@
 	>
 		<!-- Header -->
 		<div class="cart-drawer__header">
-			<h5 class="cart-drawer__title">
-				{t('yourCart')} ({cart.count})
-			</h5>
-			<div class="cart-drawer__actions">
-				<button
-					onclick={() => cart.clear()}
-					class="cart-drawer__icon-btn cart-drawer__icon-btn--clear"
-					title={t('clearCart')}
-					aria-label={t('clearCart')}
-				>
-					<TrashIcon size={16} aria-hidden="true" />
-				</button>
-				<button
-					onclick={close}
-					class="cart-drawer__icon-btn cart-drawer__icon-btn--close"
-					aria-label={t('closeCartDrawer')}
-				>
-					<XIcon size={16} aria-hidden="true" />
-				</button>
-			</div>
+			{#if pendingClearAll}
+				<p class="cart-drawer__confirm-text">Usunąć wszystko?</p>
+				<div class="cart-drawer__actions">
+					<button onclick={confirmClearAll} class="cart-drawer__confirm-btn cart-drawer__confirm-btn--yes">Tak</button>
+					<button onclick={cancelClearAll} class="cart-drawer__confirm-btn cart-drawer__confirm-btn--no">Nie</button>
+				</div>
+			{:else}
+				<h5 class="cart-drawer__title">
+					{t('yourCart')} ({cart.count})
+				</h5>
+				<div class="cart-drawer__actions">
+					{#if cart.items.length > 0}
+						<button
+							onclick={requestClearAll}
+							class="cart-drawer__icon-btn cart-drawer__icon-btn--clear"
+							title={t('clearCart')}
+							aria-label={t('clearCart')}
+						>
+							<TrashIcon size={16} aria-hidden="true" />
+						</button>
+					{/if}
+					<button
+						onclick={close}
+						class="cart-drawer__icon-btn cart-drawer__icon-btn--close"
+						aria-label={t('closeCartDrawer')}
+					>
+						<XIcon size={16} aria-hidden="true" />
+					</button>
+				</div>
+			{/if}
 		</div>
 
 		<!-- Body -->
@@ -192,7 +235,7 @@
 				<!-- Items -->
 				<div class="cart-drawer__items">
 					{#each cart.items as item (item.productId)}
-						<div class="cart-item">
+						<div class="cart-item" class:cart-item--pending={pendingRemoveId === item.productId}>
 							<div class="cart-item__content">
 								<a
 									href={productHref(item)}
@@ -229,13 +272,20 @@
 									</div>
 								</div>
 							</div>
-							<button
-								onclick={() => cart.removeItem(item.productId)}
-								class="cart-drawer__icon-btn cart-drawer__icon-btn--remove"
-								aria-label={t('remove')}
-							>
-								<XIcon size={14} aria-hidden="true" />
-							</button>
+							{#if pendingRemoveId === item.productId}
+								<div class="cart-item__confirm">
+									<button onclick={confirmRemove} class="cart-drawer__confirm-btn cart-drawer__confirm-btn--yes" aria-label="Potwierdź usunięcie">Usuń</button>
+									<button onclick={cancelRemove} class="cart-drawer__confirm-btn cart-drawer__confirm-btn--no" aria-label="Anuluj usunięcie">Nie</button>
+								</div>
+							{:else}
+								<button
+									onclick={() => requestRemove(item.productId)}
+									class="cart-drawer__icon-btn cart-drawer__icon-btn--remove"
+									aria-label={t('remove')}
+								>
+									<XIcon size={14} aria-hidden="true" />
+								</button>
+							{/if}
 						</div>
 					{/each}
 				</div>
@@ -346,6 +396,56 @@
 		background-color: color-mix(in srgb, var(--ft-danger) 12%, transparent);
 	}
 
+	/* --- Confirmation UI --- */
+
+	.cart-drawer__confirm-text {
+		font-family: var(--font-display);
+		font-size: 0.9rem;
+		font-weight: 600;
+		color: var(--ft-danger);
+	}
+
+	.cart-drawer__confirm-btn {
+		border: none;
+		cursor: pointer;
+		padding: 0.35rem 0.75rem;
+		border-radius: var(--radius-sm);
+		font-size: 0.8rem;
+		font-weight: 600;
+		font-family: var(--font-display);
+		line-height: 1.3;
+		transition: opacity 0.15s;
+	}
+
+	.cart-drawer__confirm-btn:hover {
+		opacity: 0.85;
+	}
+
+	.cart-drawer__confirm-btn--yes {
+		background-color: var(--ft-danger);
+		color: #fff;
+	}
+
+	.cart-drawer__confirm-btn--no {
+		background-color: var(--ft-frost);
+		color: var(--ft-text);
+		border: 1px solid var(--ft-line);
+	}
+
+	.cart-item__confirm {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+		flex-shrink: 0;
+	}
+
+	.cart-item--pending {
+		border-color: color-mix(in srgb, var(--ft-danger) 30%, transparent);
+		background-color: color-mix(in srgb, var(--ft-danger) 3%, var(--ft-surface));
+	}
+
+	/* --- Drawer body --- */
+
 	.cart-drawer__body {
 		display: flex;
 		flex: 1;
@@ -383,6 +483,7 @@
 		background-color: var(--ft-surface);
 		padding: 0.875rem;
 		border-radius: var(--radius-md);
+		transition: border-color 0.2s, background-color 0.2s;
 	}
 
 	.cart-item__content {

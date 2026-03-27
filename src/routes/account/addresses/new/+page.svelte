@@ -5,21 +5,8 @@
 	import { notifications } from '$lib/stores';
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
-	import type { ActionData } from './$types';
-
-	const { form } = $props<{ form?: ActionData }>();
 
 	let isSubmitting = $state(false);
-
-	// Handle form results
-	$effect(() => {
-		if (form?.success) {
-			notifications.success('Adres dodany pomyślnie');
-			goto('/account/addresses');
-		} else if (form?.message) {
-			notifications.error(form.message);
-		}
-	});
 </script>
 
 <svelte:head>
@@ -43,9 +30,14 @@
 				action="?/addAddress"
 				use:enhance={() => {
 					isSubmitting = true;
-					return async ({ update }) => {
+					return async ({ result }) => {
 						isSubmitting = false;
-						await update();
+						if (result.type === 'success') {
+							notifications.success('Adres dodany pomyślnie');
+							goto('/account/addresses');
+						} else if (result.type === 'failure') {
+							notifications.error((result.data as any)?.message || 'Wystąpił błąd');
+						}
 					};
 				}}
 			>

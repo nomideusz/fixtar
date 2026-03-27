@@ -4,8 +4,7 @@
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="theme-color" content="#014783" media="(prefers-color-scheme: light)" />
-		<meta name="theme-color" content="#0f1419" media="(prefers-color-scheme: dark)" />
+		<meta name="theme-color" content="#014783" />
 		<meta name="description" content="FixTar — Profesjonalne narzędzia i akcesoria" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,17 +12,6 @@
 			href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Barlow:wght@400;500;600;700;800&display=swap"
 			rel="stylesheet"
 		/>
-		<!-- Prevent FOUC: apply dark mode before render -->
-		<script>
-			(function() {
-				var t = localStorage.getItem('ft-theme');
-				if (t === 'dark') {
-					document.documentElement.classList.add('dark');
-				} else if (t === 'light') {
-					document.documentElement.classList.add('light-forced');
-				}
-			})();
-		</script>
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">

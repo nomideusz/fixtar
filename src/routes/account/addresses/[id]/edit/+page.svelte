@@ -7,19 +7,9 @@
 	import { goto } from '$app/navigation';
 	import type { PageData } from './$types';
 
-	const { data, form } = $props<{ data: PageData; form?: any }>();
+	const { data } = $props<{ data: PageData }>();
 
 	let isSubmitting = $state(false);
-
-	// Handle form results
-	$effect(() => {
-		if (form?.success) {
-			notifications.success('Adres zaktualizowany pomyślnie');
-			goto('/account/addresses');
-		} else if (form?.message) {
-			notifications.error(form.message);
-		}
-	});
 
 	// Get address data from server
 	let address = $derived(data.address);
@@ -47,9 +37,14 @@
 					action="?/updateAddress"
 					use:enhance={() => {
 						isSubmitting = true;
-						return async ({ update }) => {
+						return async ({ result }) => {
 							isSubmitting = false;
-							await update();
+							if (result.type === 'success') {
+								notifications.success('Adres zaktualizowany pomyślnie');
+								goto('/account/addresses');
+							} else if (result.type === 'failure') {
+								notifications.error((result.data as any)?.message || 'Wystąpił błąd');
+							}
 						};
 					}}
 				>

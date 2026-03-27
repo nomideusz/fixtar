@@ -41,6 +41,73 @@ export const account = sqliteTable('account', {
 	updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull()
 });
 
+export const userAddress = sqliteTable('user_address', {
+	id: text('id').primaryKey(),
+	userId: text('user_id')
+		.notNull()
+		.references(() => user.id, { onDelete: 'cascade' }),
+	type: text('type').notNull().default('Home'),
+	street: text('street').notNull(),
+	city: text('city').notNull(),
+	postalCode: text('postal_code').notNull(),
+	country: text('country').notNull(),
+	isDefault: integer('is_default', { mode: 'boolean' }).notNull().default(false),
+	createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
+	updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull()
+});
+
+export const userProfile = sqliteTable('user_profile', {
+	id: text('id').primaryKey(),
+	userId: text('user_id')
+		.notNull()
+		.unique()
+		.references(() => user.id, { onDelete: 'cascade' }),
+	firstName: text('first_name'),
+	lastName: text('last_name'),
+	phone: text('phone'),
+	company: text('company'),
+	createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
+	updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull()
+});
+
+export const userPreferences = sqliteTable('user_preferences', {
+	id: text('id').primaryKey(),
+	userId: text('user_id')
+		.notNull()
+		.unique()
+		.references(() => user.id, { onDelete: 'cascade' }),
+	emailNotifications: integer('email_notifications', { mode: 'boolean' }).notNull().default(true),
+	smsNotifications: integer('sms_notifications', { mode: 'boolean' }).notNull().default(false),
+	marketingEmails: integer('marketing_emails', { mode: 'boolean' }).notNull().default(true),
+	orderUpdates: integer('order_updates', { mode: 'boolean' }).notNull().default(true),
+	newsletter: integer('newsletter', { mode: 'boolean' }).notNull().default(false),
+	language: text('language').notNull().default('pl'),
+	currency: text('currency').notNull().default('PLN'),
+	theme: text('theme').notNull().default('light'),
+	createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
+	updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull()
+});
+
+export const orders = sqliteTable('orders', {
+	id: text('id').primaryKey(),
+	userId: text('user_id').references(() => user.id, { onDelete: 'set null' }),
+	orderNumber: text('order_number').notNull(),
+	baselinkerOrderId: integer('baselinker_order_id'),
+	status: text('status').notNull().default('pending'),
+	total: integer('total').notNull().default(0),
+	subtotal: integer('subtotal').notNull().default(0),
+	shippingCost: integer('shipping_cost').notNull().default(0),
+	paymentMethod: text('payment_method'),
+	shippingMethod: text('shipping_method'),
+	email: text('email'),
+	phone: text('phone'),
+	shippingAddress: text('shipping_address'),
+	items: text('items'),
+	userComments: text('user_comments'),
+	createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
+	updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull()
+});
+
 export const verification = sqliteTable('verification', {
 	id: text('id').primaryKey(),
 	identifier: text('identifier').notNull(),
