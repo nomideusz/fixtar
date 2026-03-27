@@ -1,18 +1,16 @@
 <script lang="ts">
 	import { cart, notifications, wishlist } from '$lib/stores';
 	import Button from '$lib/components/ui/Button.svelte';
-	import Card from '$lib/components/ui/Card.svelte';
 	import Breadcrumbs from '$lib/components/ui/Breadcrumbs.svelte';
 	import ProductGallery from '$lib/components/products/ProductGallery.svelte';
 	import ImageZoomModal from '$lib/components/products/ImageZoomModal.svelte';
 	import SpecTable from '$lib/components/products/SpecTable.svelte';
 	import RelatedProducts from '$lib/components/products/RelatedProducts.svelte';
-	import PurchaseCard from '$lib/components/products/PurchaseCard.svelte';
 	import { getStockInfo } from '$lib/utils/inventory';
 	import { formatProductDescription } from '$lib/utils/html';
 	import { extractSpecTable } from '$lib/utils/specs';
 	import type { Product } from '$lib/stores/products.svelte';
-	import { HeartIcon, TagIcon, WarningCircleIcon } from 'phosphor-svelte';
+	import { HeartIcon, TagIcon, ShoppingCartSimpleIcon, MinusIcon, PlusIcon } from 'phosphor-svelte';
 
 	interface Props {
 		data: {
@@ -24,16 +22,12 @@
 	let { data }: Props = $props();
 	const product = $derived(data.product);
 	const relatedProducts = $derived(data.relatedProducts);
-
 	const stock = $derived(getStockInfo(product));
-
 	const hasDiscount = $derived(!!product.compareAtPrice && product.compareAtPrice > product.price);
 	const discountPercent = $derived(
 		hasDiscount ? Math.round(((product.compareAtPrice! - product.price) / product.compareAtPrice!) * 100) : 0
 	);
-
 	const allImages = $derived([product.mainImage, ...(product.gallery || [])].filter(Boolean) as string[]);
-
 	const imageBadges = $derived.by(() => {
 		const badges: Array<{ label: string; class: string }> = [];
 		if (product.featured) badges.push({ label: 'Polecany', class: 'bg-[--ft-accent]' });
@@ -41,18 +35,28 @@
 		if (!stock.inStock) badges.push({ label: 'Wyprzedane', class: 'bg-[--ft-text-muted]' });
 		return badges;
 	});
-
 	const maxQuantity = $derived(product.inventory?.trackQuantity ? product.inventory.quantity : 99);
 	const primaryCategory = $derived(product.expand?.categories?.[0]);
 	const specTable = $derived(extractSpecTable(product.description));
 	const isWishlisted = $derived(wishlist.has(product.id));
+	const descriptionHtml = $derived(formatProductDescription(product.description || ''));
 
 	let zoomOpen = $state(false);
 	let zoomIndex = $state(0);
+	let quantity = $state(1);
+	let descExpanded = $state(false);
+
+	// Description is long if > 600 chars
+	const descIsLong = $derived((product.description?.length ?? 0) > 600);
 
 	function openZoom(index: number) {
 		zoomIndex = index;
 		zoomOpen = true;
+	}
+
+	function adjustQuantity(delta: number) {
+		const newQty = quantity + delta;
+		if (newQty >= 1 && newQty <= maxQuantity) quantity = newQty;
 	}
 
 	const breadcrumbItems = $derived.by(() => {
@@ -63,128 +67,135 @@
 		if (primaryCategory) {
 			items.push({ label: primaryCategory.name, href: `/products?category=${primaryCategory.slug}` });
 		}
-		// Product name removed from breadcrumbs - it's shown in H1 title below
 		return items;
 	});
 
-	function addToCart(quantity: number) {
+	function addToCart() {
 		cart.addItem({ productId: product.id, name: product.name, price: product.price, image: product.mainImage }, quantity);
-		notifications.success(`Dodano ${quantity} ${product.name} do koszyka`);
+		notifications.success(`Dodano ${product.name} do koszyka`);
 	}
 
-	function buyNow(quantity: number) {
+	function buyNow() {
 		cart.addItem({ productId: product.id, name: product.name, price: product.price, image: product.mainImage }, quantity);
 		window.location.href = '/checkout';
 	}
 
 	function toggleWishlist() {
 		const added = wishlist.toggle(product.id);
-		notifications.success(added ? `Dodano ${product.name} do ulubionych` : `Usunięto ${product.name} z ulubionych`);
+		notifications.success(added ? 'Dodano do ulubionych' : 'Usunięto z ulubionych');
+	}
+
+	function formatPrice(v: number): string {
+		return v.toFixed(2).replace('.', ',') + ' zł';
 	}
 </script>
 
 <svelte:head>
-	<title>{product.name} - FixTar</title>
-	<meta name="description" content={product.description || product.shortDescription || `${product.name} - Dostępny w FixTar`} />
+	<title>{product.name} — FixTar</title>
+	<meta name="description" content={product.description?.slice(0, 160) || `${product.name} — dostępny w FixTar`} />
 </svelte:head>
 
-<div class="min-h-screen">
-	<div class="ft-container ft-section-sm">
-		<nav class="mb-6">
-			<Breadcrumbs items={breadcrumbItems} />
-		</nav>
+<div class="ft-container pdp">
+	<nav class="pdp-breadcrumbs">
+		<Breadcrumbs items={breadcrumbItems} />
+	</nav>
 
-		<div class="grid grid-cols-1 gap-5 sm:gap-8 lg:grid-cols-2">
-			<!-- Product Images -->
-			<div style="view-transition-name:product-img-{product.id.slice(0, 8)}">
-				<ProductGallery images={allImages} productName={product.name} badges={imageBadges} onZoomRequest={openZoom} />
-			</div>
-
-			<!-- Product InfoIcon -->
-			<div class="flex flex-col gap-5">
-				<!-- Header -->
-				<div class="pb-5 border-b border-[--ft-line]">
-					<h1 class="mb-4 text-2xl leading-tight font-bold text-[--ft-text] sm:text-3xl lg:text-4xl">{product.name}</h1>
-
-					<div class="mb-4 flex flex-wrap items-center gap-3 sm:gap-4">
-						<span class="text-money text-2xl font-bold sm:text-4xl">{product.price.toFixed(2).replace('.', ',')} zł</span>
-						{#if hasDiscount}
-							<span class="text-xl text-[--ft-text-muted] line-through">{product.compareAtPrice?.toFixed(2).replace('.', ',')} zł</span>
-							<span class="bg-danger px-2 py-1 text-sm font-semibold !text-white">-{discountPercent}%</span>
-						{/if}
-					</div>
-
-					<div class="flex flex-wrap items-center gap-3">
-						<div class="flex items-center gap-2">
-							<div class="h-2 w-2 rounded-full {stock.inStock ? 'bg-success' : 'bg-danger'}"></div>
-							<span class="text-sm font-semibold {stock.colorClass}">{stock.label}</span>
-						</div>
-						{#if product.sku}
-							<div class="text-sm text-[--ft-text-muted]">SKU: <span class="font-mono">{product.sku}</span></div>
-						{/if}
-						<button class="wishlist-btn" class:is-active={isWishlisted} onclick={toggleWishlist}>
-							<HeartIcon weight={isWishlisted ? 'fill' : 'regular'} class="h-4 w-4" aria-hidden="true" />
-							{isWishlisted ? 'W ulubionych' : 'Dodaj do ulubionych'}
-						</button>
-					</div>
-				</div>
-
-				<!-- Categories -->
-				{#if product.expand?.categories?.length}
-					<div class="pb-5 border-b border-[--ft-line]">
-						<h3 class="mb-3 text-sm font-semibold uppercase tracking-wider text-[--ft-text-muted]">Kategorie</h3>
-						<div class="flex flex-wrap gap-2">
-							{#each product.expand.categories as category (category.id)}
-								<a href="/products?category={category.slug}" class="category-pill">
-									<TagIcon class="h-3.5 w-3.5" aria-hidden="true" />
-									{category.name}
-								</a>
-							{/each}
-						</div>
-					</div>
-				{/if}
-
-				<!-- Description -->
-				{#if product.description || product.shortDescription}
-					<div class="pb-5 border-b border-[--ft-line]">
-						<h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-[--ft-text-muted]">Opis produktu</h3>
-						<div class="product-description text-sm leading-relaxed text-[--ft-text]">
-							{#if product.description}
-								{@html formatProductDescription(product.description)}
-							{:else}
-								<p>{product.shortDescription}</p>
-							{/if}
-						</div>
-					</div>
-				{/if}
-
-				<!-- Specification Table -->
-				<SpecTable specs={specTable} />
-
-				<!-- Purchase / Out of Stock -->
-				{#if stock.inStock}
-					<PurchaseCard
-						price={product.price}
-						{maxQuantity}
-						lowStockQuantity={product.inventory?.trackQuantity ? product.inventory.quantity : undefined}
-						onAddToCart={addToCart}
-						onBuyNow={buyNow}
-					/>
-				{:else}
-					<Card class="bg-danger-500/10 border-danger-500/20 border p-6">
-						<div class="text-center">
-							<WarningCircleIcon class="text-danger mx-auto mb-4 h-12 w-12" aria-hidden="true" />
-							<h3 class="mb-2 text-lg font-semibold text-[--ft-text]">Produkt niedostępny</h3>
-							<p class="mb-4 text-[--ft-text-faint]">Ten produkt jest obecnie wyprzedany</p>
-							<Button disabled class="w-full" size="lg">Wyprzedane</Button>
-						</div>
-					</Card>
-				{/if}
-			</div>
+	<div class="pdp-grid">
+		<!-- Gallery -->
+		<div class="pdp-gallery" style="view-transition-name:product-img-{product.id.slice(0, 8)}">
+			<ProductGallery images={allImages} productName={product.name} badges={imageBadges} onZoomRequest={openZoom} />
 		</div>
 
-		<!-- Related Products -->
-		<RelatedProducts products={relatedProducts} categorySlug={primaryCategory?.slug} />
+		<!-- Info -->
+		<div class="pdp-info">
+			<!-- Name -->
+			<h1 class="pdp-name">{product.name}</h1>
+
+			<!-- Price -->
+			<div class="pdp-price-row">
+				<span class="pdp-price">{formatPrice(product.price)}</span>
+				{#if hasDiscount}
+					<span class="pdp-compare">{formatPrice(product.compareAtPrice!)}</span>
+					<span class="pdp-discount">-{discountPercent}%</span>
+				{/if}
+			</div>
+
+			<!-- Meta -->
+			<div class="pdp-meta">
+				<span class="pdp-stock" class:in-stock={stock.inStock} class:out-of-stock={!stock.inStock}>
+					<span class="stock-dot"></span>
+					{stock.label}
+				</span>
+				{#if product.sku}
+					<span class="pdp-sku">SKU: {product.sku}</span>
+				{/if}
+				{#if product.expand?.categories?.length}
+					{#each product.expand.categories as cat (cat.id)}
+						<a href="/products?category={cat.slug}" class="pdp-category">
+							<TagIcon size={12} aria-hidden="true" />
+							{cat.name}
+						</a>
+					{/each}
+				{/if}
+			</div>
+
+			<!-- Specs (inline, above description) -->
+			{#if specTable.length > 0}
+				<div class="pdp-specs">
+					<SpecTable specs={specTable} />
+				</div>
+			{/if}
+
+			<!-- Description -->
+			{#if descriptionHtml}
+				<div class="pdp-description" class:collapsed={descIsLong && !descExpanded}>
+					{@html descriptionHtml}
+				</div>
+				{#if descIsLong}
+					<button class="pdp-expand-btn" onclick={() => (descExpanded = !descExpanded)}>
+						{descExpanded ? '− Zwiń opis' : '+ Czytaj więcej'}
+					</button>
+				{/if}
+			{/if}
+		</div>
+	</div>
+
+	<!-- Related Products -->
+	<RelatedProducts products={relatedProducts} categorySlug={primaryCategory?.slug} />
+</div>
+
+<!-- Sticky action bar — always visible -->
+<div class="action-bar">
+	<div class="action-bar-inner ft-container">
+		{#if stock.inStock}
+			<!-- Quantity -->
+			<div class="action-qty">
+				<button class="qty-btn" onclick={() => adjustQuantity(-1)} disabled={quantity <= 1} aria-label="Mniej">
+					<MinusIcon size={14} weight="bold" aria-hidden="true" />
+				</button>
+				<span class="qty-value">{quantity}</span>
+				<button class="qty-btn" onclick={() => adjustQuantity(1)} disabled={quantity >= maxQuantity} aria-label="Więcej">
+					<PlusIcon size={14} weight="bold" aria-hidden="true" />
+				</button>
+			</div>
+
+			<!-- Price -->
+			<span class="action-price">{formatPrice(product.price * quantity)}</span>
+
+			<!-- Add to cart -->
+			<button class="action-cart" onclick={addToCart}>
+				<ShoppingCartSimpleIcon size={18} weight="bold" aria-hidden="true" />
+				<span class="action-cart-label">Do koszyka</span>
+			</button>
+
+			<!-- Wishlist -->
+			<button class="action-heart" class:is-active={isWishlisted} onclick={toggleWishlist} aria-label={isWishlisted ? 'Usuń z ulubionych' : 'Dodaj do ulubionych'}>
+				<HeartIcon size={18} weight={isWishlisted ? 'fill' : 'bold'} aria-hidden="true" />
+			</button>
+		{:else}
+			<span class="action-price">{formatPrice(product.price)}</span>
+			<span class="action-oos">Niedostępny</span>
+		{/if}
 	</div>
 </div>
 
@@ -198,124 +209,328 @@
 {/if}
 
 <style>
-	.product-description :global(p) {
-		margin-bottom: 0.75rem;
+	/* ── Page ── */
+	.pdp {
+		padding-top: clamp(16px, 2vh, 24px);
+		padding-bottom: 100px; /* space for sticky bar */
 	}
 
-	.product-description :global(p:last-child) {
+	.pdp-breadcrumbs {
+		margin-bottom: 16px;
+	}
+
+	/* ── Grid ── */
+	.pdp-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 24px;
+	}
+
+	@media (min-width: 1024px) {
+		.pdp-grid {
+			grid-template-columns: 1fr 1fr;
+			gap: 40px;
+		}
+	}
+
+	/* ── Name ── */
+	.pdp-name {
+		font-family: var(--font-display);
+		font-size: clamp(1.2rem, 3vw, 1.6rem);
+		font-weight: 700;
+		color: var(--ft-dark);
+		letter-spacing: -0.02em;
+		line-height: 1.25;
+	}
+
+	/* ── Price ── */
+	.pdp-price-row {
+		display: flex;
+		align-items: baseline;
+		gap: 10px;
+		margin-top: 12px;
+	}
+
+	.pdp-price {
+		font-family: var(--font-display);
+		font-size: clamp(1.4rem, 3vw, 1.8rem);
+		font-weight: 800;
+		color: var(--ft-cta);
+		letter-spacing: -0.02em;
+	}
+
+	.pdp-compare {
+		font-size: 1rem;
+		color: var(--ft-text-faint);
+		text-decoration: line-through;
+	}
+
+	.pdp-discount {
+		font-family: var(--font-display);
+		font-size: 0.75rem;
+		font-weight: 700;
+		color: white;
+		background: var(--color-danger);
+		padding: 2px 8px;
+		border-radius: var(--radius-sm);
+	}
+
+	/* ── Meta ── */
+	.pdp-meta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 12px;
+		margin-top: 14px;
+		padding-bottom: 16px;
+		border-bottom: 1px solid var(--ft-line);
+	}
+
+	.pdp-stock {
+		display: inline-flex;
+		align-items: center;
+		gap: 5px;
+		font-size: 0.78rem;
+		font-weight: 600;
+	}
+
+	.pdp-stock.in-stock { color: var(--color-success); }
+	.pdp-stock.out-of-stock { color: var(--color-danger); }
+
+	.stock-dot {
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		background: currentColor;
+	}
+
+	.pdp-sku {
+		font-size: 0.75rem;
+		color: var(--ft-text-faint);
+		font-family: monospace;
+	}
+
+	.pdp-category {
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+		font-size: 0.75rem;
+		font-weight: 600;
+		color: var(--ft-text-muted);
+		text-decoration: none;
+		transition: color 0.15s;
+	}
+
+	.pdp-category:hover { color: var(--ft-accent); }
+
+	/* ── Specs ── */
+	.pdp-specs {
+		margin-top: 16px;
+	}
+
+	/* ── Description ── */
+	.pdp-description {
+		margin-top: 16px;
+		font-size: 0.88rem;
+		line-height: 1.7;
+		color: var(--ft-text);
+	}
+
+	.pdp-description.collapsed {
+		max-height: 200px;
+		overflow: hidden;
+		mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+		-webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+	}
+
+	.pdp-description :global(h3) {
+		font-family: var(--font-display);
+		font-size: 0.92rem;
+		font-weight: 700;
+		color: var(--ft-dark);
+		margin: 20px 0 8px;
+	}
+
+	.pdp-description :global(h3:first-child) {
+		margin-top: 0;
+	}
+
+	.pdp-description :global(p) {
+		margin-bottom: 10px;
+	}
+
+	.pdp-description :global(p:last-child) {
 		margin-bottom: 0;
 	}
 
-	.product-description :global(h3) {
-		font-size: 1.125rem;
-		font-weight: 600;
-		margin: 1.5rem 0 0.75rem 0;
-		color: var(--ft-text-strong);
-		border-bottom: 1px solid var(--ft-line);
-		padding-bottom: 0.5rem;
+	.pdp-description :global(ul) {
+		margin: 8px 0;
+		padding-left: 0;
+		list-style: none;
 	}
 
-	.product-description :global(h4) {
-		font-size: 1rem;
-		font-weight: 600;
-		margin: 1rem 0 0.5rem 0;
+	.pdp-description :global(li) {
+		position: relative;
+		padding-left: 16px;
+		margin-bottom: 4px;
+		font-size: 0.85rem;
 		color: var(--ft-text);
 	}
 
-	.product-description :global(ul),
-	.product-description :global(ol) {
-		margin: 0.75rem 0;
-		padding-left: 1.5rem;
+	.pdp-description :global(li::before) {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 0.6em;
+		width: 5px;
+		height: 5px;
+		border-radius: 50%;
+		background: var(--ft-accent);
 	}
 
-	.product-description :global(li) {
-		margin-bottom: 0.25rem;
-		color: var(--ft-text);
-	}
-
-	.product-description :global(strong) {
+	.pdp-expand-btn {
+		margin-top: 8px;
+		background: none;
+		border: none;
+		font-size: 0.82rem;
 		font-weight: 600;
-		color: var(--ft-text-strong);
-	}
-
-	.product-description :global(em) {
-		font-style: italic;
-		color: var(--ft-text-muted);
-	}
-
-	.product-description :global(.measurement) {
-		font-family: 'Courier New', monospace;
-		background: var(--ft-frost);
-		padding: 0.125rem 0.25rem;
-		border-radius: 0.25rem;
-		font-size: 0.875rem;
 		color: var(--ft-accent);
-		font-weight: 600;
+		cursor: pointer;
+		padding: 0;
+		transition: opacity 0.15s;
 	}
 
-	.product-description :global(.model) {
-		font-family: 'Courier New', monospace;
-		background: var(--ft-frost);
-		padding: 0.125rem 0.25rem;
-		border-radius: 0.25rem;
-		font-size: 0.875rem;
-		color: var(--ft-text);
-		font-weight: 500;
-	}
+	.pdp-expand-btn:hover { opacity: 0.7; }
 
-	.category-pill {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.375rem;
-		padding: 0.5rem 1rem;
-		min-height: 40px;
-		border-radius: var(--radius-sm);
-		border: 1px solid var(--ft-line);
+	/* ── Sticky action bar ── */
+	.action-bar {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		z-index: 40;
 		background: var(--ft-surface);
-		color: var(--ft-text);
-		font-size: 0.8rem;
-		font-weight: 600;
-		letter-spacing: 0.02em;
-		text-decoration: none;
-		transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+		border-top: 1px solid var(--ft-line);
+		box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.06);
+		padding: 10px 0;
+		padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
 	}
 
-	.category-pill:hover {
-		border-color: var(--ft-cta);
-		color: var(--ft-cta);
+	.action-bar-inner {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+	}
+
+	/* Quantity */
+	.action-qty {
+		display: flex;
+		align-items: center;
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-sm);
+		overflow: hidden;
+	}
+
+	.qty-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 36px;
+		height: 36px;
 		background: var(--ft-frost);
-		box-shadow: var(--ft-shadow-sm);
+		border: none;
+		cursor: pointer;
+		color: var(--ft-text);
+		transition: background-color 0.15s, color 0.15s;
 	}
 
-	.category-pill :global(svg) {
-		color: var(--ft-text-muted);
-		transition: color 0.15s ease;
+	.qty-btn:hover:not(:disabled) {
+		background: var(--ft-accent);
+		color: white;
 	}
 
-	.category-pill:hover :global(svg) {
+	.qty-btn:disabled {
+		opacity: 0.3;
+		cursor: not-allowed;
+	}
+
+	.qty-value {
+		min-width: 32px;
+		text-align: center;
+		font-size: 0.88rem;
+		font-weight: 700;
+		color: var(--ft-dark);
+		border-left: 1px solid var(--ft-line);
+		border-right: 1px solid var(--ft-line);
+		height: 36px;
+		line-height: 36px;
+	}
+
+	/* Price */
+	.action-price {
+		font-family: var(--font-display);
+		font-size: 1.1rem;
+		font-weight: 800;
 		color: var(--ft-cta);
+		letter-spacing: -0.02em;
+		margin-right: auto;
 	}
 
-	.wishlist-btn {
-		display: inline-flex;
+	/* Cart button */
+	.action-cart {
+		display: flex;
 		align-items: center;
 		gap: 6px;
-		padding: 8px 12px;
-		font-size: 0.78rem;
-		font-weight: 600;
-		color: var(--ft-text-muted);
-		background: transparent;
-		border: 1px solid var(--ft-line);
+		padding: 0 20px;
+		height: 40px;
+		background: var(--ft-cta);
+		color: white;
+		border: none;
 		border-radius: var(--radius-sm);
+		font-family: var(--font-display);
+		font-size: 0.82rem;
+		font-weight: 700;
 		cursor: pointer;
-		transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
-		min-height: 44px;
+		transition: opacity 0.15s;
+		white-space: nowrap;
 	}
 
-	.wishlist-btn:hover,
-	.wishlist-btn.is-active {
+	.action-cart:hover { opacity: 0.9; }
+
+	.action-cart-label {
+		display: none;
+	}
+
+	@media (min-width: 480px) {
+		.action-cart-label { display: inline; }
+	}
+
+	/* Wishlist */
+	.action-heart {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 40px;
+		height: 40px;
+		background: none;
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-sm);
+		color: var(--ft-text-muted);
+		cursor: pointer;
+		transition: color 0.15s, border-color 0.15s;
+		flex-shrink: 0;
+	}
+
+	.action-heart:hover,
+	.action-heart.is-active {
 		color: var(--ft-cta);
 		border-color: var(--ft-cta);
-		background: var(--ft-cta-light);
+	}
+
+	/* Out of stock */
+	.action-oos {
+		font-size: 0.82rem;
+		font-weight: 600;
+		color: var(--ft-text-muted);
 	}
 </style>

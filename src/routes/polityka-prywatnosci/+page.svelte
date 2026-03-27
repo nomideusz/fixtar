@@ -9,7 +9,7 @@
 	<div class="legal-body">
 		<section>
 			<h2>1. Administrator danych</h2>
-			<p>Administratorem danych osobowych jest właściciel sklepu internetowego FixTar (dalej: "Administrator").</p>
+			<p>Administratorem danych osobowych jest FIXTAR Vsevolod Tarkhanov, ul. Kobierzyńska 63 lok. 77, 30-363 Kraków, NIP: 6762661281 (dalej: "Administrator").</p>
 			<p>Kontakt z Administratorem możliwy jest za pośrednictwem formularza kontaktowego na stronie lub drogą mailową.</p>
 		</section>
 

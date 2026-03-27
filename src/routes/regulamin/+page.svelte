@@ -10,6 +10,7 @@
 		<section>
 			<h2>1. Postanowienia ogólne</h2>
 			<p>Niniejszy regulamin określa zasady korzystania ze sklepu internetowego FixTar, dostępnego pod adresem fixtar.vercel.app (dalej: "Sklep").</p>
+			<p>Sklep prowadzony jest przez: FIXTAR Vsevolod Tarkhanov, ul. Kobierzyńska 63 lok. 77, 30-363 Kraków, NIP: 6762661281, REGON: 527557200.</p>
 			<p>Sklep prowadzi sprzedaż elektronarzędzi i akcesoriów na terenie Rzeczypospolitej Polskiej.</p>
 			<p>Korzystanie ze Sklepu oznacza akceptację niniejszego regulaminu.</p>
 		</section>

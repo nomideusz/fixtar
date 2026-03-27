@@ -7,9 +7,9 @@
 		<div class="footer-grid">
 			<!-- Brand -->
 			<div class="footer-brand-col">
-				<a href="/" class="footer-brand">fixtar.pl</a>
+				<a href="/" class="footer-brand">FixTar</a>
 				<p class="footer-desc">
-					Profesjonalne elektronarzędzia w konkurencyjnych cenach.
+					Profesjonalne elektronarzędzia w konkurencyjnych cenach. Kraków.
 				</p>
 				<div class="footer-social">
 					<a href="https://facebook.com" class="social-link" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
