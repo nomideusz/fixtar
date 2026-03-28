@@ -104,7 +104,7 @@ export async function getAllProducts(opts: {
 	const db = getClient();
 	const { search, category, sort = 'name', page = 1, perPage = 20, minPrice, maxPrice, inStockOnly } = opts;
 
-	let where = 'WHERE 1=1';
+	let where = 'WHERE price > 0';
 	const args: (string | number)[] = [];
 
 	if (search) {
@@ -160,7 +160,7 @@ export async function getProductBySlug(slug: string): Promise<DBProduct | null> 
 	const db = getClient();
 	const result = await db.execute({
 		sql: `SELECT id, name, slug, description, price, original_price, image, gallery, category, category_slug, tags, in_stock, sku, ean, weight
-		      FROM products WHERE slug = ? LIMIT 1`,
+		      FROM products WHERE slug = ? AND price > 0 LIMIT 1`,
 		args: [slug]
 	});
 	if (result.rows.length === 0) return null;
@@ -171,7 +171,7 @@ export async function getProductById(id: string): Promise<DBProduct | null> {
 	const db = getClient();
 	const result = await db.execute({
 		sql: `SELECT id, name, slug, description, price, original_price, image, gallery, category, category_slug, tags, in_stock, sku, ean, weight
-		      FROM products WHERE id = ? LIMIT 1`,
+		      FROM products WHERE id = ? AND price > 0 LIMIT 1`,
 		args: [id]
 	});
 	if (result.rows.length === 0) return null;
@@ -184,7 +184,7 @@ export async function getRelatedProducts(categorySlug: string, excludeId: string
 	const placeholders = nativeSlugs.map(() => '?').join(',');
 	const result = await db.execute({
 		sql: `SELECT id, name, slug, description, price, original_price, image, category, category_slug, tags, in_stock, sku, ean, weight
-		      FROM products WHERE category_slug IN (${placeholders}) AND id != ? LIMIT ?`,
+		      FROM products WHERE category_slug IN (${placeholders}) AND id != ? AND price > 0 LIMIT ?`,
 		args: [...nativeSlugs, excludeId, limit]
 	});
 	return result.rows as unknown as DBProduct[];
@@ -195,7 +195,7 @@ export async function getCategories(): Promise<DBCategory[]> {
 	const result = await db.execute(
 		`SELECT category, category_slug, COUNT(*) as count
 		 FROM products
-		 WHERE category != ''
+		 WHERE category != '' AND price > 0
 		 GROUP BY category, category_slug`
 	);
 
@@ -219,7 +219,7 @@ export async function getCategories(): Promise<DBCategory[]> {
 
 export async function getTotalProducts(): Promise<number> {
 	const db = getClient();
-	const result = await db.execute('SELECT COUNT(*) as c FROM products');
+	const result = await db.execute('SELECT COUNT(*) as c FROM products WHERE price > 0');
 	return Number(result.rows[0].c);
 }
 
