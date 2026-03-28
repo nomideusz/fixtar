@@ -149,12 +149,19 @@ export async function searchProducts(
 	db: Client,
 	params: SearchParams
 ): Promise<SearchResponse<ProductSearchResult>> {
-	return getEngine(db).search({
+	const response = await getEngine(db).search({
 		query: params.query,
 		locationSlug: params.category,
-		limit: params.limit,
+		limit: (params.limit ?? 20) + 10, // fetch extra to compensate for filtered-out items
 		offset: params.offset
 	});
+
+	// Filter out zero-price products
+	return {
+		...response,
+		results: response.results.filter(r => r.price > 0).slice(0, params.limit ?? 20),
+		nearby: response.nearby.filter(r => r.price > 0)
+	};
 }
 
 // ── Indexer ─────────────────────────────────────────────────
