@@ -64,3 +64,4 @@ tasks.json
 tasks/ dev.db
 env.fixtar
 nul
+dev.db

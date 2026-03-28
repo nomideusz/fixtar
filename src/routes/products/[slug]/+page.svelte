@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { cart, notifications, wishlist } from '$lib/stores';
+	import { afterNavigate } from '$app/navigation';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Breadcrumbs from '$lib/components/ui/Breadcrumbs.svelte';
 	import ProductGallery from '$lib/components/products/ProductGallery.svelte';
@@ -7,8 +8,7 @@
 	import SpecTable from '$lib/components/products/SpecTable.svelte';
 	import RelatedProducts from '$lib/components/products/RelatedProducts.svelte';
 	import { getStockInfo } from '$lib/utils/inventory';
-	import { formatProductDescription } from '$lib/utils/html';
-	import { extractSpecTable } from '$lib/utils/specs';
+	import { parseProductDescription } from '$lib/utils/html';
 	import type { Product } from '$lib/stores/products.svelte';
 	import { HeartIcon, TagIcon, ShoppingCartSimpleIcon, MinusIcon, PlusIcon } from 'phosphor-svelte';
 
@@ -37,14 +37,23 @@
 	});
 	const maxQuantity = $derived(product.inventory?.trackQuantity ? product.inventory.quantity : 99);
 	const primaryCategory = $derived(product.expand?.categories?.[0]);
-	const specTable = $derived(extractSpecTable(product.description));
+	const parsed = $derived(parseProductDescription(product.description || ''));
+	const specTable = $derived(parsed.specs);
+	const contents = $derived(parsed.contents);
+	const descriptionHtml = $derived(parsed.html);
 	const isWishlisted = $derived(wishlist.has(product.id));
-	const descriptionHtml = $derived(formatProductDescription(product.description || ''));
 
 	let zoomOpen = $state(false);
 	let zoomIndex = $state(0);
 	let quantity = $state(1);
 	let descExpanded = $state(false);
+
+	// Force scroll to top when navigating between products
+	afterNavigate(() => {
+		window.scrollTo({ top: 0, behavior: 'instant' });
+		quantity = 1;
+		descExpanded = false;
+	});
 
 	// Description is long if > 600 chars
 	const descIsLong = $derived((product.description?.length ?? 0) > 600);
@@ -102,12 +111,12 @@
 
 	<div class="pdp-grid">
 		<!-- Gallery -->
-		<div class="pdp-gallery" style="view-transition-name:product-img-{product.id.slice(0, 8)}">
+		<div class="pdp-gallery" style="view-transition-name:product-img-{product.id.slice(0, 8)};min-width:0">
 			<ProductGallery images={allImages} productName={product.name} badges={imageBadges} onZoomRequest={openZoom} />
 		</div>
 
 		<!-- Info -->
-		<div class="pdp-info">
+		<div class="pdp-info" style="min-width:0">
 			<!-- Name -->
 			<h1 class="pdp-name">{product.name}</h1>
 
@@ -139,10 +148,10 @@
 				{/if}
 			</div>
 
-			<!-- Specs (inline, above description) -->
-			{#if specTable.length > 0}
+			<!-- Specs + Contents (inline, above description) -->
+			{#if specTable.length > 0 || contents.length > 0}
 				<div class="pdp-specs">
-					<SpecTable specs={specTable} />
+					<SpecTable specs={specTable} {contents} />
 				</div>
 			{/if}
 
@@ -213,6 +222,7 @@
 	.pdp {
 		padding-top: clamp(16px, 2vh, 24px);
 		padding-bottom: 100px; /* space for sticky bar */
+		overflow-x: clip; /* clip prevents horizontal overflow without breaking position:sticky */
 	}
 
 	.pdp-breadcrumbs {
@@ -224,12 +234,19 @@
 		display: grid;
 		grid-template-columns: 1fr;
 		gap: 24px;
+		min-width: 0;
 	}
 
 	@media (min-width: 1024px) {
 		.pdp-grid {
 			grid-template-columns: 1fr 1fr;
 			gap: 40px;
+			align-items: start;
+		}
+
+		.pdp-gallery {
+			position: sticky;
+			top: 112px; /* navbar 100px + borders 5px + 7px gap */
 		}
 	}
 
@@ -241,6 +258,8 @@
 		color: var(--ft-dark);
 		letter-spacing: -0.02em;
 		line-height: 1.25;
+		overflow-wrap: anywhere;
+		word-break: break-word;
 	}
 
 	/* ── Price ── */
@@ -249,6 +268,7 @@
 		align-items: baseline;
 		gap: 10px;
 		margin-top: 12px;
+		flex-wrap: wrap;
 	}
 
 	.pdp-price {
@@ -334,6 +354,9 @@
 		font-size: 0.88rem;
 		line-height: 1.7;
 		color: var(--ft-text);
+		overflow-wrap: anywhere;
+		word-break: break-word;
+		overflow-x: hidden;
 	}
 
 	.pdp-description.collapsed {
@@ -367,6 +390,23 @@
 		margin: 8px 0;
 		padding-left: 0;
 		list-style: none;
+	}
+
+	.pdp-description :global(table) {
+		width: 100%;
+		table-layout: fixed;
+		word-break: break-word;
+	}
+
+	.pdp-description :global(pre),
+	.pdp-description :global(code) {
+		white-space: pre-wrap;
+		word-break: break-all;
+	}
+
+	.pdp-description :global(img) {
+		max-width: 100%;
+		height: auto;
 	}
 
 	.pdp-description :global(li) {
@@ -419,7 +459,8 @@
 	.action-bar-inner {
 		display: flex;
 		align-items: center;
-		gap: 10px;
+		gap: 8px;
+		min-width: 0;
 	}
 
 	/* Quantity */
