@@ -93,19 +93,20 @@
 		list-style: none;
 		margin: 0;
 		padding: 0;
-		flex-wrap: nowrap;
-		overflow: hidden;
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		scrollbar-width: none;
+	}
+
+	.breadcrumb-list::-webkit-scrollbar {
+		display: none;
 	}
 
 	.breadcrumb-item {
 		display: inline-flex;
 		align-items: center;
 		white-space: nowrap;
-		min-width: 0;
-	}
-
-	.breadcrumb-item:last-child {
-		overflow: hidden;
+		flex-shrink: 0;
 	}
 
 	.breadcrumb-link {
@@ -152,10 +153,6 @@
 		font-size: 0.875rem;
 		font-weight: 500;
 		color: var(--ft-accent);
-		overflow: hidden;
-		text-overflow: ellipsis;
 		white-space: nowrap;
-		display: block;
-		max-width: 100%;
 	}
 </style>

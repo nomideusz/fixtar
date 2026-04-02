@@ -36,11 +36,18 @@
 		const startTransition = document.startViewTransition;
 		if (!startTransition) return;
 
+		// Skip view transitions for same-page navigations (sort, filter, pagination)
+		const from = navigation.from?.url.pathname;
+		const to = navigation.to?.url.pathname;
+		if (from === to) return;
+
 		return new Promise((resolve) => {
-			startTransition.call(document, async () => {
+			const transition = startTransition.call(document, async () => {
 				resolve();
 				await navigation.complete;
 			});
+			// Suppress duplicate view-transition-name errors
+			transition.finished.catch(() => {});
 		});
 	});
 

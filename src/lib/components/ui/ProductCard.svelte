@@ -48,7 +48,7 @@
 			: 0
 	);
 	const productUrl = $derived(`/products/${product.slug?.trim() || product.id}`);
-	const vtName = $derived(`product-img-${product.id.slice(0, 8)}`);
+
 </script>
 
 <div class="card" class:is-out={!inStock}>
@@ -56,7 +56,7 @@
 	<div class="card-img-wrap">
 		<!-- The main clickable area -->
 		<a href={productUrl} class="card-img-link" aria-label={product.name}>
-			<div class="card-img" style="--vt-name:{vtName}">
+			<div class="card-img">
 				{#if mainImageUrl}
 					<img src={mainImageUrl} alt="" loading="lazy" width="320" height="320" />
 				{:else}
@@ -142,15 +142,26 @@
 		padding: 0;
 	}
 
-	.card.is-out {
-		opacity: 0.45;
-		filter: grayscale(0.4);
+	.card.is-out .card-img img,
+	.card.is-out .card-img-empty {
+		opacity: 0.4;
+		filter: grayscale(0.5);
 		transition: opacity 0.2s ease, filter 0.2s ease;
 	}
 
-	.card.is-out:hover {
-		opacity: 0.7;
-		filter: grayscale(0.15);
+	.card.is-out:hover .card-img img,
+	.card.is-out:hover .card-img-empty {
+		opacity: 0.65;
+		filter: grayscale(0.2);
+	}
+
+	.card.is-out .card-info {
+		opacity: 0.5;
+		transition: opacity 0.2s ease;
+	}
+
+	.card.is-out:hover .card-info {
+		opacity: 0.75;
 	}
 
 	/* ── Image Area (The HUD) ── */
@@ -178,7 +189,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		view-transition-name: var(--vt-name);
+
 		padding: 24px; /* Internal breathing room for the tool */
 	}
 

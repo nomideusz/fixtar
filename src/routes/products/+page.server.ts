@@ -3,32 +3,20 @@ import { getAllProducts, getCategories, toStoreProduct } from '$lib/server/produ
 
 export const load = (async ({ url }) => {
 	const searchQuery = url.searchParams.get('search') || '';
-	const selectedCategory = url.searchParams.get('category') || '';
 	const sortBy = url.searchParams.get('sort') || 'name';
-	const page = parseInt(url.searchParams.get('page') || '1', 10);
-	const minPrice = url.searchParams.get('minPrice') ? parseFloat(url.searchParams.get('minPrice')!) : undefined;
-	const maxPrice = url.searchParams.get('maxPrice') ? parseFloat(url.searchParams.get('maxPrice')!) : undefined;
-	const inStockOnly = url.searchParams.get('inStock') === 'true';
-	const perPage = 20;
 
 	try {
-		const [{ products: dbProducts, total: totalItems }, dbCategories] = await Promise.all([
+		const [{ products: allDbProducts }, dbCategories] = await Promise.all([
 			getAllProducts({
 				search: searchQuery || undefined,
-				category: selectedCategory || undefined,
 				sort: sortBy,
-				page,
-				perPage,
-				minPrice,
-				maxPrice,
-				inStockOnly
+				page: 1,
+				perPage: 500 // get all products
 			}),
 			getCategories()
 		]);
 
-		const products = dbProducts.map(toStoreProduct);
-		const totalPages = Math.max(1, Math.ceil(totalItems / perPage));
-		const currentPage = Math.min(page, totalPages);
+		const allProducts = allDbProducts.map(toStoreProduct);
 
 		const categories = dbCategories.map((c) => ({
 			id: c.category_slug,
@@ -38,37 +26,39 @@ export const load = (async ({ url }) => {
 			productCount: Number(c.count)
 		}));
 
+		// Group products by category
+		const productsByCategory: Record<string, typeof allProducts> = {};
+		for (const product of allProducts) {
+			const catSlug = product.categories?.[0] || 'inne';
+			if (!productsByCategory[catSlug]) {
+				productsByCategory[catSlug] = [];
+			}
+			productsByCategory[catSlug].push(product);
+		}
+
+		// Build ordered category sections
+		const categorySections = categories
+			.filter((cat) => productsByCategory[cat.slug]?.length > 0)
+			.map((cat) => ({
+				category: cat,
+				products: productsByCategory[cat.slug] || []
+			}));
+
 		return {
-			products,
+			categorySections,
 			categories,
-			subcategories: [],
-			allSubcategories: [],
-			totalPages,
-			totalItems,
-			currentPage,
 			searchQuery,
-			selectedCategory,
 			sortBy,
-			minPrice,
-			maxPrice,
-			inStockOnly
+			totalItems: allProducts.length
 		};
 	} catch (error) {
 		console.error('Failed to load products:', error);
 		return {
-			products: [],
+			categorySections: [],
 			categories: [],
-			subcategories: [],
-			allSubcategories: [],
-			totalPages: 0,
-			totalItems: 0,
-			currentPage: 1,
 			searchQuery,
-			selectedCategory,
 			sortBy,
-			minPrice,
-			maxPrice,
-			inStockOnly,
+			totalItems: 0,
 			error: 'Wystąpił błąd podczas ładowania produktów. Spróbuj ponownie później.'
 		};
 	}

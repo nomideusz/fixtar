@@ -339,55 +339,59 @@
 	.search-input-wrap {
 		position: relative;
 		display: flex;
-		align-items: center;
-	}
-
-	.search-input {
-		width: 100%;
-		padding: 12px 140px 12px 18px;
-		font-size: 0.95rem;
-		font-weight: 500;
-		color: var(--ft-text-strong);
-		background: var(--ft-frost);
-		border: 1px solid var(--ft-line);
+		align-items: stretch;
+		border: 2px solid var(--ft-line);
+		background: var(--ft-surface);
 		border-radius: 0;
-		outline: none;
 		transition: border-color 0.2s ease;
 	}
 
+	.search-input-wrap:focus-within {
+		border-color: var(--ft-text-strong);
+	}
+
+	.search-input {
+		flex: 1;
+		min-width: 0;
+		padding: 12px 48px 12px 16px;
+		font-size: 0.88rem;
+		font-family: var(--font-sans);
+		font-weight: 500;
+		color: var(--ft-text-strong);
+		background: transparent;
+		border: none;
+		outline: none;
+	}
+
 	.search-input::placeholder {
-		color: var(--ft-text-muted);
+		color: var(--ft-text-faint);
 		font-weight: 400;
 	}
 
-	.search-input:focus {
-		background: var(--ft-surface);
-		border-color: var(--ft-accent);
-	}
-
 	.search-submit-btn {
-		position: absolute;
-		right: 4px;
-		top: 4px;
-		bottom: 4px;
-		background: var(--ft-cta);
-		color: #fff;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		background: var(--ft-text-strong);
+		color: var(--ft-surface);
 		border: none;
 		border-radius: 0;
 		font-family: var(--font-display);
-		font-weight: 700;
-		font-size: 0.75rem;
+		font-weight: 800;
+		font-size: 0.85rem;
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
-		padding: 0 24px;
+		padding: 0 32px;
 		cursor: pointer;
+		white-space: nowrap;
+		flex-shrink: 0;
 		transition:
 			background-color 0.2s ease,
 			transform 0.1s ease;
 	}
 
 	.search-submit-btn:hover {
-		background: var(--ft-cta-hover);
+		background: var(--ft-cta);
 	}
 
 	.search-submit-btn:active {
@@ -396,7 +400,9 @@
 
 	.search-clear {
 		position: absolute;
-		right: 90px;
+		right: 124px;
+		top: 50%;
+		transform: translateY(-50%);
 		display: flex;
 		align-items: center;
 		justify-content: center;
