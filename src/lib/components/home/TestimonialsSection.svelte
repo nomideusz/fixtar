@@ -1,5 +1,9 @@
 <script lang="ts">
 	import { StarIcon } from 'phosphor-svelte';
+	// TODO: Import your avatar images here once you place them in the project
+	// import avatar1 from '$lib/images/avatars/avatar1.jpg';
+	// import avatar2 from '$lib/images/avatars/avatar2.jpg';
+	// import avatar3 from '$lib/images/avatars/avatar3.jpg';
 
 	const stats = [
 		{ value: '2 500+', label: 'Produktów w ofercie' },
@@ -13,19 +17,25 @@
 			name: 'Marek K.',
 			role: 'Elektryk',
 			text: 'Zamówiłem szlifierkę Bavaria — świetna jakość w rozsądnej cenie. Dostawa następnego dnia, paczka solidnie zabezpieczona.',
-			rating: 5
+			rating: 5,
+			// avatar: avatar1
+			avatar: null // Replace with imported avatar
 		},
 		{
 			name: 'Anna W.',
 			role: 'Właścicielka warsztatu',
 			text: 'Korzystam z FixTar od roku. Konkurencyjne ceny, szybka wysyłka i profesjonalna obsługa klienta. Polecam każdemu rzemieślnikowi.',
-			rating: 5
+			rating: 5,
+			// avatar: avatar2
+			avatar: null // Replace with imported avatar
 		},
 		{
 			name: 'Tomasz P.',
 			role: 'Majsterkowicz',
 			text: 'Wiertarka Eurotec, którą kupiłem, działa bez zarzutu od 6 miesięcy. Gwarancja daje spokój ducha. Na pewno wrócę po więcej.',
-			rating: 5
+			rating: 5,
+			// avatar: avatar3
+			avatar: null // Replace with imported avatar
 		}
 	];
 </script>
@@ -66,7 +76,11 @@
 
 					<div class="testimonial-author">
 						<div class="author-avatar" aria-hidden="true">
-							{t.name.charAt(0)}
+							{#if t.avatar}
+								<img src={t.avatar} alt="" class="avatar-img" width="40" height="40" loading="lazy" />
+							{:else}
+								{t.name.charAt(0)}
+							{/if}
 						</div>
 						<div>
 							<span class="author-name">{t.name}</span>
@@ -226,6 +240,13 @@
 		align-items: center;
 		justify-content: center;
 		flex-shrink: 0;
+		overflow: hidden;
+	}
+
+	.avatar-img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
 	}
 
 	.author-name {
