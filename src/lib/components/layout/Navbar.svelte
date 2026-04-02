@@ -180,12 +180,12 @@
 			<!-- Cart -->
 			<button
 				onclick={() => onCartOpen?.()}
-				class="nav-icon-btn nav-action-btn"
+				class="nav-cart-btn"
 				aria-label="Koszyk{cartCount > 0 ? ` (${cartCount})` : ''}"
 				title="Koszyk"
 			>
 				<div class="nav-action-icon-wrap" class:is-bouncing={cartBouncing}>
-					<ShoppingCartSimpleIcon size={22} weight="bold" aria-hidden="true" />
+					<ShoppingCartSimpleIcon size={20} weight="bold" aria-hidden="true" />
 					{#if cartCount > 0}
 						<span class="cart-badge" aria-hidden="true">{cartCount}</span>
 					{/if}
@@ -543,24 +543,73 @@
 		color: var(--color-danger);
 	}
 
-	/* ── Cart badge ── */
-	.cart-badge {
-		position: absolute;
-		top: -6px;
-		right: -10px;
-		min-width: 16px;
-		height: 16px;
+	/* ── Out-of-the-box Red Cart Button ── */
+	.nav-cart-btn {
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		gap: 6px;
+		min-height: 40px;
+		padding: 0 12px;
+		margin-left: 4px;
+		border-radius: 0;
+		color: #ffffff;
 		background: var(--ft-cta);
-		color: white;
-		font-size: 0.58rem;
-		font-weight: 700;
+		border: 2px solid var(--ft-cta);
+		cursor: pointer;
+		text-decoration: none;
+		position: relative;
+		transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+		box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.1);
+	}
+
+	@media (min-width: 768px) {
+		.nav-cart-btn {
+			margin-left: 12px;
+			padding: 0 16px;
+		}
+	}
+
+	.nav-cart-btn:hover {
+		background: #ffffff;
+		color: var(--ft-cta);
+		transform: scale(1.05);
+		box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.15);
+	}
+
+	.nav-cart-btn:active {
+		transform: scale(0.95);
+		box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.1);
+	}
+
+	/* ── Cart badge ── */
+	.cart-badge {
+		position: absolute;
+		top: -8px;
+		right: -12px;
+		min-width: 18px;
+		height: 18px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: #ffffff;
+		color: var(--ft-cta);
+		font-size: 0.65rem;
+		font-weight: 800;
 		border-radius: var(--radius-full);
 		padding: 0 4px;
 		line-height: 1;
 		pointer-events: none;
-		box-shadow: 0 0 0 2px var(--ft-surface);
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+		border: 2px solid var(--ft-cta);
+		transition:
+			background 0.2s,
+			color 0.2s;
+	}
+
+	.nav-cart-btn:hover .cart-badge {
+		background: var(--ft-cta);
+		color: #ffffff;
+		border-color: #ffffff;
 	}
 </style>

@@ -287,20 +287,20 @@
 		justify-content: center;
 		width: 44px;
 		height: 44px;
-		color: var(--ft-text-strong);
-		background: rgba(255, 255, 255, 0.95);
-		backdrop-filter: blur(4px);
-		border: 1px solid var(--ft-line);
-		border-radius: var(--radius-sm);
-		transition: all 0.2s ease;
+		color: #ffffff;
+		background: var(--ft-cta);
+		border: 2px solid var(--ft-cta);
+		border-radius: 0;
+		transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 		cursor: pointer;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+		box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.1);
 	}
 
 	.floating-cart-btn:hover:not(:disabled) {
-		border-color: var(--ft-cta);
-		background: var(--ft-cta);
-		color: #ffffff;
+		background: #ffffff;
+		color: var(--ft-cta);
+		transform: scale(1.08);
+		box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.15);
 	}
 
 	.floating-cart-btn.is-added {
