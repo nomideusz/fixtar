@@ -2,7 +2,7 @@
 	import type { Product } from '$lib/stores/products.svelte';
 	import type { Snippet } from 'svelte';
 	import { cart, notifications } from '$lib/stores';
-	import { ImageSquareIcon, ShoppingCartSimpleIcon } from 'phosphor-svelte';
+	import { ImageSquareIcon, ShoppingCartSimpleIcon, CheckIcon } from 'phosphor-svelte';
 
 	interface Props {
 		product: Product;
@@ -13,6 +13,8 @@
 
 	let { product, onQuickView, actions, showBadges = false }: Props = $props();
 
+	let isAdded = $state(false);
+
 	function isInStock(p: Product): boolean {
 		if (!p.inventory?.trackQuantity) return true;
 		return p.inventory.quantity > 0;
@@ -21,7 +23,9 @@
 	function addToCart(e: MouseEvent) {
 		e.preventDefault();
 		e.stopPropagation();
-		if (!inStock) return;
+		if (!inStock || isAdded) return;
+
+		isAdded = true;
 		cart.addItem({
 			productId: product.id,
 			name: product.name,
@@ -29,6 +33,10 @@
 			image: product.mainImage || undefined
 		});
 		notifications.success(`Dodano ${product.name} do koszyka`);
+
+		setTimeout(() => {
+			isAdded = false;
+		}, 1500);
 	}
 
 	const mainImageUrl = $derived(product.mainImage || '');
@@ -91,12 +99,17 @@
 			{:else}
 				<button
 					class="floating-cart-btn"
+					class:is-added={isAdded}
 					onclick={addToCart}
 					disabled={!inStock}
 					aria-label="Dodaj do koszyka"
 					title="Dodaj do koszyka"
 				>
-					<ShoppingCartSimpleIcon size={20} weight="bold" />
+					{#if isAdded}
+						<CheckIcon size={20} weight="bold" />
+					{:else}
+						<ShoppingCartSimpleIcon size={20} weight="bold" />
+					{/if}
 				</button>
 			{/if}
 		</div>
@@ -284,10 +297,17 @@
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 	}
 
-	.card:hover .floating-cart-btn:not(:disabled) {
+	.floating-cart-btn:hover:not(:disabled) {
 		border-color: var(--ft-cta);
 		background: var(--ft-cta);
 		color: #ffffff;
+	}
+
+	.floating-cart-btn.is-added {
+		background: var(--color-success);
+		border-color: var(--color-success);
+		color: #ffffff;
+		transform: scale(1.08);
 	}
 
 	.floating-cart-btn:active:not(:disabled) {

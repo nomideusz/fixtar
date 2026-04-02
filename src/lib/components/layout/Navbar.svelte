@@ -34,6 +34,19 @@
 	});
 
 	const cartCount = $derived(cart.count);
+	let prevCartCount = cart.count;
+	let cartBouncing = $state(false);
+
+	$effect(() => {
+		if (cartCount > prevCartCount) {
+			cartBouncing = true;
+			const timer = setTimeout(() => {
+				cartBouncing = false;
+			}, 300);
+			return () => clearTimeout(timer);
+		}
+		prevCartCount = cartCount;
+	});
 
 	function toggleMobileSearch() {
 		mobileSearchOpen = !mobileSearchOpen;
@@ -171,7 +184,7 @@
 				aria-label="Koszyk{cartCount > 0 ? ` (${cartCount})` : ''}"
 				title="Koszyk"
 			>
-				<div class="nav-action-icon-wrap">
+				<div class="nav-action-icon-wrap" class:is-bouncing={cartBouncing}>
 					<ShoppingCartSimpleIcon size={22} weight="bold" aria-hidden="true" />
 					{#if cartCount > 0}
 						<span class="cart-badge" aria-hidden="true">{cartCount}</span>
@@ -413,6 +426,22 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+	}
+
+	.nav-action-icon-wrap.is-bouncing {
+		animation: cartBounce 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	}
+
+	@keyframes cartBounce {
+		0% {
+			transform: scale(1);
+		}
+		50% {
+			transform: scale(1.25);
+		}
+		100% {
+			transform: scale(1);
+		}
 	}
 
 	.nav-action-label {
