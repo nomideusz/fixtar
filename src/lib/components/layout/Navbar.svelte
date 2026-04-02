@@ -21,14 +21,9 @@
 
 	let { onCartOpen }: Props = $props();
 
-	let mobileMenuOpen = $state(false);
 	let scrolled = $state(false);
 	let mobileSearchOpen = $state(false);
 	let accountMenuOpen = $state(false);
-
-	function closeMobileMenu() {
-		mobileMenuOpen = false;
-	}
 
 	onMount(() => {
 		const onScroll = () => {
@@ -36,17 +31,6 @@
 		};
 		window.addEventListener('scroll', onScroll, { passive: true });
 		return () => window.removeEventListener('scroll', onScroll);
-	});
-
-	$effect(() => {
-		if (mobileMenuOpen) {
-			document.body.style.overflow = 'hidden';
-		} else {
-			document.body.style.overflow = '';
-		}
-		return () => {
-			document.body.style.overflow = '';
-		};
 	});
 
 	const cartCount = $derived(cart.count);
@@ -64,23 +48,6 @@
 	}
 </script>
 
-{#snippet navLinks(mobile = false)}
-	{#each MAIN_NAV as link (link.href)}
-		{@const isActive = $page.url.pathname.startsWith(link.href)}
-		<a
-			href={link.href}
-			class="{mobile ? 'mobile-link' : 'nav-link'} {isActive ? 'is-active' : ''}"
-			onclick={mobile ? closeMobileMenu : undefined}
-			aria-current={isActive ? 'page' : undefined}
-		>
-			{link.label}
-			{#if link.badge && !mobile}
-				<span class="promo-dot" aria-label="Aktywne promocje"></span>
-			{/if}
-		</a>
-	{/each}
-{/snippet}
-
 <nav class="nav" class:is-scrolled={scrolled} aria-label="Nawigacja główna">
 	<div class="nav-inner">
 		<!-- Logo -->
@@ -94,9 +61,21 @@
 			<NavSearch />
 		</div>
 
-		<!-- Desktop links — clean text -->
+		<!-- Links (Mobile & Desktop) -->
 		<div class="nav-links" role="menubar">
-			{@render navLinks()}
+			{#each MAIN_NAV as link, index (link.href)}
+				{@const isActive = $page.url.pathname.startsWith(link.href)}
+				<a
+					href={link.href}
+					class="nav-link {isActive ? 'is-active' : ''} {index >= 2 ? 'desktop-only' : ''}"
+					aria-current={isActive ? 'page' : undefined}
+				>
+					{link.label}
+					{#if link.badge}
+						<span class="promo-dot" aria-label="Aktywne promocje"></span>
+					{/if}
+				</a>
+			{/each}
 		</div>
 
 		<!-- Actions -->
@@ -113,22 +92,6 @@
 				{:else}
 					<MagnifyingGlassIcon size={22} weight="bold" aria-hidden="true" />
 				{/if}
-			</button>
-
-			<!-- Cart -->
-			<button
-				onclick={() => onCartOpen?.()}
-				class="nav-icon-btn nav-action-btn"
-				aria-label="Koszyk{cartCount > 0 ? ` (${cartCount})` : ''}"
-				title="Koszyk"
-			>
-				<div class="nav-action-icon-wrap">
-					<ShoppingCartSimpleIcon size={22} weight="bold" aria-hidden="true" />
-					{#if cartCount > 0}
-						<span class="cart-badge" aria-hidden="true">{cartCount}</span>
-					{/if}
-				</div>
-				<span class="nav-action-label desktop-only">Koszyk</span>
 			</button>
 
 			<!-- Account -->
@@ -190,29 +153,31 @@
 			{:else}
 				<a
 					href="/auth/login"
-					class="nav-icon-btn nav-action-btn desktop-only"
+					class="nav-icon-btn nav-action-btn"
 					aria-label="Zaloguj się"
 					title="Zaloguj się"
 				>
 					<div class="nav-action-icon-wrap">
 						<UserIcon size={22} weight="bold" aria-hidden="true" />
 					</div>
-					<span class="nav-action-label">Zaloguj</span>
+					<span class="nav-action-label desktop-only">Zaloguj</span>
 				</a>
 			{/if}
 
-			<!-- Mobile burger -->
+			<!-- Cart -->
 			<button
-				onclick={() => (mobileMenuOpen = !mobileMenuOpen)}
-				class="nav-icon-btn burger"
-				aria-label={mobileMenuOpen ? 'Zamknij menu' : 'Otwórz menu'}
-				aria-expanded={mobileMenuOpen}
+				onclick={() => onCartOpen?.()}
+				class="nav-icon-btn nav-action-btn"
+				aria-label="Koszyk{cartCount > 0 ? ` (${cartCount})` : ''}"
+				title="Koszyk"
 			>
-				<div class="burger-lines" class:is-open={mobileMenuOpen}>
-					<span></span>
-					<span></span>
-					<span></span>
+				<div class="nav-action-icon-wrap">
+					<ShoppingCartSimpleIcon size={22} weight="bold" aria-hidden="true" />
+					{#if cartCount > 0}
+						<span class="cart-badge" aria-hidden="true">{cartCount}</span>
+					{/if}
 				</div>
+				<span class="nav-action-label desktop-only">Koszyk</span>
 			</button>
 		</div>
 	</div>
@@ -221,36 +186,6 @@
 	{#if mobileSearchOpen}
 		<div class="mobile-search-bar">
 			<NavSearch onClose={() => (mobileSearchOpen = false)} />
-		</div>
-	{/if}
-
-	<!-- Mobile menu -->
-	{#if mobileMenuOpen}
-		<div class="mobile-overlay" role="dialog" aria-modal="true" aria-label="Menu nawigacji">
-			<div class="mobile-menu-header">
-				<a href="/" class="nav-logo" aria-label="FixTar — Strona główna" onclick={closeMobileMenu}>
-					<img src={FixTarIcon} alt="" class="logo-img logo-icon" style="display:block" />
-				</a>
-				<button onclick={closeMobileMenu} class="nav-icon-btn" aria-label="Zamknij menu">
-					<XIcon size={24} weight="bold" aria-hidden="true" />
-				</button>
-			</div>
-			<div class="mobile-menu">
-				<a href="/search" class="mobile-link" onclick={closeMobileMenu}>Szukaj</a>
-				{@render navLinks(true)}
-
-				<div class="mobile-sep" aria-hidden="true"></div>
-
-				{#if userStore.current}
-					<a href="/account" class="mobile-link" onclick={closeMobileMenu}>Moje Konto</a>
-					{#if userStore.current.isAdmin}
-						<a href="/admin" class="mobile-link" onclick={closeMobileMenu}>Admin</a>
-					{/if}
-					<button onclick={handleLogout} class="mobile-link mobile-link--danger">Wyloguj</button>
-				{:else}
-					<a href="/auth/login" class="mobile-link" onclick={closeMobileMenu}>Zaloguj się</a>
-				{/if}
-			</div>
 		</div>
 	{/if}
 </nav>
@@ -277,15 +212,16 @@
 	.nav-inner {
 		max-width: var(--ft-container);
 		margin: 0 auto;
-		padding: 0 var(--ft-gutter);
+		padding: 0 8px;
 		height: 60px;
 		display: flex;
 		align-items: center;
-		gap: 12px;
+		gap: 8px;
 	}
 
 	@media (min-width: 768px) {
 		.nav-inner {
+			padding: 0 var(--ft-gutter);
 			height: 100px;
 			gap: 32px;
 		}
@@ -336,34 +272,43 @@
 		}
 	}
 
-	/* ── Desktop nav links — plain text, no icons ── */
+	/* ── Desktop & Mobile nav links — plain text ── */
 	.nav-links {
-		display: none;
+		display: flex;
 		align-items: center;
-		gap: 8px;
+		gap: 2px;
+		margin-right: auto;
 	}
 
 	@media (min-width: 1024px) {
 		.nav-links {
-			display: flex;
+			gap: 8px;
+			margin-right: 0;
 		}
 	}
 
 	.nav-link {
 		position: relative;
 		font-family: var(--font-display);
-		font-size: 0.88rem;
+		font-size: 0.75rem;
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
 		color: var(--ft-text-strong);
-		padding: 10px 14px;
+		padding: 8px 6px;
 		border-radius: var(--radius-sm);
 		cursor: pointer;
 		text-decoration: none;
 		transition:
 			background-color var(--dur-fast) ease,
 			color var(--dur-fast) ease;
+	}
+
+	@media (min-width: 768px) {
+		.nav-link {
+			font-size: 0.88rem;
+			padding: 10px 14px;
+		}
 	}
 
 	.nav-link:hover {
@@ -408,9 +353,9 @@
 
 	.mobile-search-bar {
 		display: block;
-		padding: 12px var(--ft-gutter);
-		background: var(--ft-surface);
-		border-bottom: 1px solid var(--ft-line);
+		padding: 16px var(--ft-gutter);
+		background: var(--ft-frost);
+		border-top: 1px solid var(--ft-line);
 	}
 	@media (min-width: 768px) {
 		.mobile-search-bar {
@@ -422,7 +367,7 @@
 	.nav-actions {
 		display: flex;
 		align-items: center;
-		gap: 4px;
+		gap: 2px;
 		margin-left: auto;
 	}
 
@@ -439,8 +384,8 @@
 		align-items: center;
 		justify-content: center;
 		gap: 2px;
-		min-width: 44px;
-		min-height: 44px;
+		min-width: 40px;
+		min-height: 40px;
 		border-radius: var(--radius-sm);
 		color: var(--ft-text-strong);
 		background: transparent;
@@ -588,145 +533,5 @@
 		line-height: 1;
 		pointer-events: none;
 		box-shadow: 0 0 0 2px var(--ft-surface);
-	}
-
-	/* ── Burger ── */
-	.burger {
-		display: flex;
-	}
-	@media (min-width: 768px) {
-		.burger {
-			display: none;
-		}
-	}
-
-	.burger-lines {
-		display: flex;
-		flex-direction: column;
-		gap: 4px;
-		width: 18px;
-	}
-
-	.burger-lines span {
-		display: block;
-		height: 2px;
-		background: currentColor;
-		border-radius: 1px;
-		transition:
-			transform 0.25s var(--ease-out),
-			opacity 0.25s var(--ease-out);
-		transform-origin: center;
-	}
-
-	.burger-lines.is-open span:nth-child(1) {
-		transform: translateY(6px) rotate(45deg);
-	}
-	.burger-lines.is-open span:nth-child(2) {
-		opacity: 0;
-		transform: scaleX(0);
-	}
-	.burger-lines.is-open span:nth-child(3) {
-		transform: translateY(-6px) rotate(-45deg);
-	}
-
-	/* ── Mobile menu ── */
-	.mobile-overlay {
-		position: fixed;
-		inset: 0;
-		background: var(--ft-bg);
-		z-index: 55;
-		display: flex;
-		flex-direction: column;
-		overscroll-behavior: contain;
-		animation: mobileSlideIn 0.2s var(--ease-out);
-	}
-
-	@keyframes mobileSlideIn {
-		from {
-			opacity: 0;
-			transform: translateY(-8px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.mobile-overlay {
-			animation: none;
-		}
-	}
-
-	@media (min-width: 768px) {
-		.mobile-overlay {
-			display: none;
-		}
-	}
-
-	.mobile-menu-header {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: 0 var(--ft-gutter);
-		height: 60px;
-		border-bottom: 1px solid var(--ft-line);
-		flex-shrink: 0;
-	}
-
-	.mobile-menu {
-		padding: 12px var(--ft-gutter);
-		display: flex;
-		flex-direction: column;
-		gap: 2px;
-		overflow-y: auto;
-		flex: 1;
-	}
-
-	.mobile-link {
-		display: flex;
-		align-items: center;
-		gap: 12px;
-		padding: 14px 16px;
-		min-height: 48px;
-		font-size: 0.88rem;
-		font-weight: 500;
-		color: var(--ft-text-muted);
-		transition:
-			background-color var(--dur-fast) ease,
-			color var(--dur-fast) ease;
-		border-radius: var(--radius-sm);
-		border: none;
-		background: none;
-		cursor: pointer;
-		width: 100%;
-		text-align: left;
-		text-decoration: none;
-	}
-
-	.mobile-link:hover,
-	.mobile-link:focus-visible {
-		color: var(--ft-dark);
-		background: var(--ft-frost);
-	}
-
-	.mobile-link:focus-visible {
-		outline: 2px solid var(--ft-accent);
-		outline-offset: -2px;
-	}
-
-	.mobile-link.is-active {
-		color: var(--ft-dark);
-		font-weight: 600;
-	}
-
-	.mobile-link--danger {
-		color: var(--color-danger);
-	}
-
-	.mobile-sep {
-		height: 1px;
-		background: var(--ft-line);
-		margin: 8px 16px;
 	}
 </style>

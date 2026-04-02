@@ -109,7 +109,7 @@
 	function handleTouchEnd(e: TouchEvent) {
 		const touchEndX = e.changedTouches[0].clientX;
 		const diff = touchStartX - touchEndX;
-		
+
 		if (Math.abs(diff) > 50) {
 			if (diff > 0) next();
 			else prev();
@@ -193,7 +193,9 @@
 	.hero {
 		position: relative;
 		width: 100%;
-		height: calc(100svh - 150px); /* Fill standard desktop viewport (minus ~104px nav + 46px promo banner) */
+		height: calc(
+			100svh - 150px
+		); /* Fill standard desktop viewport (minus ~104px nav + 46px promo banner) */
 		min-height: 480px;
 		overflow: hidden;
 		background: var(--ft-frost);
@@ -287,7 +289,6 @@
 		}
 	}
 
-
 	/* ── Dot indicators ── */
 	.hero-dots {
 		position: absolute;
@@ -337,7 +338,7 @@
 	@media (max-width: 768px) {
 		.hero {
 			height: auto;
-			aspect-ratio: 4 / 5; /* Better mobile aspect ratio - not too tall */
+			aspect-ratio: 3 / 4;
 			min-height: 480px;
 			max-height: 680px;
 		}
@@ -372,13 +373,12 @@
 		}
 
 		.hero-headline {
-			font-size: clamp(1.4rem, 6vw, 2rem);
+			font-size: clamp(1.6rem, 8vw, 2.2rem);
 		}
 
 		.hero-subline {
-			font-size: 0.85rem;
+			font-size: 0.9rem;
 		}
-
 	}
 
 	@media (prefers-reduced-motion: reduce) {

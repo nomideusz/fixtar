@@ -4,6 +4,7 @@
  */
 import { createClient, type Client } from '@libsql/client';
 import { env } from '$env/dynamic/private';
+import { normalize, plLocale } from '$lib/server/search/index';
 
 let _client: Client | null = null;
 
@@ -21,13 +22,19 @@ export { getClient };
 
 // ── Category Mappings ──────────────────────────────────────
 
-const NATIVE_TO_APP_CATEGORIES: Record<string, { slug: string, name: string }> = {
+const NATIVE_TO_APP_CATEGORIES: Record<string, { slug: string; name: string }> = {
 	'wiertarki-i-wkretarki': { slug: 'wiertarki-i-wkretarki', name: 'Wiertarki i wkrętarki' },
 	'mlotowiertarki-i-mloty': { slug: 'mlotowiertarki-i-mloty', name: 'Młoty i młotowiertarki' },
 	'szlifierki-i-polerki': { slug: 'szlifierki-i-polerki', name: 'Szlifierki i polerki' },
 	'pily-i-pilarki': { slug: 'pily-i-pilarki', name: 'Piły i pilarki' },
-	'narzedzia-pneumatyczne': { slug: 'pneumatyczne-i-budowlane', name: 'Narzędzia pneumatyczne i budowlane' },
-	'mieszadla-i-budowlane': { slug: 'pneumatyczne-i-budowlane', name: 'Narzędzia pneumatyczne i budowlane' },
+	'narzedzia-pneumatyczne': {
+		slug: 'pneumatyczne-i-budowlane',
+		name: 'Narzędzia pneumatyczne i budowlane'
+	},
+	'mieszadla-i-budowlane': {
+		slug: 'pneumatyczne-i-budowlane',
+		name: 'Narzędzia pneumatyczne i budowlane'
+	},
 	'dom-i-ogrod': { slug: 'ogrod-i-akcesoria', name: 'Ogród i akcesoria' },
 	'zestawy-i-akcesoria': { slug: 'ogrod-i-akcesoria', name: 'Ogród i akcesoria' }
 };
@@ -102,14 +109,30 @@ export async function getAllProducts(opts: {
 	inStockOnly?: boolean;
 }): Promise<{ products: DBProduct[]; total: number }> {
 	const db = getClient();
-	const { search, category, sort = 'name', page = 1, perPage = 20, minPrice, maxPrice, inStockOnly } = opts;
+	const {
+		search,
+		category,
+		sort = 'name',
+		page = 1,
+		perPage = 20,
+		minPrice,
+		maxPrice,
+		inStockOnly
+	} = opts;
 
 	let where = 'WHERE price > 0';
 	const args: (string | number)[] = [];
 
 	if (search) {
-		where += ' AND products.id IN (SELECT rowid FROM products_fts WHERE products_fts MATCH ?)';
-		args.push(search);
+		where += ' AND products.rowid IN (SELECT rowid FROM products_fts WHERE products_fts MATCH ?)';
+		const ftsQuery = normalize(search, plLocale)
+			.replace(/[^a-z0-9]+/g, ' ')
+			.trim()
+			.split(/\s+/)
+			.filter(Boolean)
+			.map((word) => `"${word}"*`)
+			.join(' AND ');
+		args.push(ftsQuery);
 	}
 
 	if (category) {
@@ -178,7 +201,11 @@ export async function getProductById(id: string): Promise<DBProduct | null> {
 	return result.rows[0] as unknown as DBProduct;
 }
 
-export async function getRelatedProducts(categorySlug: string, excludeId: string, limit = 4): Promise<DBProduct[]> {
+export async function getRelatedProducts(
+	categorySlug: string,
+	excludeId: string,
+	limit = 4
+): Promise<DBProduct[]> {
 	const db = getClient();
 	const nativeSlugs = APP_TO_NATIVE_CATEGORIES[categorySlug] || [categorySlug];
 	const placeholders = nativeSlugs.map(() => '?').join(',');
@@ -229,7 +256,7 @@ function parseGallery(raw: string | null | undefined): string[] {
 	if (!raw) return [];
 	try {
 		const arr: string[] = JSON.parse(raw);
-		return arr.map(img => img.startsWith('http') ? img : `/img/products/${img}`);
+		return arr.map((img) => (img.startsWith('http') ? img : `/img/products/${img}`));
 	} catch {
 		return [];
 	}
@@ -241,7 +268,11 @@ import type { Product } from '$lib/stores/products.svelte';
 
 export function toStoreProduct(p: DBProduct): Product {
 	let tags: string[] = [];
-	try { tags = JSON.parse(p.tags || '[]'); } catch { /* */ }
+	try {
+		tags = JSON.parse(p.tags || '[]');
+	} catch {
+		/* */
+	}
 
 	const mapping = NATIVE_TO_APP_CATEGORIES[p.category_slug];
 	const uiCategoryName = mapping ? mapping.name : p.category;
@@ -257,7 +288,11 @@ export function toStoreProduct(p: DBProduct): Product {
 		sku: p.sku || '',
 		barcode: p.ean || '',
 		categories: [uiCategorySlug],
-		mainImage: p.image ? (p.image.startsWith('http') ? p.image : `/img/products/${p.image}`) : undefined,
+		mainImage: p.image
+			? p.image.startsWith('http')
+				? p.image
+				: `/img/products/${p.image}`
+			: undefined,
 		gallery: parseGallery(p.gallery),
 		status: 'active',
 		inventory: {

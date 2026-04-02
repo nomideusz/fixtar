@@ -1,7 +1,13 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { MagnifyingGlassIcon, XIcon, ClockCounterClockwiseIcon, ImageSquareIcon, ArrowRightIcon } from 'phosphor-svelte';
+	import {
+		MagnifyingGlassIcon,
+		XIcon,
+		ClockCounterClockwiseIcon,
+		ImageSquareIcon,
+		ArrowRightIcon
+	} from 'phosphor-svelte';
 
 	interface SearchResult {
 		id: string;
@@ -137,15 +143,16 @@
 	}
 
 	function goToSearch() {
-		saveRecent(query);
+		const q = query.trim();
+		saveRecent(q);
 		close();
-		goto(`/search?q=${encodeURIComponent(query.trim())}`);
+		goto(`/products?search=${encodeURIComponent(q)}`);
 	}
 
 	function goToRecentSearch(q: string) {
 		query = q;
 		close();
-		goto(`/search?q=${encodeURIComponent(q)}`);
+		goto(`/products?search=${encodeURIComponent(q)}`);
 	}
 
 	function close() {
@@ -179,7 +186,6 @@
 
 <div class="nav-search">
 	<div class="search-input-wrap">
-
 		<input
 			bind:this={inputRef}
 			type="search"
@@ -198,13 +204,27 @@
 		/>
 
 		{#if query}
-			<button class="search-clear" onclick={() => { query = ''; results = []; inputRef?.focus(); }} aria-label="Wyczyść wyszukiwanie">
+			<button
+				class="search-clear"
+				onclick={() => {
+					query = '';
+					results = [];
+					inputRef?.focus();
+				}}
+				aria-label="Wyczyść wyszukiwanie"
+			>
 				<XIcon size={14} aria-hidden="true" />
 			</button>
 		{/if}
 
-		<button class="search-submit-btn" onclick={() => { if (query.trim()) goToSearch() }} aria-label="Szukaj">Szukaj</button>
-		
+		<button
+			class="search-submit-btn"
+			onclick={() => {
+				if (query.trim()) goToSearch();
+			}}
+			aria-label="Szukaj">Szukaj</button
+		>
+
 		<button class="search-close" onclick={close} aria-label="Zamknij wyszukiwanie">
 			<kbd>ESC</kbd>
 		</button>
@@ -212,7 +232,11 @@
 
 	{#if hasDropdownContent}
 		<!-- svelte-ignore a11y_no_static_element_interactions -->
-		<div class="search-backdrop" onclick={close} onkeydown={(e) => e.key === 'Escape' && close()}></div>
+		<div
+			class="search-backdrop"
+			onclick={close}
+			onkeydown={(e) => e.key === 'Escape' && close()}
+		></div>
 		<div class="search-dropdown" id="search-results" role="listbox">
 			{#if query.trim().length < 2}
 				<!-- Recent searches -->
@@ -241,11 +265,7 @@
 					<span class="dropdown-section-title">Popularne kategorie</span>
 					<div class="dropdown-cats">
 						{#each popularCategories as cat}
-							<a
-								href="/products?category={cat.slug}"
-								class="dropdown-cat-chip"
-								onclick={close}
-							>
+							<a href="/products?category={cat.slug}" class="dropdown-cat-chip" onclick={close}>
 								{cat.name}
 							</a>
 						{/each}
@@ -322,8 +342,6 @@
 		align-items: center;
 	}
 
-
-
 	.search-input {
 		width: 100%;
 		padding: 12px 140px 12px 18px;
@@ -334,7 +352,9 @@
 		border: 1px solid var(--ft-line);
 		border-radius: var(--radius-sm);
 		outline: none;
-		transition: border-color 0.2s ease, box-shadow 0.2s ease;
+		transition:
+			border-color 0.2s ease,
+			box-shadow 0.2s ease;
 	}
 
 	.search-input::placeholder {
@@ -364,13 +384,15 @@
 		letter-spacing: 0.05em;
 		padding: 0 24px;
 		cursor: pointer;
-		transition: background-color 0.2s ease, transform 0.1s ease;
+		transition:
+			background-color 0.2s ease,
+			transform 0.1s ease;
 	}
 
 	.search-submit-btn:hover {
 		background: var(--ft-cta-hover);
 	}
-	
+
 	.search-submit-btn:active {
 		transform: scale(0.97);
 	}
@@ -389,7 +411,9 @@
 		color: var(--ft-text-muted);
 		cursor: pointer;
 		border-radius: var(--radius-sm);
-		transition: background-color 0.15s ease, color 0.15s ease;
+		transition:
+			background-color 0.15s ease,
+			color 0.15s ease;
 	}
 
 	.search-clear:hover {
@@ -554,7 +578,10 @@
 		border: 1px solid var(--ft-line);
 		border-radius: var(--radius-full);
 		text-decoration: none;
-		transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+		transition:
+			border-color 0.15s ease,
+			color 0.15s ease,
+			background-color 0.15s ease;
 		min-height: 32px;
 	}
 
@@ -672,12 +699,22 @@
 		animation: dotPulse 1s ease-in-out infinite;
 	}
 
-	.loading-dots span:nth-child(2) { animation-delay: 0.15s; }
-	.loading-dots span:nth-child(3) { animation-delay: 0.3s; }
+	.loading-dots span:nth-child(2) {
+		animation-delay: 0.15s;
+	}
+	.loading-dots span:nth-child(3) {
+		animation-delay: 0.3s;
+	}
 
 	@keyframes dotPulse {
-		0%, 80%, 100% { opacity: 0.3; }
-		40% { opacity: 1; }
+		0%,
+		80%,
+		100% {
+			opacity: 0.3;
+		}
+		40% {
+			opacity: 1;
+		}
 	}
 
 	/* ── Empty state ── */

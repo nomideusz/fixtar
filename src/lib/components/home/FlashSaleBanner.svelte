@@ -6,10 +6,7 @@
 		href?: string;
 	}
 
-	let {
-		headline = 'Sprawdź aktualne promocje',
-		href = '/deals'
-	}: Props = $props();
+	let { headline = 'Sprawdź aktualne promocje', href = '/deals' }: Props = $props();
 </script>
 
 <section class="flash-banner" aria-label="Promocje">
@@ -43,15 +40,16 @@
 		padding: 10px 0;
 		text-decoration: none;
 		min-height: 44px;
-		transition: opacity var(--dur-fast) ease;
 	}
 
-	.flash-inner:hover {
-		opacity: 0.9;
-	}
-
+	.flash-inner:hover .flash-headline,
 	.flash-inner:hover .flash-arrow {
-		opacity: 0.8;
+		color: var(--ft-cta);
+	}
+
+	.flash-headline,
+	.flash-arrow {
+		transition: color var(--dur-fast) ease;
 	}
 
 	.flash-dot {
@@ -77,7 +75,8 @@
 	}
 
 	@keyframes ping {
-		75%, 100% {
+		75%,
+		100% {
 			transform: scale(2);
 			opacity: 0;
 		}
@@ -88,7 +87,8 @@
 		font-size: 0.78rem;
 		font-weight: 700;
 		color: white;
-		letter-spacing: 0.01em;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
 	}
 
 	.flash-arrow {

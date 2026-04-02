@@ -70,7 +70,11 @@ const productAdapter: SchemaAdapter<ProductSearchResult> = {
 			description: (row.description as string) || '',
 			price: (row.price as number) || 0,
 			originalPrice: (row.original_price as number) || null,
-			image: (row.image as string) || '',
+			image: row.image
+				? (row.image as string).startsWith('http')
+					? (row.image as string)
+					: `/img/products/${row.image}`
+				: '',
 			category: (row.category as string) || '',
 			categorySlug: (row.category_slug as string) || '',
 			tags,
@@ -159,8 +163,8 @@ export async function searchProducts(
 	// Filter out zero-price products
 	return {
 		...response,
-		results: response.results.filter(r => r.price > 0).slice(0, params.limit ?? 20),
-		nearby: response.nearby.filter(r => r.price > 0)
+		results: response.results.filter((r) => r.price > 0).slice(0, params.limit ?? 20),
+		nearby: response.nearby.filter((r) => r.price > 0)
 	};
 }
 
