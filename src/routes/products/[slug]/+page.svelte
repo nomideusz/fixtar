@@ -173,36 +173,6 @@
 				{/if}
 			</div>
 
-			<!-- Trust Badges -->
-			<div class="pdp-trust-badges">
-				<span class="trust-badge-label">Płatności</span>
-				<div class="trust-badge-list">
-					<span class="trust-badge" aria-label="Apple Pay">
-						<svg width="24" height="24" fill="currentColor" aria-hidden="true">
-							<use href="/sprite.svg#icon-apple" />
-						</svg>
-					</span>
-					<span class="trust-badge" aria-label="Google Pay">
-						<svg width="24" height="24" fill="currentColor" aria-hidden="true">
-							<use href="/sprite.svg#icon-google-icon" />
-						</svg>
-					</span>
-					<span class="trust-badge" aria-label="Visa">
-						<svg width="32" height="12" fill="currentColor" aria-hidden="true">
-							<use href="/sprite.svg#icon-visa" />
-						</svg>
-					</span>
-					<span class="trust-badge" aria-label="Mastercard">
-						<svg width="22" height="14" fill="currentColor" aria-hidden="true">
-							<use href="/sprite.svg#icon-mastercard" />
-						</svg>
-					</span>
-					<span class="trust-badge" aria-label="BLIK">
-						<span class="pay-text-logo">BLIK</span>
-					</span>
-				</div>
-			</div>
-
 			<!-- Specs + Contents (inline, above description) -->
 			{#if specTable.length > 0 || contents.length > 0}
 				<div class="pdp-specs">
@@ -374,51 +344,6 @@
 		margin-top: 14px;
 		padding-bottom: 16px;
 		border-bottom: 1px solid var(--ft-line);
-	}
-
-	.pdp-trust-badges {
-		display: flex;
-		align-items: center;
-		gap: 16px;
-		margin-top: 20px;
-		margin-bottom: 24px;
-		padding: 12px 16px;
-		border: 1px solid var(--ft-line);
-		background: var(--ft-frost);
-	}
-
-	.trust-badge-label {
-		font-family: var(--font-display);
-		font-size: 0.7rem;
-		font-weight: 700;
-		color: var(--ft-text-muted);
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		border-right: 1px solid var(--ft-line);
-		padding-right: 16px;
-	}
-
-	.trust-badge-list {
-		display: flex;
-		align-items: center;
-		gap: 16px;
-		flex-wrap: wrap;
-	}
-
-	.trust-badge {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		color: var(--ft-text-muted);
-		height: 24px;
-	}
-
-	.pay-text-logo {
-		font-family: var(--font-display);
-		font-size: 0.75rem;
-		font-weight: 700;
-		letter-spacing: 0.04em;
-		color: var(--ft-text-muted);
 	}
 
 	.pdp-stock {

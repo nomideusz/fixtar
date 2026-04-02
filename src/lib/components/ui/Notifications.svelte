@@ -162,7 +162,7 @@
 		<div
 			class="notification-item notification-item--mobile {typeClasses[notification.type] ||
 				typeClasses.info}"
-			transition:fly={{ y: 80, duration: 300, delay: index * 80 }}
+			transition:fly={{ y: -80, duration: 300, delay: index * 80 }}
 			ontouchstart={(e) => handleTouchStart(e, notification.id)}
 			ontouchmove={handleTouchMove}
 			ontouchend={handleTouchEnd}
@@ -216,28 +216,28 @@
 
 	.notification-container--desktop {
 		position: fixed;
-		bottom: 1.5rem;
+		top: 7rem;
 		right: 1.5rem;
 		z-index: 9999;
 		width: 100%;
 		max-width: 22rem;
 		display: none;
-		flex-direction: column-reverse;
+		flex-direction: column;
 		gap: 0.75rem;
 		pointer-events: none;
 	}
 
 	.notification-container--mobile {
 		position: fixed;
-		bottom: 0;
+		top: 4.5rem;
 		left: 0;
 		right: 0;
 		z-index: 9999;
 		display: flex;
-		flex-direction: column-reverse;
+		flex-direction: column;
 		gap: 0;
 		pointer-events: none;
-		padding-bottom: env(safe-area-inset-bottom, 0);
+		padding-top: env(safe-area-inset-top, 0);
 	}
 
 	@media (min-width: 640px) {
@@ -331,9 +331,9 @@
 		border-radius: 0;
 		border-left-width: 0 !important;
 		border-right-width: 0 !important;
-		border-bottom-width: 0 !important;
-		border-top: 1px solid var(--ft-line);
-		box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.08) !important;
+		border-top-width: 0 !important;
+		border-bottom: 1px solid var(--ft-line);
+		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
 		transition:
 			transform 0.15s,
 			opacity 0.15s;
