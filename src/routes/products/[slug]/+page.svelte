@@ -83,6 +83,10 @@
 				href: `/products?category=${primaryCategory.slug}`
 			});
 		}
+		items.push({
+			label: product.name,
+			href: `/products/${product.slug?.trim() || product.id}`
+		});
 		return items;
 	});
 
@@ -159,9 +163,6 @@
 					<span class="stock-dot"></span>
 					{stock.label}
 				</span>
-				{#if product.sku}
-					<span class="pdp-sku">SKU: {product.sku}</span>
-				{/if}
 				{#if product.expand?.categories?.length}
 					{#each product.expand.categories as cat (cat.id)}
 						<a href="/products?category={cat.slug}" class="pdp-category">
@@ -416,12 +417,6 @@
 		height: 6px;
 		border-radius: 50%;
 		background: currentColor;
-	}
-
-	.pdp-sku {
-		font-size: 0.75rem;
-		color: var(--ft-text-faint);
-		font-family: monospace;
 	}
 
 	.pdp-category {
