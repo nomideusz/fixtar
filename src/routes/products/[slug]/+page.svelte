@@ -25,9 +25,13 @@
 	const stock = $derived(getStockInfo(product));
 	const hasDiscount = $derived(!!product.compareAtPrice && product.compareAtPrice > product.price);
 	const discountPercent = $derived(
-		hasDiscount ? Math.round(((product.compareAtPrice! - product.price) / product.compareAtPrice!) * 100) : 0
+		hasDiscount
+			? Math.round(((product.compareAtPrice! - product.price) / product.compareAtPrice!) * 100)
+			: 0
 	);
-	const allImages = $derived([product.mainImage, ...(product.gallery || [])].filter(Boolean) as string[]);
+	const allImages = $derived(
+		[product.mainImage, ...(product.gallery || [])].filter(Boolean) as string[]
+	);
 	const imageBadges = $derived.by(() => {
 		const badges: Array<{ label: string; class: string }> = [];
 		if (product.featured) badges.push({ label: 'Polecany', class: 'bg-[--ft-accent]' });
@@ -74,18 +78,27 @@
 			{ label: 'Produkty', href: '/products' }
 		];
 		if (primaryCategory) {
-			items.push({ label: primaryCategory.name, href: `/products?category=${primaryCategory.slug}` });
+			items.push({
+				label: primaryCategory.name,
+				href: `/products?category=${primaryCategory.slug}`
+			});
 		}
 		return items;
 	});
 
 	function addToCart() {
-		cart.addItem({ productId: product.id, name: product.name, price: product.price, image: product.mainImage }, quantity);
+		cart.addItem(
+			{ productId: product.id, name: product.name, price: product.price, image: product.mainImage },
+			quantity
+		);
 		notifications.success(`Dodano ${product.name} do koszyka`);
 	}
 
 	function buyNow() {
-		cart.addItem({ productId: product.id, name: product.name, price: product.price, image: product.mainImage }, quantity);
+		cart.addItem(
+			{ productId: product.id, name: product.name, price: product.price, image: product.mainImage },
+			quantity
+		);
 		window.location.href = '/checkout';
 	}
 
@@ -101,7 +114,10 @@
 
 <svelte:head>
 	<title>{product.name} — FixTar</title>
-	<meta name="description" content={product.description?.slice(0, 160) || `${product.name} — dostępny w FixTar`} />
+	<meta
+		name="description"
+		content={product.description?.slice(0, 160) || `${product.name} — dostępny w FixTar`}
+	/>
 </svelte:head>
 
 <div class="ft-container pdp">
@@ -111,8 +127,16 @@
 
 	<div class="pdp-grid">
 		<!-- Gallery -->
-		<div class="pdp-gallery" style="view-transition-name:product-img-{product.id.slice(0, 8)};min-width:0">
-			<ProductGallery images={allImages} productName={product.name} badges={imageBadges} onZoomRequest={openZoom} />
+		<div
+			class="pdp-gallery"
+			style="view-transition-name:product-img-{product.id.slice(0, 8)};min-width:0"
+		>
+			<ProductGallery
+				images={allImages}
+				productName={product.name}
+				badges={imageBadges}
+				onZoomRequest={openZoom}
+			/>
 		</div>
 
 		<!-- Info -->
@@ -148,6 +172,33 @@
 				{/if}
 			</div>
 
+			<!-- Trust Badges -->
+			<div class="pdp-trust-badges">
+				<span class="trust-badge" aria-label="Apple Pay">
+					<svg width="24" height="24" fill="currentColor" aria-hidden="true">
+						<use href="/sprite.svg#icon-apple" />
+					</svg>
+				</span>
+				<span class="trust-badge" aria-label="Google Pay">
+					<svg width="24" height="24" fill="currentColor" aria-hidden="true">
+						<use href="/sprite.svg#icon-google-icon" />
+					</svg>
+				</span>
+				<span class="trust-badge" aria-label="Visa">
+					<svg width="32" height="12" fill="currentColor" aria-hidden="true">
+						<use href="/sprite.svg#icon-visa" />
+					</svg>
+				</span>
+				<span class="trust-badge" aria-label="Mastercard">
+					<svg width="22" height="14" fill="currentColor" aria-hidden="true">
+						<use href="/sprite.svg#icon-mastercard" />
+					</svg>
+				</span>
+				<span class="trust-badge" aria-label="BLIK">
+					<span class="pay-text-logo">BLIK</span>
+				</span>
+			</div>
+
 			<!-- Specs + Contents (inline, above description) -->
 			{#if specTable.length > 0 || contents.length > 0}
 				<div class="pdp-specs">
@@ -179,11 +230,21 @@
 		{#if stock.inStock}
 			<!-- Quantity -->
 			<div class="action-qty">
-				<button class="qty-btn" onclick={() => adjustQuantity(-1)} disabled={quantity <= 1} aria-label="Mniej">
+				<button
+					class="qty-btn"
+					onclick={() => adjustQuantity(-1)}
+					disabled={quantity <= 1}
+					aria-label="Mniej"
+				>
 					<MinusIcon size={14} weight="bold" aria-hidden="true" />
 				</button>
 				<span class="qty-value">{quantity}</span>
-				<button class="qty-btn" onclick={() => adjustQuantity(1)} disabled={quantity >= maxQuantity} aria-label="Więcej">
+				<button
+					class="qty-btn"
+					onclick={() => adjustQuantity(1)}
+					disabled={quantity >= maxQuantity}
+					aria-label="Więcej"
+				>
 					<PlusIcon size={14} weight="bold" aria-hidden="true" />
 				</button>
 			</div>
@@ -198,7 +259,12 @@
 			</button>
 
 			<!-- Wishlist -->
-			<button class="action-heart" class:is-active={isWishlisted} onclick={toggleWishlist} aria-label={isWishlisted ? 'Usuń z ulubionych' : 'Dodaj do ulubionych'}>
+			<button
+				class="action-heart"
+				class:is-active={isWishlisted}
+				onclick={toggleWishlist}
+				aria-label={isWishlisted ? 'Usuń z ulubionych' : 'Dodaj do ulubionych'}
+			>
 				<HeartIcon size={18} weight={isWishlisted ? 'fill' : 'bold'} aria-hidden="true" />
 			</button>
 		{:else}
@@ -306,6 +372,30 @@
 		border-bottom: 1px solid var(--ft-line);
 	}
 
+	.pdp-trust-badges {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+		margin-top: 16px;
+		margin-bottom: 24px;
+	}
+
+	.trust-badge {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: var(--ft-text-faint);
+		height: 24px;
+	}
+
+	.pay-text-logo {
+		font-family: var(--font-display);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		color: var(--ft-text-faint);
+	}
+
 	.pdp-stock {
 		display: inline-flex;
 		align-items: center;
@@ -314,8 +404,12 @@
 		font-weight: 600;
 	}
 
-	.pdp-stock.in-stock { color: var(--color-success); }
-	.pdp-stock.out-of-stock { color: var(--color-danger); }
+	.pdp-stock.in-stock {
+		color: var(--color-success);
+	}
+	.pdp-stock.out-of-stock {
+		color: var(--color-danger);
+	}
 
 	.stock-dot {
 		width: 6px;
@@ -341,7 +435,9 @@
 		transition: color 0.15s;
 	}
 
-	.pdp-category:hover { color: var(--ft-accent); }
+	.pdp-category:hover {
+		color: var(--ft-accent);
+	}
 
 	/* ── Specs ── */
 	.pdp-specs {
@@ -440,7 +536,9 @@
 		transition: opacity 0.15s;
 	}
 
-	.pdp-expand-btn:hover { opacity: 0.7; }
+	.pdp-expand-btn:hover {
+		opacity: 0.7;
+	}
 
 	/* ── Sticky action bar ── */
 	.action-bar {
@@ -482,7 +580,9 @@
 		border: none;
 		cursor: pointer;
 		color: var(--ft-text);
-		transition: background-color 0.15s, color 0.15s;
+		transition:
+			background-color 0.15s,
+			color 0.15s;
 	}
 
 	.qty-btn:hover:not(:disabled) {
@@ -536,14 +636,18 @@
 		white-space: nowrap;
 	}
 
-	.action-cart:hover { opacity: 0.9; }
+	.action-cart:hover {
+		opacity: 0.9;
+	}
 
 	.action-cart-label {
 		display: none;
 	}
 
 	@media (min-width: 480px) {
-		.action-cart-label { display: inline; }
+		.action-cart-label {
+			display: inline;
+		}
 	}
 
 	/* Wishlist */
@@ -558,7 +662,9 @@
 		border-radius: var(--radius-sm);
 		color: var(--ft-text-muted);
 		cursor: pointer;
-		transition: color 0.15s, border-color 0.15s;
+		transition:
+			color 0.15s,
+			border-color 0.15s;
 		flex-shrink: 0;
 	}
 

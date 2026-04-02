@@ -8,10 +8,7 @@
 
 	// --- Props ---
 
-	const {
-		toggleCart = () => {},
-		t = (key: TranslationKey) => key
-	} = $props();
+	const { toggleCart = () => {}, t = (key: TranslationKey) => key } = $props();
 
 	// --- Drawer State ---
 
@@ -53,7 +50,8 @@
 	$effect(() => {
 		if (!isOpen || !drawerElement) return;
 
-		const focusableSelectors = 'a[href], button:not([disabled]), input, [tabindex]:not([tabindex="-1"])';
+		const focusableSelectors =
+			'a[href], button:not([disabled]), input, [tabindex]:not([tabindex="-1"])';
 
 		// Focus the first focusable element
 		const firstFocusable = drawerElement.querySelector<HTMLElement>(focusableSelectors);
@@ -193,8 +191,14 @@
 			{#if pendingClearAll}
 				<p class="cart-drawer__confirm-text">Usunąć wszystko?</p>
 				<div class="cart-drawer__actions">
-					<button onclick={confirmClearAll} class="cart-drawer__confirm-btn cart-drawer__confirm-btn--yes">Tak</button>
-					<button onclick={cancelClearAll} class="cart-drawer__confirm-btn cart-drawer__confirm-btn--no">Nie</button>
+					<button
+						onclick={confirmClearAll}
+						class="cart-drawer__confirm-btn cart-drawer__confirm-btn--yes">Tak</button
+					>
+					<button
+						onclick={cancelClearAll}
+						class="cart-drawer__confirm-btn cart-drawer__confirm-btn--no">Nie</button
+					>
 				</div>
 			{:else}
 				<h5 class="cart-drawer__title">
@@ -243,7 +247,14 @@
 									onclick={close}
 									aria-label={item.name}
 								>
-									<img src={item.image} alt={item.name} class="cart-item__image" width="64" height="64" loading="lazy" />
+									<img
+										src={item.image}
+										alt={item.name}
+										class="cart-item__image"
+										width="64"
+										height="64"
+										loading="lazy"
+									/>
 								</a>
 								<div class="cart-item__details">
 									<a href={productHref(item)} class="cart-item__name-link" onclick={close}>
@@ -274,8 +285,16 @@
 							</div>
 							{#if pendingRemoveId === item.productId}
 								<div class="cart-item__confirm">
-									<button onclick={confirmRemove} class="cart-drawer__confirm-btn cart-drawer__confirm-btn--yes" aria-label="Potwierdź usunięcie">Usuń</button>
-									<button onclick={cancelRemove} class="cart-drawer__confirm-btn cart-drawer__confirm-btn--no" aria-label="Anuluj usunięcie">Nie</button>
+									<button
+										onclick={confirmRemove}
+										class="cart-drawer__confirm-btn cart-drawer__confirm-btn--yes"
+										aria-label="Potwierdź usunięcie">Usuń</button
+									>
+									<button
+										onclick={cancelRemove}
+										class="cart-drawer__confirm-btn cart-drawer__confirm-btn--no"
+										aria-label="Anuluj usunięcie">Nie</button
+									>
 								</div>
 							{:else}
 								<button
@@ -311,6 +330,30 @@
 					<Button variant="outline" fullWidth onclick={close}>
 						{t('continueShopping')}
 					</Button>
+
+					<!-- Trust Badges -->
+					<div class="cart-drawer__payments" aria-label="Zaufane metody płatności">
+						<span class="pay-chip" aria-label="Apple Pay">
+							<svg width="20" height="20" fill="currentColor" aria-hidden="true">
+								<use href="/sprite.svg#icon-apple" />
+							</svg>
+						</span>
+						<span class="pay-chip" aria-label="Google Pay">
+							<svg width="20" height="20" fill="currentColor" aria-hidden="true">
+								<use href="/sprite.svg#icon-google-icon" />
+							</svg>
+						</span>
+						<span class="pay-chip" aria-label="Visa">
+							<svg width="28" height="10" fill="currentColor" aria-hidden="true">
+								<use href="/sprite.svg#icon-visa" />
+							</svg>
+						</span>
+						<span class="pay-chip" aria-label="Mastercard">
+							<svg width="18" height="12" fill="currentColor" aria-hidden="true">
+								<use href="/sprite.svg#icon-mastercard" />
+							</svg>
+						</span>
+					</div>
 				</div>
 			{/if}
 		</div>
@@ -483,7 +526,9 @@
 		background-color: var(--ft-surface);
 		padding: 0.875rem;
 		border-radius: var(--radius-md);
-		transition: border-color 0.2s, background-color 0.2s;
+		transition:
+			border-color 0.2s,
+			background-color 0.2s;
 	}
 
 	.cart-item__content {
@@ -638,5 +683,20 @@
 
 	:global(.cart-drawer__checkout-btn) {
 		margin-bottom: 0.5rem;
+	}
+	.cart-drawer__payments {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 12px;
+		margin-top: 1.5rem;
+	}
+
+	.pay-chip {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 24px;
+		color: var(--ft-text-faint);
 	}
 </style>
