@@ -1,7 +1,6 @@
 <script lang="ts">
 	import ProductCard from '$lib/components/ui/ProductCard.svelte';
 	import type { Product } from '$lib/stores/products.svelte';
-	import { ArrowRightIcon } from 'phosphor-svelte';
 
 	interface Props {
 		products: Product[];
@@ -13,20 +12,9 @@
 
 {#if products?.length > 0}
 	<section class="mt-16 border-t border-[--ft-line] pt-12">
-		<div class="mb-8 flex items-end justify-between">
-			<div>
-				<h4 class="ft-label mb-2">Polecane</h4>
-				<h2
-					class="text-2xl font-bold text-[--ft-text-strong]"
-					style="font-family:var(--font-display);letter-spacing:-0.02em"
-				>
-					Podobne produkty
-				</h2>
-			</div>
-			<a href="/products?category={categorySlug}" class="see-all">
-				Zobacz wszystkie
-				<ArrowRightIcon size={14} weight="light" aria-hidden="true" />
-			</a>
+		<div class="related-header">
+			<h2 class="related-title">Podobne produkty</h2>
+			<a href="/products?category={categorySlug}" class="related-link">Zobacz wszystkie</a>
 		</div>
 		<div class="carousel ft-stagger">
 			{#each products as product (product.id)}
@@ -87,19 +75,43 @@
 		}
 	}
 
-	.see-all {
-		display: inline-flex;
-		align-items: center;
-		gap: 6px;
-		font-size: 0.82rem;
-		font-weight: 600;
-		color: var(--ft-accent);
-		text-decoration: none;
-		transition: gap 0.2s ease;
-		white-space: nowrap;
+	.related-header {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		margin-bottom: 32px;
 	}
 
-	.see-all:hover {
-		gap: 10px;
+	.related-title {
+		font-family: var(--font-display);
+		font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+		font-weight: 700;
+		color: var(--ft-dark);
+		letter-spacing: -0.02em;
+		margin-top: 6px;
+		border-left: 4px solid var(--ft-accent);
+		padding-left: 14px;
+		text-transform: uppercase;
+		line-height: 1;
+	}
+
+	.related-link {
+		font-family: var(--font-display);
+		font-size: 0.8rem;
+		font-weight: 700;
+		color: var(--ft-text-strong);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		text-decoration: none;
+		border-bottom: 2px solid var(--ft-accent);
+		padding-bottom: 2px;
+		transition:
+			color 0.15s ease,
+			border-color 0.15s ease;
+	}
+
+	.related-link:hover {
+		color: var(--ft-accent);
+		border-color: var(--ft-dark);
 	}
 </style>
