@@ -1,5 +1,10 @@
 <script lang="ts">
-	import { MagnifyingGlassPlusIcon, ImageSquareIcon, CaretLeftIcon, CaretRightIcon } from 'phosphor-svelte';
+	import {
+		MagnifyingGlassPlusIcon,
+		ImageSquareIcon,
+		CaretLeftIcon,
+		CaretRightIcon
+	} from 'phosphor-svelte';
 
 	interface Props {
 		images: string[];
@@ -9,7 +14,13 @@
 		onZoomRequest?: (index: number) => void;
 	}
 
-	let { images, productName, badges = [], selectedImageIndex: externalIndex, onZoomRequest }: Props = $props();
+	let {
+		images,
+		productName,
+		badges = [],
+		selectedImageIndex: externalIndex,
+		onZoomRequest
+	}: Props = $props();
 
 	let selectedImageIndex = $state(0);
 	let imageZoomed = $state(false);
@@ -77,7 +88,7 @@
 			<!-- Main clickable image -->
 			<button
 				class="main-image-btn"
-				onclick={() => onZoomRequest ? onZoomRequest(selectedImageIndex) : (imageZoomed = true)}
+				onclick={() => (onZoomRequest ? onZoomRequest(selectedImageIndex) : (imageZoomed = true))}
 				aria-label="Powiększ zdjęcie produktu"
 			>
 				<img
@@ -139,8 +150,6 @@
 	</div>
 {/if}
 
-
-
 <style>
 	/* ── Layout ── */
 	.gallery {
@@ -160,30 +169,39 @@
 		overflow-x: hidden;
 		scrollbar-width: none;
 	}
-	.thumb-rail::-webkit-scrollbar { display: none; }
+	.thumb-rail::-webkit-scrollbar {
+		display: none;
+	}
 
 	@media (min-width: 768px) {
-		.thumb-rail { display: flex; }
+		.thumb-rail {
+			display: flex;
+		}
 	}
 
 	.thumb {
 		width: 72px;
 		height: 72px;
 		flex-shrink: 0;
-		border: 2px solid var(--ft-line);
-		background: var(--ft-surface);
-		padding: 3px;
+		border: 2px solid transparent;
+		background: transparent;
+		padding: 2px;
 		cursor: pointer;
-		transition: border-color 0.15s ease;
+		opacity: 0.5;
+		transition: all 0.2s ease;
 	}
 	.thumb img {
 		width: 100%;
 		height: 100%;
 		object-fit: contain;
+		clip-path: inset(2px); /* hide baked-in image borders */
 	}
-	.thumb:hover { border-color: var(--ft-text-muted); }
+	.thumb:hover {
+		opacity: 0.8;
+	}
 	.thumb.is-active {
-		border-color: var(--ft-accent);
+		opacity: 1;
+		border-color: var(--ft-cta);
 	}
 
 	/* ── Main Image ── */
@@ -191,8 +209,8 @@
 		position: relative;
 		flex: 1;
 		min-width: 0;
-		border: 1px solid var(--ft-line);
-		background: var(--ft-surface);
+		border: none;
+		background: transparent;
 		overflow: hidden;
 	}
 
@@ -229,21 +247,23 @@
 		position: absolute;
 		bottom: 12px;
 		right: 12px;
-		width: 36px;
-		height: 36px;
+		width: 40px;
+		height: 40px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		background: var(--ft-surface);
-		border: 1px solid var(--ft-line);
-		color: var(--ft-text-muted);
+		border: 2px solid transparent;
+		color: var(--ft-text-strong);
 		opacity: 0;
-		transition: opacity 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+		transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 	}
 	.main-image-btn:hover .zoom-hint {
 		opacity: 1;
-		color: var(--ft-accent);
-		border-color: var(--ft-accent);
+		color: var(--ft-cta);
+		border-color: var(--ft-cta);
+		transform: scale(1.1);
 	}
 
 	/* ── Badges ── */
@@ -290,31 +310,37 @@
 		top: 50%;
 		transform: translateY(-50%);
 		z-index: 2;
-		width: 40px;
-		height: 40px;
+		width: 44px;
+		height: 44px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		background: var(--ft-surface);
-		border: 1px solid var(--ft-line);
-		color: var(--ft-text);
+		border: 2px solid transparent;
+		color: var(--ft-text-strong);
 		cursor: pointer;
 		opacity: 0;
-		transition: opacity 0.2s ease, border-color 0.15s ease, color 0.15s ease;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+		transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 	}
 	.main-image-wrap:hover .nav-arrow:not(:disabled) {
 		opacity: 1;
 	}
-	.nav-arrow:hover {
-		border-color: var(--ft-accent);
-		color: var(--ft-accent);
+	.nav-arrow:hover:not(:disabled) {
+		border-color: var(--ft-cta);
+		color: var(--ft-cta);
+		transform: translateY(-50%) scale(1.1);
 	}
 	.nav-arrow:disabled {
 		opacity: 0 !important;
 		cursor: default;
 	}
-	.nav-arrow--prev { left: 8px; }
-	.nav-arrow--next { right: 8px; }
+	.nav-arrow--prev {
+		left: 8px;
+	}
+	.nav-arrow--next {
+		right: 8px;
+	}
 
 	/* ── Mobile Thumbnails (horizontal) ── */
 	.thumb-rail-mobile {
@@ -324,29 +350,40 @@
 		padding: 10px 0 4px;
 		scrollbar-width: none;
 	}
-	.thumb-rail-mobile::-webkit-scrollbar { display: none; }
+	.thumb-rail-mobile::-webkit-scrollbar {
+		display: none;
+	}
 
 	@media (min-width: 768px) {
-		.thumb-rail-mobile { display: none; }
+		.thumb-rail-mobile {
+			display: none;
+		}
 	}
 
 	.thumb-mobile {
 		width: 56px;
 		height: 56px;
 		flex-shrink: 0;
-		border: 2px solid var(--ft-line);
-		background: var(--ft-surface);
+		border: 2px solid transparent;
+		background: transparent;
 		padding: 2px;
 		cursor: pointer;
-		transition: border-color 0.15s ease;
+		opacity: 0.5;
+		transition: all 0.2s ease;
 	}
 	.thumb-mobile img {
 		width: 100%;
 		height: 100%;
 		object-fit: contain;
+		clip-path: inset(2px);
 	}
-	.thumb-mobile:hover { border-color: var(--ft-text-muted); }
-	.thumb-mobile.is-active { border-color: var(--ft-accent); }
+	.thumb-mobile:hover {
+		opacity: 0.8;
+	}
+	.thumb-mobile.is-active {
+		opacity: 1;
+		border-color: var(--ft-cta);
+	}
 
 	/* ── Empty State ── */
 	.empty-state {
@@ -355,8 +392,8 @@
 		align-items: center;
 		justify-content: center;
 		height: 400px;
-		border: 1px solid var(--ft-line);
-		background: var(--ft-frost);
+		border: none;
+		background: transparent;
 		color: var(--ft-text-faint);
 		gap: 12px;
 		font-size: 0.85rem;

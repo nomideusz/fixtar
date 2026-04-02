@@ -175,29 +175,32 @@
 
 			<!-- Trust Badges -->
 			<div class="pdp-trust-badges">
-				<span class="trust-badge" aria-label="Apple Pay">
-					<svg width="24" height="24" fill="currentColor" aria-hidden="true">
-						<use href="/sprite.svg#icon-apple" />
-					</svg>
-				</span>
-				<span class="trust-badge" aria-label="Google Pay">
-					<svg width="24" height="24" fill="currentColor" aria-hidden="true">
-						<use href="/sprite.svg#icon-google-icon" />
-					</svg>
-				</span>
-				<span class="trust-badge" aria-label="Visa">
-					<svg width="32" height="12" fill="currentColor" aria-hidden="true">
-						<use href="/sprite.svg#icon-visa" />
-					</svg>
-				</span>
-				<span class="trust-badge" aria-label="Mastercard">
-					<svg width="22" height="14" fill="currentColor" aria-hidden="true">
-						<use href="/sprite.svg#icon-mastercard" />
-					</svg>
-				</span>
-				<span class="trust-badge" aria-label="BLIK">
-					<span class="pay-text-logo">BLIK</span>
-				</span>
+				<span class="trust-badge-label">Płatności</span>
+				<div class="trust-badge-list">
+					<span class="trust-badge" aria-label="Apple Pay">
+						<svg width="24" height="24" fill="currentColor" aria-hidden="true">
+							<use href="/sprite.svg#icon-apple" />
+						</svg>
+					</span>
+					<span class="trust-badge" aria-label="Google Pay">
+						<svg width="24" height="24" fill="currentColor" aria-hidden="true">
+							<use href="/sprite.svg#icon-google-icon" />
+						</svg>
+					</span>
+					<span class="trust-badge" aria-label="Visa">
+						<svg width="32" height="12" fill="currentColor" aria-hidden="true">
+							<use href="/sprite.svg#icon-visa" />
+						</svg>
+					</span>
+					<span class="trust-badge" aria-label="Mastercard">
+						<svg width="22" height="14" fill="currentColor" aria-hidden="true">
+							<use href="/sprite.svg#icon-mastercard" />
+						</svg>
+					</span>
+					<span class="trust-badge" aria-label="BLIK">
+						<span class="pay-text-logo">BLIK</span>
+					</span>
+				</div>
 			</div>
 
 			<!-- Specs + Contents (inline, above description) -->
@@ -377,15 +380,36 @@
 		display: flex;
 		align-items: center;
 		gap: 16px;
-		margin-top: 16px;
+		margin-top: 20px;
 		margin-bottom: 24px;
+		padding: 12px 16px;
+		border: 1px solid var(--ft-line);
+		background: var(--ft-frost);
+	}
+
+	.trust-badge-label {
+		font-family: var(--font-display);
+		font-size: 0.7rem;
+		font-weight: 700;
+		color: var(--ft-text-muted);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		border-right: 1px solid var(--ft-line);
+		padding-right: 16px;
+	}
+
+	.trust-badge-list {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+		flex-wrap: wrap;
 	}
 
 	.trust-badge {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		color: var(--ft-text-faint);
+		color: var(--ft-text-muted);
 		height: 24px;
 	}
 
@@ -394,7 +418,7 @@
 		font-size: 0.75rem;
 		font-weight: 700;
 		letter-spacing: 0.04em;
-		color: var(--ft-text-faint);
+		color: var(--ft-text-muted);
 	}
 
 	.pdp-stock {
@@ -552,7 +576,7 @@
 	.action-bar-inner {
 		display: flex;
 		align-items: center;
-		gap: 8px;
+		gap: 12px;
 		min-width: 0;
 	}
 
@@ -560,29 +584,27 @@
 	.action-qty {
 		display: flex;
 		align-items: center;
-		border: 1px solid var(--ft-line);
-		border-radius: var(--radius-sm);
-		overflow: hidden;
+		border: 2px solid var(--ft-line);
+		border-radius: 0;
+		background: var(--ft-surface);
 	}
 
 	.qty-btn {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 36px;
-		height: 36px;
-		background: var(--ft-frost);
+		width: 40px;
+		height: 40px;
+		background: transparent;
 		border: none;
 		cursor: pointer;
-		color: var(--ft-text);
-		transition:
-			background-color 0.15s,
-			color 0.15s;
+		color: var(--ft-text-strong);
+		transition: all 0.15s ease;
 	}
 
 	.qty-btn:hover:not(:disabled) {
-		background: var(--ft-accent);
-		color: white;
+		background: var(--ft-frost);
+		color: var(--ft-cta);
 	}
 
 	.qty-btn:disabled {
@@ -591,15 +613,15 @@
 	}
 
 	.qty-value {
-		min-width: 32px;
+		min-width: 36px;
 		text-align: center;
-		font-size: 0.88rem;
+		font-size: 0.95rem;
 		font-weight: 700;
 		color: var(--ft-dark);
-		border-left: 1px solid var(--ft-line);
-		border-right: 1px solid var(--ft-line);
-		height: 36px;
-		line-height: 36px;
+		border-left: 2px solid var(--ft-line);
+		border-right: 2px solid var(--ft-line);
+		height: 40px;
+		line-height: 40px;
 	}
 
 	/* Price */
@@ -616,23 +638,34 @@
 	.action-cart {
 		display: flex;
 		align-items: center;
-		gap: 6px;
-		padding: 0 20px;
-		height: 40px;
+		gap: 8px;
+		padding: 0 24px;
+		height: 44px;
 		background: var(--ft-cta);
-		color: white;
-		border: none;
-		border-radius: var(--radius-sm);
+		color: #ffffff;
+		border: 2px solid var(--ft-cta);
+		border-radius: 0;
 		font-family: var(--font-display);
-		font-size: 0.82rem;
-		font-weight: 700;
+		font-size: 0.85rem;
+		font-weight: 800;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
 		cursor: pointer;
-		transition: opacity 0.15s;
+		transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 		white-space: nowrap;
+		box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.1);
 	}
 
 	.action-cart:hover {
-		opacity: 0.9;
+		background: #ffffff;
+		color: var(--ft-cta);
+		transform: scale(1.02) translateY(-2px);
+		box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.15);
+	}
+
+	.action-cart:active {
+		transform: scale(0.98) translateY(0);
+		box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.1);
 	}
 
 	.action-cart-label {
@@ -650,16 +683,14 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 40px;
-		height: 40px;
-		background: none;
-		border: 1px solid var(--ft-line);
-		border-radius: var(--radius-sm);
+		width: 44px;
+		height: 44px;
+		background: var(--ft-surface);
+		border: 2px solid var(--ft-line);
+		border-radius: 0;
 		color: var(--ft-text-muted);
 		cursor: pointer;
-		transition:
-			color 0.15s,
-			border-color 0.15s;
+		transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 		flex-shrink: 0;
 	}
 
@@ -667,6 +698,8 @@
 	.action-heart.is-active {
 		color: var(--ft-cta);
 		border-color: var(--ft-cta);
+		transform: scale(1.05);
+		box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.1);
 	}
 
 	/* Out of stock */
