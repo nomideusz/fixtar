@@ -97,8 +97,16 @@
 	}
 
 	@media (max-width: 480px) {
+		.flash-inner {
+			gap: 6px;
+		}
+
 		.flash-headline {
-			font-size: 0.72rem;
+			font-size: 0.65rem;
+			letter-spacing: 0.05em;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
 		}
 
 		.flash-dot {

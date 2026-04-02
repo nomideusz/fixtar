@@ -40,7 +40,7 @@
 			href: '/deals',
 			image: bannerGrinder1,
 			alt: 'Szlifierka kątowa Eurotec w akcji',
-			mobilePosition: 'center center',
+			mobilePosition: '70% center',
 			desktopPosition: 'center center'
 		},
 		{
@@ -49,7 +49,7 @@
 			href: '/products',
 			image: bannerWorkshopDrill2,
 			alt: 'Warsztatowa wiertarka akumulatorowa',
-			mobilePosition: 'center center',
+			mobilePosition: '45% center',
 			desktopPosition: 'center 40%'
 		},
 		{
@@ -58,7 +58,7 @@
 			href: '/products',
 			image: heroForest,
 			alt: 'Mężczyzna rąbiący drewno siekierą',
-			mobilePosition: 'center 55%',
+			mobilePosition: '55% center',
 			desktopPosition: 'center 40%'
 		},
 		{
@@ -67,7 +67,7 @@
 			href: '/products',
 			image: bannerImpact1,
 			alt: 'Klucz udarowy przy kole samochodu',
-			mobilePosition: 'center center',
+			mobilePosition: '35% center',
 			desktopPosition: 'center 70%'
 		},
 		{
@@ -76,7 +76,7 @@
 			href: '/products',
 			image: heroTool,
 			alt: 'Szlifierka kątowa Eurotec w serwisie',
-			mobilePosition: 'center center',
+			mobilePosition: '60% center',
 			desktopPosition: 'center 90%'
 		}
 	];
@@ -338,9 +338,9 @@
 	@media (max-width: 768px) {
 		.hero {
 			height: auto;
-			aspect-ratio: 3 / 4;
+			aspect-ratio: 4 / 5;
 			min-height: 480px;
-			max-height: 680px;
+			max-height: 640px;
 		}
 
 		.hero-bg img {
