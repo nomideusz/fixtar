@@ -12,16 +12,23 @@
 <section class="brands ft-section-sm">
 	<div class="ft-container">
 		<p class="brands-label">Zaufane marki</p>
-		<div class="brands-row">
-			{#each brands as brand (brand.slug)}
-				<a
-					href="/products?search={brand.name}"
-					class="brand-item"
-					aria-label="Pokaż produkty marki {brand.name}"
-				>
-					{brand.name}
-				</a>
-			{/each}
+		<div class="brands-marquee">
+			<div class="brands-track">
+				{#each Array(4) as _, idx}
+					<div class="brands-group" aria-hidden={idx > 0 ? "true" : undefined}>
+						{#each brands as brand (brand.slug + '-' + idx)}
+							<a
+								href="/products?search={brand.name}"
+								class="brand-item"
+								aria-label={idx === 0 ? `Pokaż produkty marki ${brand.name}` : undefined}
+								tabindex={idx === 0 ? 0 : -1}
+							>
+								{brand.name}
+							</a>
+						{/each}
+					</div>
+				{/each}
+			</div>
 		</div>
 	</div>
 </section>
@@ -33,39 +40,83 @@
 	}
 
 	.brands-label {
-		font-family: var(--font-mono);
-		font-size: 0.62rem;
-		font-weight: 600;
+		font-family: var(--font-display);
+		font-size: 0.75rem;
+		font-weight: 800;
 		text-transform: uppercase;
-		letter-spacing: 0.12em;
-		color: var(--ft-text-faint);
+		letter-spacing: 0.1em;
+		color: var(--ft-text-strong);
 		text-align: center;
-		margin-bottom: 16px;
+		margin-bottom: 24px;
 	}
 
-	.brands-row {
+	.brands-marquee {
+		overflow: hidden;
+		position: relative;
+		mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+		-webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+		/* Bleed to edges on mobile */
+		margin: 0 calc(-1 * var(--ft-gutter, clamp(24px, 5vw, 80px)));
+		padding: 0 var(--ft-gutter, clamp(24px, 5vw, 80px));
+	}
+
+	.brands-track {
+		display: flex;
+		width: max-content;
+		animation: scroll 25s linear infinite;
+	}
+
+	.brands-track:hover {
+		animation-play-state: paused;
+	}
+
+	.brands-group {
 		display: flex;
 		align-items: center;
-		justify-content: center;
-		flex-wrap: wrap;
-		gap: 12px 32px;
+		gap: clamp(32px, 5vw, 64px);
+		padding-right: clamp(32px, 5vw, 64px);
+	}
+
+	@keyframes scroll {
+		0% { transform: translateX(0); }
+		100% { transform: translateX(calc(-100% / 4)); }
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.brands-track {
+			animation: none;
+			flex-wrap: wrap;
+			justify-content: center;
+			width: auto;
+		}
+		.brands-group:not(:first-child) {
+			display: none;
+		}
+		.brands-marquee {
+			mask-image: none;
+			-webkit-mask-image: none;
+		}
 	}
 
 	.brand-item {
 		font-family: var(--font-display);
-		font-size: clamp(0.9rem, 1.5vw, 1.1rem);
-		font-weight: 700;
+		font-size: clamp(1rem, 2vw, 1.25rem);
+		font-weight: 800;
 		letter-spacing: -0.02em;
-		color: var(--ft-text-faint);
+		color: var(--ft-text-muted);
 		text-decoration: none;
-		transition: color var(--dur-med) ease;
-		padding: 8px 4px;
+		transition: color 0.15s ease, transform 0.15s ease;
+		padding: 8px 12px;
 		min-height: 44px;
 		display: flex;
 		align-items: center;
+		text-transform: uppercase;
 	}
 
 	.brand-item:hover {
 		color: var(--ft-accent);
+		transform: translateY(-2px);
 	}
+
+	
 </style>

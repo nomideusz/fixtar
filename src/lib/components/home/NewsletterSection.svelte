@@ -115,22 +115,24 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		width: 52px;
-		height: 52px;
-		border-radius: 50%;
+		width: 56px;
+		height: 56px;
+		border-radius: var(--radius-sm);
 		background: var(--ft-surface);
-		border: 1px solid var(--ft-line);
-		color: var(--ft-accent);
-		margin-bottom: 18px;
+		border: 2px solid var(--ft-text-strong);
+		color: var(--ft-text-strong);
+		margin-bottom: 24px;
 	}
 
 	.newsletter-title {
 		font-family: var(--font-display);
-		font-size: clamp(1.2rem, 2.5vw, 1.6rem);
-		font-weight: 700;
-		color: var(--ft-dark);
+		font-size: clamp(1.4rem, 3vw, 2rem);
+		font-weight: 800;
+		color: var(--ft-text-strong);
 		letter-spacing: -0.02em;
-		margin-bottom: 8px;
+		text-transform: uppercase;
+		line-height: 1.1;
+		margin-bottom: 12px;
 	}
 
 	.highlight {
@@ -156,14 +158,13 @@
 		gap: 0;
 		border-radius: var(--radius-sm);
 		overflow: hidden;
-		border: 1px solid var(--ft-line);
+		border: 2px solid var(--ft-line);
 		background: var(--ft-surface);
-		transition: border-color var(--dur-fast) ease;
+		transition: border-color 0.2s ease;
 	}
 
 	.input-wrap:focus-within {
-		border-color: var(--ft-cta);
-		box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.08);
+		border-color: var(--ft-text-strong);
 	}
 
 	.newsletter-input {
@@ -193,25 +194,29 @@
 	.newsletter-btn {
 		display: inline-flex;
 		align-items: center;
-		gap: 6px;
-		padding: 12px 24px;
-		min-height: 44px;
+		gap: 8px;
+		padding: 12px 32px;
+		min-height: 48px;
 		font-family: var(--font-display);
-		font-size: 0.78rem;
-		font-weight: 700;
+		font-size: 0.85rem;
+		font-weight: 800;
 		text-transform: uppercase;
-		letter-spacing: 0.08em;
-		color: white;
-		background: var(--ft-cta);
+		letter-spacing: 0.05em;
+		color: var(--ft-surface);
+		background: var(--ft-text-strong);
 		border: none;
 		cursor: pointer;
 		white-space: nowrap;
-		transition: background var(--dur-fast) ease;
+		transition: background-color 0.2s ease, transform 0.1s ease;
 		flex-shrink: 0;
 	}
 
 	.newsletter-btn:hover:not(:disabled) {
-		background: var(--ft-cta-hover);
+		background: var(--ft-cta);
+	}
+
+	.newsletter-btn:active:not(:disabled) {
+		transform: scale(0.98);
 	}
 
 	.newsletter-btn:disabled {
@@ -253,7 +258,7 @@
 		padding: clamp(16px, 4vw, 24px);
 		background: var(--ft-surface);
 		border: 1px solid var(--color-success);
-		border-radius: var(--radius-md);
+		border-radius: var(--radius-sm);
 		color: var(--color-success);
 		animation: ft-fade-up 0.35s var(--ease-out) both;
 	}
@@ -290,16 +295,24 @@
 	@media (max-width: 480px) {
 		.input-wrap {
 			flex-direction: column;
-			border-radius: var(--radius-sm);
+			border: none;
+			background: transparent;
+			gap: 12px;
 		}
 
 		.newsletter-input {
-			border-bottom: 1px solid var(--ft-line);
+			border: 2px solid var(--ft-line);
+			background: var(--ft-surface);
+			width: 100%;
+		}
+
+		.newsletter-input:focus {
+			border-color: var(--ft-text-strong);
 		}
 
 		.newsletter-btn {
+			width: 100%;
 			justify-content: center;
-			border-radius: 0;
 		}
 	}
 </style>
