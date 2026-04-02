@@ -92,7 +92,7 @@
 		<div class="bg-danger/5 border-danger/10 rounded-lg border p-4">
 			<div class="flex items-center">
 				<WarningCircleIcon class="text-danger mr-2 h-5 w-5" aria-hidden="true" />
-				<p class="text-danger-dark">{error}</p>
+				<p class="text-danger">{error}</p>
 			</div>
 			{#if error.includes('API token')}
 				<p class="text-danger mt-2 text-sm">
@@ -211,16 +211,16 @@
 				</div>
 				<div class="bg-danger/5 rounded-lg p-3 text-center">
 					<p class="text-danger text-2xl font-bold">{syncResult.errors.length}</p>
-					<p class="text-danger-dark text-sm">Błędów</p>
+					<p class="text-danger text-sm">Błędów</p>
 				</div>
 			</div>
 
 			{#if syncResult.errors.length > 0}
 				<div class="mt-4">
-					<h4 class="text-danger-dark mb-2 text-sm font-medium">Błędy:</h4>
+					<h4 class="text-danger mb-2 text-sm font-medium">Błędy:</h4>
 					<ul class="bg-danger/5 space-y-1 rounded-lg p-3">
 						{#each syncResult.errors as err (err)}
-							<li class="text-danger-dark text-sm">• {err}</li>
+							<li class="text-danger text-sm">• {err}</li>
 						{/each}
 					</ul>
 				</div>

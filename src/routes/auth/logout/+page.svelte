@@ -150,8 +150,8 @@
 					{:else}
 						<h1 class="mb-4 text-3xl font-bold text-[--ft-text]">Wystąpił błąd</h1>
 						<p class="mb-6 text-lg text-[--ft-text-muted]">Nie udało się zakończyć sesji</p>
-						<div class="bg-danger/5 border-danger-light mb-6 rounded-xl border-2 p-4">
-							<p class="text-danger-dark text-sm font-medium">
+						<div class="bg-danger/5 border-danger/30 mb-6 rounded-xl border-2 p-4">
+							<p class="text-danger text-sm font-medium">
 								Przekierowanie nastąpi automatycznie
 							</p>
 						</div>

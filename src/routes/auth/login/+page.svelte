@@ -105,7 +105,7 @@
 			>
 				{#if errors.general}
 					<div
-						class="bg-danger/5 border-danger-light text-danger-dark rounded-lg border px-4 py-3 text-sm"
+						class="bg-danger/5 border-danger/30 text-danger rounded-lg border px-4 py-3 text-sm"
 					>
 						{errors.general}
 					</div>

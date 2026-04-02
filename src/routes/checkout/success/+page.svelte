@@ -59,7 +59,6 @@
 		<div class="mb-12 text-center">
 			<div class="relative mb-8 inline-block">
 				<div
-					class="bg-success/10 absolute inset-0 scale-110 transform animate-pulse rounded-full"
 				></div>
 				<div
 					class="bg-success relative mx-auto flex h-24 w-24 items-center justify-center rounded-full shadow-xl"
@@ -75,7 +74,7 @@
 				</div>
 				<div class="text-left">
 					<p class="text-sm font-medium text-[--ft-text-muted]">Numer zamówienia</p>
-					<p class="text-2xl font-bold text-[--ft-text]">#{orderNumber}</p>
+					<p class="text-2xl font-bold text-white">#{orderNumber}</p>
 				</div>
 			</div>
 		</div>
@@ -118,52 +117,52 @@
 
 					<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 						<div>
-							<h4 class="mb-2 text-sm font-semibold text-[--ft-text]">Nazwa odbiorcy</h4>
+							<h4 class="mb-2 text-sm font-semibold text-white">Nazwa odbiorcy</h4>
 							<p
-								class="rounded-xl border border-[--ft-line] bg-[--ft-surface] p-3 text-lg font-bold text-[--ft-text]"
+								class="rounded-xl border border-[--ft-line] bg-[--ft-surface] p-3 text-lg font-bold text-white"
 							>
 								{data.order.metadata.paymentDetails.bankDetails.accountName}
 							</p>
 						</div>
 
 						<div>
-							<h4 class="mb-2 text-sm font-semibold text-[--ft-text]">Bank</h4>
+							<h4 class="mb-2 text-sm font-semibold text-white">Bank</h4>
 							<p
-								class="rounded-xl border border-[--ft-line] bg-[--ft-surface] p-3 text-lg font-bold text-[--ft-text]"
+								class="rounded-xl border border-[--ft-line] bg-[--ft-surface] p-3 text-lg font-bold text-white"
 							>
 								{data.order.metadata.paymentDetails.bankDetails.bankName}
 							</p>
 						</div>
 
 						<div>
-							<h4 class="mb-2 text-sm font-semibold text-[--ft-text]">Numer konta</h4>
+							<h4 class="mb-2 text-sm font-semibold text-white">Numer konta</h4>
 							<p
-								class="rounded-xl border border-[--ft-line] bg-[--ft-surface] p-3 font-mono text-lg font-bold tracking-wider text-[--ft-text]"
+								class="rounded-xl border border-[--ft-line] bg-[--ft-surface] p-3 font-mono text-lg font-bold tracking-wider text-white"
 							>
 								{data.order.metadata.paymentDetails.bankDetails.accountNumber}
 							</p>
 						</div>
 
 						<div>
-							<h4 class="mb-2 text-sm font-semibold text-[--ft-text]">SWIFT</h4>
+							<h4 class="mb-2 text-sm font-semibold text-white">SWIFT</h4>
 							<p
-								class="rounded-xl border border-[--ft-line] bg-[--ft-surface] p-3 font-mono text-lg font-bold text-[--ft-text]"
+								class="rounded-xl border border-[--ft-line] bg-[--ft-surface] p-3 font-mono text-lg font-bold text-white"
 							>
 								{data.order.metadata.paymentDetails.bankDetails.swift}
 							</p>
 						</div>
 
 						<div class="md:col-span-2">
-							<h4 class="mb-2 text-sm font-semibold text-[--ft-text]">Tytuł przelewu</h4>
+							<h4 class="mb-2 text-sm font-semibold text-white">Tytuł przelewu</h4>
 							<p
-								class="bg-warning/10 border-warning/30 rounded-xl border-2 p-4 text-center text-lg font-bold text-[--ft-text]"
+								class="bg-warning/10 border-warning/30 rounded-xl border-2 p-4 text-center text-lg font-bold text-white"
 							>
 								{data.order.metadata.paymentDetails.bankDetails.reference}
 							</p>
 						</div>
 
 						<div class="md:col-span-2">
-							<h4 class="mb-2 text-sm font-semibold text-[--ft-text]">Kwota do zapłaty</h4>
+							<h4 class="mb-2 text-sm font-semibold text-white">Kwota do zapłaty</h4>
 							<p
 								class="text-[--ft-accent] rounded-xl border border-[--ft-line] bg-[--ft-surface] p-4 text-center text-3xl font-bold"
 							>
@@ -205,7 +204,7 @@
 				</a>
 				<a
 					href="/products"
-					class="inline-flex items-center gap-2 text-[--ft-text-muted] hover:text-[--ft-text]"
+					class="inline-flex items-center gap-2 text-[--ft-text-muted] hover:text-white"
 				>
 					<ShoppingBagIcon class="h-5 w-5" aria-hidden="true" />
 					Kontynuuj zakupy
@@ -221,7 +220,7 @@
 						<div class="bg-success/10 mr-3 flex h-10 w-10 items-center justify-center rounded-xl">
 							<PackageIcon class="text-success h-5 w-5" aria-hidden="true" />
 						</div>
-						<h3 class="text-2xl font-bold text-[--ft-text]">Zamówione produkty</h3>
+						<h3 class="text-2xl font-bold text-white">Zamówione produkty</h3>
 					</div>
 
 					{#if data.order.items && data.order.items.length > 0}
@@ -244,7 +243,7 @@
 										{/if}
 
 										<div class="min-w-0 flex-1">
-											<h4 class="truncate text-base font-bold text-[--ft-text] sm:text-lg">{item.name}</h4>
+											<h4 class="truncate text-base font-bold text-white sm:text-lg">{item.name}</h4>
 											<div class="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 sm:mt-2">
 												<span class="text-sm text-[--ft-text-muted]"
 													>Ilość: <strong>{item.quantity}</strong></span
@@ -284,13 +283,13 @@
 							<div class="bg-[--ft-frost] mr-3 flex h-10 w-10 items-center justify-center rounded-xl">
 								<MapPinIcon class="text-[--ft-accent] h-5 w-5" aria-hidden="true" />
 							</div>
-							<h3 class="text-2xl font-bold text-[--ft-text]">Adres dostawy</h3>
+							<h3 class="text-2xl font-bold text-white">Adres dostawy</h3>
 						</div>
 
 						{#if data.order.shippingAddress}
 							<div class="rounded-xl bg-[--ft-frost] p-6">
 								<div class="space-y-2">
-									<p class="text-lg font-bold text-[--ft-text]">
+									<p class="text-lg font-bold text-white">
 										{data.order.shippingAddress.firstName}
 										{data.order.shippingAddress.lastName}
 									</p>
@@ -321,16 +320,16 @@
 							<div class="bg-[--ft-frost] mr-3 flex h-10 w-10 items-center justify-center rounded-xl">
 								<LightningIcon class="text-[--ft-accent] h-5 w-5" aria-hidden="true" />
 							</div>
-							<h3 class="text-2xl font-bold text-[--ft-text]">Szczegóły zamówienia</h3>
+							<h3 class="text-2xl font-bold text-white">Szczegóły zamówienia</h3>
 						</div>
 
 						<div class="space-y-6">
 							<div class="flex items-center justify-between rounded-xl bg-[--ft-frost] p-4">
 								<div class="flex items-center">
 									<CreditCardIcon class="mr-3 h-5 w-5 text-[--ft-text-muted]" aria-hidden="true" />
-									<span class="font-medium text-[--ft-text]">Płatność</span>
+									<span class="font-medium text-white">Płatność</span>
 								</div>
-								<span class="font-bold text-[--ft-text]">
+								<span class="font-bold text-white">
 									{getPaymentMethodName(data.order.paymentMethod || 'card')}
 								</span>
 							</div>
@@ -338,9 +337,9 @@
 							<div class="flex items-center justify-between rounded-xl bg-[--ft-frost] p-4">
 								<div class="flex items-center">
 									<ArrowRightIcon class="mr-3 h-5 w-5 text-[--ft-text-muted]" aria-hidden="true" />
-									<span class="font-medium text-[--ft-text]">Dostawa</span>
+									<span class="font-medium text-white">Dostawa</span>
 								</div>
-								<span class="font-bold text-[--ft-text]">
+								<span class="font-bold text-white">
 									{getShippingMethodName(data.order.shippingMethod || 'standard')}
 								</span>
 							</div>
@@ -373,7 +372,7 @@
 					>
 						<InfoIcon class="text-[--ft-accent] h-8 w-8" aria-hidden="true" />
 					</div>
-					<h3 class="mb-4 text-2xl font-bold text-[--ft-text]">Co dalej?</h3>
+					<h3 class="mb-4 text-2xl font-bold text-white">Co dalej?</h3>
 					<div class="grid grid-cols-1 gap-6 text-left md:grid-cols-3">
 						<div class="flex items-start space-x-3">
 							<div
@@ -382,7 +381,7 @@
 								<span class="text-success text-sm font-bold">1</span>
 							</div>
 							<div>
-								<h4 class="mb-1 font-bold text-[--ft-text]">Potwierdzenie email</h4>
+								<h4 class="mb-1 font-bold text-white">Potwierdzenie email</h4>
 								<p class="text-sm text-[--ft-text-muted]">
 									Sprawdź swoją skrzynkę pocztową w poszukiwaniu emaila z potwierdzeniem
 								</p>
@@ -395,7 +394,7 @@
 								<span class="text-[--ft-accent] text-sm font-bold">2</span>
 							</div>
 							<div>
-								<h4 class="mb-1 font-bold text-[--ft-text]">Przygotowanie</h4>
+								<h4 class="mb-1 font-bold text-white">Przygotowanie</h4>
 								<p class="text-sm text-[--ft-text-muted]">Przygotowujemy Twoje zamówienie do wysyłki</p>
 							</div>
 						</div>
@@ -406,7 +405,7 @@
 								<span class="text-[--ft-accent] text-sm font-bold">3</span>
 							</div>
 							<div>
-								<h4 class="mb-1 font-bold text-[--ft-text]">Dostawa</h4>
+								<h4 class="mb-1 font-bold text-white">Dostawa</h4>
 								<p class="text-sm text-[--ft-text-muted]">
 									Otrzymasz powiadomienie o wysyłce z numerem do śledzenia
 								</p>

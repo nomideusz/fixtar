@@ -118,9 +118,9 @@
 	<div class="ft-container ft-section-lg">
 		{#if data.error}
 			<div class="mx-auto max-w-2xl">
-				<div class="bg-danger-50 border-danger-light rounded-xl border p-6 text-center">
+				<div class="bg-danger/10 border-danger/30 rounded-xl border p-6 text-center">
 					<WarningCircleIcon class="text-danger mx-auto mb-4 h-12 w-12" aria-hidden="true" />
-					<h3 class="text-danger-dark mb-2 text-lg font-semibold">Wystąpił błąd</h3>
+					<h3 class="text-danger mb-2 text-lg font-semibold">Wystąpił błąd</h3>
 					<p class="text-danger">{data.error}</p>
 				</div>
 			</div>

@@ -64,7 +64,7 @@
 			case 'shipped':
 				return 'bg-[--ft-frost] text-[--ft-accent-hover]';
 			case 'cancelled':
-				return 'bg-danger/10 text-danger-dark';
+				return 'bg-danger/10 text-danger';
 			default:
 				return 'bg-[--ft-frost] text-[--ft-text-strong]';
 		}

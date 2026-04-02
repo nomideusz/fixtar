@@ -212,7 +212,10 @@
 	.main-img {
 		max-width: 100%;
 		max-height: 100%;
+		width: auto;
+		height: auto;
 		object-fit: contain;
+		clip-path: inset(2px);
 		transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 		user-select: none;
 	}

@@ -171,7 +171,6 @@
 		{#key current}
 			<h1 class="hero-headline">{slide.headline}</h1>
 			<p class="hero-subline">{slide.subline}</p>
-			<a href={slide.href} class="btn-cta hero-btn" tabindex={current === current ? 0 : -1}>SPRAWDŹ OFERTĘ</a>
 		{/key}
 	</div>
 
@@ -288,10 +287,6 @@
 		}
 	}
 
-	.hero-btn {
-		margin-top: 28px;
-		animation: fadeIn 0.6s 0.2s ease both;
-	}
 
 	/* ── Dot indicators ── */
 	.hero-dots {
@@ -384,11 +379,6 @@
 			font-size: 0.85rem;
 		}
 
-		.hero-btn {
-			margin-top: 16px;
-			font-size: 0.75rem;
-			padding: 10px 20px;
-		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {

@@ -31,7 +31,7 @@
 	const imageBadges = $derived.by(() => {
 		const badges: Array<{ label: string; class: string }> = [];
 		if (product.featured) badges.push({ label: 'Polecany', class: 'bg-[--ft-accent]' });
-		if (hasDiscount) badges.push({ label: `-${discountPercent}%`, class: 'bg-danger' });
+		if (hasDiscount) badges.push({ label: `-${discountPercent}%`, class: 'bg-[--ft-danger]' });
 		if (!stock.inStock) badges.push({ label: 'Wyprzedane', class: 'bg-[--ft-text-muted]' });
 		return badges;
 	});

@@ -33,17 +33,12 @@
 		'ogrod-i-akcesoria': { src: imgGarden, alt: 'Narzędzia ogrodowe i akcesoria' }
 	};
 
-	function pluralProducts(count: number): string {
-		if (count === 1) return '1 produkt';
-		if (count >= 2 && count <= 4) return `${count} produkty`;
-		return `${count} produktów`;
-	}
+	
 </script>
 
 <section class="categories ft-section">
 	<div class="ft-container">
 		<div class="categories-header">
-			<h4 class="ft-label">Przeglądaj</h4>
 			<h2 class="categories-title">Kategorie</h2>
 		</div>
 
@@ -70,7 +65,7 @@
 					</div>
 					<div class="cat-info">
 						<span class="cat-name">{category.name}</span>
-						<span class="cat-count">{pluralProducts(category.count)}</span>
+						<!-- Product count removed for minimal design -->
 					</div>
 				</a>
 			{/each}
@@ -80,7 +75,7 @@
 
 <style>
 	.categories-header {
-		margin-bottom: 28px;
+		margin-bottom: 32px;
 	}
 
 	.categories-title {
@@ -96,14 +91,26 @@
 	}
 
 	.categories-grid {
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
+		display: flex;
+		flex-wrap: nowrap;
 		gap: 12px;
+		overflow-x: auto;
+		scrollbar-width: none;
+		scroll-snap-type: x mandatory;
+		margin: 0 calc(-1 * var(--ft-gutter, clamp(24px, 5vw, 80px)));
+		padding: 0 var(--ft-gutter, clamp(24px, 5vw, 80px)) 16px;
+	}
+	.categories-grid::-webkit-scrollbar {
+		display: none;
 	}
 
 	@media (min-width: 640px) {
 		.categories-grid {
+			display: grid;
 			grid-template-columns: repeat(3, 1fr);
+			margin: 0;
+			padding: 0;
+			overflow: visible;
 		}
 	}
 
@@ -115,17 +122,19 @@
 
 	.cat-card {
 		display: flex;
+		flex: 0 0 75%;
+		height: 100%;
+		scroll-snap-align: start;
 		flex-direction: column;
 		text-decoration: none;
-		border: 1px solid var(--ft-line);
-		border-radius: var(--radius-sm);
 		overflow: hidden;
-		background: var(--ft-surface);
-		transition: border-color var(--dur-fast) ease;
+		background: transparent;
+		transition: transform 0.2s ease;
+		/* Solid white structural block approach */
 	}
 
 	.cat-card:hover {
-		border-color: var(--ft-dark);
+		/* Just rely on inner elements for hover */
 	}
 
 	.cat-image {
@@ -133,7 +142,7 @@
 		aspect-ratio: 4 / 3;
 		background: var(--ft-frost);
 		overflow: hidden;
-		border-bottom: 1px solid var(--ft-line);
+		/* Remove border to let it sit flush */
 	}
 
 	.cat-photo {
@@ -160,26 +169,51 @@
 	}
 
 	.cat-info {
-		padding: 16px;
+		padding: 16px 16px 16px 20px;
 		display: flex;
 		flex-direction: column;
-		gap: 6px;
+		justify-content: center;
+		flex: 1;
+		background: var(--ft-surface);
+		position: relative;
+	}
+
+	.cat-info::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 0;
+		bottom: 0;
+		width: 4px;
+		background: var(--ft-accent);
+		transition: width 0.2s ease;
+	}
+
+	.cat-card:hover .cat-info::before {
+		width: 6px;
 	}
 
 	.cat-name {
 		font-family: var(--font-display);
-		font-size: 0.95rem;
-		font-weight: 700;
-		color: var(--ft-dark);
+		font-size: 1rem;
+		font-weight: 800;
+		color: var(--ft-text-strong);
 		letter-spacing: 0.02em;
 		line-height: 1.25;
 		text-transform: uppercase;
+		transition: color 0.2s ease;
 	}
 
-	.cat-count {
-		font-size: 0.8rem;
-		font-weight: 600;
-		color: var(--ft-text-muted);
+	.cat-card:hover .cat-name {
+		color: var(--ft-accent);
+	}
+
+	
+
+	@media (min-width: 640px) {
+		.cat-card {
+			flex: auto;
+		}
 	}
 </style>
 

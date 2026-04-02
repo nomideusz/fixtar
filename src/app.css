@@ -38,11 +38,11 @@
 
 	/* Rigid Geometry */
 	--radius-sm: 0px;
-	--radius-md: 2px;
-	--radius-lg: 2px;
-	--radius-xl: 4px;
-	--radius-2xl: 4px;
-	--radius-3xl: 4px;
+	--radius-md: 0px;
+	--radius-lg: 0px;
+	--radius-xl: 0px;
+	--radius-2xl: 0px;
+	--radius-3xl: 0px;
 	--radius-full: 9999px;
 }
 

@@ -2,7 +2,7 @@
 	import type { Product } from '$lib/stores/products.svelte';
 	import type { Snippet } from 'svelte';
 	import { cart, notifications } from '$lib/stores';
-	import { ImageSquareIcon } from 'phosphor-svelte';
+	import { ImageSquareIcon, ShoppingCartSimpleIcon } from 'phosphor-svelte';
 
 	interface Props {
 		product: Product;
@@ -35,69 +35,85 @@
 	const inStock = $derived(isInStock(product));
 	const hasDiscount = $derived(product.compareAtPrice && product.compareAtPrice > product.price);
 	const discountPercent = $derived(
-		hasDiscount ? Math.round(((product.compareAtPrice! - product.price) / product.compareAtPrice!) * 100) : 0
+		hasDiscount
+			? Math.round(((product.compareAtPrice! - product.price) / product.compareAtPrice!) * 100)
+			: 0
 	);
 	const productUrl = $derived(`/products/${product.slug?.trim() || product.id}`);
 	const vtName = $derived(`product-img-${product.id.slice(0, 8)}`);
-	const hasActions = $derived(!!actions);
 </script>
 
-<div class="card" class:is-out={!inStock} style="--vt-name:{vtName}">
-	<!-- Image as link -->
-	<a href={productUrl} class="card-img-link" aria-label={product.name}>
-		<div class="card-img">
-			{#if mainImageUrl}
-				<img src={mainImageUrl} alt="" loading="lazy" width="320" height="240" />
+<div class="card" class:is-out={!inStock}>
+	<!-- Image Wrapper HUD -->
+	<div class="card-img-wrap">
+		<!-- The main clickable area -->
+		<a href={productUrl} class="card-img-link" aria-label={product.name}>
+			<div class="card-img" style="--vt-name:{vtName}">
+				{#if mainImageUrl}
+					<img src={mainImageUrl} alt="" loading="lazy" width="320" height="320" />
+				{:else}
+					<div class="card-img-empty" aria-hidden="true">
+						<ImageSquareIcon size={28} weight="light" aria-hidden="true" />
+					</div>
+				{/if}
+			</div>
+		</a>
+
+		<!-- TOP LEFT: Availability HUD -->
+		<div class="overlay-top-left">
+			{#if inStock}
+				<div class="hud-pill hud-pill--in" title="Dostępny od ręki">
+					<span class="status-dot status-dot--in" aria-hidden="true"></span>
+					<span class="hud-text">24h</span>
+				</div>
 			{:else}
-				<div class="card-img-empty" aria-hidden="true">
-					<ImageSquareIcon size={28} weight="light" aria-hidden="true" />
+				<div class="hud-pill hud-pill--out" title="Niedostępny">
+					<span class="status-dot status-dot--out" aria-hidden="true"></span>
+					<span class="hud-text">Brak</span>
 				</div>
 			{/if}
+		</div>
 
+		<!-- TOP RIGHT: Tags -->
+		<div class="overlay-top-right">
 			{#if hasDiscount}
-				<span class="discount-tag">-{discountPercent}%</span>
+				<span class="hud-tag hud-tag--discount">-{discountPercent}%</span>
 			{/if}
-
 			{#if showBadges && product.featured}
-				<span class="featured-tag">Polecany</span>
+				<span class="hud-tag hud-tag--featured">Polecany</span>
 			{/if}
 		</div>
-	</a>
 
-	<!-- InfoIcon -->
+		<!-- BOTTOM RIGHT: Floating Cart -->
+		<div class="overlay-bottom-right">
+			{#if actions}
+				{@render actions()}
+			{:else}
+				<button
+					class="floating-cart-btn"
+					onclick={addToCart}
+					disabled={!inStock}
+					aria-label="Dodaj do koszyka"
+					title="Dodaj do koszyka"
+				>
+					<ShoppingCartSimpleIcon size={20} weight="bold" />
+				</button>
+			{/if}
+		</div>
+	</div>
+
+	<!-- Minimal Text Area Below -->
 	<div class="card-info">
 		<h3 class="card-name">
 			<a href={productUrl} class="card-name-link">{product.name}</a>
 		</h3>
 
-		<div class="card-meta">
-			{#if inStock}
-				<span class="card-availability">✓ Dostępny od ręki</span>
-			{:else}
-				<span class="card-availability card-availability--out">Niedostępny</span>
-			{/if}
-		</div>
-
-		<div class="card-price-row">
-			<span class="card-price" class:is-discounted={hasDiscount}>{product.price.toFixed(2)}&nbsp;zł</span>
+		<div class="card-price-wrap">
+			<span class="card-price" class:is-discounted={hasDiscount}
+				>{product.price.toFixed(2)}&nbsp;zł</span
+			>
 			{#if hasDiscount}
 				<span class="card-old-price">{product.compareAtPrice?.toFixed(2)}&nbsp;zł</span>
-			{/if}
-		</div>
-
-		<!-- Actions slot or default Add to Cart -->
-		<div class="card-actions">
-			{#if actions}
-				{@render actions()}
-			{:else}
-				<button 
-					class="btn-cta card-add-btn" 
-					onclick={addToCart} 
-					disabled={!inStock}
-					aria-label="Dodaj do koszyka"
-				>
-					DO KOSZYKA
-				</button>
 			{/if}
 		</div>
 	</div>
@@ -108,90 +124,190 @@
 		display: flex;
 		flex-direction: column;
 		background: transparent;
-		border: 1px solid transparent;
-		border-radius: var(--radius-sm);
 		text-decoration: none;
 		color: inherit;
-		transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 		height: 100%;
-		padding: clamp(10px, 2vw, 16px);
-	}
-
-	.card:hover {
-		background: var(--ft-surface);
-		border-color: var(--ft-dark);
+		padding: 0;
 	}
 
 	.card.is-out {
-		opacity: 0.55;
+		opacity: 0.7;
 	}
 
-	/* ── Image ── */
-	.card-img-link {
-		text-decoration: none;
-		color: inherit;
-		display: block;
-	}
-
-	.card-img {
+	/* ── Image Area (The HUD) ── */
+	.card-img-wrap {
 		position: relative;
 		aspect-ratio: 1;
 		background: transparent;
 		overflow: hidden;
+		transition: box-shadow 0.2s ease;
+		margin-bottom: 12px;
+	}
+
+	.card-img-link {
+		position: absolute;
+		inset: 0;
+		text-decoration: none;
+		color: inherit;
+		display: block;
+		z-index: 1; /* Below overlays */
+	}
+
+	.card-img {
+		position: absolute;
+		inset: 0;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		view-transition-name: var(--vt-name);
-		margin-bottom: 12px;
+		padding: 24px; /* Internal breathing room for the tool */
 	}
 
 	.card-img img {
-		width: 100%;
-		height: 100%;
+		max-width: 100%;
+		max-height: 100%;
+		width: auto;
+		height: auto;
 		object-fit: contain;
-		padding: 12px;
-		transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+		/* Crop 2px off the image boundaries to hide baked-in borders */
+		clip-path: inset(2px);
+		transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 	}
 
 	.card:hover .card-img img {
-		opacity: 0.9;
+		transform: scale(1.06);
 	}
 
 	.card-img-empty {
 		color: var(--ft-text-faint);
 	}
 
-	.discount-tag {
+	/* ── Floating Overlays ── */
+	.overlay-top-left {
 		position: absolute;
-		top: 8px;
-		left: 8px;
-		font-family: var(--font-display);
-		font-size: 0.68rem;
+		top: 10px;
+		left: 10px;
+		z-index: 2;
+		pointer-events: none; /* Let clicks pass through to the image link */
+	}
+
+	.overlay-top-right {
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 6px;
+		z-index: 2;
+		pointer-events: none;
+	}
+
+	.overlay-bottom-right {
+		position: absolute;
+		bottom: 10px;
+		right: 10px;
+		z-index: 3; /* Interactive element needs pointer events */
+	}
+
+	/* ── HUD Elements ── */
+	.hud-pill {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 4px 8px;
+		background: rgba(255, 255, 255, 0.95);
+		backdrop-filter: blur(4px);
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-sm);
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+	}
+
+	.hud-text {
+		font-family: var(--font-mono);
+		font-size: 0.65rem;
 		font-weight: 700;
-		padding: 3px 8px;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--ft-text-strong);
+	}
+
+	.status-dot {
+		width: 6px;
+		height: 6px;
+		border-radius: var(--radius-full);
+	}
+
+	.status-dot--in {
+		background: var(--color-success);
+		box-shadow: 0 0 6px var(--color-success);
+	}
+
+	.status-dot--out {
 		background: var(--color-danger);
-		color: white;
-		border-radius: var(--radius-sm);
 	}
 
-	.featured-tag {
-		position: absolute;
-		top: 8px;
-		right: 8px;
-		font-family: var(--font-display);
-		font-size: 0.68rem;
+	.hud-tag {
+		font-family: var(--font-mono);
+		font-size: 0.65rem;
 		font-weight: 700;
-		padding: 3px 8px;
-		background: var(--ft-accent);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		padding: 4px 8px;
 		color: white;
 		border-radius: var(--radius-sm);
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 	}
 
-	/* ── InfoIcon ── */
+	.hud-tag--discount {
+		background: var(--color-danger);
+	}
+
+	.hud-tag--featured {
+		background: var(--ft-accent);
+	}
+
+	/* ── Floating Cart Button ── */
+	.floating-cart-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 44px;
+		height: 44px;
+		color: var(--ft-text-strong);
+		background: rgba(255, 255, 255, 0.95);
+		backdrop-filter: blur(4px);
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-sm);
+		transition: all 0.2s ease;
+		cursor: pointer;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+	}
+
+	.card:hover .floating-cart-btn:not(:disabled) {
+		border-color: var(--ft-cta);
+		background: var(--ft-cta);
+		color: #ffffff;
+	}
+
+	.floating-cart-btn:active:not(:disabled) {
+		transform: scale(0.92);
+	}
+
+	.floating-cart-btn:disabled {
+		opacity: 0.4;
+		cursor: not-allowed;
+		color: var(--ft-text-faint);
+		background: rgba(255, 255, 255, 0.7);
+		box-shadow: none;
+	}
+
+	/* ── Text Area (Minimal) ── */
 	.card-info {
 		display: flex;
 		flex-direction: column;
 		flex: 1;
+		padding: 0 4px; /* Slight inset from edges to align text nicely */
 	}
 
 	.card-name {
@@ -205,7 +321,7 @@
 		line-clamp: 2;
 		-webkit-box-orient: vertical;
 		overflow: hidden;
-		margin-bottom: 6px;
+		margin-bottom: 8px;
 	}
 
 	.card-name-link {
@@ -218,32 +334,18 @@
 		color: var(--ft-accent);
 	}
 
-	.card-meta {
-		margin-bottom: 10px;
-	}
-
-	.card-availability {
-		font-size: 0.75rem;
-		font-weight: 600;
-		color: var(--color-success);
-	}
-
-	.card-availability--out {
-		color: var(--color-danger);
-	}
-
-	.card-price-row {
+	.card-price-wrap {
 		display: flex;
 		align-items: baseline;
 		gap: 8px;
-		margin-bottom: 4px;
+		margin-top: auto;
 	}
 
 	.card-price {
 		font-family: var(--font-display);
 		font-weight: 800;
 		font-size: clamp(0.95rem, 2.5vw, 1.15rem);
-		color: var(--ft-dark);
+		color: var(--ft-text-strong);
 		font-variant-numeric: tabular-nums;
 	}
 
@@ -257,43 +359,5 @@
 		font-weight: 600;
 		color: var(--ft-text-faint);
 		text-decoration: line-through;
-	}
-
-	.card-actions {
-		margin-top: auto;
-		padding-top: 16px;
-	}
-
-	.card-add-btn {
-		width: 100%;
-		justify-content: center;
-		padding: 12px;
-		min-height: 44px;
-		font-size: 0.8rem;
-		font-family: var(--font-display);
-		font-weight: 700;
-		color: var(--ft-cta); /* Red - CTA Action */
-		background: transparent;
-		border: 2px solid var(--ft-cta);
-		transition: all 0.2s ease;
-		text-transform: uppercase;
-		cursor: pointer;
-	}
-
-	.card:hover .card-add-btn {
-		background: var(--ft-cta);
-		color: #ffffff;
-	}
-
-	.card-add-btn:disabled {
-		opacity: 0.4;
-		cursor: not-allowed;
-		border-color: var(--ft-text-faint);
-		color: var(--ft-text-faint);
-	}
-
-	.card:hover .card-add-btn:disabled {
-		background: transparent;
-		color: var(--ft-text-faint);
 	}
 </style>
