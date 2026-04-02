@@ -114,248 +114,236 @@
 	<meta name="description" content="Utwórz konto w sklepie FixTar" />
 </svelte:head>
 
-<div class="min-h-screen ft-section-lg">
-	<div class="ft-container"><div class="mx-auto max-w-md">
-		<!-- Simplified Logo Section -->
-		<div class="mb-8 text-center">
-			<img src={FixTarLogo} alt="FixTar" class="mx-auto mb-4 h-12 w-auto" width="120" height="48" />
-			<h1 class="mb-2 text-2xl font-bold text-[--ft-text]">Rejestracja</h1>
-			<p class="text-[--ft-text-muted]">Utwórz nowe konto</p>
-		</div>
-
-		<!-- Register Card -->
-		<Card class="p-6">
-			<form
-				method="POST"
-				use:enhance={({ formData: submitFormData, cancel }) => {
-					if (!validateForm()) {
-						cancel();
-						return;
-					}
-					loading = true;
-
-					// Add form data to the FormData object
-					submitFormData.append('firstName', formData.firstName);
-					submitFormData.append('lastName', formData.lastName);
-
-					return async ({ result, update }) => {
-						loading = false;
-						if (result.type === 'redirect' || result.type === 'success') {
-							notifications.success('Witaj w FixTar! Twoje konto zostało utworzone.');
-							goto(result.type === 'redirect' ? result.location : '/auth/login');
-						} else if (result.type === 'failure') {
-							const message =
-								typeof result.data?.message === 'string'
-									? result.data.message
-									: 'Rejestracja nie powiodła się. Spróbuj ponownie.';
-							errors.general = message;
-							notifications.error('Błąd rejestracji. Sprawdź dane i spróbuj ponownie.');
-							await update();
-						}
-					};
-				}}
-				class="space-y-4"
-			>
-				{#if errors.general}
-					<div
-						class="bg-danger/5 border-danger/30 text-danger rounded-lg border px-4 py-3 text-sm"
-					>
-						{errors.general}
-					</div>
-				{/if}
-
-				<div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-					<Input
-						name="firstName"
-						label="Imię"
-						value={formData.firstName}
-						oninput={(e) => (formData.firstName = e.currentTarget.value)}
-						error={errors.firstName}
-						required
-						autocomplete="given-name"
-						placeholder="Jan"
-					/>
-
-					<Input
-						name="lastName"
-						label="Nazwisko"
-						value={formData.lastName}
-						oninput={(e) => (formData.lastName = e.currentTarget.value)}
-						error={errors.lastName}
-						required
-						autocomplete="family-name"
-						placeholder="Kowalski"
-					/>
-				</div>
-
-				<Input
-					type="email"
-					name="email"
-					label="Email"
-					value={formData.email}
-					oninput={(e) => (formData.email = e.currentTarget.value)}
-					error={errors.email}
-					required
-					autocomplete="email"
-					placeholder="jan.kowalski@example.com"
+<div class="ft-section-lg min-h-screen">
+	<div class="ft-container">
+		<div class="mx-auto max-w-md">
+			<!-- Simplified Logo Section -->
+			<div class="mb-8 text-center">
+				<img
+					src={FixTarLogo}
+					alt="FixTar"
+					class="mx-auto mb-4 h-12 w-auto"
+					width="120"
+					height="48"
 				/>
+				<h1 class="mb-2 text-2xl font-bold text-[--ft-text]">Rejestracja</h1>
+				<p class="text-[--ft-text-muted]">Utwórz nowe konto</p>
+			</div>
 
-				<div>
-					<Input
-						type="password"
-						name="password"
-						label="Hasło"
-						value={formData.password}
-						oninput={(e) => (formData.password = e.currentTarget.value)}
-						error={errors.password}
-						required
-						autocomplete="new-password"
-						placeholder="Minimum 8 znaków"
-					/>
+			<!-- Register Card -->
+			<Card class="p-6">
+				<form
+					method="POST"
+					use:enhance={({ formData: submitFormData, cancel }) => {
+						if (!validateForm()) {
+							cancel();
+							return;
+						}
+						loading = true;
 
-					{#if formData.password}
-						<div class="mt-2">
-							<div class="mb-1 flex items-center justify-between">
-								<span class="text-xs text-[--ft-text-muted]">Siła hasła</span>
-								<span class="text-xs text-[--ft-text-muted]">{getPasswordStrengthText()}</span>
-							</div>
-							<div class="h-1 w-full rounded-full bg-[--ft-frost]">
-								<div
-									class="h-1 rounded-full transition-[width,background-color] duration-300 {getPasswordStrengthColor()}"
-									style="width: {(passwordStrength / 5) * 100}%"
-								></div>
-							</div>
+						// Add form data to the FormData object
+						submitFormData.append('firstName', formData.firstName);
+						submitFormData.append('lastName', formData.lastName);
+
+						return async ({ result, update }) => {
+							loading = false;
+							if (result.type === 'redirect' || result.type === 'success') {
+								notifications.success('Witaj w FixTar! Twoje konto zostało utworzone.');
+								goto(result.type === 'redirect' ? result.location : '/auth/login');
+							} else if (result.type === 'failure') {
+								const message =
+									typeof result.data?.message === 'string'
+										? result.data.message
+										: 'Rejestracja nie powiodła się. Spróbuj ponownie.';
+								errors.general = message;
+								notifications.error('Błąd rejestracji. Sprawdź dane i spróbuj ponownie.');
+								await update();
+							}
+						};
+					}}
+					class="space-y-4"
+				>
+					{#if errors.general}
+						<div
+							class="bg-danger/5 border-danger/30 text-danger rounded-lg border px-4 py-3 text-sm"
+						>
+							{errors.general}
 						</div>
 					{/if}
-				</div>
 
-				<Input
-					type="password"
-					name="confirmPassword"
-					label="Potwierdź hasło"
-					value={formData.confirmPassword}
-					oninput={(e) => (formData.confirmPassword = e.currentTarget.value)}
-					error={errors.confirmPassword}
-					required
-					autocomplete="new-password"
-					placeholder="Powtórz hasło"
-				/>
+					<div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+						<Input
+							name="firstName"
+							label="Imię"
+							value={formData.firstName}
+							oninput={(e) => (formData.firstName = e.currentTarget.value)}
+							error={errors.firstName}
+							required
+							autocomplete="given-name"
+							placeholder="Jan"
+						/>
 
-				<div class="space-y-3">
+						<Input
+							name="lastName"
+							label="Nazwisko"
+							value={formData.lastName}
+							oninput={(e) => (formData.lastName = e.currentTarget.value)}
+							error={errors.lastName}
+							required
+							autocomplete="family-name"
+							placeholder="Kowalski"
+						/>
+					</div>
+
+					<Input
+						type="email"
+						name="email"
+						label="Email"
+						value={formData.email}
+						oninput={(e) => (formData.email = e.currentTarget.value)}
+						error={errors.email}
+						required
+						autocomplete="email"
+						placeholder="jan.kowalski@example.com"
+					/>
+
 					<div>
-						<label class="flex cursor-pointer items-start text-sm">
-							<input
-								type="checkbox"
-								name="acceptTerms"
-								bind:checked={formData.acceptTerms}
-								class="text-[--ft-accent] focus:ring-[--ft-accent] mt-1 h-4 w-4 rounded border-[--ft-line]"
-							/>
-							<span class="ml-2 text-[--ft-text]">
-								Akceptuję
-								<a
-									href="/regulamin"
-									class="text-[--ft-accent] hover:text-[--ft-accent] underline"
-									target="_blank">Regulamin</a
-								>
-								i
-								<a
-									href="/polityka-prywatnosci"
-									class="text-[--ft-accent] hover:text-[--ft-accent] underline"
-									target="_blank">Politykę Prywatności</a
-								>
-							</span>
-						</label>
-						{#if errors.acceptTerms}
-							<p class="text-danger mt-1 text-sm">{errors.acceptTerms}</p>
+						<Input
+							type="password"
+							name="password"
+							label="Hasło"
+							value={formData.password}
+							oninput={(e) => (formData.password = e.currentTarget.value)}
+							error={errors.password}
+							required
+							autocomplete="new-password"
+							placeholder="Minimum 8 znaków"
+						/>
+
+						{#if formData.password}
+							<div class="mt-2">
+								<div class="mb-1 flex items-center justify-between">
+									<span class="text-xs text-[--ft-text-muted]">Siła hasła</span>
+									<span class="text-xs text-[--ft-text-muted]">{getPasswordStrengthText()}</span>
+								</div>
+								<div class="h-1 w-full rounded-full bg-[--ft-frost]">
+									<div
+										class="h-1 rounded-full transition-[width,background-color] duration-300 {getPasswordStrengthColor()}"
+										style="width: {(passwordStrength / 5) * 100}%"
+									></div>
+								</div>
+							</div>
 						{/if}
 					</div>
 
-					<div>
-						<label class="flex cursor-pointer items-start text-sm">
-							<input
-								type="checkbox"
-								name="acceptMarketing"
-								bind:checked={formData.acceptMarketing}
-								class="text-[--ft-accent] focus:ring-[--ft-accent] mt-1 h-4 w-4 rounded border-[--ft-line]"
-							/>
-							<span class="ml-2 text-[--ft-text]">
-								Wyrażam zgodę na otrzymywanie informacji handlowych <span class="text-[--ft-text-muted]"
-									>(opcjonalnie)</span
-								>
-							</span>
-						</label>
+					<Input
+						type="password"
+						name="confirmPassword"
+						label="Potwierdź hasło"
+						value={formData.confirmPassword}
+						oninput={(e) => (formData.confirmPassword = e.currentTarget.value)}
+						error={errors.confirmPassword}
+						required
+						autocomplete="new-password"
+						placeholder="Powtórz hasło"
+					/>
+
+					<div class="space-y-3">
+						<div>
+							<label class="flex cursor-pointer items-start text-sm">
+								<input
+									type="checkbox"
+									name="acceptTerms"
+									bind:checked={formData.acceptTerms}
+									class="mt-1 h-4 w-4 rounded border-[--ft-line] text-[--ft-accent] focus:ring-[--ft-accent]"
+								/>
+								<span class="ml-2 text-[--ft-text]">
+									Akceptuję
+									<a
+										href="/regulamin"
+										class="text-[--ft-accent] underline hover:text-[--ft-accent]"
+										target="_blank">Regulamin</a
+									>
+									i
+									<a
+										href="/polityka-prywatnosci"
+										class="text-[--ft-accent] underline hover:text-[--ft-accent]"
+										target="_blank">Politykę Prywatności</a
+									>
+								</span>
+							</label>
+							{#if errors.acceptTerms}
+								<p class="text-danger mt-1 text-sm">{errors.acceptTerms}</p>
+							{/if}
+						</div>
+
+						<div>
+							<label class="flex cursor-pointer items-start text-sm">
+								<input
+									type="checkbox"
+									name="acceptMarketing"
+									bind:checked={formData.acceptMarketing}
+									class="mt-1 h-4 w-4 rounded border-[--ft-line] text-[--ft-accent] focus:ring-[--ft-accent]"
+								/>
+								<span class="ml-2 text-[--ft-text]">
+									Wyrażam zgodę na otrzymywanie informacji handlowych <span
+										class="text-[--ft-text-muted]">(opcjonalnie)</span
+									>
+								</span>
+							</label>
+						</div>
+					</div>
+
+					<Button type="submit" fullWidth disabled={loading} class="mt-6">
+						{#if loading}
+							<SpinnerGapIcon class="mr-2 -ml-1 h-4 w-4 animate-spin" aria-hidden="true" />
+							Tworzenie konta...
+						{:else}
+							Utwórz konto
+						{/if}
+					</Button>
+				</form>
+
+				<!-- Social Login -->
+				<div class="mt-6">
+					<div class="relative">
+						<div class="absolute inset-0 flex items-center">
+							<div class="w-full border-t border-[--ft-line]"></div>
+						</div>
+						<div class="relative flex justify-center text-sm">
+							<span class="bg-[--ft-frost] px-2 text-[--ft-text-muted]">lub</span>
+						</div>
+					</div>
+
+					<div class="mt-4 space-y-2">
+						<button type="button" class="social-login-button" aria-label="Zarejestruj przez Google">
+							<svg class="h-4 w-4" fill="currentColor" aria-hidden="true">
+								<use href="/sprite.svg#icon-google-icon" />
+							</svg>
+							<span class="ml-2">Google</span>
+						</button>
+
+						<button type="button" class="social-login-button" aria-label="Zarejestruj przez GitHub">
+							<svg class="h-4 w-4" fill="currentColor" aria-hidden="true">
+								<use href="/sprite.svg#icon-github-icon" />
+							</svg>
+							<span class="ml-2">GitHub</span>
+						</button>
 					</div>
 				</div>
+			</Card>
 
-				<Button type="submit" fullWidth disabled={loading} class="mt-6">
-					{#if loading}
-						<SpinnerGapIcon class="mr-2 -ml-1 h-4 w-4 animate-spin" aria-hidden="true" />
-						Tworzenie konta...
-					{:else}
-						Utwórz konto
-					{/if}
-				</Button>
-			</form>
-
-			<!-- Social Login -->
-			<div class="mt-6">
-				<div class="relative">
-					<div class="absolute inset-0 flex items-center">
-						<div class="w-full border-t border-[--ft-line]"></div>
-					</div>
-					<div class="relative flex justify-center text-sm">
-						<span class="bg-[--ft-frost] px-2 text-[--ft-text-muted]">lub</span>
-					</div>
-				</div>
-
-				<div class="mt-4 space-y-2">
-					<button type="button" class="social-login-button" aria-label="Zarejestruj przez Google">
-						<svg class="h-4 w-4" viewBox="0 0 24 24" aria-hidden="true">
-							<path
-								fill="#4285F4"
-								d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-							/>
-							<path
-								fill="#34A853"
-								d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-							/>
-							<path
-								fill="#FBBC05"
-								d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-							/>
-							<path
-								fill="#EA4335"
-								d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-							/>
-						</svg>
-						<span class="ml-2">Google</span>
-					</button>
-
-					<button type="button" class="social-login-button" aria-label="Zarejestruj przez GitHub">
-						<svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-							<path
-								fill-rule="evenodd"
-								d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z"
-								clip-rule="evenodd"
-							/>
-						</svg>
-						<span class="ml-2">GitHub</span>
-					</button>
-				</div>
+			<!-- Login LinkIcon -->
+			<div class="mt-6 text-center">
+				<p class="text-sm text-[--ft-text-muted]">
+					Masz już konto?
+					<a href="/auth/login" class="font-medium text-[--ft-accent] hover:text-[--ft-accent]">
+						Zaloguj się
+					</a>
+				</p>
 			</div>
-		</Card>
-
-		<!-- Login LinkIcon -->
-		<div class="mt-6 text-center">
-			<p class="text-sm text-[--ft-text-muted]">
-				Masz już konto?
-				<a href="/auth/login" class="text-[--ft-accent] hover:text-[--ft-accent] font-medium">
-					Zaloguj się
-				</a>
-			</p>
 		</div>
 	</div>
-</div>
 </div>
 
 <style>
@@ -371,7 +359,9 @@
 		background: var(--ft-surface);
 		font-size: 0.875rem;
 		color: var(--ft-text);
-		transition: border-color 0.2s, background-color 0.2s;
+		transition:
+			border-color 0.2s,
+			background-color 0.2s;
 		cursor: pointer;
 	}
 
