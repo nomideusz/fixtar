@@ -62,7 +62,11 @@
 						{/if}
 					</div>
 					<div class="cat-info">
-						<span class="cat-name">{category.name}</span>
+						<span class="cat-name"
+							>{category.slug === 'pneumatyczne-i-budowlane'
+								? 'Narzędzia Budowlane'
+								: category.name}</span
+						>
 						<!-- Product count removed for minimal design -->
 					</div>
 				</a>
@@ -89,28 +93,19 @@
 		line-height: 1;
 	}
 
+	/* Mobile: 2-column grid of text blocks */
 	.categories-grid {
-		display: flex;
-		flex-wrap: nowrap;
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		grid-auto-rows: 1fr;
 		gap: 12px;
-		overflow-x: auto;
-		scrollbar-width: none;
-		scroll-snap-type: x mandatory;
-		margin-right: calc(-1 * var(--ft-gutter, clamp(24px, 5vw, 80px)));
-		padding-right: var(--ft-gutter, clamp(24px, 5vw, 80px));
-		padding-bottom: 16px;
-	}
-	.categories-grid::-webkit-scrollbar {
-		display: none;
+		margin: 0;
+		padding: 0 0 16px 0;
 	}
 
 	@media (min-width: 640px) {
 		.categories-grid {
-			display: grid;
 			grid-template-columns: repeat(3, 1fr);
-			margin: 0;
-			padding: 0;
-			overflow: visible;
 		}
 	}
 
@@ -122,27 +117,32 @@
 
 	.cat-card {
 		display: flex;
-		flex: 0 0 75%;
-		height: 100%;
-		scroll-snap-align: start;
 		flex-direction: column;
 		text-decoration: none;
 		overflow: hidden;
-		background: transparent;
+		background: var(--ft-surface);
 		transition: transform 0.2s ease;
-		/* Solid white structural block approach */
+		border: 1px solid var(--ft-line); /* Hardware drawer look */
 	}
 
 	.cat-card:hover {
-		/* Just rely on inner elements for hover */
+		transform: translateY(-2px);
 	}
 
+	/* Hide image on mobile, show on tablet+ */
 	.cat-image {
-		position: relative;
-		aspect-ratio: 4 / 3;
-		background: var(--ft-frost);
-		overflow: hidden;
-		/* Remove border to let it sit flush */
+		display: none;
+	}
+
+	@media (min-width: 640px) {
+		.cat-image {
+			display: block;
+			position: relative;
+			aspect-ratio: 4 / 3;
+			background: var(--ft-frost);
+			overflow: hidden;
+			border-bottom: 1px solid var(--ft-line);
+		}
 	}
 
 	.cat-photo {
@@ -169,7 +169,7 @@
 	}
 
 	.cat-info {
-		padding: 16px 16px 16px 20px;
+		padding: 16px 12px 16px 16px;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
@@ -195,7 +195,7 @@
 
 	.cat-name {
 		font-family: var(--font-display);
-		font-size: 1rem;
+		font-size: 0.875rem;
 		font-weight: 800;
 		color: var(--ft-text-strong);
 		letter-spacing: 0.02em;
@@ -204,13 +204,17 @@
 		transition: color 0.2s ease;
 	}
 
-	.cat-card:hover .cat-name {
-		color: var(--ft-accent);
+	@media (min-width: 640px) {
+		.cat-name {
+			font-size: 1rem;
+		}
+
+		.cat-info {
+			padding: 16px 16px 16px 20px;
+		}
 	}
 
-	@media (min-width: 640px) {
-		.cat-card {
-			flex: auto;
-		}
+	.cat-card:hover .cat-name {
+		color: var(--ft-accent);
 	}
 </style>

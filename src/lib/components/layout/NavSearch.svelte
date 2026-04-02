@@ -155,6 +155,11 @@
 		goto(`/products?search=${encodeURIComponent(q)}`);
 	}
 
+	function goToCategory(slug: string) {
+		close();
+		goto(`/products?category=${slug}`);
+	}
+
 	function close() {
 		query = '';
 		results = [];
@@ -265,9 +270,9 @@
 					<span class="dropdown-section-title">Popularne kategorie</span>
 					<div class="dropdown-cats">
 						{#each popularCategories as cat}
-							<a href="/products?category={cat.slug}" class="dropdown-cat-chip" onclick={close}>
+							<button class="dropdown-cat-chip" onclick={() => goToCategory(cat.slug)}>
 								{cat.name}
-							</a>
+							</button>
 						{/each}
 					</div>
 				</div>
@@ -580,6 +585,7 @@
 		background: var(--ft-frost);
 		border: 1px solid var(--ft-line);
 		border-radius: 0;
+		cursor: pointer;
 		text-decoration: none;
 		transition:
 			border-color 0.15s ease,

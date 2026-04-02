@@ -13,24 +13,24 @@
 
 @theme {
 	/* Honda HRC-inspired Premium Color System: Pure White / Carbon Black / Metallic Gray / Racing Red / Deep Navy */
-	--color-brand-500: #E31837;     /* High-Octane Racing Red */
-	--color-brand-600: #C2122C;
-	--color-brand-700: #9E0E23;
-	
-	--color-cta: #E31837;           /* Signal Red - primary actions */
-	--color-cta-hover: #C2122C;
+	--color-brand-500: #e31837; /* High-Octane Racing Red */
+	--color-brand-600: #c2122c;
+	--color-brand-700: #9e0e23;
+
+	--color-cta: #e31837; /* Signal Red - primary actions */
+	--color-cta-hover: #c2122c;
 	--color-cta-light: rgba(227, 24, 55, 0.08);
 
 	/* Honda HRC Aggressive: Red, Black, Silver */
-	--color-blue: #0A0F1A;          /* Carbon Black */
-	--color-blue-light: #1F2937;    /* Slate Dark */
+	--color-blue: #0a0f1a; /* Carbon Black */
+	--color-blue-light: #1f2937; /* Slate Dark */
 
-	--color-warm: #8C96A6;          /* Clean Metallic Gray */
-	--color-warm-bg: #F0F2F5;
+	--color-warm: #8c96a6; /* Clean Metallic Gray */
+	--color-warm-bg: #f0f2f5;
 
 	--color-success: #16a34a;
 	--color-warning: #f59e0b;
-	--color-danger: #E31837;
+	--color-danger: #e31837;
 
 	--font-sans: 'Barlow', system-ui, -apple-system, sans-serif;
 	--font-display: 'Chakra Petch', system-ui, -apple-system, sans-serif;
@@ -54,26 +54,26 @@
 	/* ── Core palette — pure white for that sterile showroom feel ── */
 	--ft-bg: #ffffff;
 	--ft-surface: #ffffff;
-	--ft-dark: #0A0F1A;             /* Carbon Black/Navy */
-	--ft-text: #3E4652;             /* Cool gray body text */
-	--ft-text-strong: #0A0F1A;      
-	--ft-text-muted: #8492A6;       
-	--ft-text-faint: #CBD5E0;       
+	--ft-dark: #0a0f1a; /* Carbon Black/Navy */
+	--ft-text: #3e4652; /* Cool gray body text */
+	--ft-text-strong: #0a0f1a;
+	--ft-text-muted: #8492a6;
+	--ft-text-faint: #cbd5e0;
 
 	/* ── Action colors ── */
-	--ft-cta: #E31837;              /* Racing Red */
-	--ft-cta-hover: #C2122C;
+	--ft-cta: #e31837; /* Racing Red */
+	--ft-cta-hover: #c2122c;
 	--ft-cta-light: rgba(227, 24, 55, 0.08);
 
-	--ft-accent: #0A0F1A;           /* Carbon Black */
-	--ft-accent-hover: #1F2937;
+	--ft-accent: #0a0f1a; /* Carbon Black */
+	--ft-accent-hover: #1f2937;
 
-	--ft-warm: #8C96A6;             /* Replaced clashing tan/beige with metallic sliver/gray */
-	--ft-warm-bg: #F4F5F7;          /* Crisp metallic surface */
+	--ft-warm: #8c96a6; /* Replaced clashing tan/beige with metallic sliver/gray */
+	--ft-warm-bg: #f4f5f7; /* Crisp metallic surface */
 
 	/* ── Surfaces & borders ── */
-	--ft-line: #E2E8F0;
-	--ft-frost: #F7FAFC;
+	--ft-line: #e2e8f0;
+	--ft-frost: #f7fafc;
 
 	/* ── Elevation — Flat borders instead of shadows ── */
 	--ft-shadow-sm: none;
@@ -151,132 +151,132 @@
    3. BASE STYLES
    ========================================================================== */
 
-
 @layer base {
-
-*,
-*::before,
-*::after {
-	box-sizing: border-box;
-	margin: 0;
-	padding: 0;
-}
-
-html {
-	scroll-behavior: smooth;
-	touch-action: manipulation;
-}
-
-body {
-	font-family: var(--font-sans);
-	background: var(--ft-bg);
-	color: var(--ft-text);
-	line-height: 1.7;
-	font-size: 15px;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-}
-
-::selection {
-	background: var(--ft-frost);
-	color: var(--ft-dark);
-}
-
-:focus-visible {
-	outline: 2px solid var(--ft-cta);
-	outline-offset: 2px;
-}
-
-input[type="text"]:focus-visible,
-input[type="search"]:focus-visible,
-input[type="email"]:focus-visible,
-select:focus-visible,
-textarea:focus-visible {
-	outline: none;
-}
-
-a {
-	color: var(--ft-dark);
-	text-decoration: none;
-	transition: color var(--dur-fast) ease;
-}
-
-a:hover {
-	color: var(--ft-accent);
-}
-
-/* ── Typography ── */
-h1, h2, h3, h4 {
-	font-family: var(--font-display);
-	font-weight: 700;
-	color: var(--ft-dark);
-	letter-spacing: -0.03em;
-}
-
-h1 {
-	font-size: clamp(2.4rem, 5vw, 3.8rem);
-	line-height: 1.08;
-}
-
-h2 {
-	font-size: clamp(1.5rem, 3vw, 2rem);
-}
-
-h3 {
-	font-family: var(--font-sans);
-	font-size: 1.1rem;
-	font-weight: 600;
-	line-height: 1.35;
-	letter-spacing: -0.01em;
-}
-
-h4 {
-	font-family: var(--font-mono);
-	font-size: 0.68rem;
-	font-weight: 600;
-	text-transform: uppercase;
-	letter-spacing: 0.12em;
-	color: var(--ft-accent);
-}
-
-/* ── Section label (uppercase kicker) ── */
-.ft-label {
-	font-family: var(--font-mono);
-	font-size: 0.68rem;
-	text-transform: uppercase;
-	letter-spacing: 0.1em;
-	color: var(--ft-accent);
-	font-weight: 600;
-}
-
-/* ── Card base ── */
-.ft-card {
-	background: var(--ft-surface);
-	border: 1px solid var(--ft-line);
-	border-radius: var(--radius-md);
-	transition:
-		border-color var(--dur-med) ease,
-		box-shadow var(--dur-med) ease;
-}
-
-.ft-card:hover {
-	border-color: var(--ft-accent);
-}
-
-/* ── Staggered fade-in ── */
-@keyframes ft-fade-up {
-	from {
-		opacity: 0;
+	*,
+	*::before,
+	*::after {
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
 	}
-	to {
-		opacity: 1;
+
+	html {
+		/* scroll-behavior: smooth removed as it breaks SvelteKit scroll restoration on navigation */
+		touch-action: manipulation;
 	}
-}
 
-.ft-animate {
-	animation: ft-fade-up 0.15s linear both;
-}
+	body {
+		font-family: var(--font-sans);
+		background: var(--ft-bg);
+		color: var(--ft-text);
+		line-height: 1.7;
+		font-size: 15px;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
 
+	::selection {
+		background: var(--ft-frost);
+		color: var(--ft-dark);
+	}
+
+	:focus-visible {
+		outline: 2px solid var(--ft-cta);
+		outline-offset: 2px;
+	}
+
+	input[type='text']:focus-visible,
+	input[type='search']:focus-visible,
+	input[type='email']:focus-visible,
+	select:focus-visible,
+	textarea:focus-visible {
+		outline: none;
+	}
+
+	a {
+		color: var(--ft-dark);
+		text-decoration: none;
+		transition: color var(--dur-fast) ease;
+	}
+
+	a:hover {
+		color: var(--ft-accent);
+	}
+
+	/* ── Typography ── */
+	h1,
+	h2,
+	h3,
+	h4 {
+		font-family: var(--font-display);
+		font-weight: 700;
+		color: var(--ft-dark);
+		letter-spacing: -0.03em;
+	}
+
+	h1 {
+		font-size: clamp(2.4rem, 5vw, 3.8rem);
+		line-height: 1.08;
+	}
+
+	h2 {
+		font-size: clamp(1.5rem, 3vw, 2rem);
+	}
+
+	h3 {
+		font-family: var(--font-sans);
+		font-size: 1.1rem;
+		font-weight: 600;
+		line-height: 1.35;
+		letter-spacing: -0.01em;
+	}
+
+	h4 {
+		font-family: var(--font-mono);
+		font-size: 0.68rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
+		color: var(--ft-accent);
+	}
+
+	/* ── Section label (uppercase kicker) ── */
+	.ft-label {
+		font-family: var(--font-mono);
+		font-size: 0.68rem;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		color: var(--ft-accent);
+		font-weight: 600;
+	}
+
+	/* ── Card base ── */
+	.ft-card {
+		background: var(--ft-surface);
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-md);
+		transition:
+			border-color var(--dur-med) ease,
+			box-shadow var(--dur-med) ease;
+	}
+
+	.ft-card:hover {
+		border-color: var(--ft-accent);
+	}
+
+	/* ── Staggered fade-in ── */
+	@keyframes ft-fade-up {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
+	.ft-animate {
+		animation: ft-fade-up 0.15s linear both;
+	}
 } /* end @layer base */
 
 /* ==========================================================================
@@ -304,7 +304,11 @@ h4 {
 		border: 1px solid var(--ft-accent);
 		border-radius: var(--radius-sm);
 		cursor: pointer;
-		transition: background-color var(--dur-fast) ease, border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease, transform var(--dur-fast) ease;
+		transition:
+			background-color var(--dur-fast) ease,
+			border-color var(--dur-fast) ease,
+			box-shadow var(--dur-fast) ease,
+			transform var(--dur-fast) ease;
 	}
 
 	.btn-primary:hover {
@@ -329,7 +333,11 @@ h4 {
 		border: 1px solid var(--ft-cta);
 		border-radius: var(--radius-sm);
 		cursor: pointer;
-		transition: background-color var(--dur-fast) ease, border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease, transform var(--dur-fast) ease;
+		transition:
+			background-color var(--dur-fast) ease,
+			border-color var(--dur-fast) ease,
+			box-shadow var(--dur-fast) ease,
+			transform var(--dur-fast) ease;
 	}
 
 	.btn-cta:hover {
@@ -353,7 +361,9 @@ h4 {
 		border: 1px solid var(--ft-line);
 		border-radius: var(--radius-sm);
 		cursor: pointer;
-		transition: border-color var(--dur-fast) ease, color var(--dur-fast) ease;
+		transition:
+			border-color var(--dur-fast) ease,
+			color var(--dur-fast) ease;
 	}
 
 	.btn-secondary:hover {
@@ -420,6 +430,11 @@ h4 {
 	padding-bottom: clamp(32px, 4vh, 40px);
 }
 
+/* Utility to prevent doubled padding between sections */
+.ft-section-no-pt {
+	padding-top: 0 !important;
+}
+
 .ft-below-nav {
 	padding-top: 72px;
 }
@@ -444,8 +459,12 @@ h4 {
 }
 
 @keyframes notification-progress {
-	from { transform: translateX(-100%); }
-	to { transform: translateX(0%); }
+	from {
+		transform: translateX(-100%);
+	}
+	to {
+		transform: translateX(0%);
+	}
 }
 
 /* ==========================================================================
@@ -454,13 +473,25 @@ h4 {
 
 /* Cross-fade for page content during navigation */
 @keyframes ft-vt-fade-in {
-	from { opacity: 0; transform: translateY(4px); }
-	to { opacity: 1; transform: translateY(0); }
+	from {
+		opacity: 0;
+		transform: translateY(4px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
 @keyframes ft-vt-fade-out {
-	from { opacity: 1; transform: translateY(0); }
-	to { opacity: 0; transform: translateY(-4px); }
+	from {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	to {
+		opacity: 0;
+		transform: translateY(-4px);
+	}
 }
 
 ::view-transition-old(root) {
@@ -501,19 +532,45 @@ h4 {
 	animation: ft-card-enter 0.15s linear both;
 }
 
-.ft-stagger > *:nth-child(1) { animation-delay: 0ms; }
-.ft-stagger > *:nth-child(2) { animation-delay: 40ms; }
-.ft-stagger > *:nth-child(3) { animation-delay: 80ms; }
-.ft-stagger > *:nth-child(4) { animation-delay: 120ms; }
-.ft-stagger > *:nth-child(5) { animation-delay: 160ms; }
-.ft-stagger > *:nth-child(6) { animation-delay: 200ms; }
-.ft-stagger > *:nth-child(7) { animation-delay: 240ms; }
-.ft-stagger > *:nth-child(8) { animation-delay: 280ms; }
-.ft-stagger > *:nth-child(9) { animation-delay: 320ms; }
-.ft-stagger > *:nth-child(10) { animation-delay: 360ms; }
-.ft-stagger > *:nth-child(11) { animation-delay: 400ms; }
-.ft-stagger > *:nth-child(12) { animation-delay: 440ms; }
-.ft-stagger > *:nth-child(n+13) { animation-delay: 480ms; }
+.ft-stagger > *:nth-child(1) {
+	animation-delay: 0ms;
+}
+.ft-stagger > *:nth-child(2) {
+	animation-delay: 40ms;
+}
+.ft-stagger > *:nth-child(3) {
+	animation-delay: 80ms;
+}
+.ft-stagger > *:nth-child(4) {
+	animation-delay: 120ms;
+}
+.ft-stagger > *:nth-child(5) {
+	animation-delay: 160ms;
+}
+.ft-stagger > *:nth-child(6) {
+	animation-delay: 200ms;
+}
+.ft-stagger > *:nth-child(7) {
+	animation-delay: 240ms;
+}
+.ft-stagger > *:nth-child(8) {
+	animation-delay: 280ms;
+}
+.ft-stagger > *:nth-child(9) {
+	animation-delay: 320ms;
+}
+.ft-stagger > *:nth-child(10) {
+	animation-delay: 360ms;
+}
+.ft-stagger > *:nth-child(11) {
+	animation-delay: 400ms;
+}
+.ft-stagger > *:nth-child(12) {
+	animation-delay: 440ms;
+}
+.ft-stagger > *:nth-child(n + 13) {
+	animation-delay: 480ms;
+}
 
 /* ==========================================================================
    8. REDUCED MOTION
@@ -542,7 +599,9 @@ h4 {
 .ft-lazy {
 	opacity: 0;
 	transform: translateY(16px);
-	transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+	transition:
+		opacity 0.5s ease-out,
+		transform 0.5s ease-out;
 }
 
 .ft-lazy.is-visible {
@@ -597,18 +656,20 @@ h4 {
 
 	/* Show URLs after links */
 	a[href]::after {
-		content: " (" attr(href) ")";
+		content: ' (' attr(href) ')';
 		font-size: 0.8em;
 		color: #666 !important;
 	}
 
-	a[href^="#"]::after,
-	a[href^="javascript"]::after {
-		content: "";
+	a[href^='#']::after,
+	a[href^='javascript']::after {
+		content: '';
 	}
 
 	/* Sensible page breaks */
-	h1, h2, h3 {
+	h1,
+	h2,
+	h3 {
 		page-break-after: avoid;
 		orphans: 3;
 		widows: 3;

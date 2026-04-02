@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 	import ProductCard from '$lib/components/ui/ProductCard.svelte';
 	import { ArrowDownIcon, ArrowUpIcon } from 'phosphor-svelte';
 	import type { Product, Category } from '$lib/stores/products.svelte';
@@ -32,6 +33,16 @@
 
 	$effect(() => {
 		sortBy = data.sortBy;
+	});
+
+	$effect(() => {
+		const categorySlug = $page.url.searchParams.get('category');
+		if (categorySlug) {
+			// Small delay to ensure DOM is ready and sections are rendered
+			setTimeout(() => {
+				scrollToCategory(categorySlug);
+			}, 100);
+		}
 	});
 
 	// Track which category section is in view
@@ -73,7 +84,8 @@
 		// Scroll only the chip container horizontally — never touch page scroll
 		const containerRect = chipScrollEl.getBoundingClientRect();
 		const chipRect = chip.getBoundingClientRect();
-		const offset = chipRect.left - containerRect.left - containerRect.width / 2 + chipRect.width / 2;
+		const offset =
+			chipRect.left - containerRect.left - containerRect.width / 2 + chipRect.width / 2;
 		chipScrollEl.scrollBy({ left: offset, behavior: 'smooth' });
 	}
 
@@ -431,6 +443,4 @@
 		color: var(--ft-text-muted);
 		font-size: 0.9rem;
 	}
-
-
 </style>

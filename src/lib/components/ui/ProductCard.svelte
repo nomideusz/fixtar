@@ -48,7 +48,6 @@
 			: 0
 	);
 	const productUrl = $derived(`/products/${product.slug?.trim() || product.id}`);
-
 </script>
 
 <div class="card" class:is-out={!inStock}>
@@ -72,7 +71,7 @@
 			{#if inStock}
 				<div class="hud-pill hud-pill--in" title="Dostępny od ręki">
 					<span class="status-dot status-dot--in" aria-hidden="true"></span>
-					<span class="hud-text">24h</span>
+					<span class="hud-text">Dostępny</span>
 				</div>
 			{:else}
 				<div class="hud-pill hud-pill--out" title="Niedostępny">
@@ -146,7 +145,9 @@
 	.card.is-out .card-img-empty {
 		opacity: 0.4;
 		filter: grayscale(0.5);
-		transition: opacity 0.2s ease, filter 0.2s ease;
+		transition:
+			opacity 0.2s ease,
+			filter 0.2s ease;
 	}
 
 	.card.is-out:hover .card-img img,
