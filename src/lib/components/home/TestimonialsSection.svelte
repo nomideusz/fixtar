@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { StarIcon } from 'phosphor-svelte';
-	// TODO: Import your avatar images here once you place them in the project
-	// import avatar1 from '$lib/images/avatars/avatar1.jpg';
-	// import avatar2 from '$lib/images/avatars/avatar2.jpg';
-	// import avatar3 from '$lib/images/avatars/avatar3.jpg';
+	import avatar1 from '$lib/images/avatars/avatar1.png';
+	import avatar2 from '$lib/images/avatars/avatar2.png';
+	import avatar3 from '$lib/images/avatars/avatar3.png';
 
 	const stats = [
 		{ value: '2 500+', label: 'Produktów w ofercie' },
@@ -19,7 +18,7 @@
 			text: 'Zamówiłem szlifierkę Bavaria — świetna jakość w rozsądnej cenie. Dostawa następnego dnia, paczka solidnie zabezpieczona.',
 			rating: 5,
 			// avatar: avatar1
-			avatar: null // Replace with imported avatar
+			avatar: avatar1 // Replace with imported avatar
 		},
 		{
 			name: 'Anna W.',
@@ -27,7 +26,7 @@
 			text: 'Korzystam z FixTar od roku. Konkurencyjne ceny, szybka wysyłka i profesjonalna obsługa klienta. Polecam każdemu rzemieślnikowi.',
 			rating: 5,
 			// avatar: avatar2
-			avatar: null // Replace with imported avatar
+			avatar: avatar2 // Replace with imported avatar
 		},
 		{
 			name: 'Tomasz P.',
@@ -35,7 +34,7 @@
 			text: 'Wiertarka Eurotec, którą kupiłem, działa bez zarzutu od 6 miesięcy. Gwarancja daje spokój ducha. Na pewno wrócę po więcej.',
 			rating: 5,
 			// avatar: avatar3
-			avatar: null // Replace with imported avatar
+			avatar: avatar3 // Replace with imported avatar
 		}
 	];
 </script>
@@ -77,7 +76,14 @@
 					<div class="testimonial-author">
 						<div class="author-avatar" aria-hidden="true">
 							{#if t.avatar}
-								<img src={t.avatar} alt="" class="avatar-img" width="40" height="40" loading="lazy" />
+								<img
+									src={t.avatar}
+									alt=""
+									class="avatar-img"
+									width="40"
+									height="40"
+									loading="lazy"
+								/>
 							{:else}
 								{t.name.charAt(0)}
 							{/if}
@@ -199,7 +205,9 @@
 		border: 1px solid var(--ft-line);
 		background: var(--ft-surface);
 		border-radius: var(--radius-sm);
-		transition: border-color 0.2s ease, box-shadow 0.2s ease;
+		transition:
+			border-color 0.2s ease,
+			box-shadow 0.2s ease;
 	}
 
 	.testimonial-card:hover {
