@@ -123,6 +123,13 @@
 	<!-- Category pills -->
 	<div class="chips-wrap">
 		<div class="chip-scroll" bind:this={chipScrollEl}>
+			<button
+				class="chip"
+				class:chip--selected={!selectedCategory}
+				onclick={() => handleCategoryChange('')}
+			>
+				Wszystkie
+			</button>
 			{#each data.categories as cat (cat.id)}
 				<button
 					class="chip"
@@ -130,7 +137,6 @@
 					onclick={() => handleCategoryChange(cat.slug)}
 				>
 					{cat.name}
-					<span class="chip-count">{cat.productCount}</span>
 				</button>
 			{/each}
 		</div>
@@ -308,15 +314,6 @@
 		border-color: var(--ft-cta);
 		color: white;
 		font-weight: 600;
-	}
-
-	.chip-count {
-		font-size: 0.68rem;
-		opacity: 0.5;
-	}
-
-	.chip--selected .chip-count {
-		opacity: 0.7;
 	}
 
 	.sort-wrap {

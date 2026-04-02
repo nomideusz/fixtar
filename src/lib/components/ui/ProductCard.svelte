@@ -143,7 +143,14 @@
 	}
 
 	.card.is-out {
+		opacity: 0.45;
+		filter: grayscale(0.4);
+		transition: opacity 0.2s ease, filter 0.2s ease;
+	}
+
+	.card.is-out:hover {
 		opacity: 0.7;
+		filter: grayscale(0.15);
 	}
 
 	/* ── Image Area (The HUD) ── */

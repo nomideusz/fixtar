@@ -352,9 +352,7 @@
 		border: 1px solid var(--ft-line);
 		border-radius: 0;
 		outline: none;
-		transition:
-			border-color 0.2s ease,
-			box-shadow 0.2s ease;
+		transition: border-color 0.2s ease;
 	}
 
 	.search-input::placeholder {
@@ -364,8 +362,7 @@
 
 	.search-input:focus {
 		background: var(--ft-surface);
-		border-color: var(--color-brand-500);
-		box-shadow: 0 0 0 2px rgba(55, 138, 146, 0.2);
+		border-color: var(--ft-accent);
 	}
 
 	.search-submit-btn {
