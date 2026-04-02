@@ -7,8 +7,7 @@ export interface NavLink {
 export const MAIN_NAV: NavLink[] = [
 	{ href: '/products', label: 'Produkty', badge: false },
 	{ href: '/deals', label: 'Promocje', badge: true },
-	{ href: '/contact', label: 'Kontakt', badge: false },
-	{ href: '/about', label: 'O nas', badge: false }
+	{ href: '/contact', label: 'Kontakt', badge: false }
 ];
 
 export const FOOTER_SHOP: NavLink[] = [
