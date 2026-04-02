@@ -180,12 +180,12 @@
 			<!-- Cart -->
 			<button
 				onclick={() => onCartOpen?.()}
-				class="nav-cart-btn"
+				class={cartCount > 0 ? 'nav-cart-btn' : 'nav-icon-btn nav-action-btn'}
 				aria-label="Koszyk{cartCount > 0 ? ` (${cartCount})` : ''}"
 				title="Koszyk"
 			>
 				<div class="nav-action-icon-wrap" class:is-bouncing={cartBouncing}>
-					<ShoppingCartSimpleIcon size={20} weight="bold" aria-hidden="true" />
+					<ShoppingCartSimpleIcon size={cartCount > 0 ? 20 : 22} weight="bold" aria-hidden="true" />
 					{#if cartCount > 0}
 						<span class="cart-badge" aria-hidden="true">{cartCount}</span>
 					{/if}
