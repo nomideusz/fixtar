@@ -350,7 +350,7 @@
 		color: var(--ft-text-strong);
 		background: var(--ft-frost);
 		border: 1px solid var(--ft-line);
-		border-radius: var(--radius-sm);
+		border-radius: 0;
 		outline: none;
 		transition:
 			border-color 0.2s ease,
@@ -376,7 +376,7 @@
 		background: var(--ft-cta);
 		color: #fff;
 		border: none;
-		border-radius: 2px;
+		border-radius: 0;
 		font-family: var(--font-display);
 		font-weight: 700;
 		font-size: 0.75rem;
@@ -410,7 +410,7 @@
 		background: transparent;
 		color: var(--ft-text-muted);
 		cursor: pointer;
-		border-radius: var(--radius-sm);
+		border-radius: 0;
 		transition:
 			background-color 0.15s ease,
 			color 0.15s ease;
@@ -437,7 +437,7 @@
 		color: var(--ft-text-faint);
 		padding: 2px 6px;
 		border: 1px solid var(--ft-line);
-		border-radius: 4px;
+		border-radius: 0;
 		background: var(--ft-surface);
 	}
 
@@ -457,8 +457,8 @@
 		z-index: 50;
 		background: var(--ft-surface);
 		border: 1px solid var(--ft-line);
-		border-radius: var(--radius-md);
-		box-shadow: var(--ft-shadow-lg, 0 10px 40px color-mix(in srgb, black 10%, transparent));
+		border-radius: 0;
+		box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
 		overflow: hidden;
 		animation: dropdownSlideIn 0.15s ease-out;
 	}
@@ -514,7 +514,7 @@
 		border: none;
 		cursor: pointer;
 		padding: 2px 6px;
-		border-radius: var(--radius-sm);
+		border-radius: 0;
 		transition: color 0.15s ease;
 	}
 
@@ -539,7 +539,7 @@
 		background: none;
 		border: none;
 		cursor: pointer;
-		border-radius: var(--radius-sm);
+		border-radius: 0;
 		text-align: left;
 		transition: background 0.1s ease;
 	}
@@ -576,7 +576,7 @@
 		color: var(--ft-text);
 		background: var(--ft-frost);
 		border: 1px solid var(--ft-line);
-		border-radius: var(--radius-full);
+		border-radius: 0;
 		text-decoration: none;
 		transition:
 			border-color 0.15s ease,
@@ -610,7 +610,7 @@
 		background: none;
 		border: none;
 		cursor: pointer;
-		border-radius: var(--radius-sm);
+		border-radius: 0;
 		text-align: left;
 		transition: background 0.1s ease;
 	}
@@ -631,7 +631,7 @@
 		width: 40px;
 		height: 40px;
 		object-fit: contain;
-		border-radius: var(--radius-sm);
+		border-radius: 0;
 		background: var(--ft-frost);
 	}
 
@@ -642,7 +642,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		border-radius: var(--radius-sm);
+		border-radius: 0;
 		background: var(--ft-frost);
 		color: var(--ft-text-faint);
 	}

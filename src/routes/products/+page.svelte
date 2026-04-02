@@ -3,7 +3,6 @@
 	import { navigating } from '$app/stores';
 	import ProductCard from '$lib/components/ui/ProductCard.svelte';
 	import ProductCardSkeleton from '$lib/components/ui/ProductCardSkeleton.svelte';
-	import Breadcrumbs from '$lib/components/ui/Breadcrumbs.svelte';
 	import type { Product, Category } from '$lib/stores/products.svelte';
 	import { CaretLeftIcon, CaretRightIcon } from 'phosphor-svelte';
 
@@ -60,12 +59,6 @@
 		data.categories.find((cat) => cat.slug === selectedCategory)?.name || ''
 	);
 
-	const breadcrumbItems = $derived([
-		{ label: 'Strona główna', href: '/' },
-		{ label: 'Produkty', href: '/products' }
-		// Category name removed - it's shown in H1 title and selected pill below
-	]);
-
 	const productCountLabel = $derived.by(() => {
 		const count = data.totalItems;
 		if (count === 1) return '1 produkt';
@@ -111,17 +104,20 @@
 </svelte:head>
 
 <div class="products-page">
-	<!-- Breadcrumbs -->
-	{#if selectedCategoryName || data.searchQuery}
-		<nav class="breadcrumb-wrap">
-			<Breadcrumbs items={breadcrumbItems} />
-		</nav>
-	{/if}
-
 	<!-- Header -->
 	<div class="page-header">
-		<h1 class="page-title">{selectedCategoryName || 'Produkty'}</h1>
-		<span class="page-count">{productCountLabel}</span>
+		<div class="page-header-left">
+			<h1 class="page-title">{selectedCategoryName || 'Produkty'}</h1>
+			<span class="page-count">{productCountLabel}</span>
+		</div>
+		<div class="sort-wrap">
+			<label for="product-sort" class="sr-only">Sortuj</label>
+			<select id="product-sort" value={sortBy} onchange={handleSortChange} class="sort-select">
+				<option value="name">Nazwa A-Z</option>
+				<option value="price-low">Cena rosnąco</option>
+				<option value="price-high">Cena malejąco</option>
+			</select>
+		</div>
 	</div>
 
 	<!-- Category pills -->
@@ -137,18 +133,6 @@
 					<span class="chip-count">{cat.productCount}</span>
 				</button>
 			{/each}
-		</div>
-	</div>
-
-	<!-- Sort -->
-	<div class="toolbar">
-		<div class="sort-wrap">
-			<label for="product-sort" class="sr-only">Sortuj</label>
-			<select id="product-sort" value={sortBy} onchange={handleSortChange} class="sort-select">
-				<option value="name">Nazwa A-Z</option>
-				<option value="price-low">Cena rosnąco</option>
-				<option value="price-high">Cena malejąco</option>
-			</select>
 		</div>
 	</div>
 
@@ -239,25 +223,31 @@
 		width: 100%;
 	}
 
-	/* ── Breadcrumbs ── */
-	.breadcrumb-wrap {
-		padding-top: clamp(20px, 3vh, 28px);
-	}
-
 	/* ── Header ── */
 	.page-header {
 		display: flex;
-		align-items: baseline;
+		align-items: center;
 		justify-content: space-between;
-		padding: clamp(24px, 4vh, 40px) 0 16px;
+		gap: 16px;
+		padding: clamp(24px, 4vh, 40px) 0 20px;
+	}
+
+	.page-header-left {
+		display: flex;
+		align-items: baseline;
+		gap: 12px;
 	}
 
 	.page-title {
 		font-family: var(--font-display);
-		font-size: clamp(1.3rem, 3vw, 1.8rem);
+		font-size: clamp(1.2rem, 2.5vw, 1.6rem);
 		font-weight: 700;
-		color: var(--ft-text-strong);
+		color: var(--ft-dark);
 		letter-spacing: -0.02em;
+		border-left: 4px solid var(--ft-accent);
+		padding-left: 14px;
+		text-transform: uppercase;
+		line-height: 1;
 	}
 
 	.page-count {
@@ -267,7 +257,7 @@
 
 	/* ── Category pills ── */
 	.chips-wrap {
-		padding-bottom: 20px;
+		padding-bottom: 24px;
 	}
 
 	.chip-scroll {
@@ -329,22 +319,14 @@
 		opacity: 0.7;
 	}
 
-	/* ── Toolbar ── */
-	.toolbar {
-		display: flex;
-		gap: 12px;
-		align-items: center;
-		padding-bottom: 24px;
-	}
-
 	.sort-wrap {
 		flex-shrink: 0;
 	}
 
 	.sort-select {
-		padding: 10px 32px 10px 12px;
-		font-size: 0.82rem;
-		color: var(--ft-text);
+		padding: 8px 32px 8px 12px;
+		font-size: 0.78rem;
+		color: var(--ft-text-muted);
 		background: var(--ft-surface);
 		border: 1px solid var(--ft-line);
 		border-radius: 2px;
@@ -457,9 +439,10 @@
 			flex-wrap: nowrap;
 		}
 
-		.toolbar {
+		.page-header {
 			flex-direction: column;
-			gap: 8px;
+			align-items: flex-start;
+			gap: 12px;
 		}
 
 		.sort-wrap {
