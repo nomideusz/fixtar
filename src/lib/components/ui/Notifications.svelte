@@ -3,13 +3,22 @@
 	import { fly } from 'svelte/transition';
 	import { SvelteMap } from 'svelte/reactivity';
 	import type { Notification } from '$lib/stores/notifications.svelte';
-	import { CheckCircleIcon, XCircleIcon, WarningCircleIcon, InfoIcon, XIcon } from 'phosphor-svelte';
+	import {
+		CheckCircleIcon,
+		XCircleIcon,
+		WarningCircleIcon,
+		InfoIcon,
+		XIcon
+	} from 'phosphor-svelte';
 
 	const typeClasses: Record<string, string> = {
-		success: 'border-l-[4px] border-l-[--color-success] bg-white border-y border-r border-[--ft-line] text-[--ft-dark] shadow-[0_4px_24px_rgba(0,0,0,0.08)]',
-		error: 'border-l-[4px] border-l-[--color-danger] bg-white border-y border-r border-[--ft-line] text-[--ft-dark] shadow-[0_4px_24px_rgba(0,0,0,0.08)]',
+		success:
+			'border-l-[4px] border-l-[--color-success] bg-white border-y border-r border-[--ft-line] text-[--ft-dark] shadow-[0_4px_24px_rgba(0,0,0,0.08)]',
+		error:
+			'border-l-[4px] border-l-[--color-danger] bg-white border-y border-r border-[--ft-line] text-[--ft-dark] shadow-[0_4px_24px_rgba(0,0,0,0.08)]',
 		info: 'border-l-[4px] border-l-[--color-brand-500] bg-white border-y border-r border-[--ft-line] text-[--ft-dark] shadow-[0_4px_24px_rgba(0,0,0,0.08)]',
-		warning: 'border-l-[4px] border-l-[--color-warning] bg-white border-y border-r border-[--ft-line] text-[--ft-dark] shadow-[0_4px_24px_rgba(0,0,0,0.08)]'
+		warning:
+			'border-l-[4px] border-l-[--color-warning] bg-white border-y border-r border-[--ft-line] text-[--ft-dark] shadow-[0_4px_24px_rgba(0,0,0,0.08)]'
 	};
 
 	const iconColorClasses: Record<string, string> = {
@@ -102,7 +111,9 @@
 			aria-live="polite"
 		>
 			<div class="notification-content">
-				<div class="notification-icon {iconColorClasses[notification.type] || iconColorClasses.info}">
+				<div
+					class="notification-icon {iconColorClasses[notification.type] || iconColorClasses.info}"
+				>
 					{#if notification.type === 'success'}
 						<CheckCircleIcon size={24} weight="fill" aria-hidden="true" />
 					{:else if notification.type === 'error'}
@@ -149,17 +160,23 @@
 <div class="notification-container notification-container--mobile">
 	{#each notifications.items as notification, index (notification.id)}
 		<div
-			class="notification-item notification-item--mobile {typeClasses[notification.type] || typeClasses.info}"
+			class="notification-item notification-item--mobile {typeClasses[notification.type] ||
+				typeClasses.info}"
 			transition:fly={{ y: 80, duration: 300, delay: index * 80 }}
 			ontouchstart={(e) => handleTouchStart(e, notification.id)}
 			ontouchmove={handleTouchMove}
 			ontouchend={handleTouchEnd}
-			style={swipingId === notification.id ? `transform: translateX(${swipeOffset}px); opacity: ${1 - swipeOffset / 200}` : ''}
+			style={swipingId === notification.id
+				? `transform: translateX(${swipeOffset}px); opacity: ${1 - swipeOffset / 200}`
+				: ''}
 			role="alert"
 			aria-live="polite"
 		>
 			<div class="notification-content notification-content--mobile">
-				<div class="notification-icon notification-icon--mobile {iconColorClasses[notification.type] || iconColorClasses.info}">
+				<div
+					class="notification-icon notification-icon--mobile {iconColorClasses[notification.type] ||
+						iconColorClasses.info}"
+				>
 					{#if notification.type === 'success'}
 						<CheckCircleIcon size={20} weight="fill" aria-hidden="true" />
 					{:else if notification.type === 'error'}
@@ -199,13 +216,13 @@
 
 	.notification-container--desktop {
 		position: fixed;
-		top: 1.5rem;
+		bottom: 1.5rem;
 		right: 1.5rem;
 		z-index: 9999;
 		width: 100%;
 		max-width: 22rem;
 		display: none;
-		flex-direction: column;
+		flex-direction: column-reverse;
 		gap: 0.75rem;
 		pointer-events: none;
 	}
@@ -317,7 +334,9 @@
 		border-bottom-width: 0 !important;
 		border-top: 1px solid var(--ft-line);
 		box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.08) !important;
-		transition: transform 0.15s, opacity 0.15s;
+		transition:
+			transform 0.15s,
+			opacity 0.15s;
 		touch-action: pan-y;
 	}
 
