@@ -2,10 +2,18 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { cart, userStore } from '$lib/stores';
+	import { MAIN_NAV } from '$lib/config/navigation';
 	import FixTarLogo from '$lib/images/logo/fixtar-logo-black-trimmed.png';
 	import FixTarIcon from '$lib/images/logo/fixtar-icon-black.png';
 	import NavSearch from './NavSearch.svelte';
-	import { XIcon, MagnifyingGlassIcon, ShoppingCartSimpleIcon, UserIcon, UserGearIcon, SignOutIcon } from 'phosphor-svelte';
+	import {
+		XIcon,
+		MagnifyingGlassIcon,
+		ShoppingCartSimpleIcon,
+		UserIcon,
+		UserGearIcon,
+		SignOutIcon
+	} from 'phosphor-svelte';
 
 	interface Props {
 		onCartOpen?: () => void;
@@ -57,12 +65,7 @@
 </script>
 
 {#snippet navLinks(mobile = false)}
-	{@const links = [
-		{ href: '/products', label: 'Produkty', badge: false },
-		{ href: '/deals', label: 'Promocje', badge: true },
-		{ href: '/contact', label: 'Kontakt', badge: false }
-	]}
-	{#each links as link (link.href)}
+	{#each MAIN_NAV as link (link.href)}
 		{@const isActive = $page.url.pathname.startsWith(link.href)}
 		<a
 			href={link.href}
@@ -151,11 +154,21 @@
 
 					{#if accountMenuOpen}
 						<div class="account-dropdown">
-							<a href="/account" class="account-dropdown-item" onclick={() => (accountMenuOpen = false)}>
+							<a
+								href="/account"
+								class="account-dropdown-item"
+								onclick={() => (accountMenuOpen = false)}
+							>
 								<UserGearIcon size={16} weight="bold" aria-hidden="true" />
 								Moje konto
 							</a>
-							<button class="account-dropdown-item account-dropdown-item--danger" onclick={() => { accountMenuOpen = false; handleLogout(); }}>
+							<button
+								class="account-dropdown-item account-dropdown-item--danger"
+								onclick={() => {
+									accountMenuOpen = false;
+									handleLogout();
+								}}
+							>
 								<SignOutIcon size={16} weight="bold" aria-hidden="true" />
 								Wyloguj
 							</button>
@@ -164,13 +177,23 @@
 				</div>
 
 				<!-- Mobile: icon only, no dropdown -->
-				<a href="/account" class="nav-icon-btn nav-action-btn mobile-only" aria-label="Moje konto" title="Moje konto">
+				<a
+					href="/account"
+					class="nav-icon-btn nav-action-btn mobile-only"
+					aria-label="Moje konto"
+					title="Moje konto"
+				>
 					<div class="nav-action-icon-wrap">
 						<UserIcon size={22} weight="bold" aria-hidden="true" />
 					</div>
 				</a>
 			{:else}
-				<a href="/auth/login" class="nav-icon-btn nav-action-btn desktop-only" aria-label="Zaloguj się" title="Zaloguj się">
+				<a
+					href="/auth/login"
+					class="nav-icon-btn nav-action-btn desktop-only"
+					aria-label="Zaloguj się"
+					title="Zaloguj się"
+				>
 					<div class="nav-action-icon-wrap">
 						<UserIcon size={22} weight="bold" aria-hidden="true" />
 					</div>
@@ -208,11 +231,7 @@
 				<a href="/" class="nav-logo" aria-label="FixTar — Strona główna" onclick={closeMobileMenu}>
 					<img src={FixTarIcon} alt="" class="logo-img logo-icon" style="display:block" />
 				</a>
-				<button
-					onclick={closeMobileMenu}
-					class="nav-icon-btn"
-					aria-label="Zamknij menu"
-				>
+				<button onclick={closeMobileMenu} class="nav-icon-btn" aria-label="Zamknij menu">
 					<XIcon size={24} weight="bold" aria-hidden="true" />
 				</button>
 			</div>
@@ -245,7 +264,9 @@
 		background: var(--ft-surface);
 		border-top: 4px solid var(--ft-cta);
 		border-bottom: 1px solid var(--ft-line);
-		transition: box-shadow 0.2s ease, transform 0.2s ease;
+		transition:
+			box-shadow 0.2s ease,
+			transform 0.2s ease;
 		view-transition-name: navbar;
 	}
 
@@ -279,7 +300,9 @@
 		transition: opacity var(--dur-fast) ease;
 	}
 
-	.nav-logo:hover { opacity: 0.8; }
+	.nav-logo:hover {
+		opacity: 0.8;
+	}
 
 	.nav-logo:focus-visible {
 		outline: 2px solid var(--ft-accent);
@@ -321,7 +344,9 @@
 	}
 
 	@media (min-width: 1024px) {
-		.nav-links { display: flex; }
+		.nav-links {
+			display: flex;
+		}
 	}
 
 	.nav-link {
@@ -336,7 +361,9 @@
 		border-radius: var(--radius-sm);
 		cursor: pointer;
 		text-decoration: none;
-		transition: background-color var(--dur-fast) ease, color var(--dur-fast) ease;
+		transition:
+			background-color var(--dur-fast) ease,
+			color var(--dur-fast) ease;
 	}
 
 	.nav-link:hover {
@@ -374,7 +401,9 @@
 	}
 
 	@media (min-width: 768px) {
-		.nav-search-wrap { display: block; }
+		.nav-search-wrap {
+			display: block;
+		}
 	}
 
 	.mobile-search-bar {
@@ -384,7 +413,9 @@
 		border-bottom: 1px solid var(--ft-line);
 	}
 	@media (min-width: 768px) {
-		.mobile-search-bar { display: none; }
+		.mobile-search-bar {
+			display: none;
+		}
 	}
 
 	/* ── Action icons ── */
@@ -428,7 +459,9 @@
 		}
 	}
 
-	.nav-action-btn:hover { color: var(--ft-accent); }
+	.nav-action-btn:hover {
+		color: var(--ft-accent);
+	}
 
 	.nav-action-icon-wrap {
 		position: relative;
@@ -444,19 +477,37 @@
 		letter-spacing: 0.05em;
 	}
 
-	.mobile-search-btn { display: flex; }
-	@media (min-width: 768px) { .mobile-search-btn { display: none; } }
+	.mobile-search-btn {
+		display: flex;
+	}
+	@media (min-width: 768px) {
+		.mobile-search-btn {
+			display: none;
+		}
+	}
 
 	.nav-icon-btn:focus-visible {
 		outline: 2px solid var(--ft-accent);
 		outline-offset: 2px;
 	}
 
-	.desktop-only { display: none !important; }
-	@media (min-width: 768px) { .desktop-only { display: flex !important; } }
+	.desktop-only {
+		display: none !important;
+	}
+	@media (min-width: 768px) {
+		.desktop-only {
+			display: flex !important;
+		}
+	}
 
-	.mobile-only { display: flex; }
-	@media (min-width: 768px) { .mobile-only { display: none !important; } }
+	.mobile-only {
+		display: flex;
+	}
+	@media (min-width: 768px) {
+		.mobile-only {
+			display: none !important;
+		}
+	}
 
 	/* ── Account dropdown ── */
 	.account-dropdown-wrap {
@@ -479,8 +530,14 @@
 	}
 
 	@keyframes dropdownIn {
-		from { opacity: 0; transform: translateY(-4px); }
-		to { opacity: 1; transform: translateY(0); }
+		from {
+			opacity: 0;
+			transform: translateY(-4px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
 	}
 
 	.account-dropdown-item {
@@ -498,7 +555,9 @@
 		border-radius: var(--radius-sm);
 		cursor: pointer;
 		text-decoration: none;
-		transition: background-color var(--dur-fast) ease, color var(--dur-fast) ease;
+		transition:
+			background-color var(--dur-fast) ease,
+			color var(--dur-fast) ease;
 	}
 
 	.account-dropdown-item:hover {
@@ -532,8 +591,14 @@
 	}
 
 	/* ── Burger ── */
-	.burger { display: flex; }
-	@media (min-width: 768px) { .burger { display: none; } }
+	.burger {
+		display: flex;
+	}
+	@media (min-width: 768px) {
+		.burger {
+			display: none;
+		}
+	}
 
 	.burger-lines {
 		display: flex;
@@ -547,13 +612,22 @@
 		height: 2px;
 		background: currentColor;
 		border-radius: 1px;
-		transition: transform 0.25s var(--ease-out), opacity 0.25s var(--ease-out);
+		transition:
+			transform 0.25s var(--ease-out),
+			opacity 0.25s var(--ease-out);
 		transform-origin: center;
 	}
 
-	.burger-lines.is-open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
-	.burger-lines.is-open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-	.burger-lines.is-open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+	.burger-lines.is-open span:nth-child(1) {
+		transform: translateY(6px) rotate(45deg);
+	}
+	.burger-lines.is-open span:nth-child(2) {
+		opacity: 0;
+		transform: scaleX(0);
+	}
+	.burger-lines.is-open span:nth-child(3) {
+		transform: translateY(-6px) rotate(-45deg);
+	}
 
 	/* ── Mobile menu ── */
 	.mobile-overlay {
@@ -568,16 +642,26 @@
 	}
 
 	@keyframes mobileSlideIn {
-		from { opacity: 0; transform: translateY(-8px); }
-		to { opacity: 1; transform: translateY(0); }
+		from {
+			opacity: 0;
+			transform: translateY(-8px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.mobile-overlay { animation: none; }
+		.mobile-overlay {
+			animation: none;
+		}
 	}
 
 	@media (min-width: 768px) {
-		.mobile-overlay { display: none; }
+		.mobile-overlay {
+			display: none;
+		}
 	}
 
 	.mobile-menu-header {
@@ -608,7 +692,9 @@
 		font-size: 0.88rem;
 		font-weight: 500;
 		color: var(--ft-text-muted);
-		transition: background-color var(--dur-fast) ease, color var(--dur-fast) ease;
+		transition:
+			background-color var(--dur-fast) ease,
+			color var(--dur-fast) ease;
 		border-radius: var(--radius-sm);
 		border: none;
 		background: none;

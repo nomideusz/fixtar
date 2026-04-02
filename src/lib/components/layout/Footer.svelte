@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { userStore } from '$lib/stores';
+	import { FOOTER_SHOP, FOOTER_LEGAL } from '$lib/config/navigation';
 
 	const year = new Date().getFullYear();
 </script>
@@ -71,11 +72,9 @@
 			<div class="footer-col">
 				<h4 class="footer-col-title">Sklep</h4>
 				<nav class="footer-nav" aria-label="Sklep">
-					<a href="/products">Wszystkie produkty</a>
-					<a href="/deals">Promocje</a>
-					<a href="/blog">Blog</a>
-					<a href="/contact">Kontakt</a>
-					<a href="/about">O nas</a>
+					{#each FOOTER_SHOP as link}
+						<a href={link.href}>{link.label}</a>
+					{/each}
 				</nav>
 			</div>
 
@@ -95,8 +94,9 @@
 			<div class="footer-col">
 				<h4 class="footer-col-title">Informacje</h4>
 				<nav class="footer-nav" aria-label="Informacje">
-					<a href="/regulamin">Regulamin</a>
-					<a href="/polityka-prywatnosci">Polityka prywatności</a>
+					{#each FOOTER_LEGAL as link}
+						<a href={link.href}>{link.label}</a>
+					{/each}
 				</nav>
 			</div>
 		</div>
@@ -154,16 +154,6 @@
 		.footer-grid {
 			grid-template-columns: 2fr 1fr 1fr 1fr;
 			gap: 48px;
-		}
-	}
-
-	.footer-brand-col {
-		grid-column: 1 / -1;
-	}
-
-	@media (min-width: 768px) {
-		.footer-brand-col {
-			grid-column: auto;
 		}
 	}
 
