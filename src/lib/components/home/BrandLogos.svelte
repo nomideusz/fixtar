@@ -15,7 +15,7 @@
 		<div class="brands-marquee">
 			<div class="brands-track">
 				{#each Array(4) as _, idx}
-					<div class="brands-group" aria-hidden={idx > 0 ? "true" : undefined}>
+					<div class="brands-group" aria-hidden={idx > 0 ? 'true' : undefined}>
 						{#each brands as brand (brand.slug + '-' + idx)}
 							<a
 								href="/products?search={brand.name}"
@@ -55,9 +55,8 @@
 		position: relative;
 		mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
 		-webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
-		/* Bleed to edges on mobile */
-		margin: 0 calc(-1 * var(--ft-gutter, clamp(24px, 5vw, 80px)));
-		padding: 0 var(--ft-gutter, clamp(24px, 5vw, 80px));
+		margin-right: calc(-1 * var(--ft-gutter, clamp(24px, 5vw, 80px)));
+		padding-right: var(--ft-gutter, clamp(24px, 5vw, 80px));
 	}
 
 	.brands-track {
@@ -78,8 +77,12 @@
 	}
 
 	@keyframes scroll {
-		0% { transform: translateX(0); }
-		100% { transform: translateX(calc(-100% / 4)); }
+		0% {
+			transform: translateX(0);
+		}
+		100% {
+			transform: translateX(calc(-100% / 4));
+		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
@@ -105,7 +108,9 @@
 		letter-spacing: -0.02em;
 		color: var(--ft-text-muted);
 		text-decoration: none;
-		transition: color 0.15s ease, transform 0.15s ease;
+		transition:
+			color 0.15s ease,
+			transform 0.15s ease;
 		padding: 8px 12px;
 		min-height: 44px;
 		display: flex;
@@ -117,6 +122,4 @@
 		color: var(--ft-accent);
 		transform: translateY(-2px);
 	}
-
-	
 </style>

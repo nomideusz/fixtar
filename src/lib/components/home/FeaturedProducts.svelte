@@ -22,7 +22,7 @@
 		{:else if products.length === 0}
 			<p class="featured-empty">Brak polecanych produktów.</p>
 		{:else}
-			<div class="grid ft-stagger">
+			<div class="ft-stagger grid">
 				{#each products.slice(0, 12) as product (product.id)}
 					<ProductCard {product} />
 				{/each}
@@ -62,7 +62,9 @@
 		text-decoration: none;
 		border-bottom: 2px solid var(--ft-accent);
 		padding-bottom: 2px;
-		transition: color 0.15s ease, border-color 0.15s ease;
+		transition:
+			color 0.15s ease,
+			border-color 0.15s ease;
 	}
 
 	.featured-link:hover {
@@ -77,8 +79,9 @@
 		overflow-x: auto;
 		scrollbar-width: none;
 		scroll-snap-type: x mandatory;
-		margin: 0 calc(-1 * var(--ft-gutter, clamp(24px, 5vw, 80px)));
-		padding: 0 var(--ft-gutter, clamp(24px, 5vw, 80px)) 16px;
+		margin-right: calc(-1 * var(--ft-gutter, clamp(24px, 5vw, 80px)));
+		padding-right: var(--ft-gutter, clamp(24px, 5vw, 80px));
+		padding-bottom: 16px;
 	}
 
 	.grid::-webkit-scrollbar {

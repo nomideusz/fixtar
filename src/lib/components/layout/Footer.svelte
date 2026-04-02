@@ -1,6 +1,12 @@
 <script lang="ts">
 	import { userStore } from '$lib/stores';
 	import { FOOTER_SHOP, FOOTER_LEGAL } from '$lib/config/navigation';
+	import {
+		FacebookLogoIcon,
+		InstagramLogoIcon,
+		YoutubeLogoIcon,
+		TiktokLogoIcon
+	} from 'phosphor-svelte';
 
 	const year = new Date().getFullYear();
 </script>
@@ -20,9 +26,7 @@
 						target="_blank"
 						rel="noopener noreferrer"
 					>
-						<svg width="16" height="16" fill="currentColor" aria-hidden="true">
-							<use href="/sprite.svg#icon-facebook" />
-						</svg>
+						<FacebookLogoIcon size={24} weight="light" aria-hidden="true" />
 					</a>
 					<a
 						href="https://instagram.com"
@@ -31,9 +35,7 @@
 						target="_blank"
 						rel="noopener noreferrer"
 					>
-						<svg width="16" height="16" fill="currentColor" aria-hidden="true">
-							<use href="/sprite.svg#icon-instagram-icon" />
-						</svg>
+						<InstagramLogoIcon size={24} weight="light" aria-hidden="true" />
 					</a>
 					<a
 						href="https://youtube.com"
@@ -42,9 +44,7 @@
 						target="_blank"
 						rel="noopener noreferrer"
 					>
-						<svg width="16" height="16" fill="currentColor" aria-hidden="true">
-							<use href="/sprite.svg#icon-youtube" />
-						</svg>
+						<YoutubeLogoIcon size={24} weight="light" aria-hidden="true" />
 					</a>
 					<a
 						href="https://tiktok.com"
@@ -53,9 +53,7 @@
 						target="_blank"
 						rel="noopener noreferrer"
 					>
-						<svg width="16" height="16" fill="currentColor" aria-hidden="true">
-							<use href="/sprite.svg#icon-tiktok" />
-						</svg>
+						<TiktokLogoIcon size={24} weight="light" aria-hidden="true" />
 					</a>
 				</div>
 			</div>
@@ -103,12 +101,12 @@
 					<span class="pay-text-logo">BLIK</span>
 				</span>
 				<span class="pay-chip" aria-label="Visa">
-					<svg width="32" height="11" fill="currentColor" aria-hidden="true">
+					<svg width="48" height="16" fill="currentColor" aria-hidden="true">
 						<use href="/sprite.svg#icon-visa" />
 					</svg>
 				</span>
 				<span class="pay-chip" aria-label="Mastercard">
-					<svg width="20" height="12" fill="currentColor" aria-hidden="true">
+					<svg width="30" height="18" fill="currentColor" aria-hidden="true">
 						<use href="/sprite.svg#icon-mastercard" />
 					</svg>
 				</span>
@@ -170,16 +168,19 @@
 
 	.footer-social {
 		display: flex;
-		gap: 6px;
+		gap: 16px;
 	}
 
 	.social-link {
-		color: var(--ft-text-faint);
-		transition: color var(--dur-fast) ease;
+		color: var(--ft-text-muted);
+		transition:
+			color var(--dur-fast) ease,
+			transform var(--dur-fast) ease;
 	}
 
 	.social-link:hover {
 		color: var(--ft-dark);
+		transform: translateY(-2px);
 	}
 
 	/* ── Columns ── */
@@ -242,20 +243,20 @@
 	.footer-payments {
 		display: flex;
 		align-items: center;
-		gap: 8px;
+		gap: 16px;
 	}
 
 	.pay-chip {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		height: 28px;
+		height: 36px;
 		color: var(--ft-text-muted);
 	}
 
 	.pay-text-logo {
 		font-family: var(--font-display);
-		font-size: 0.62rem;
+		font-size: 0.72rem;
 		font-weight: 700;
 		letter-spacing: 0.04em;
 		color: var(--ft-text-muted);

@@ -98,15 +98,15 @@
 		sortBy = (e.target as HTMLSelectElement).value;
 		navigateWithFilters();
 	}
-
-
 </script>
 
 <svelte:head>
 	<title>Produkty{selectedCategoryName ? ` — ${selectedCategoryName}` : ''} — FixTar</title>
 	<meta
 		name="description"
-		content="Elektronarzędzia i akcesoria{selectedCategoryName ? ` — ${selectedCategoryName}` : ''}. Szlifierki, wiertarki, piły, młotowiertarki."
+		content="Elektronarzędzia i akcesoria{selectedCategoryName
+			? ` — ${selectedCategoryName}`
+			: ''}. Szlifierki, wiertarki, piły, młotowiertarki."
 	/>
 </svelte:head>
 
@@ -144,12 +144,7 @@
 	<div class="toolbar">
 		<div class="sort-wrap">
 			<label for="product-sort" class="sr-only">Sortuj</label>
-			<select
-				id="product-sort"
-				value={sortBy}
-				onchange={handleSortChange}
-				class="sort-select"
-			>
+			<select id="product-sort" value={sortBy} onchange={handleSortChange} class="sort-select">
 				<option value="name">Nazwa A-Z</option>
 				<option value="price-low">Cena rosnąco</option>
 				<option value="price-high">Cena malejąco</option>
@@ -178,7 +173,11 @@
 			{#if data.totalPages > 1}
 				<nav class="pagination" aria-label="Paginacja">
 					{#if data.currentPage > 1}
-						<button class="page-btn" aria-label="Poprzednia strona" onclick={() => navigateWithFilters({ page: data.currentPage - 1 })}>
+						<button
+							class="page-btn"
+							aria-label="Poprzednia strona"
+							onclick={() => navigateWithFilters({ page: data.currentPage - 1 })}
+						>
 							<CaretLeftIcon aria-hidden="true" />
 						</button>
 					{/if}
@@ -191,13 +190,17 @@
 							<button
 								class="page-btn"
 								class:page-btn--active={pageNum === data.currentPage}
-								onclick={() => navigateWithFilters({ page: pageNum })}
-							>{pageNum}</button>
+								onclick={() => navigateWithFilters({ page: pageNum })}>{pageNum}</button
+							>
 						{/if}
 					{/each}
 
 					{#if data.currentPage < data.totalPages}
-						<button class="page-btn" aria-label="Następna strona" onclick={() => navigateWithFilters({ page: data.currentPage + 1 })}>
+						<button
+							class="page-btn"
+							aria-label="Następna strona"
+							onclick={() => navigateWithFilters({ page: data.currentPage + 1 })}
+						>
 							<CaretRightIcon aria-hidden="true" />
 						</button>
 					{/if}
@@ -205,9 +208,21 @@
 			{/if}
 		{:else}
 			<div class="empty-state">
-				<p>Nie znaleziono produktów{selectedCategoryName ? ` w kategorii "${selectedCategoryName}"` : ''}.</p>
+				<p>
+					Nie znaleziono produktów{selectedCategoryName
+						? ` w kategorii "${selectedCategoryName}"`
+						: ''}.
+				</p>
 				{#if searchQuery || selectedCategory}
-					<button class="clear-btn" onclick={() => { searchQuery = ''; selectedCategory = ''; sortBy = 'name'; goto('/products'); }}>
+					<button
+						class="clear-btn"
+						onclick={() => {
+							searchQuery = '';
+							selectedCategory = '';
+							sortBy = 'name';
+							goto('/products');
+						}}
+					>
 						Wyczyść filtry
 					</button>
 				{/if}
@@ -262,9 +277,9 @@
 		-webkit-overflow-scrolling: touch;
 		scrollbar-width: none;
 		scroll-snap-type: x mandatory;
-		/* bleed into gutter for edge-to-edge scroll on mobile */
-		margin: 0 calc(-1 * var(--ft-gutter, clamp(24px, 5vw, 80px)));
-		padding: 0 var(--ft-gutter, clamp(24px, 5vw, 80px));
+		margin-right: calc(-1 * var(--ft-gutter, clamp(24px, 5vw, 80px)));
+		padding-right: var(--ft-gutter, clamp(24px, 5vw, 80px));
+		padding-bottom: 8px;
 	}
 
 	.chip-scroll::-webkit-scrollbar {
@@ -286,7 +301,10 @@
 		color: var(--ft-text-muted);
 		cursor: pointer;
 		white-space: nowrap;
-		transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+		transition:
+			color 0.15s ease,
+			background 0.15s ease,
+			border-color 0.15s ease;
 		min-height: 44px;
 	}
 
@@ -379,7 +397,9 @@
 		border: 1px solid var(--ft-line);
 		border-radius: 2px;
 		cursor: pointer;
-		transition: border-color 0.15s ease, color 0.15s ease;
+		transition:
+			border-color 0.15s ease,
+			color 0.15s ease;
 	}
 
 	.page-btn:hover {
@@ -411,7 +431,9 @@
 		border-radius: 2px;
 		cursor: pointer;
 		min-height: 44px;
-		transition: border-color 0.15s ease, color 0.15s ease;
+		transition:
+			border-color 0.15s ease,
+			color 0.15s ease;
 	}
 
 	.clear-btn:hover {

@@ -168,15 +168,16 @@
 		overflow-x: auto;
 		scrollbar-width: none;
 		scroll-snap-type: x mandatory;
-		margin: 0 calc(-1 * var(--ft-gutter, clamp(24px, 5vw, 80px)));
-		padding: 0 var(--ft-gutter, clamp(24px, 5vw, 80px)) 16px;
+		margin-right: calc(-1 * var(--ft-gutter, clamp(24px, 5vw, 80px)));
+		padding-right: var(--ft-gutter, clamp(24px, 5vw, 80px));
+		padding-bottom: 16px;
 	}
 
 	.testimonials-grid::-webkit-scrollbar {
 		display: none;
 	}
 
-	@media (min-width: 640px) {
+	@media (min-width: 768px) {
 		.testimonials-grid {
 			display: grid;
 			grid-template-columns: repeat(2, 1fr);

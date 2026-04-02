@@ -32,8 +32,6 @@
 		'pneumatyczne-i-budowlane': { src: imgProfessional, alt: 'Narzędzia dla profesjonalistów' },
 		'ogrod-i-akcesoria': { src: imgGarden, alt: 'Narzędzia ogrodowe i akcesoria' }
 	};
-
-	
 </script>
 
 <section class="categories ft-section">
@@ -88,6 +86,7 @@
 		border-left: 4px solid var(--ft-accent);
 		padding-left: 14px;
 		text-transform: uppercase;
+		line-height: 1;
 	}
 
 	.categories-grid {
@@ -97,8 +96,9 @@
 		overflow-x: auto;
 		scrollbar-width: none;
 		scroll-snap-type: x mandatory;
-		margin: 0 calc(-1 * var(--ft-gutter, clamp(24px, 5vw, 80px)));
-		padding: 0 var(--ft-gutter, clamp(24px, 5vw, 80px)) 16px;
+		margin-right: calc(-1 * var(--ft-gutter, clamp(24px, 5vw, 80px)));
+		padding-right: var(--ft-gutter, clamp(24px, 5vw, 80px));
+		padding-bottom: 16px;
 	}
 	.categories-grid::-webkit-scrollbar {
 		display: none;
@@ -208,12 +208,9 @@
 		color: var(--ft-accent);
 	}
 
-	
-
 	@media (min-width: 640px) {
 		.cat-card {
 			flex: auto;
 		}
 	}
 </style>
-

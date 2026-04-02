@@ -41,9 +41,10 @@
 				<EnvelopeIcon size={28} weight="light" />
 			</div>
 
-			<h2 class="newsletter-title">Zapisz się i otrzymaj <span class="highlight">5% rabatu</span></h2>
+			<h2 class="newsletter-title">Zyskaj <span class="highlight">5% rabatu</span> na start</h2>
 			<p class="newsletter-desc">
-				Dołącz do naszego newslettera — bądź pierwszy, który pozna nowe produkty, promocje i porady.
+				Dołącz do newslettera FixTar. Bądź na bieżąco z nowościami, promocjami i sprzętem dla
+				profesjonalistów.
 			</p>
 
 			{#if status === 'success'}
@@ -70,11 +71,7 @@
 								aria-invalid={status === 'error'}
 								disabled={status === 'loading'}
 							/>
-							<button
-								type="submit"
-								class="newsletter-btn"
-								disabled={status === 'loading'}
-							>
+							<button type="submit" class="newsletter-btn" disabled={status === 'loading'}>
 								{#if status === 'loading'}
 									<span class="spinner" aria-hidden="true"></span>
 									Wysyłanie…
@@ -91,7 +88,7 @@
 				</form>
 
 				<p class="newsletter-fine">
-					Bez spamu. Możesz zrezygnować w każdej chwili.
+					Tylko konkrety, zero spamu. Możesz wypisać się w dowolnym momencie.
 				</p>
 			{/if}
 		</div>
@@ -207,7 +204,9 @@
 		border: none;
 		cursor: pointer;
 		white-space: nowrap;
-		transition: background-color 0.2s ease, transform 0.1s ease;
+		transition:
+			background-color 0.2s ease,
+			transform 0.1s ease;
 		flex-shrink: 0;
 	}
 
@@ -234,7 +233,9 @@
 	}
 
 	@keyframes spin {
-		to { transform: rotate(360deg); }
+		to {
+			transform: rotate(360deg);
+		}
 	}
 
 	.error-msg {

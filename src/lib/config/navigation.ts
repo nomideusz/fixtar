@@ -12,7 +12,7 @@ export const MAIN_NAV: NavLink[] = [
 ];
 
 export const FOOTER_SHOP: NavLink[] = [
-	{ href: '/products', label: 'Wszystkie produkty' },
+	{ href: '/products', label: 'Produkty' },
 	{ href: '/deals', label: 'Promocje' },
 	{ href: '/blog', label: 'Blog' },
 	{ href: '/contact', label: 'Kontakt' },
