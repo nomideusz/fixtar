@@ -16,7 +16,12 @@
 		<div class="mb-8 flex items-end justify-between">
 			<div>
 				<h4 class="ft-label mb-2">Polecane</h4>
-				<h2 class="text-2xl font-bold text-[--ft-text-strong]" style="font-family:var(--font-display);letter-spacing:-0.02em">Podobne produkty</h2>
+				<h2
+					class="text-2xl font-bold text-[--ft-text-strong]"
+					style="font-family:var(--font-display);letter-spacing:-0.02em"
+				>
+					Podobne produkty
+				</h2>
 			</div>
 			<a href="/products?category={categorySlug}" class="see-all">
 				Zobacz wszystkie
@@ -36,36 +41,49 @@
 <style>
 	.carousel {
 		display: flex;
-		gap: 20px;
+		flex-wrap: nowrap;
+		gap: 16px;
 		overflow-x: auto;
+		scrollbar-width: none;
 		scroll-snap-type: x mandatory;
 		-webkit-overflow-scrolling: touch;
-		padding-bottom: 8px;
-		scrollbar-width: thin;
-		scrollbar-color: var(--ft-line) transparent;
+		margin-right: calc(-1 * var(--ft-gutter, clamp(24px, 5vw, 80px)));
+		padding-right: var(--ft-gutter, clamp(24px, 5vw, 80px));
+		padding-bottom: 16px;
 	}
 
 	.carousel::-webkit-scrollbar {
-		height: 6px;
-	}
-
-	.carousel::-webkit-scrollbar-track {
-		background: transparent;
-	}
-
-	.carousel::-webkit-scrollbar-thumb {
-		background: var(--ft-line);
-		border-radius: 3px;
+		display: none;
 	}
 
 	.card {
-		flex: 0 0 280px;
+		flex: 0 0 75%;
 		scroll-snap-align: start;
 	}
 
 	@media (min-width: 640px) {
+		.carousel {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			margin: 0;
+			padding: 0;
+			overflow: visible;
+		}
+
 		.card {
-			flex: 0 0 300px;
+			flex: auto;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.carousel {
+			grid-template-columns: repeat(4, 1fr);
+		}
+	}
+
+	@media (min-width: 1440px) {
+		.carousel {
+			grid-template-columns: repeat(6, 1fr);
 		}
 	}
 
