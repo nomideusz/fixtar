@@ -77,7 +77,7 @@
 			{:else}
 				<div class="hud-pill hud-pill--out" title="Niedostępny">
 					<span class="status-dot status-dot--out" aria-hidden="true"></span>
-					<span class="hud-text">Brak</span>
+					<span class="hud-text">Brak w magazynie</span>
 				</div>
 			{/if}
 		</div>
@@ -96,12 +96,11 @@
 		<div class="overlay-bottom-right">
 			{#if actions}
 				{@render actions()}
-			{:else}
+			{:else if inStock}
 				<button
 					class="floating-cart-btn"
 					class:is-added={isAdded}
 					onclick={addToCart}
-					disabled={!inStock}
 					aria-label="Dodaj do koszyka"
 					title="Dodaj do koszyka"
 				>

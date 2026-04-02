@@ -156,12 +156,14 @@ export async function getAllProducts(opts: {
 		where += ' AND in_stock > 0';
 	}
 
-	let orderBy = 'ORDER BY name ASC';
-	if (sort === 'name' || sort === 'name-asc') orderBy = 'ORDER BY name ASC';
-	else if (sort === 'name-desc') orderBy = 'ORDER BY name DESC';
-	else if (sort === 'price-asc' || sort === 'price-low') orderBy = 'ORDER BY price ASC';
-	else if (sort === 'price-desc' || sort === 'price-high') orderBy = 'ORDER BY price DESC';
-	else if (sort === 'newest') orderBy = 'ORDER BY updated_at DESC';
+	let orderBy = 'ORDER BY (in_stock > 0) DESC, name ASC';
+	if (sort === 'name' || sort === 'name-asc') orderBy = 'ORDER BY (in_stock > 0) DESC, name ASC';
+	else if (sort === 'name-desc') orderBy = 'ORDER BY (in_stock > 0) DESC, name DESC';
+	else if (sort === 'price-asc' || sort === 'price-low')
+		orderBy = 'ORDER BY (in_stock > 0) DESC, price ASC';
+	else if (sort === 'price-desc' || sort === 'price-high')
+		orderBy = 'ORDER BY (in_stock > 0) DESC, price DESC';
+	else if (sort === 'newest') orderBy = 'ORDER BY (in_stock > 0) DESC, updated_at DESC';
 
 	const countResult = await db.execute({
 		sql: `SELECT COUNT(*) as c FROM products ${where}`,
@@ -211,7 +213,8 @@ export async function getRelatedProducts(
 	const placeholders = nativeSlugs.map(() => '?').join(',');
 	const result = await db.execute({
 		sql: `SELECT id, name, slug, description, price, original_price, image, category, category_slug, tags, in_stock, sku, ean, weight
-		      FROM products WHERE category_slug IN (${placeholders}) AND id != ? AND price > 0 LIMIT ?`,
+		      FROM products WHERE category_slug IN (${placeholders}) AND id != ? AND price > 0
+		      ORDER BY (in_stock > 0) DESC LIMIT ?`,
 		args: [...nativeSlugs, excludeId, limit]
 	});
 	return result.rows as unknown as DBProduct[];
