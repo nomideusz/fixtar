@@ -28,7 +28,7 @@
 		{
 			headline: 'Młotowiertarka Eurotec PRO-EX',
 			subline: 'Maksymalna siła uderzenia do najcięższych prac w betonie.',
-			href: '/deals',
+			href: '/products/mlotowiertarka-elektryczna-rh-2600-z1a4-26',
 			image: heroConstruction,
 			alt: 'Młotowiertarka Eurotec na budowie',
 			mobilePosition: '65% center',
@@ -37,7 +37,7 @@
 		{
 			headline: 'Szlifierka Kątowa Eurotec 125mm',
 			subline: 'Iskry profesjonalizmu. Moc 2000W do najcięższych przecinań.',
-			href: '/deals',
+			href: '/products/szlifierka-katowa-euag-1800-ag-115g2-1',
 			image: bannerGrinder1,
 			alt: 'Szlifierka kątowa Eurotec w akcji',
 			mobilePosition: '70% center',
@@ -46,7 +46,7 @@
 		{
 			headline: 'System Cordless PRO',
 			subline: 'Pracuj bez kabli, bez ograniczeń. Moc sieciowa w wersji akumulatorowej.',
-			href: '/products',
+			href: '/products/wkretarko-wiertarka-aku-z-udarem-chd21-jrcd2107-20st',
 			image: bannerWorkshopDrill2,
 			alt: 'Warsztatowa wiertarka akumulatorowa',
 			mobilePosition: '45% center',
@@ -55,7 +55,7 @@
 		{
 			headline: 'Wyposażenie Warsztatu',
 			subline: 'Kompletne zestawy i akcesoria, które podniosą Twój profesjonalizm.',
-			href: '/products',
+			href: '/products/zestaw-kluczy-300el-eu-187c',
 			image: heroForest,
 			alt: 'Mężczyzna rąbiący drewno siekierą',
 			mobilePosition: '55% center',
@@ -64,7 +64,7 @@
 		{
 			headline: 'Klucz Udarowy Pneumatyczny',
 			subline: 'Niezastąpiony w serwisie opon. Moment obrotowy, który nie zna granic.',
-			href: '/products',
+			href: '/products/klucz-udarowy-kbv750-dsiw-450',
 			image: bannerImpact1,
 			alt: 'Klucz udarowy przy kole samochodu',
 			mobilePosition: '35% center',
