@@ -46,7 +46,7 @@
 
 		<!-- Total Price -->
 		<div class="flex items-center justify-between rounded-xl border border-[--ft-line] bg-[--ft-surface] px-4 py-4">
-			<span class="text-sm font-semibold uppercase tracking-wider text-[--ft-text-muted]">Łączna cena:</span>
+			<span class="text-sm font-semibold  tracking-wider text-[--ft-text-muted]">Łączna cena:</span>
 			<span class="text-money text-2xl font-bold">{(price * quantity).toFixed(2).replace('.', ',')} zł</span>
 		</div>
 

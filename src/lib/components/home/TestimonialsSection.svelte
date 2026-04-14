@@ -123,11 +123,11 @@
 
 	.stat-value {
 		display: block;
-		font-family: var(--font-display);
+		font-family: var(--font-sans);
 		font-size: clamp(1.8rem, 4vw, 2.5rem);
-		font-weight: 800;
+		font-weight: 600;
 		color: var(--ft-text-strong);
-		letter-spacing: -0.02em;
+		letter-spacing: -0.01em;
 		line-height: 1;
 		font-variant-numeric: tabular-nums;
 	}
@@ -136,8 +136,8 @@
 		display: block;
 		font-size: 0.72rem;
 		font-family: var(--font-mono);
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
+		text-transform: none;
+		letter-spacing: 0;
 		color: var(--ft-text-muted);
 		margin-top: 8px;
 		font-weight: 600;
@@ -150,13 +150,13 @@
 	}
 
 	.testimonials-title {
-		font-family: var(--font-display);
+		font-family: var(--font-sans);
 		font-size: clamp(1.4rem, 3vw, 1.8rem);
-		font-weight: 800;
+		font-weight: 600;
 		color: var(--ft-text-strong);
-		letter-spacing: -0.02em;
+		letter-spacing: -0.01em;
 		margin-top: 8px;
-		text-transform: uppercase;
+		text-transform: none;
 		line-height: 1.1;
 	}
 
@@ -205,7 +205,7 @@
 		animation: ft-fade-up 0.4s var(--ease-out) both;
 		border: 1px solid var(--ft-line);
 		background: var(--ft-surface);
-		border-radius: var(--radius-sm);
+		border-radius: var(--radius-full);
 		transition:
 			border-color 0.2s ease,
 			box-shadow 0.2s ease;
@@ -239,12 +239,12 @@
 	.author-avatar {
 		width: 40px;
 		height: 40px;
-		border-radius: var(--radius-sm);
+		border-radius: var(--radius-full);
 		background: var(--ft-text-strong);
 		color: var(--ft-surface);
-		font-family: var(--font-display);
+		font-family: var(--font-sans);
 		font-size: 1rem;
-		font-weight: 800;
+		font-weight: 600;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -261,18 +261,18 @@
 	.author-name {
 		display: block;
 		font-size: 0.85rem;
-		font-family: var(--font-display);
-		font-weight: 700;
+		font-family: var(--font-sans);
+		font-weight: 600;
 		color: var(--ft-text-strong);
-		text-transform: uppercase;
+		text-transform: none;
 	}
 
 	.author-role {
 		display: block;
 		font-size: 0.7rem;
 		font-family: var(--font-mono);
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
+		text-transform: none;
+		letter-spacing: 0;
 		color: var(--ft-text-muted);
 	}
 </style>

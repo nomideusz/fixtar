@@ -1,7 +1,7 @@
 /* ==========================================================================
    FixTar — Minimal Design System
-   Inspired by Honda Motorcycles: bold, mechanical, premium.
-   4-color hierarchy: Black (authority) + Gray (structure) + Red (action) + Blue (accent).
+   Inspired by Scandinavian minimalism: bold, mechanical, premium.
+   Soft 4-color hierarchy: Slate, Blue, White, Cool Gray.
    Plus Jakarta Sans headlines + Inter body.
    ========================================================================== */
 
@@ -13,13 +13,13 @@
 
 @theme {
 	/* Honda HRC-inspired Premium Color System: Pure White / Carbon Black / Metallic Gray / Racing Red / Deep Navy */
-	--color-brand-500: #e31837; /* High-Octane Racing Red */
-	--color-brand-600: #c2122c;
-	--color-brand-700: #9e0e23;
+	--color-brand-500: #3b82f6; /* High-Octane Racing Red */
+	--color-brand-600: #2563eb;
+	--color-brand-700: #1d4ed8;
 
-	--color-cta: #e31837; /* Signal Red - primary actions */
-	--color-cta-hover: #c2122c;
-	--color-cta-light: rgba(227, 24, 55, 0.08);
+	--color-cta: #3b82f6; /* Signal Red - primary actions */
+	--color-cta-hover: #2563eb;
+	--color-cta-light: rgba(59, 130, 246, 0.08);
 
 	/* Honda HRC Aggressive: Red, Black, Silver */
 	--color-blue: #0a0f1a; /* Carbon Black */
@@ -30,19 +30,19 @@
 
 	--color-success: #16a34a;
 	--color-warning: #f59e0b;
-	--color-danger: #e31837;
+	--color-danger: #3b82f6;
 
-	--font-sans: 'Barlow', system-ui, -apple-system, sans-serif;
-	--font-display: 'Chakra Petch', system-ui, -apple-system, sans-serif;
-	--font-mono: 'Barlow', system-ui, sans-serif;
+	--font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+	--font-display: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+	--font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
 	/* Rigid Geometry */
-	--radius-sm: 0px;
-	--radius-md: 0px;
-	--radius-lg: 0px;
-	--radius-xl: 0px;
-	--radius-2xl: 0px;
-	--radius-3xl: 0px;
+	--radius-sm: 0.375rem;
+	--radius-md: 0.75rem;
+	--radius-lg: 1rem;
+	--radius-xl: 1.5rem;
+	--radius-2xl: 2rem;
+	--radius-3xl: 3rem;
 	--radius-full: 9999px;
 }
 
@@ -54,31 +54,32 @@
 	/* ── Core palette — pure white for that sterile showroom feel ── */
 	--ft-bg: #ffffff;
 	--ft-surface: #ffffff;
-	--ft-dark: #0a0f1a; /* Carbon Black/Navy */
-	--ft-text: #3e4652; /* Cool gray body text */
-	--ft-text-strong: #0a0f1a;
-	--ft-text-muted: #8492a6;
-	--ft-text-faint: #cbd5e0;
+	--ft-dark: #1f2937; /* Carbon Black/Navy */
+	--ft-text: #4b5563; /* Cool gray body text */
+	--ft-text-strong: #111827;
+	--ft-text-muted: #6b7280;
+	--ft-text-faint: #9ca3af;
 
 	/* ── Action colors ── */
-	--ft-cta: #e31837; /* Racing Red */
-	--ft-cta-hover: #c2122c;
-	--ft-cta-light: rgba(227, 24, 55, 0.08);
+	--ft-cta: #ccff00; /* Volt Green/Yellow */
+	--ft-cta-hover: #b3e600; /* Darker Volt Green */
+	--ft-cta-light: rgba(204, 255, 0, 0.15);
+	--ft-cta-text: #111827;
 
-	--ft-accent: #0a0f1a; /* Carbon Black */
-	--ft-accent-hover: #1f2937;
+	--ft-accent: #111827; /* Carbon Black */
+	--ft-accent-hover: #374151;
 
 	--ft-warm: #8c96a6; /* Replaced clashing tan/beige with metallic sliver/gray */
 	--ft-warm-bg: #f4f5f7; /* Crisp metallic surface */
 
 	/* ── Surfaces & borders ── */
-	--ft-line: #e2e8f0;
-	--ft-frost: #f7fafc;
+	--ft-line: #f3f4f6;
+	--ft-frost: #f9fafb;
 
 	/* ── Elevation — Flat borders instead of shadows ── */
-	--ft-shadow-sm: none;
-	--ft-shadow-md: none;
-	--ft-shadow-lg: none;
+	--ft-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+	--ft-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+	--ft-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
 
 	/* ── Layout ── */
 	--ft-container: 1760px;
@@ -209,9 +210,9 @@
 	h3,
 	h4 {
 		font-family: var(--font-display);
-		font-weight: 700;
+		font-weight: 600;
 		color: var(--ft-dark);
-		letter-spacing: -0.03em;
+		letter-spacing: -0.015em;
 	}
 
 	h1 {
@@ -235,7 +236,7 @@
 		font-family: var(--font-mono);
 		font-size: 0.68rem;
 		font-weight: 600;
-		text-transform: uppercase;
+		text-transform: none;
 		letter-spacing: 0.12em;
 		color: var(--ft-accent);
 	}
@@ -244,8 +245,8 @@
 	.ft-label {
 		font-family: var(--font-mono);
 		font-size: 0.68rem;
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
+		text-transform: none;
+		letter-spacing: 0;
 		color: var(--ft-accent);
 		font-weight: 600;
 	}
@@ -255,13 +256,17 @@
 		background: var(--ft-surface);
 		border: 1px solid var(--ft-line);
 		border-radius: var(--radius-md);
+		box-shadow: var(--ft-shadow-sm);
 		transition:
 			border-color var(--dur-med) ease,
-			box-shadow var(--dur-med) ease;
+			box-shadow var(--dur-med) ease,
+			transform var(--dur-med) ease;
 	}
 
 	.ft-card:hover {
-		border-color: var(--ft-accent);
+		border-color: var(--ft-line);
+		box-shadow: var(--ft-shadow-md);
+		transform: translateY(-2px);
 	}
 
 	/* ── Staggered fade-in ── */
@@ -296,13 +301,13 @@
 		background-color: var(--ft-accent); /* Carbon Black in Light Mode, White in Dark Mode */
 		color: var(--ft-surface); /* Inverse of accent intuitively, but we map to surface for ease */
 		font-family: var(--font-display);
-		font-weight: 700;
+		font-weight: 600;
 		font-size: 0.78rem;
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
+		text-transform: none;
+		letter-spacing: 0;
 		padding: 14px 32px;
 		border: 1px solid var(--ft-accent);
-		border-radius: var(--radius-sm);
+		border-radius: var(--radius-full);
 		cursor: pointer;
 		transition:
 			background-color var(--dur-fast) ease,
@@ -323,15 +328,15 @@
 		justify-content: center;
 		gap: 8px;
 		background-color: var(--ft-cta);
-		color: #ffffff;
+		color: var(--ft-cta-text);
 		font-family: var(--font-display);
-		font-weight: 700;
+		font-weight: 600;
 		font-size: 0.78rem;
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
+		text-transform: none;
+		letter-spacing: 0;
 		padding: 14px 32px;
 		border: 1px solid var(--ft-cta);
-		border-radius: var(--radius-sm);
+		border-radius: var(--radius-full);
 		cursor: pointer;
 		transition:
 			background-color var(--dur-fast) ease,
@@ -353,13 +358,13 @@
 		background: transparent;
 		color: var(--ft-dark);
 		font-family: var(--font-display);
-		font-weight: 700;
+		font-weight: 600;
 		font-size: 0.78rem;
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
+		text-transform: none;
+		letter-spacing: 0;
 		padding: 14px 32px;
 		border: 1px solid var(--ft-line);
-		border-radius: var(--radius-sm);
+		border-radius: var(--radius-full);
 		cursor: pointer;
 		transition:
 			border-color var(--dur-fast) ease,
@@ -375,7 +380,7 @@
 		width: 100%;
 		padding: 0.75rem;
 		border: 1px solid var(--ft-line);
-		border-radius: var(--radius-sm);
+		border-radius: var(--radius-full);
 		background-color: var(--ft-surface);
 		color: var(--ft-dark);
 		font-family: var(--font-sans);
@@ -387,7 +392,7 @@
 
 	.input:focus {
 		border-color: var(--ft-accent);
-		box-shadow: 0 0 0 3px rgba(0, 80, 160, 0.1);
+		box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 	}
 }
 
@@ -453,7 +458,7 @@
 	}
 
 	.text-money {
-		color: var(--ft-cta);
+		color: var(--ft-accent);
 		font-variant-numeric: tabular-nums;
 	}
 }

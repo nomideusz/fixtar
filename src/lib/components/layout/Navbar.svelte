@@ -210,7 +210,7 @@
 		top: 0;
 		z-index: 50;
 		background: var(--ft-surface);
-		border-top: 4px solid var(--ft-cta);
+		
 		border-bottom: 1px solid var(--ft-line);
 		transition:
 			box-shadow 0.2s ease,
@@ -302,14 +302,12 @@
 
 	.nav-link {
 		position: relative;
-		font-family: var(--font-display);
-		font-size: 0.75rem;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
+		font-family: var(--font-sans);
+		font-size: 0.95rem;
+		font-weight: 500;
 		color: var(--ft-text-strong);
-		padding: 8px 6px;
-		border-radius: var(--radius-sm);
+		padding: 8px 12px;
+		border-radius: var(--radius-full);
 		cursor: pointer;
 		text-decoration: none;
 		transition:
@@ -319,9 +317,19 @@
 
 	@media (min-width: 768px) {
 		.nav-link {
-			font-size: 0.88rem;
-			padding: 10px 14px;
-		}
+		position: relative;
+		font-family: var(--font-sans);
+		font-size: 0.95rem;
+		font-weight: 500;
+		color: var(--ft-text-strong);
+		padding: 8px 12px;
+		border-radius: var(--radius-full);
+		cursor: pointer;
+		text-decoration: none;
+		transition:
+			background-color var(--dur-fast) ease,
+			color var(--dur-fast) ease;
+	}
 	}
 
 	.nav-link:hover {
@@ -331,7 +339,7 @@
 
 	.nav-link.is-active {
 		color: var(--ft-accent);
-		font-weight: 800;
+		font-weight: 600;
 	}
 
 	.nav-link:focus-visible {
@@ -445,10 +453,10 @@
 	}
 
 	.nav-action-label {
-		font-size: 0.65rem;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
+		font-size: 0.8rem;
+		font-weight: 500;
+		text-transform: none;
+		letter-spacing: 0;
 	}
 
 	.mobile-search-btn {
@@ -550,36 +558,50 @@
 		justify-content: center;
 		gap: 6px;
 		min-height: 40px;
-		padding: 0 12px;
+		padding: 0 16px;
 		margin-left: 4px;
-		border-radius: 0;
-		color: #ffffff;
+		border-radius: var(--radius-full);
+		color: var(--ft-cta-text);
 		background: var(--ft-cta);
-		border: 2px solid var(--ft-cta);
+		border: 1px solid var(--ft-cta);
 		cursor: pointer;
 		text-decoration: none;
 		position: relative;
-		transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-		box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.1);
+		transition: all 0.2s ease;
+		box-shadow: var(--ft-shadow-md);
 	}
 
 	@media (min-width: 768px) {
 		.nav-cart-btn {
-			margin-left: 12px;
-			padding: 0 16px;
-		}
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 6px;
+		min-height: 40px;
+		padding: 0 16px;
+		margin-left: 4px;
+		border-radius: var(--radius-full);
+		color: var(--ft-cta-text);
+		background: var(--ft-cta);
+		border: 1px solid var(--ft-cta);
+		cursor: pointer;
+		text-decoration: none;
+		position: relative;
+		transition: all 0.2s ease;
+		box-shadow: var(--ft-shadow-md);
+	}
 	}
 
 	.nav-cart-btn:hover {
-		background: #ffffff;
-		color: var(--ft-cta);
-		transform: scale(1.05);
-		box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.15);
+		background: var(--ft-cta-hover);
+		color: var(--ft-cta-text);
+		transform: translateY(-1px);
+		box-shadow: var(--ft-shadow-lg);
 	}
 
 	.nav-cart-btn:active {
-		transform: scale(0.95);
-		box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.1);
+		transform: translateY(0);
+		box-shadow: var(--ft-shadow-sm);
 	}
 
 	/* ── Cart badge ── */
@@ -593,9 +615,9 @@
 		align-items: center;
 		justify-content: center;
 		background: #ffffff;
-		color: var(--ft-cta);
-		font-size: 0.65rem;
-		font-weight: 800;
+		color: var(--ft-accent);
+		font-size: 0.8rem;
+		font-weight: 600;
 		border-radius: var(--radius-full);
 		padding: 0 4px;
 		line-height: 1;
@@ -609,7 +631,7 @@
 
 	.nav-cart-btn:hover .cart-badge {
 		background: var(--ft-cta);
-		color: #ffffff;
-		border-color: #ffffff;
+		color: var(--ft-cta-text);
+		border-color: var(--ft-cta-text);
 	}
 </style>

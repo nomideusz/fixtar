@@ -36,9 +36,9 @@
   },
   {
     "dbId": "bl-82332715",
-    "name": "ZESTAW KLUCZY 300EL. EU-187C",
+    "name": "ZESTAW KLUCZY EU-187C",
     "category": "other",
-    "filename": "zestaw-kluczy-300el-eu-187c.webp",
+    "filename": "zestaw-kluczy-eu-187c.webp",
     "prompt": "Professional e-commerce product photo of a professional mechanic tool set in blow-molded carry case, 300 pieces, sockets wrenches bits, professional color scheme. Isolated on pure white background. Studio lighting, soft shadows. Front-facing view, slightly elevated angle. High detail, sharp focus. Clean, minimal, no text or watermarks. 1024x1024px."
   },
   {
@@ -168,13 +168,6 @@
     "prompt": "Professional e-commerce product photo of a szlifierko-ostrzałka stołowa 200mm kbg1800, professional color scheme. Isolated on pure white background. Studio lighting, soft shadows. Front-facing view, slightly elevated angle. High detail, sharp focus. Clean, minimal, no text or watermarks. 1024x1024px."
   },
   {
-    "dbId": "bl-505452640",
-    "name": "SZLIFIERKO-OSTRZAŁKA STOŁOWA 200MM ZHBG1800",
-    "category": "other",
-    "filename": "szlifierko-ostrzalka-stolowa-200mm-zhbg1800.webp",
-    "prompt": "Professional e-commerce product photo of a szlifierko-ostrzałka stołowa 200mm zhbg1800, professional color scheme. Isolated on pure white background. Studio lighting, soft shadows. Front-facing view, slightly elevated angle. High detail, sharp focus. Clean, minimal, no text or watermarks. 1024x1024px."
-  },
-  {
     "dbId": "bl-506976004",
     "name": "WĄŻ DO KOMPRESORA 15m 10x17",
     "category": "other",
@@ -274,10 +267,10 @@
   },
   {
     "dbId": "bl-537740792",
-    "name": "PILARKA TARCZOWA KCS2800  KCS2800/M1Y-YH4-185D",
+    "name": "PILARKA TARCZOWA KCS2800/M1Y-YH4-185D",
     "category": "other",
-    "filename": "pilarka-tarczowa-kcs2800-kcs2800-m1y-yh4-185d.webp",
-    "prompt": "Professional e-commerce product photo of a pilarka tarczowa kcs2800 kcs2800/m1y-yh4-185d, professional color scheme. Isolated on pure white background. Studio lighting, soft shadows. Front-facing view, slightly elevated angle. High detail, sharp focus. Clean, minimal, no text or watermarks. 1024x1024px."
+    "filename": "pilarka-tarczowa-kcs2800-m1y-yh4-185d.webp",
+    "prompt": "Professional e-commerce product photo of a pilarka tarczowa kcs2800/m1y-yh4-185d, professional color scheme. Isolated on pure white background. Studio lighting, soft shadows. Front-facing view, slightly elevated angle. High detail, sharp focus. Clean, minimal, no text or watermarks. 1024x1024px."
   },
   {
     "dbId": "bl-537742463",
@@ -306,5 +299,40 @@
     "category": "other",
     "filename": "wiertarka-udarowa-kid241-bsq7016.webp",
     "prompt": "Professional e-commerce product photo of a wiertarka udarowa kid241/bsq7016, professional color scheme. Isolated on pure white background. Studio lighting, soft shadows. Front-facing view, slightly elevated angle. High detail, sharp focus. Clean, minimal, no text or watermarks. 1024x1024px."
+  },
+  {
+    "dbId": "bl-557769093",
+    "name": "WKRĘTARKA AKUMULATOROWA STCD1680U/KX72002",
+    "category": "other",
+    "filename": "wkretarka-akumulatorowa-stcd1680u-kx72002.webp",
+    "prompt": "Professional e-commerce product photo of a wkrętarka akumulatorowa stcd1680u/kx72002, professional color scheme. Isolated on pure white background. Studio lighting, soft shadows. Front-facing view, slightly elevated angle. High detail, sharp focus. Clean, minimal, no text or watermarks. 1024x1024px."
+  },
+  {
+    "dbId": "bl-559577166",
+    "name": "PIŁA ŁAŃCUCHOWA 2 AKUMULATOROWA BVCDCH01 / NT40BCS01",
+    "category": "other",
+    "filename": "pila-lancuchowa-2-akumulatorowa-bvcdch01-nt40bcs01.webp",
+    "prompt": "Professional e-commerce product photo of a piła łańcuchowa 2 akumulatorowa bvcdch01 / nt40bcs01, professional color scheme. Isolated on pure white background. Studio lighting, soft shadows. Front-facing view, slightly elevated angle. High detail, sharp focus. Clean, minimal, no text or watermarks. 1024x1024px."
+  },
+  {
+    "dbId": "bl-559580028",
+    "name": "DMUCHAWA AKUMULATOROWA BVCDBL01 / NT20BBL01",
+    "category": "other",
+    "filename": "dmuchawa-akumulatorowa-bvcdbl01-nt20bbl01.webp",
+    "prompt": "Professional e-commerce product photo of a dmuchawa akumulatorowa bvcdbl01 / nt20bbl01, professional color scheme. Isolated on pure white background. Studio lighting, soft shadows. Front-facing view, slightly elevated angle. High detail, sharp focus. Clean, minimal, no text or watermarks. 1024x1024px."
+  },
+  {
+    "dbId": "bl-563208900",
+    "name": "KOMPRESOR OLEJOWY 24L EUAC-24",
+    "category": "other",
+    "filename": "kompresor-olejowy-24l-euac-24.webp",
+    "prompt": "Professional e-commerce product photo of a air compressor hose, coiled rubber, professional color scheme. Isolated on pure white background. Studio lighting, soft shadows. Front-facing view, slightly elevated angle. High detail, sharp focus. Clean, minimal, no text or watermarks. 1024x1024px."
+  },
+  {
+    "dbId": "bl-564963043",
+    "name": "PIŁA ŁAŃCUCHOWA 4 AKUMULATOROWA BVCDCH01 / NT40BCS01",
+    "category": "other",
+    "filename": "pila-lancuchowa-4-akumulatorowa-bvcdch01-nt40bcs01.webp",
+    "prompt": "Professional e-commerce product photo of a piła łańcuchowa 4 akumulatorowa bvcdch01 / nt40bcs01, professional color scheme. Isolated on pure white background. Studio lighting, soft shadows. Front-facing view, slightly elevated angle. High detail, sharp focus. Clean, minimal, no text or watermarks. 1024x1024px."
   }
 ]

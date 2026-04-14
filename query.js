@@ -8,7 +8,7 @@ const client = createClient({
 });
 
 async function run() {
-  const r = await client.execute("SELECT slug, name FROM products WHERE name LIKE '%Eurotec%' OR slug LIKE '%eurotec%' LIMIT 30;");
-  console.log(r.rows);
+  const r = await client.execute("SELECT id, name, price, in_stock FROM products WHERE in_stock > 0 LIMIT 15;");
+  console.log(JSON.stringify(r.rows, null, 2));
 }
 run();

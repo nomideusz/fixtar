@@ -85,23 +85,23 @@
 	.related-title {
 		font-family: var(--font-display);
 		font-size: clamp(1.2rem, 2.5vw, 1.6rem);
-		font-weight: 700;
+		font-weight: 500;
 		color: var(--ft-dark);
-		letter-spacing: -0.02em;
+		letter-spacing: -0.015em;
 		margin-top: 6px;
 		border-left: 4px solid var(--ft-accent);
 		padding-left: 14px;
-		text-transform: uppercase;
+		text-transform: none;
 		line-height: 1;
 	}
 
 	.related-link {
 		font-family: var(--font-display);
 		font-size: 0.8rem;
-		font-weight: 700;
+		font-weight: 500;
 		color: var(--ft-text-strong);
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
+		text-transform: none;
+		letter-spacing: 0;
 		text-decoration: none;
 		border-bottom: 2px solid var(--ft-accent);
 		padding-bottom: 2px;

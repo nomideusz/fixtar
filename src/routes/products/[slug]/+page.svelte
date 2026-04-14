@@ -294,9 +294,9 @@
 	.pdp-name {
 		font-family: var(--font-display);
 		font-size: clamp(1.2rem, 3vw, 1.6rem);
-		font-weight: 700;
+		font-weight: 500;
 		color: var(--ft-dark);
-		letter-spacing: -0.02em;
+		letter-spacing: -0.015em;
 		line-height: 1.25;
 		overflow-wrap: anywhere;
 		word-break: break-word;
@@ -314,9 +314,9 @@
 	.pdp-price {
 		font-family: var(--font-display);
 		font-size: clamp(1.4rem, 3vw, 1.8rem);
-		font-weight: 800;
+		font-weight: 600;
 		color: var(--ft-cta);
-		letter-spacing: -0.02em;
+		letter-spacing: -0.015em;
 	}
 
 	.pdp-compare {
@@ -328,7 +328,7 @@
 	.pdp-discount {
 		font-family: var(--font-display);
 		font-size: 0.75rem;
-		font-weight: 700;
+		font-weight: 500;
 		color: white;
 		background: var(--color-danger);
 		padding: 2px 8px;
@@ -409,7 +409,7 @@
 	.pdp-description :global(h3) {
 		font-family: var(--font-display);
 		font-size: 0.92rem;
-		font-weight: 700;
+		font-weight: 500;
 		color: var(--ft-dark);
 		margin: 20px 0 8px;
 	}
@@ -541,7 +541,7 @@
 		min-width: 36px;
 		text-align: center;
 		font-size: 0.95rem;
-		font-weight: 700;
+		font-weight: 500;
 		color: var(--ft-dark);
 		border-left: 2px solid var(--ft-line);
 		border-right: 2px solid var(--ft-line);
@@ -553,9 +553,9 @@
 	.action-price {
 		font-family: var(--font-display);
 		font-size: 1.1rem;
-		font-weight: 800;
+		font-weight: 600;
 		color: var(--ft-cta);
-		letter-spacing: -0.02em;
+		letter-spacing: -0.015em;
 		margin-right: auto;
 	}
 
@@ -572,9 +572,9 @@
 		border-radius: 0;
 		font-family: var(--font-display);
 		font-size: 0.85rem;
-		font-weight: 800;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
+		font-weight: 600;
+		text-transform: none;
+		letter-spacing: 0;
 		cursor: pointer;
 		transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 		white-space: nowrap;

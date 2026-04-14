@@ -382,10 +382,10 @@
 		border: none;
 		border-radius: 0;
 		font-family: var(--font-display);
-		font-weight: 800;
+		font-weight: 600;
 		font-size: 0.85rem;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
+		text-transform: none;
+		letter-spacing: 0;
 		padding: 0 32px;
 		cursor: pointer;
 		white-space: nowrap;
@@ -505,7 +505,7 @@
 		padding: 6px 8px 4px;
 		font-size: 0.65rem;
 		font-weight: 600;
-		text-transform: uppercase;
+		text-transform: none;
 		letter-spacing: 0.08em;
 		color: var(--ft-text-muted);
 	}
@@ -681,7 +681,7 @@
 	.result-price {
 		flex-shrink: 0;
 		font-size: 0.78rem;
-		font-weight: 700;
+		font-weight: 500;
 		color: var(--ft-cta);
 	}
 

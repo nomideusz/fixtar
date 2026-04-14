@@ -114,20 +114,20 @@
 		justify-content: center;
 		width: 56px;
 		height: 56px;
-		border-radius: var(--radius-sm);
+		border-radius: var(--radius-full);
 		background: var(--ft-surface);
-		border: 2px solid var(--ft-text-strong);
+		border: 1px solid var(--ft-text-strong);
 		color: var(--ft-text-strong);
 		margin-bottom: 24px;
 	}
 
 	.newsletter-title {
-		font-family: var(--font-display);
+		font-family: var(--font-sans);
 		font-size: clamp(1.4rem, 3vw, 2rem);
-		font-weight: 800;
+		font-weight: 600;
 		color: var(--ft-text-strong);
-		letter-spacing: -0.02em;
-		text-transform: uppercase;
+		letter-spacing: -0.015em;
+		text-transform: none;
 		line-height: 1.1;
 		margin-bottom: 12px;
 	}
@@ -153,15 +153,15 @@
 	.input-wrap {
 		display: flex;
 		gap: 0;
-		border-radius: var(--radius-sm);
+		border-radius: var(--radius-full);
 		overflow: hidden;
-		border: 2px solid var(--ft-line);
+		border: 1px solid var(--ft-line);
 		background: var(--ft-surface);
 		transition: border-color 0.2s ease;
 	}
 
 	.input-wrap:focus-within {
-		border-color: var(--ft-text-strong);
+		border-color: var(--ft-cta);
 	}
 
 	.newsletter-input {
@@ -194,11 +194,11 @@
 		gap: 8px;
 		padding: 12px 32px;
 		min-height: 48px;
-		font-family: var(--font-display);
+		font-family: var(--font-sans);
 		font-size: 0.85rem;
-		font-weight: 800;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
+		font-weight: 600;
+		text-transform: none;
+		letter-spacing: 0;
 		color: var(--ft-surface);
 		background: var(--ft-text-strong);
 		border: none;
@@ -259,7 +259,7 @@
 		padding: clamp(16px, 4vw, 24px);
 		background: var(--ft-surface);
 		border: 1px solid var(--color-success);
-		border-radius: var(--radius-sm);
+		border-radius: var(--radius-full);
 		color: var(--color-success);
 		animation: ft-fade-up 0.35s var(--ease-out) both;
 	}
@@ -302,13 +302,13 @@
 		}
 
 		.newsletter-input {
-			border: 2px solid var(--ft-line);
+			border: 1px solid var(--ft-line);
 			background: var(--ft-surface);
 			width: 100%;
 		}
 
 		.newsletter-input:focus {
-			border-color: var(--ft-text-strong);
+			border-color: var(--ft-cta);
 		}
 
 		.newsletter-btn {

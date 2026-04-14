@@ -20,8 +20,8 @@ IMG_DIR="static/img/products"
 # OSTRZAŁKA DO ŁAŃCUCHÓW KCHS750/FY-250SB (Ostrzałki)
 # nano-banana generate --prompt "Professional e-commerce product photo of a ostrzałka do łańcuchów kchs750/fy-250sb, professional color scheme. Isolated on pure white background. Studio lighting, soft shadows. Front-facing view, slightly elevated angle. High detail, sharp focus. Clean, minimal, no text or watermarks. 1024x1024px." --output "$IMG_DIR/ostrzalka-do-lancuchow-kchs750-fy-250sb.webp" --width 1024 --height 1024
 
-# ZESTAW KLUCZY 300EL. EU-187C (other)
-# nano-banana generate --prompt "Professional e-commerce product photo of a professional mechanic tool set in blow-molded carry case, 300 pieces, sockets wrenches bits, professional color scheme. Isolated on pure white background. Studio lighting, soft shadows. Front-facing view, slightly elevated angle. High detail, sharp focus. Clean, minimal, no text or watermarks. 1024x1024px." --output "$IMG_DIR/zestaw-kluczy-300el-eu-187c.webp" --width 1024 --height 1024
+# ZESTAW KLUCZY EU-187C (other)
+# nano-banana generate --prompt "Professional e-commerce product photo of a professional mechanic tool set in blow-molded carry case, 300 pieces, sockets wrenches bits, professional color scheme. Isolated on pure white background. Studio lighting, soft shadows. Front-facing view, slightly elevated angle. High detail, sharp focus. Clean, minimal, no text or watermarks. 1024x1024px." --output "$IMG_DIR/zestaw-kluczy-eu-187c.webp" --width 1024 --height 1024
 
 # POLERKA SAMOCHODOWA KCP2950 (Polerki)
 # nano-banana generate --prompt "Professional e-commerce product photo of a polerka samochodowa kcp2950, professional color scheme. Isolated on pure white background. Studio lighting, soft shadows. Front-facing view, slightly elevated angle. High detail, sharp focus. Clean, minimal, no text or watermarks. 1024x1024px." --output "$IMG_DIR/polerka-samochodowa-kcp2950.webp" --width 1024 --height 1024
@@ -77,9 +77,6 @@ IMG_DIR="static/img/products"
 # SZLIFIERKO-OSTRZAŁKA STOŁOWA 200MM KBG1800 (other)
 # nano-banana generate --prompt "Professional e-commerce product photo of a szlifierko-ostrzałka stołowa 200mm kbg1800, professional color scheme. Isolated on pure white background. Studio lighting, soft shadows. Front-facing view, slightly elevated angle. High detail, sharp focus. Clean, minimal, no text or watermarks. 1024x1024px." --output "$IMG_DIR/szlifierko-ostrzalka-stolowa-200mm-kbg1800.webp" --width 1024 --height 1024
 
-# SZLIFIERKO-OSTRZAŁKA STOŁOWA 200MM ZHBG1800 (other)
-# nano-banana generate --prompt "Professional e-commerce product photo of a szlifierko-ostrzałka stołowa 200mm zhbg1800, professional color scheme. Isolated on pure white background. Studio lighting, soft shadows. Front-facing view, slightly elevated angle. High detail, sharp focus. Clean, minimal, no text or watermarks. 1024x1024px." --output "$IMG_DIR/szlifierko-ostrzalka-stolowa-200mm-zhbg1800.webp" --width 1024 --height 1024
-
 # WĄŻ DO KOMPRESORA 15m 10x17 (other)
 # nano-banana generate --prompt "Professional e-commerce product photo of a industrial layflat fire hose, coiled, professional color scheme. Isolated on pure white background. Studio lighting, soft shadows. Front-facing view, slightly elevated angle. High detail, sharp focus. Clean, minimal, no text or watermarks. 1024x1024px." --output "$IMG_DIR/waz-do-kompresora-15m-10x17.webp" --width 1024 --height 1024
 
@@ -122,8 +119,8 @@ IMG_DIR="static/img/products"
 # SZLIFIERKA DO GŁADZI KDS2550/225A-ZD (other)
 # nano-banana generate --prompt "Professional e-commerce product photo of a szlifierka do gładzi kds2550a-zd, professional color scheme. Isolated on pure white background. Studio lighting, soft shadows. Front-facing view, slightly elevated angle. High detail, sharp focus. Clean, minimal, no text or watermarks. 1024x1024px." --output "$IMG_DIR/szlifierka-do-gladzi-kds2550-225a-zd.webp" --width 1024 --height 1024
 
-# PILARKA TARCZOWA KCS2800  KCS2800/M1Y-YH4-185D (other)
-# nano-banana generate --prompt "Professional e-commerce product photo of a pilarka tarczowa kcs2800 kcs2800/m1y-yh4-185d, professional color scheme. Isolated on pure white background. Studio lighting, soft shadows. Front-facing view, slightly elevated angle. High detail, sharp focus. Clean, minimal, no text or watermarks. 1024x1024px." --output "$IMG_DIR/pilarka-tarczowa-kcs2800-kcs2800-m1y-yh4-185d.webp" --width 1024 --height 1024
+# PILARKA TARCZOWA KCS2800/M1Y-YH4-185D (other)
+# nano-banana generate --prompt "Professional e-commerce product photo of a pilarka tarczowa kcs2800/m1y-yh4-185d, professional color scheme. Isolated on pure white background. Studio lighting, soft shadows. Front-facing view, slightly elevated angle. High detail, sharp focus. Clean, minimal, no text or watermarks. 1024x1024px." --output "$IMG_DIR/pilarka-tarczowa-kcs2800-m1y-yh4-185d.webp" --width 1024 --height 1024
 
 # WIERTARKA UDAROWA KID1450/JL1630 (other)
 # nano-banana generate --prompt "Professional e-commerce product photo of a wiertarka udarowa kid1450/jl1630, professional color scheme. Isolated on pure white background. Studio lighting, soft shadows. Front-facing view, slightly elevated angle. High detail, sharp focus. Clean, minimal, no text or watermarks. 1024x1024px." --output "$IMG_DIR/wiertarka-udarowa-kid1450-jl1630.webp" --width 1024 --height 1024
@@ -136,4 +133,19 @@ IMG_DIR="static/img/products"
 
 # WIERTARKA UDAROWA KID241/BSQ7016 (other)
 # nano-banana generate --prompt "Professional e-commerce product photo of a wiertarka udarowa kid241/bsq7016, professional color scheme. Isolated on pure white background. Studio lighting, soft shadows. Front-facing view, slightly elevated angle. High detail, sharp focus. Clean, minimal, no text or watermarks. 1024x1024px." --output "$IMG_DIR/wiertarka-udarowa-kid241-bsq7016.webp" --width 1024 --height 1024
+
+# WKRĘTARKA AKUMULATOROWA STCD1680U/KX72002 (other)
+# nano-banana generate --prompt "Professional e-commerce product photo of a wkrętarka akumulatorowa stcd1680u/kx72002, professional color scheme. Isolated on pure white background. Studio lighting, soft shadows. Front-facing view, slightly elevated angle. High detail, sharp focus. Clean, minimal, no text or watermarks. 1024x1024px." --output "$IMG_DIR/wkretarka-akumulatorowa-stcd1680u-kx72002.webp" --width 1024 --height 1024
+
+# PIŁA ŁAŃCUCHOWA 2 AKUMULATOROWA BVCDCH01 / NT40BCS01 (other)
+# nano-banana generate --prompt "Professional e-commerce product photo of a piła łańcuchowa 2 akumulatorowa bvcdch01 / nt40bcs01, professional color scheme. Isolated on pure white background. Studio lighting, soft shadows. Front-facing view, slightly elevated angle. High detail, sharp focus. Clean, minimal, no text or watermarks. 1024x1024px." --output "$IMG_DIR/pila-lancuchowa-2-akumulatorowa-bvcdch01-nt40bcs01.webp" --width 1024 --height 1024
+
+# DMUCHAWA AKUMULATOROWA BVCDBL01 / NT20BBL01 (other)
+# nano-banana generate --prompt "Professional e-commerce product photo of a dmuchawa akumulatorowa bvcdbl01 / nt20bbl01, professional color scheme. Isolated on pure white background. Studio lighting, soft shadows. Front-facing view, slightly elevated angle. High detail, sharp focus. Clean, minimal, no text or watermarks. 1024x1024px." --output "$IMG_DIR/dmuchawa-akumulatorowa-bvcdbl01-nt20bbl01.webp" --width 1024 --height 1024
+
+# KOMPRESOR OLEJOWY 24L EUAC-24 (other)
+# nano-banana generate --prompt "Professional e-commerce product photo of a air compressor hose, coiled rubber, professional color scheme. Isolated on pure white background. Studio lighting, soft shadows. Front-facing view, slightly elevated angle. High detail, sharp focus. Clean, minimal, no text or watermarks. 1024x1024px." --output "$IMG_DIR/kompresor-olejowy-24l-euac-24.webp" --width 1024 --height 1024
+
+# PIŁA ŁAŃCUCHOWA 4 AKUMULATOROWA BVCDCH01 / NT40BCS01 (other)
+# nano-banana generate --prompt "Professional e-commerce product photo of a piła łańcuchowa 4 akumulatorowa bvcdch01 / nt40bcs01, professional color scheme. Isolated on pure white background. Studio lighting, soft shadows. Front-facing view, slightly elevated angle. High detail, sharp focus. Clean, minimal, no text or watermarks. 1024x1024px." --output "$IMG_DIR/pila-lancuchowa-4-akumulatorowa-bvcdch01-nt40bcs01.webp" --width 1024 --height 1024
 

@@ -45,12 +45,12 @@
 		align-items: center;
 		justify-content: center;
 		gap: 8px;
-		font-family: var(--font-display);
-		font-weight: 700;
-		font-size: 0.75rem;
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
-		border-radius: var(--radius-sm, 4px);
+		font-family: var(--font-sans);
+		font-weight: 600;
+		font-size: 0.95rem;
+		text-transform: none;
+		letter-spacing: 0;
+		border-radius: var(--radius-full);
 		cursor: pointer;
 		transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
 		text-decoration: none;
@@ -63,15 +63,15 @@
 	}
 
 	/* Sizes */
-	.btn--sm { padding: 8px 16px; font-size: 0.68rem; min-height: 36px; }
+	.btn--sm { padding: 8px 16px; font-size: 0.85rem; min-height: 36px; }
 	.btn--md { padding: 12px 24px; min-height: 44px; }
-	.btn--lg { padding: 14px 32px; font-size: 0.78rem; min-height: 48px; }
+	.btn--lg { padding: 14px 32px; font-size: 1rem; min-height: 48px; }
 	.btn--full { width: 100%; }
 
 	/* Variants */
 	.btn--primary {
 		background: var(--ft-cta);
-		color: white;
+		color: var(--ft-cta-text);
 		border-color: var(--ft-cta);
 	}
 	.btn--primary:hover:not(:disabled) {
@@ -97,7 +97,7 @@
 	}
 	.btn--outline:hover:not(:disabled) {
 		background: var(--ft-cta);
-		color: white;
+		color: var(--ft-cta-text);
 	}
 
 	.btn--ghost {

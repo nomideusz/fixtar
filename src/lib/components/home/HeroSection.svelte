@@ -260,11 +260,11 @@
 	}
 
 	.hero-headline {
-		font-family: var(--font-display);
+		font-family: var(--font-sans);
 		font-size: clamp(1.6rem, 4vw, 2.6rem);
-		font-weight: 700;
+		font-weight: 600;
 		line-height: 1.15;
-		letter-spacing: -0.02em;
+		letter-spacing: -0.01em;
 		color: white;
 		margin-bottom: 8px;
 		animation: fadeIn 0.6s ease both;

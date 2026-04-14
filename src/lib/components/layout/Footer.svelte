@@ -120,7 +120,7 @@
 
 <style>
 	.footer {
-		border-top: 4px solid var(--ft-accent);
+		border-top: 1px solid var(--ft-line);
 		margin-top: auto;
 	}
 
@@ -146,9 +146,9 @@
 	/* ── Brand ── */
 	.footer-brand {
 		display: inline-block;
-		font-family: var(--font-display);
+		font-family: var(--font-sans);
 		font-size: 1rem;
-		font-weight: 700;
+		font-weight: 600;
 		color: var(--ft-dark);
 		text-decoration: none;
 		margin-bottom: 8px;
@@ -185,11 +185,11 @@
 
 	/* ── Columns ── */
 	.footer-col-title {
-		font-family: var(--font-display);
-		font-size: 0.72rem;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
+		font-family: var(--font-sans);
+		font-size: 0.95rem;
+		font-weight: 600;
+		text-transform: none;
+		letter-spacing: 0;
 		color: var(--ft-dark);
 		margin-bottom: 12px;
 	}
@@ -255,9 +255,9 @@
 	}
 
 	.pay-text-logo {
-		font-family: var(--font-display);
-		font-size: 0.72rem;
-		font-weight: 700;
+		font-family: var(--font-sans);
+		font-size: 0.95rem;
+		font-weight: 600;
 		letter-spacing: 0.04em;
 		color: var(--ft-text-muted);
 	}

@@ -40,12 +40,12 @@
 	}
 
 	.brands-label {
-		font-family: var(--font-display);
-		font-size: 0.75rem;
-		font-weight: 800;
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
-		color: var(--ft-text-strong);
+		font-family: var(--font-sans);
+		font-size: 0.95rem;
+		font-weight: 600;
+		text-transform: none;
+		letter-spacing: 0;
+		color: var(--ft-text-muted);
 		text-align: center;
 		margin-bottom: 24px;
 	}
@@ -102,10 +102,10 @@
 	}
 
 	.brand-item {
-		font-family: var(--font-display);
+		font-family: var(--font-sans);
 		font-size: clamp(1rem, 2vw, 1.25rem);
-		font-weight: 800;
-		letter-spacing: -0.02em;
+		font-weight: 600;
+		letter-spacing: -0.015em;
 		color: var(--ft-text-muted);
 		text-decoration: none;
 		transition:
@@ -115,7 +115,7 @@
 		min-height: 44px;
 		display: flex;
 		align-items: center;
-		text-transform: uppercase;
+		text-transform: none;
 	}
 
 	.brand-item:hover {

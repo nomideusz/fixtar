@@ -250,16 +250,16 @@
 		background: rgba(255, 255, 255, 0.95);
 		backdrop-filter: blur(4px);
 		border: 1px solid var(--ft-line);
-		border-radius: var(--radius-sm);
+		border-radius: var(--radius-full);
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 	}
 
 	.hud-text {
-		font-family: var(--font-mono);
+		font-family: var(--font-sans);
 		font-size: 0.65rem;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
+		font-weight: 600;
+		text-transform: none;
+		letter-spacing: 0;
 		color: var(--ft-text-strong);
 	}
 
@@ -279,14 +279,14 @@
 	}
 
 	.hud-tag {
-		font-family: var(--font-mono);
+		font-family: var(--font-sans);
 		font-size: 0.65rem;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
+		font-weight: 600;
+		text-transform: none;
+		letter-spacing: 0;
 		padding: 4px 8px;
 		color: white;
-		border-radius: var(--radius-sm);
+		border-radius: var(--radius-full);
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 	}
 
@@ -305,20 +305,20 @@
 		justify-content: center;
 		width: 44px;
 		height: 44px;
-		color: #ffffff;
+		color: var(--ft-cta-text);
 		background: var(--ft-cta);
 		border: 2px solid var(--ft-cta);
-		border-radius: 0;
+		border-radius: var(--radius-full);
 		transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 		cursor: pointer;
-		box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.1);
+		box-shadow: var(--ft-shadow-md);
 	}
 
 	.floating-cart-btn:hover:not(:disabled) {
 		background: #ffffff;
 		color: var(--ft-cta);
 		transform: scale(1.08);
-		box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.15);
+		box-shadow: var(--ft-shadow-lg);
 	}
 
 	.floating-cart-btn.is-added {
@@ -349,9 +349,9 @@
 	}
 
 	.card-name {
-		font-family: var(--font-display);
-		font-size: 0.9rem;
-		font-weight: 700;
+		font-family: var(--font-sans);
+		font-size: 1rem;
+		font-weight: 600;
 		color: var(--ft-dark);
 		line-height: 1.35;
 		display: -webkit-box;
@@ -380,8 +380,8 @@
 	}
 
 	.card-price {
-		font-family: var(--font-display);
-		font-weight: 800;
+		font-family: var(--font-sans);
+		font-weight: 600;
 		font-size: clamp(0.95rem, 2.5vw, 1.15rem);
 		color: var(--ft-text-strong);
 		font-variant-numeric: tabular-nums;

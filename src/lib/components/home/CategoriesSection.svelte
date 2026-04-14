@@ -81,15 +81,15 @@
 	}
 
 	.categories-title {
-		font-family: var(--font-display);
+		font-family: var(--font-sans);
 		font-size: clamp(1.2rem, 2.5vw, 1.6rem);
-		font-weight: 700;
+		font-weight: 600;
 		color: var(--ft-dark);
-		letter-spacing: -0.02em;
+		letter-spacing: -0.015em;
 		margin-top: 6px;
-		border-left: 4px solid var(--ft-accent);
-		padding-left: 14px;
-		text-transform: uppercase;
+		
+		
+		text-transform: none;
 		line-height: 1;
 	}
 
@@ -122,7 +122,7 @@
 		overflow: hidden;
 		background: var(--ft-surface);
 		transition: transform 0.2s ease;
-		border: 1px solid var(--ft-line); /* Hardware drawer look */
+		border: 1px solid var(--ft-line); border-radius: var(--radius-2xl);
 	}
 
 	.cat-card:hover {
@@ -141,7 +141,7 @@
 			aspect-ratio: 4 / 3;
 			background: var(--ft-frost);
 			overflow: hidden;
-			border-bottom: 1px solid var(--ft-line);
+			
 		}
 	}
 
@@ -178,29 +178,18 @@
 		position: relative;
 	}
 
-	.cat-info::before {
-		content: '';
-		position: absolute;
-		left: 0;
-		top: 0;
-		bottom: 0;
-		width: 4px;
-		background: var(--ft-accent);
-		transition: width 0.2s ease;
-	}
+	
 
-	.cat-card:hover .cat-info::before {
-		width: 6px;
-	}
+	.cat-card:hover 
 
 	.cat-name {
-		font-family: var(--font-display);
+		font-family: var(--font-sans);
 		font-size: 0.875rem;
-		font-weight: 800;
+		font-weight: 600;
 		color: var(--ft-text-strong);
 		letter-spacing: 0.02em;
 		line-height: 1.25;
-		text-transform: uppercase;
+		text-transform: none;
 		transition: color 0.2s ease;
 	}
 

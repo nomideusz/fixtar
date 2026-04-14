@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-03-27T04:51:09.946Z",
+  "timestamp": "2026-04-14T02:55:36.714Z",
   "summary": {
-    "total": 89,
+    "total": 93,
     "withImages": 45,
-    "missing": 44,
-    "downloaded": 544,
-    "skipped": 0,
+    "missing": 48,
+    "downloaded": 4,
+    "skipped": 538,
     "failed": 0,
     "dbUpdated": 45
   },
@@ -77,32 +77,6 @@
         "gallery/szlifierka-do-gladzi-kds2300-f7185b-13.jpg",
         "gallery/szlifierka-do-gladzi-kds2300-f7185b-14.jpg",
         "gallery/szlifierka-do-gladzi-kds2300-f7185b-15.jpg"
-      ],
-      "missing": false
-    },
-    {
-      "dbId": "bl-53762927",
-      "name": "PILARKA TARCZOWA KCS2200LJ/GHK-180-L",
-      "category": "Piły tarczowe",
-      "primaryImage": "pilarka-tarczowa-kcs2200lj-ghk-180-l.jpg",
-      "totalImages": 16,
-      "gallery": [
-        "pilarka-tarczowa-kcs2200lj-ghk-180-l.jpg",
-        "gallery/pilarka-tarczowa-kcs2200lj-ghk-180-l-2.jpg",
-        "gallery/pilarka-tarczowa-kcs2200lj-ghk-180-l-3.jpg",
-        "gallery/pilarka-tarczowa-kcs2200lj-ghk-180-l-4.jpg",
-        "gallery/pilarka-tarczowa-kcs2200lj-ghk-180-l-5.jpg",
-        "gallery/pilarka-tarczowa-kcs2200lj-ghk-180-l-6.jpg",
-        "gallery/pilarka-tarczowa-kcs2200lj-ghk-180-l-7.jpg",
-        "gallery/pilarka-tarczowa-kcs2200lj-ghk-180-l-8.jpg",
-        "gallery/pilarka-tarczowa-kcs2200lj-ghk-180-l-9.jpg",
-        "gallery/pilarka-tarczowa-kcs2200lj-ghk-180-l-10.jpg",
-        "gallery/pilarka-tarczowa-kcs2200lj-ghk-180-l-11.jpg",
-        "gallery/pilarka-tarczowa-kcs2200lj-ghk-180-l-12.jpg",
-        "gallery/pilarka-tarczowa-kcs2200lj-ghk-180-l-13.jpg",
-        "gallery/pilarka-tarczowa-kcs2200lj-ghk-180-l-14.jpg",
-        "gallery/pilarka-tarczowa-kcs2200lj-ghk-180-l-15.jpg",
-        "gallery/pilarka-tarczowa-kcs2200lj-ghk-180-l-16.jpg"
       ],
       "missing": false
     },
@@ -613,7 +587,7 @@
     },
     {
       "dbId": "bl-82332715",
-      "name": "ZESTAW KLUCZY 300EL. EU-187C",
+      "name": "ZESTAW KLUCZY EU-187C",
       "category": "other",
       "primaryImage": "",
       "totalImages": 0,
@@ -622,26 +596,26 @@
     },
     {
       "dbId": "bl-82332729",
-      "name": "ZESTAW NARZĘDZI 187EL. EU-187B",
+      "name": "ZESTAW NARZĘDZI EU-187B",
       "category": "Zestawy narzędzi",
-      "primaryImage": "zestaw-narzedzi-187el-eu-187b.jpg",
+      "primaryImage": "zestaw-narzedzi-eu-187b.jpg",
       "totalImages": 15,
       "gallery": [
-        "zestaw-narzedzi-187el-eu-187b.jpg",
-        "gallery/zestaw-narzedzi-187el-eu-187b-2.jpg",
-        "gallery/zestaw-narzedzi-187el-eu-187b-3.png",
-        "gallery/zestaw-narzedzi-187el-eu-187b-4.png",
-        "gallery/zestaw-narzedzi-187el-eu-187b-5.png",
-        "gallery/zestaw-narzedzi-187el-eu-187b-6.png",
-        "gallery/zestaw-narzedzi-187el-eu-187b-7.png",
-        "gallery/zestaw-narzedzi-187el-eu-187b-8.png",
-        "gallery/zestaw-narzedzi-187el-eu-187b-9.png",
-        "gallery/zestaw-narzedzi-187el-eu-187b-10.jpg",
-        "gallery/zestaw-narzedzi-187el-eu-187b-11.jpg",
-        "gallery/zestaw-narzedzi-187el-eu-187b-12.jpg",
-        "gallery/zestaw-narzedzi-187el-eu-187b-13.jpg",
-        "gallery/zestaw-narzedzi-187el-eu-187b-14.jpg",
-        "gallery/zestaw-narzedzi-187el-eu-187b-15.png"
+        "zestaw-narzedzi-eu-187b.jpg",
+        "gallery/zestaw-narzedzi-eu-187b-2.jpg",
+        "gallery/zestaw-narzedzi-eu-187b-3.png",
+        "gallery/zestaw-narzedzi-eu-187b-4.png",
+        "gallery/zestaw-narzedzi-eu-187b-5.png",
+        "gallery/zestaw-narzedzi-eu-187b-6.png",
+        "gallery/zestaw-narzedzi-eu-187b-7.png",
+        "gallery/zestaw-narzedzi-eu-187b-8.png",
+        "gallery/zestaw-narzedzi-eu-187b-9.png",
+        "gallery/zestaw-narzedzi-eu-187b-10.jpg",
+        "gallery/zestaw-narzedzi-eu-187b-11.jpg",
+        "gallery/zestaw-narzedzi-eu-187b-12.jpg",
+        "gallery/zestaw-narzedzi-eu-187b-13.jpg",
+        "gallery/zestaw-narzedzi-eu-187b-14.jpg",
+        "gallery/zestaw-narzedzi-eu-187b-15.png"
       ],
       "missing": false
     },
@@ -1221,15 +1195,6 @@
       "missing": true
     },
     {
-      "dbId": "bl-505452640",
-      "name": "SZLIFIERKO-OSTRZAŁKA STOŁOWA 200MM ZHBG1800",
-      "category": "other",
-      "primaryImage": "",
-      "totalImages": 0,
-      "gallery": [],
-      "missing": true
-    },
-    {
       "dbId": "bl-506976004",
       "name": "WĄŻ DO KOMPRESORA 15m 10x17",
       "category": "other",
@@ -1357,7 +1322,7 @@
     },
     {
       "dbId": "bl-537740792",
-      "name": "PILARKA TARCZOWA KCS2800  KCS2800/M1Y-YH4-185D",
+      "name": "PILARKA TARCZOWA KCS2800/M1Y-YH4-185D",
       "category": "other",
       "primaryImage": "",
       "totalImages": 0,
@@ -1394,6 +1359,75 @@
     {
       "dbId": "bl-537747994",
       "name": "WIERTARKA UDAROWA KID241/BSQ7016",
+      "category": "other",
+      "primaryImage": "",
+      "totalImages": 0,
+      "gallery": [],
+      "missing": true
+    },
+    {
+      "dbId": "bl-557769093",
+      "name": "WKRĘTARKA AKUMULATOROWA STCD1680U/KX72002",
+      "category": "other",
+      "primaryImage": "",
+      "totalImages": 0,
+      "gallery": [],
+      "missing": true
+    },
+    {
+      "dbId": "bl-559577166",
+      "name": "PIŁA ŁAŃCUCHOWA 2 AKUMULATOROWA BVCDCH01 / NT40BCS01",
+      "category": "other",
+      "primaryImage": "",
+      "totalImages": 0,
+      "gallery": [],
+      "missing": true
+    },
+    {
+      "dbId": "bl-559580028",
+      "name": "DMUCHAWA AKUMULATOROWA BVCDBL01 / NT20BBL01",
+      "category": "other",
+      "primaryImage": "",
+      "totalImages": 0,
+      "gallery": [],
+      "missing": true
+    },
+    {
+      "dbId": "bl-563208900",
+      "name": "KOMPRESOR OLEJOWY 24L EUAC-24",
+      "category": "other",
+      "primaryImage": "",
+      "totalImages": 0,
+      "gallery": [],
+      "missing": true
+    },
+    {
+      "dbId": "bl-563301560",
+      "name": "PRZEDŁUZACZ ZWIJANY 20M BV20R",
+      "category": "other",
+      "primaryImage": "przedluzacz-zwijany-20m-bv20r.jpg",
+      "totalImages": 14,
+      "gallery": [
+        "przedluzacz-zwijany-20m-bv20r.jpg",
+        "gallery/przedluzacz-zwijany-20m-bv20r-2.jpg",
+        "gallery/przedluzacz-zwijany-20m-bv20r-3.jpg",
+        "gallery/przedluzacz-zwijany-20m-bv20r-4.png",
+        "gallery/przedluzacz-zwijany-20m-bv20r-5.jpg",
+        "gallery/przedluzacz-zwijany-20m-bv20r-6.jpg",
+        "gallery/przedluzacz-zwijany-20m-bv20r-7.jpg",
+        "gallery/przedluzacz-zwijany-20m-bv20r-8.jpg",
+        "gallery/przedluzacz-zwijany-20m-bv20r-9.jpg",
+        "gallery/przedluzacz-zwijany-20m-bv20r-10.jpg",
+        "gallery/przedluzacz-zwijany-20m-bv20r-11.jpg",
+        "gallery/przedluzacz-zwijany-20m-bv20r-12.jpg",
+        "gallery/przedluzacz-zwijany-20m-bv20r-13.jpg",
+        "gallery/przedluzacz-zwijany-20m-bv20r-14.jpg"
+      ],
+      "missing": false
+    },
+    {
+      "dbId": "bl-564963043",
+      "name": "PIŁA ŁAŃCUCHOWA 4 AKUMULATOROWA BVCDCH01 / NT40BCS01",
       "category": "other",
       "primaryImage": "",
       "totalImages": 0,

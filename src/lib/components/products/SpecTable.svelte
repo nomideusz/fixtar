@@ -57,8 +57,8 @@
 		margin-bottom: 12px;
 		font-family: var(--font-display);
 		font-size: 0.72rem;
-		font-weight: 700;
-		text-transform: uppercase;
+		font-weight: 500;
+		text-transform: none;
 		letter-spacing: 0.08em;
 		color: var(--ft-text-muted);
 	}

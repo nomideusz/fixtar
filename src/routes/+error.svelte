@@ -90,7 +90,7 @@
 						{@const Icon = category.icon}
 						<a
 							href="/products?category={category.id}"
-							class="inline-flex items-center gap-1.5 rounded-full border border-[--ft-line] bg-[--ft-frost] px-3 py-1.5 text-sm font-medium text-[--ft-text] transition-colors hover:border-[--ft-cta] hover:text-[--ft-cta]"
+							class="inline-flex items-center gap-1.5 rounded-full border border-[--ft-line] bg-[--ft-frost] px-3 py-1.5 text-sm font-medium text-[--ft-text] transition-colors hover:border-[--ft-accent] hover:text-[--ft-accent]"
 						>
 							<Icon class="h-4 w-4" aria-hidden="true" />
 							{category.name}

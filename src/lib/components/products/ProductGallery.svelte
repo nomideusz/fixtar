@@ -282,8 +282,8 @@
 		padding: 4px 10px;
 		font-family: var(--font-mono);
 		font-size: 0.68rem;
-		font-weight: 700;
-		text-transform: uppercase;
+		font-weight: 500;
+		text-transform: none;
 		letter-spacing: 0.06em;
 		color: #fff;
 	}

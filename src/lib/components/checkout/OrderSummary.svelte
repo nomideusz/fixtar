@@ -87,7 +87,7 @@
 			fullWidth
 			size="lg"
 			disabled={processing}
-			class="mt-8 bg-[--ft-cta] py-4 text-lg font-bold text-white hover:bg-[--ft-cta-hover] transition-colors duration-200"
+			class="mt-8 bg-[--ft-cta] py-4 text-lg font-bold text-[--ft-cta-text] hover:bg-[--ft-cta-hover] transition-colors duration-200"
 		>
 			{#if processing}
 				<SpinnerGapIcon size={20} weight="bold" class="mr-3 -ml-1 h-5 w-5 animate-spin" aria-hidden="true" />

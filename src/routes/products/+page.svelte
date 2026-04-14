@@ -224,14 +224,14 @@
 	}
 
 	.page-title {
-		font-family: var(--font-display);
+		font-family: var(--font-sans);
 		font-size: clamp(1.2rem, 2.5vw, 1.6rem);
-		font-weight: 700;
+		font-weight: 600;
 		color: var(--ft-dark);
-		letter-spacing: -0.02em;
-		border-left: 4px solid var(--ft-accent);
-		padding-left: 14px;
-		text-transform: uppercase;
+		letter-spacing: -0.015em;
+		
+		
+		text-transform: none;
 		line-height: 1;
 	}
 
@@ -249,12 +249,12 @@
 		padding: 6px 12px;
 		background: transparent;
 		border: 1px solid var(--ft-line);
-		font-family: var(--font-display);
+		font-family: var(--font-sans);
 		font-size: 0.7rem;
 		font-weight: 600;
 		color: var(--ft-text-muted);
-		text-transform: uppercase;
-		letter-spacing: 0.04em;
+		text-transform: none;
+		letter-spacing: 0;
 		cursor: pointer;
 		min-height: 36px;
 		transition:
@@ -264,11 +264,11 @@
 	}
 
 	.sort-btn:first-child {
-		border-radius: 2px 0 0 2px;
+		border-radius: var(--radius-full) 0 0 var(--radius-full);
 	}
 
 	.sort-btn:last-child {
-		border-radius: 0 2px 2px 0;
+		border-radius: 0 var(--radius-full) var(--radius-full) 0;
 	}
 
 	.sort-btn:not(:first-child) {
@@ -328,15 +328,15 @@
 		padding: 8px 16px;
 		background: transparent;
 		border: 1px solid var(--ft-line);
-		border-radius: 2px;
-		font-family: var(--font-display);
+		border-radius: var(--radius-full);
+		font-family: var(--font-sans);
 		font-size: 0.78rem;
 		font-weight: 600;
 		color: var(--ft-text-muted);
 		cursor: pointer;
 		white-space: nowrap;
-		text-transform: uppercase;
-		letter-spacing: 0.03em;
+		text-transform: none;
+		letter-spacing: 0;
 		transition:
 			color 0.15s ease,
 			background 0.15s ease,
@@ -377,14 +377,14 @@
 	}
 
 	.cat-title {
-		font-family: var(--font-display);
+		font-family: var(--font-sans);
 		font-size: clamp(1rem, 2vw, 1.25rem);
-		font-weight: 700;
+		font-weight: 600;
 		color: var(--ft-dark);
-		letter-spacing: -0.01em;
-		border-left: 4px solid var(--ft-accent);
-		padding-left: 14px;
-		text-transform: uppercase;
+		letter-spacing: -0.015em;
+		
+		
+		text-transform: none;
 		line-height: 1;
 	}
 
