@@ -92,12 +92,13 @@
 
 	.btn--outline {
 		background: transparent;
-		color: var(--ft-cta);
-		border-color: var(--ft-cta);
+		color: var(--ft-accent);
+		border-color: var(--ft-accent);
 	}
 	.btn--outline:hover:not(:disabled) {
 		background: var(--ft-cta);
 		color: var(--ft-cta-text);
+		border-color: var(--ft-cta);
 	}
 
 	.btn--ghost {

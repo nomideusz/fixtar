@@ -133,7 +133,11 @@
 	}
 
 	.highlight {
-		color: var(--ft-cta);
+		color: var(--ft-cta-text);
+		background: var(--ft-cta);
+		padding: 0 6px;
+		box-decoration-break: clone;
+		-webkit-box-decoration-break: clone;
 	}
 
 	.newsletter-desc {
@@ -153,7 +157,6 @@
 	.input-wrap {
 		display: flex;
 		gap: 0;
-		border-radius: var(--radius-full);
 		overflow: hidden;
 		border: 1px solid var(--ft-line);
 		background: var(--ft-surface);
@@ -212,6 +215,7 @@
 
 	.newsletter-btn:hover:not(:disabled) {
 		background: var(--ft-cta);
+		color: var(--ft-cta-text);
 	}
 
 	.newsletter-btn:active:not(:disabled) {
@@ -259,7 +263,6 @@
 		padding: clamp(16px, 4vw, 24px);
 		background: var(--ft-surface);
 		border: 1px solid var(--color-success);
-		border-radius: var(--radius-full);
 		color: var(--color-success);
 		animation: ft-fade-up 0.35s var(--ease-out) both;
 	}

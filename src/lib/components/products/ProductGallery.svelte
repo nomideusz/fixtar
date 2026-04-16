@@ -261,8 +261,8 @@
 	}
 	.main-image-btn:hover .zoom-hint {
 		opacity: 1;
-		color: var(--ft-cta);
-		border-color: var(--ft-cta);
+		color: var(--ft-accent);
+		border-color: var(--ft-accent);
 		transform: scale(1.1);
 	}
 
@@ -327,8 +327,8 @@
 		opacity: 1;
 	}
 	.nav-arrow:hover:not(:disabled) {
-		border-color: var(--ft-cta);
-		color: var(--ft-cta);
+		border-color: var(--ft-accent);
+		color: var(--ft-accent);
 		transform: translateY(-50%) scale(1.1);
 	}
 	.nav-arrow:disabled {

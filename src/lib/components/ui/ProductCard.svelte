@@ -316,7 +316,7 @@
 
 	.floating-cart-btn:hover:not(:disabled) {
 		background: #ffffff;
-		color: var(--ft-cta);
+		color: var(--ft-accent);
 		transform: scale(1.08);
 		box-shadow: var(--ft-shadow-lg);
 	}

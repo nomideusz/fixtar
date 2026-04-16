@@ -235,8 +235,8 @@
 	@media (min-width: 768px) {
 		.nav-inner {
 			padding: 0 var(--ft-gutter);
-			height: 100px;
-			gap: 32px;
+			height: 76px;
+			gap: 24px;
 		}
 	}
 
@@ -277,7 +277,7 @@
 	@media (min-width: 768px) {
 		.logo-full {
 			display: block;
-			height: 56px;
+			height: 40px;
 		}
 
 		.logo-icon {
@@ -302,34 +302,20 @@
 
 	.nav-link {
 		position: relative;
+		display: inline-flex;
+		align-items: center;
 		font-family: var(--font-sans);
 		font-size: 0.95rem;
 		font-weight: 500;
 		color: var(--ft-text-strong);
-		padding: 8px 12px;
-		border-radius: var(--radius-full);
+		padding: 10px 12px;
+		min-height: 44px;
+		border-radius: var(--radius-sm);
 		cursor: pointer;
 		text-decoration: none;
 		transition:
 			background-color var(--dur-fast) ease,
 			color var(--dur-fast) ease;
-	}
-
-	@media (min-width: 768px) {
-		.nav-link {
-		position: relative;
-		font-family: var(--font-sans);
-		font-size: 0.95rem;
-		font-weight: 500;
-		color: var(--ft-text-strong);
-		padding: 8px 12px;
-		border-radius: var(--radius-full);
-		cursor: pointer;
-		text-decoration: none;
-		transition:
-			background-color var(--dur-fast) ease,
-			color var(--dur-fast) ease;
-	}
 	}
 
 	.nav-link:hover {
@@ -349,13 +335,29 @@
 
 	.promo-dot {
 		display: inline-block;
-		width: 6px;
-		height: 6px;
+		width: 8px;
+		height: 8px;
 		border-radius: 50%;
 		background: var(--ft-cta);
-		margin-left: 2px;
-		vertical-align: super;
+		box-shadow: 0 0 0 1.5px var(--ft-accent);
+		margin-left: 6px;
 		flex-shrink: 0;
+		animation: promoPulse 2s ease-in-out infinite;
+	}
+
+	@keyframes promoPulse {
+		0%, 100% {
+			transform: scale(1);
+		}
+		50% {
+			transform: scale(1.2);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.promo-dot {
+			animation: none;
+		}
 	}
 
 	/* ── Search wrap ── */
@@ -551,45 +553,31 @@
 		color: var(--color-danger);
 	}
 
-	/* ── Out-of-the-box Red Cart Button ── */
+	/* ── Cart CTA button (active when cart has items) ── */
 	.nav-cart-btn {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		gap: 6px;
-		min-height: 40px;
+		gap: 8px;
+		min-height: 44px;
 		padding: 0 16px;
 		margin-left: 4px;
-		border-radius: var(--radius-full);
+		border-radius: var(--radius-sm);
 		color: var(--ft-cta-text);
 		background: var(--ft-cta);
 		border: 1px solid var(--ft-cta);
 		cursor: pointer;
 		text-decoration: none;
 		position: relative;
-		transition: all 0.2s ease;
-		box-shadow: var(--ft-shadow-md);
-	}
-
-	@media (min-width: 768px) {
-		.nav-cart-btn {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: 6px;
-		min-height: 40px;
-		padding: 0 16px;
-		margin-left: 4px;
-		border-radius: var(--radius-full);
-		color: var(--ft-cta-text);
-		background: var(--ft-cta);
-		border: 1px solid var(--ft-cta);
-		cursor: pointer;
-		text-decoration: none;
-		position: relative;
-		transition: all 0.2s ease;
-		box-shadow: var(--ft-shadow-md);
-	}
+		font-family: var(--font-sans);
+		font-size: 0.9rem;
+		font-weight: 600;
+		transition:
+			background-color 0.2s ease,
+			border-color 0.2s ease,
+			transform 0.15s ease,
+			box-shadow 0.2s ease;
+		box-shadow: var(--ft-shadow-sm);
 	}
 
 	.nav-cart-btn:hover {

@@ -595,9 +595,9 @@
 	}
 
 	.dropdown-cat-chip:hover {
-		border-color: var(--ft-cta);
-		color: var(--ft-cta);
-		background: var(--ft-cta-light);
+		border-color: var(--ft-accent);
+		color: var(--ft-cta-text);
+		background: var(--ft-cta);
 	}
 
 	.dropdown-cat-chip:focus-visible {
@@ -681,8 +681,8 @@
 	.result-price {
 		flex-shrink: 0;
 		font-size: 0.78rem;
-		font-weight: 500;
-		color: var(--ft-cta);
+		font-weight: 600;
+		color: var(--ft-text-strong);
 	}
 
 	/* ── Loading ── */

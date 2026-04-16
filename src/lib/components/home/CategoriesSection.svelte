@@ -122,7 +122,7 @@
 		overflow: hidden;
 		background: var(--ft-surface);
 		transition: transform 0.2s ease;
-		border: 1px solid var(--ft-line); border-radius: var(--radius-2xl);
+		border: 1px solid var(--ft-line);
 	}
 
 	.cat-card:hover {
@@ -177,10 +177,6 @@
 		background: var(--ft-surface);
 		position: relative;
 	}
-
-	
-
-	.cat-card:hover 
 
 	.cat-name {
 		font-family: var(--font-sans);

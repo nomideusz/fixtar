@@ -155,7 +155,9 @@
 	}
 
 	.footer-brand:hover {
-		color: var(--ft-cta);
+		color: var(--ft-accent);
+		text-decoration: underline;
+		text-underline-offset: 3px;
 	}
 
 	.footer-desc {
