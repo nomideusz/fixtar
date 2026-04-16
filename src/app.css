@@ -85,6 +85,7 @@
 	--ft-container: 1760px;
 	--ft-gutter: clamp(24px, 5vw, 80px);
 	--ft-nav-h: 60px; /* Navbar height — overridden per breakpoint below */
+	--ft-navbar-h: var(--ft-nav-h); /* Alias — use in scroll-margin / sticky offsets */
 
 	/* ── Motion — Sharp and Mechanical ── */
 	--dur-fast: 0.1s;

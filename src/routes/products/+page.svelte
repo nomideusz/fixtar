@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { page } from '$app/stores';
 	import ProductCard from '$lib/components/ui/ProductCard.svelte';
 	import Breadcrumbs from '$lib/components/ui/Breadcrumbs.svelte';
 	import type { Product, Category } from '$lib/stores/products.svelte';
@@ -24,6 +23,11 @@
 			sortBy: string;
 			inStockOnly: boolean;
 			categoryIsolate: string;
+			categoryScrollTo?: string;
+			isolateMode?: boolean;
+			brandSlug?: string;
+			brandsFacet?: Array<{ slug: string; label: string; count: number }>;
+			priceTier?: string;
 			totalItems: number;
 			error?: string;
 		};
@@ -43,13 +47,12 @@
 		sortBy = data.sortBy;
 	});
 
-	// If category param is set and we're NOT isolating, scroll to section
+	// ?category= bez isolate= — przewiń do sekcji (linki z kategorii / wyszukiwarki)
 	$effect(() => {
-		const categorySlug = $page.url.searchParams.get('category');
-		const isolate = $page.url.searchParams.get('isolate') === '1';
-		if (categorySlug && !isolate) {
-			setTimeout(() => scrollToCategory(categorySlug), 100);
-		}
+		const slug = data.categoryScrollTo;
+		if (!slug) return;
+		const t = setTimeout(() => scrollToCategory(slug), 100);
+		return () => clearTimeout(t);
 	});
 
 	// Track which category section is in view
@@ -115,10 +118,10 @@
 		isScrolling = true;
 		scrollChipIntoView(slug);
 
-		const navH =
-			parseInt(
-				getComputedStyle(document.documentElement).getPropertyValue('--ft-nav-h')
-			) || 60;
+		const navRaw =
+			getComputedStyle(document.documentElement).getPropertyValue('--ft-navbar-h') ||
+			getComputedStyle(document.documentElement).getPropertyValue('--ft-nav-h');
+		const navH = parseInt(navRaw, 10) || 60;
 		const chipsBar = document.querySelector('.chips-bar') as HTMLElement | null;
 		const chipsHeight = chipsBar?.offsetHeight || 60;
 		const offset = navH + chipsHeight + 16;
@@ -132,27 +135,63 @@
 		}, 800);
 	}
 
-	// Build URL preserving other filters
-	function buildUrl(overrides: Record<string, string | null>) {
-		const params = new URLSearchParams();
-		const current = {
-			search: data.searchQuery,
+	function buildUrl(overrides: Record<string, string | null> = {}) {
+		const merged: Record<string, string | null | undefined> = {
+			search: data.searchQuery || '',
 			sort: sortBy !== 'name' ? sortBy : '',
 			stock: data.inStockOnly ? '1' : '',
-			category: data.categoryIsolate
+			category: data.isolateMode && data.categoryIsolate ? data.categoryIsolate : '',
+			isolate: data.isolateMode ? '1' : '',
+			brand: data.brandSlug || '',
+			price: data.priceTier || '',
+			...overrides
 		};
-		for (const [k, v] of Object.entries({ ...current, ...overrides })) {
-			if (v) params.set(k, v);
+
+		const params = new URLSearchParams();
+		for (const [k, v] of Object.entries(merged)) {
+			if (v === null || v === undefined || v === '') continue;
+			params.set(k, v);
 		}
 		const qs = params.toString();
-		return `/products${qs ? '?' + qs : ''}`;
+		return `/products${qs ? `?${qs}` : ''}`;
 	}
 
 	const sortOptions = [
 		{ value: 'name', label: 'Nazwa A-Z' },
-		{ value: 'price-low', label: 'Cena ↑' },
-		{ value: 'price-high', label: 'Cena ↓' }
+		{ value: 'price-low', label: 'Od najtańszych' },
+		{ value: 'price-high', label: 'Od najdroższych' }
 	];
+
+	const PRICE_PRESETS = [
+		{ id: '', label: 'Wszystkie ceny' },
+		{ id: 'low', label: 'do 300 zł' },
+		{ id: 'mid', label: '300–800 zł' },
+		{ id: 'high', label: 'powyżej 800 zł' }
+	] as const;
+
+	function setPriceTier(id: string) {
+		goto(buildUrl({ price: id || null }));
+	}
+
+	function onHorizontalKeydown(e: KeyboardEvent, el: HTMLElement | undefined) {
+		if (!el) return;
+		if (e.key === 'ArrowRight') {
+			el.scrollBy({ left: 120, behavior: 'smooth' });
+			e.preventDefault();
+		} else if (e.key === 'ArrowLeft') {
+			el.scrollBy({ left: -120, behavior: 'smooth' });
+			e.preventDefault();
+		}
+	}
+
+	function setBrand(slug: string) {
+		if (!slug) {
+			goto(buildUrl({ brand: null }));
+			return;
+		}
+		if (slug === data.brandSlug) goto(buildUrl({ brand: null }));
+		else goto(buildUrl({ brand: slug }));
+	}
 
 	function setSort(value: string) {
 		sortBy = value;
@@ -164,36 +203,75 @@
 	}
 
 	function onChipClick(slug: string) {
-		// If already active and user clicks again → isolate category
-		if (activeCategory === slug && !data.categoryIsolate) {
-			goto(buildUrl({ category: slug }));
+		if (activeCategory === slug && !data.isolateMode) {
+			goto(buildUrl({ category: slug, isolate: '1' }));
 			return;
 		}
-		// If currently isolating this category and clicked again → exit isolate
-		if (data.categoryIsolate === slug) {
-			goto(buildUrl({ category: null }));
+		if (data.isolateMode && data.categoryIsolate === slug) {
+			goto(buildUrl({ category: null, isolate: null }));
 			return;
 		}
 		scrollToCategory(slug);
 	}
 
 	const showBreadcrumbs = $derived(
-		Boolean(data.searchQuery || data.categoryIsolate)
+		Boolean(
+			data.searchQuery ||
+				data.isolateMode ||
+				data.brandSlug ||
+				data.priceTier
+		)
 	);
 
 	const breadcrumbItems = $derived.by(() => {
 		const items: Array<{ label: string; href: string }> = [
 			{ label: 'Produkty', href: '/products' }
 		];
-		if (data.categoryIsolate) {
+		if (data.brandSlug && data.brandsFacet?.length) {
+			const b = data.brandsFacet.find((x) => x.slug === data.brandSlug);
+			if (b) {
+				items.push({
+					label: b.label,
+					href: buildUrl({ brand: null })
+				});
+			}
+		}
+		if (data.priceTier) {
+			const preset = PRICE_PRESETS.find((p) => p.id === data.priceTier);
+			if (preset?.id) {
+				items.push({
+					label: preset.label,
+					href: buildUrl({ price: null })
+				});
+			}
+		}
+		if (data.isolateMode && data.categoryIsolate) {
 			const cat = data.categories.find((c) => c.slug === data.categoryIsolate);
-			if (cat) items.push({ label: cat.name, href: `/products?category=${cat.slug}` });
+			if (cat) {
+				items.push({
+					label: cat.name,
+					href: `/products?category=${encodeURIComponent(cat.slug)}`
+				});
+			}
 		}
 		if (data.searchQuery) {
-			items.push({ label: `„${data.searchQuery}”`, href: buildUrl({}) });
+			items.push({
+				label: `„${data.searchQuery}”`,
+				href: buildUrl({ search: null })
+			});
 		}
 		return items;
 	});
+
+	const hasActiveFilters = $derived(
+		Boolean(
+			data.inStockOnly ||
+				data.searchQuery ||
+				data.brandSlug ||
+				data.priceTier ||
+				data.isolateMode
+		)
+	);
 </script>
 
 <svelte:head>
@@ -250,10 +328,10 @@
 	<!-- Category chips — sticky nav -->
 	{#if data.chipSections.length > 1}
 		<nav class="chips-bar" class:chips-bar--stuck={chipsStuck} aria-label="Kategorie">
-			{#if data.categoryIsolate}
+			{#if data.isolateMode}
 				<button
 					class="isolate-clear"
-					onclick={() => goto(buildUrl({ category: null }))}
+					onclick={() => goto(buildUrl({ category: null, isolate: null }))}
 					aria-label="Pokaż wszystkie kategorie"
 				>
 					<svg
@@ -273,16 +351,27 @@
 					Wszystkie kategorie
 				</button>
 			{/if}
-			<div class="chip-scroll" bind:this={chipScrollEl}>
+			<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+			<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+			<div
+				class="chip-scroll"
+				bind:this={chipScrollEl}
+				role="region"
+				aria-label="Skróty kategorii — przewijanie w poziomie"
+				tabindex="0"
+				onkeydown={(e) => onHorizontalKeydown(e, chipScrollEl)}
+			>
 				{#each data.chipSections as section (section.category.id)}
 					<button
 						class="chip"
-						class:chip--active={data.categoryIsolate
+						class:chip--active={data.isolateMode
 							? data.categoryIsolate === section.category.slug
 							: activeCategory === section.category.slug}
-						aria-current={!data.categoryIsolate && activeCategory === section.category.slug
-							? 'location'
-							: undefined}
+						aria-current={data.isolateMode && data.categoryIsolate === section.category.slug
+							? 'page'
+							: !data.isolateMode && activeCategory === section.category.slug
+								? 'location'
+								: undefined}
 						data-chip={section.category.slug}
 						onclick={() => onChipClick(section.category.slug)}
 					>
@@ -292,6 +381,57 @@
 				{/each}
 			</div>
 		</nav>
+	{/if}
+
+	{#if !data.error}
+		<div class="facet-strip">
+			<div
+				class="facet-row facet-row--price"
+				role="group"
+				aria-label="Przedział cenowy"
+			>
+				{#each PRICE_PRESETS as preset (preset.id || 'all')}
+					<button
+						type="button"
+						class="facet-chip"
+						class:facet-chip--active={data.priceTier === preset.id}
+						aria-pressed={data.priceTier === preset.id}
+						onclick={() => setPriceTier(preset.id)}
+					>
+						{preset.label}
+					</button>
+				{/each}
+			</div>
+			{#if data.brandsFacet && data.brandsFacet.length > 0}
+				<div
+					class="facet-row facet-row--brands"
+					role="region"
+					aria-label="Marki w katalogu"
+				>
+					<button
+						type="button"
+						class="facet-chip"
+						class:facet-chip--active={!data.brandSlug}
+						aria-pressed={!data.brandSlug}
+						onclick={() => setBrand('')}
+					>
+						Wszystkie marki
+					</button>
+					{#each data.brandsFacet as b (b.slug)}
+						<button
+							type="button"
+							class="facet-chip"
+							class:facet-chip--active={data.brandSlug === b.slug}
+							aria-pressed={data.brandSlug === b.slug}
+							onclick={() => setBrand(b.slug)}
+						>
+							{b.label}
+							<span class="facet-chip-count">{b.count}</span>
+						</button>
+					{/each}
+				</div>
+			{/if}
+		</div>
 	{/if}
 
 	<!-- Category sections -->
@@ -326,6 +466,18 @@
 						{section.category.name}
 						<span class="cat-count">({section.category.productCount})</span>
 					</h2>
+					<p class="scroll-hint" aria-hidden="true">
+						<span>Więcej</span>
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+							<path
+								d="M5 12h14M13 6l6 6-6 6"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							/>
+						</svg>
+					</p>
 				</div>
 
 				<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
@@ -344,7 +496,7 @@
 	{:else}
 		<div class="empty-state">
 			<p>Nie znaleziono produktów.</p>
-			{#if data.inStockOnly || data.searchQuery}
+			{#if hasActiveFilters}
 				<a href="/products" class="empty-reset">Wyczyść filtry</a>
 			{/if}
 		</div>
@@ -495,7 +647,7 @@
 
 	.chips-bar {
 		position: sticky;
-		top: var(--ft-nav-h, 60px);
+		top: var(--ft-navbar-h, var(--ft-nav-h, 60px));
 		z-index: 10;
 		background: var(--ft-bg);
 		padding: 12px 0;
@@ -580,13 +732,13 @@
 		background: transparent;
 		border: 1px solid var(--ft-line);
 		border-radius: var(--radius-full);
-		padding: 6px 14px;
+		padding: 8px 16px;
 		font-family: var(--font-sans);
 		font-size: 0.78rem;
 		font-weight: 600;
 		color: var(--ft-accent);
 		cursor: pointer;
-		min-height: 36px;
+		min-height: 44px;
 		transition:
 			background 0.15s ease,
 			border-color 0.15s ease;
@@ -609,14 +761,123 @@
 	/* ── Category sections ── */
 	.cat-section {
 		padding-bottom: clamp(32px, 4vh, 48px);
-		scroll-margin-top: calc(var(--ft-nav-h, 60px) + 80px);
+		scroll-margin-top: calc(var(--ft-navbar-h, var(--ft-nav-h, 60px)) + 96px);
 	}
 
 	.cat-header {
 		display: flex;
-		align-items: baseline;
+		align-items: center;
 		justify-content: space-between;
+		gap: 12px;
 		margin-bottom: 20px;
+	}
+
+	.scroll-hint {
+		display: none;
+		align-items: center;
+		gap: 4px;
+		margin: 0;
+		font-family: var(--font-sans);
+		font-size: 0.72rem;
+		font-weight: 500;
+		color: var(--ft-text-faint);
+		flex-shrink: 0;
+	}
+
+	.scroll-hint svg {
+		flex-shrink: 0;
+		opacity: 0.85;
+	}
+
+	@media (max-width: 639px) {
+		.scroll-hint {
+			display: inline-flex;
+		}
+	}
+
+	/* ── Price + brand facets ── */
+	.facet-strip {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		margin-bottom: clamp(16px, 2.5vh, 28px);
+	}
+
+	.facet-row {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		align-items: center;
+	}
+
+	.facet-row--brands {
+		flex-wrap: nowrap;
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		scrollbar-width: none;
+		margin-left: calc(-1 * var(--ft-gutter, clamp(24px, 5vw, 80px)));
+		margin-right: calc(-1 * var(--ft-gutter, clamp(24px, 5vw, 80px)));
+		padding-left: var(--ft-gutter, clamp(24px, 5vw, 80px));
+		padding-right: var(--ft-gutter, clamp(24px, 5vw, 80px));
+		padding-bottom: 4px;
+		-webkit-mask-image: linear-gradient(to right, black 0, black 92%, transparent 100%);
+		mask-image: linear-gradient(to right, black 0, black 92%, transparent 100%);
+	}
+
+	.facet-row--brands::-webkit-scrollbar {
+		display: none;
+	}
+
+	@media (min-width: 900px) {
+		.facet-row--brands {
+			flex-wrap: wrap;
+			overflow: visible;
+			margin-left: 0;
+			margin-right: 0;
+			padding-left: 0;
+			padding-right: 0;
+			-webkit-mask-image: none;
+			mask-image: none;
+		}
+	}
+
+	.facet-chip {
+		flex-shrink: 0;
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+		min-height: 44px;
+		padding: 8px 14px;
+		background: transparent;
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-full);
+		font-family: var(--font-sans);
+		font-size: 0.78rem;
+		font-weight: 600;
+		color: var(--ft-text-muted);
+		cursor: pointer;
+		transition:
+			color 0.15s ease,
+			background 0.15s ease,
+			border-color 0.15s ease;
+	}
+
+	.facet-chip:hover:not(.facet-chip--active) {
+		background: var(--ft-frost);
+		color: var(--ft-text-strong);
+	}
+
+	.facet-chip--active {
+		background: var(--ft-accent);
+		border-color: var(--ft-accent);
+		color: white;
+	}
+
+	.facet-chip-count {
+		font-weight: 500;
+		font-size: 0.85em;
+		opacity: 0.85;
+		font-variant-numeric: tabular-nums;
 	}
 
 	.cat-title {
