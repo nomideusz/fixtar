@@ -165,11 +165,11 @@
 			>
 				<div class="nav-action-icon-wrap" class:is-bouncing={cartBouncing}>
 					<ShoppingCartSimpleIcon size={cartCount > 0 ? 20 : 22} weight="bold" aria-hidden="true" />
-					{#if cartCount > 0}
-						<span class="cart-badge" aria-hidden="true">{cartCount}</span>
-					{/if}
 				</div>
 				<span class="nav-action-label desktop-only">Koszyk</span>
+				{#if cartCount > 0}
+					<span class="cart-badge" aria-hidden="true">{cartCount}</span>
+				{/if}
 			</button>
 		</div>
 	</div>
@@ -362,33 +362,37 @@
 	}
 
 	.nav-icon-btn {
-		display: flex;
-		flex-direction: column;
+		display: inline-flex;
+		flex-direction: row;
 		align-items: center;
 		justify-content: center;
-		gap: 2px;
-		min-width: 40px;
-		min-height: 40px;
-		border-radius: var(--radius-sm);
+		gap: 8px;
+		height: 40px;
+		padding: 0 12px;
+		border-radius: 0;
 		color: var(--ft-text-strong);
 		background: transparent;
-		border: none;
+		border: 1px solid transparent;
 		cursor: pointer;
 		text-decoration: none;
 		position: relative;
-		transition: color var(--dur-fast) ease;
+		transition:
+			color var(--dur-fast) ease,
+			background-color var(--dur-fast) ease,
+			border-color var(--dur-fast) ease;
 	}
 
 	@media (min-width: 768px) {
 		.nav-icon-btn {
-			gap: 4px;
-			min-width: 48px;
-			min-height: 48px;
+			gap: 8px;
+			padding: 0 14px;
 		}
 	}
 
 	.nav-action-btn:hover {
 		color: var(--ft-accent);
+		background: var(--ft-frost);
+		border-color: var(--ft-line);
 	}
 
 	.nav-action-icon-wrap {
@@ -415,10 +419,12 @@
 	}
 
 	.nav-action-label {
-		font-size: 0.8rem;
+		font-family: var(--font-sans);
+		font-size: 0.82rem;
 		font-weight: 500;
 		text-transform: none;
 		letter-spacing: 0;
+		line-height: 1;
 	}
 
 	.nav-icon-btn:focus-visible {
@@ -546,31 +552,33 @@
 	/* ── Cart badge ── */
 	.cart-badge {
 		position: absolute;
-		top: -8px;
-		right: -12px;
-		min-width: 18px;
-		height: 18px;
+		top: -7px;
+		right: -7px;
+		min-width: 20px;
+		height: 20px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background: #ffffff;
-		color: var(--ft-accent);
-		font-size: 0.8rem;
-		font-weight: 600;
+		background: var(--ft-cta);
+		color: var(--ft-cta-text);
+		font-size: 0.72rem;
+		font-weight: 700;
+		font-variant-numeric: tabular-nums;
 		border-radius: var(--radius-full);
-		padding: 0 4px;
+		padding: 0 6px;
 		line-height: 1;
 		pointer-events: none;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-		border: 2px solid var(--ft-cta);
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+		border: 2px solid var(--ft-surface);
 		transition:
 			background 0.2s,
-			color 0.2s;
+			color 0.2s,
+			border-color 0.2s;
 	}
 
 	.nav-cart-btn:hover .cart-badge {
-		background: var(--ft-cta);
-		color: var(--ft-cta-text);
+		background: var(--ft-surface);
+		color: var(--ft-cta);
 		border-color: var(--ft-cta-text);
 	}
 </style>

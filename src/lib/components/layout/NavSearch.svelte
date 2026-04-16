@@ -209,9 +209,18 @@
 
 <div class="nav-search">
 	<div class="search-input-wrap">
-		<span class="search-icon" aria-hidden="true">
+		<button
+			type="button"
+			class="search-icon"
+			onclick={() => {
+				if (query.trim()) goToSearch();
+				else inputRef?.focus();
+			}}
+			aria-label="Szukaj"
+			tabindex="-1"
+		>
 			<MagnifyingGlassIcon size={18} weight="bold" />
-		</span>
+		</button>
 		<input
 			bind:this={inputRef}
 			type="search"
@@ -246,14 +255,6 @@
 				{isMac ? '⌘' : 'Ctrl'} K
 			</kbd>
 		{/if}
-
-		<button
-			class="search-submit-btn"
-			onclick={() => {
-				if (query.trim()) goToSearch();
-			}}
-			aria-label="Szukaj">Szukaj</button
-		>
 	</div>
 
 	{#if hasDropdownContent}
@@ -366,17 +367,22 @@
 		position: relative;
 		display: flex;
 		align-items: stretch;
-		border: 1.5px solid var(--ft-line);
+		height: 40px;
+		border: 1px solid var(--ft-line);
 		background: var(--ft-surface);
 		border-radius: 0;
 		transition:
-			border-color 0.2s ease,
-			box-shadow 0.2s ease;
+			border-color 0.15s ease,
+			background 0.15s ease;
+	}
+
+	.search-input-wrap:hover {
+		border-color: var(--ft-text-muted);
 	}
 
 	.search-input-wrap:focus-within {
-		border-color: var(--ft-text-strong);
-		box-shadow: 0 0 0 3px color-mix(in srgb, var(--ft-accent) 12%, transparent);
+		border-color: var(--ft-accent);
+		background: var(--ft-surface);
 	}
 
 	.search-icon {
@@ -384,20 +390,28 @@
 		align-items: center;
 		justify-content: center;
 		flex-shrink: 0;
-		padding: 0 4px 0 14px;
+		width: 40px;
+		padding: 0;
+		border: none;
+		background: transparent;
 		color: var(--ft-text-muted);
-		transition: color 0.2s ease;
+		cursor: pointer;
+		transition: color 0.15s ease;
+	}
+
+	.search-icon:hover {
+		color: var(--ft-accent);
 	}
 
 	.search-input-wrap:focus-within .search-icon {
-		color: var(--ft-text-strong);
+		color: var(--ft-accent);
 	}
 
 	.search-input {
 		flex: 1;
 		min-width: 0;
-		padding: 12px 8px;
-		font-size: 0.9rem;
+		padding: 0 8px 0 0;
+		font-size: 0.85rem;
 		font-family: var(--font-sans);
 		font-weight: 500;
 		color: var(--ft-text-strong);
@@ -449,64 +463,28 @@
 		justify-content: center;
 		align-self: center;
 		flex-shrink: 0;
-		margin-right: 6px;
+		margin-right: 4px;
 		width: 28px;
 		height: 28px;
 		padding: 0;
 		border: none;
-		background: var(--ft-frost);
+		background: transparent;
 		color: var(--ft-text-muted);
 		cursor: pointer;
-		border-radius: var(--radius-full, 999px);
+		border-radius: 0;
 		transition:
 			background-color 0.15s ease,
 			color 0.15s ease;
 	}
 
 	.search-clear:hover {
-		color: var(--ft-surface);
-		background: var(--ft-text-strong);
+		color: var(--ft-text-strong);
+		background: var(--ft-frost);
 	}
 
 	.search-clear:focus-visible {
 		outline: 2px solid var(--ft-accent);
-		outline-offset: 2px;
-	}
-
-	.search-submit-btn {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		background: var(--ft-text-strong);
-		color: var(--ft-surface);
-		border: none;
-		border-radius: 0;
-		font-family: var(--font-display);
-		font-weight: 600;
-		font-size: 0.85rem;
-		text-transform: none;
-		letter-spacing: 0;
-		padding: 0 24px;
-		cursor: pointer;
-		white-space: nowrap;
-		flex-shrink: 0;
-		transition:
-			background-color 0.2s ease,
-			transform 0.1s ease;
-	}
-
-	@media (min-width: 768px) {
-		.search-submit-btn {
-			padding: 0 32px;
-		}
-	}
-
-	.search-submit-btn:hover {
-		background: var(--ft-cta);
-	}
-
-	.search-submit-btn:active {
-		transform: scale(0.97);
+		outline-offset: -2px;
 	}
 
 	/* ── Backdrop ── */

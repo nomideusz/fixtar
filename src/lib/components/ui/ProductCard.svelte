@@ -411,7 +411,8 @@
 	.card-price-row {
 		display: flex;
 		align-items: baseline;
-		gap: 8px;
+		flex-wrap: wrap;
+		gap: 4px 8px;
 		margin-top: auto;
 	}
 
@@ -439,10 +440,16 @@
 
 	.card-oos {
 		font-family: var(--font-sans);
-		font-size: 0.75rem;
-		font-weight: 500;
+		font-size: 0.7rem;
+		font-weight: 600;
 		color: var(--ft-text-muted);
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		padding: 2px 8px;
+		background: var(--ft-frost);
+		border: 1px solid var(--ft-line);
 		margin-left: auto;
+		white-space: nowrap;
 	}
 
 	@media (prefers-reduced-motion: reduce) {

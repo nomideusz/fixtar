@@ -84,6 +84,7 @@
 	/* ── Layout ── */
 	--ft-container: 1760px;
 	--ft-gutter: clamp(24px, 5vw, 80px);
+	--ft-nav-h: 60px; /* Navbar height — overridden per breakpoint below */
 
 	/* ── Motion — Sharp and Mechanical ── */
 	--dur-fast: 0.1s;
@@ -433,6 +434,13 @@
 .ft-section-sm {
 	padding-top: clamp(32px, 4vh, 40px);
 	padding-bottom: clamp(32px, 4vh, 40px);
+}
+
+/* Navbar height responsive override — keep in sync with Navbar.svelte */
+@media (min-width: 769px) {
+	:root {
+		--ft-nav-h: 76px;
+	}
 }
 
 /* Utility to prevent doubled padding between sections */
