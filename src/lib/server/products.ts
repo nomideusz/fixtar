@@ -80,7 +80,7 @@ export async function getFeaturedProducts(limit = 8): Promise<DBProduct[]> {
 	const db = getClient();
 	// Prefer products with images and prices, ordered by price desc (showcase best items)
 	const result = await db.execute({
-		sql: `SELECT id, name, slug, description, price, original_price, image, category, category_slug, tags, in_stock, sku, ean, weight
+		sql: `SELECT id, name, slug, description, price, original_price, image, gallery, category, category_slug, tags, in_stock, sku, ean, weight
 		      FROM products
 		      WHERE price > 0
 		      ORDER BY (CASE WHEN image != '' AND image IS NOT NULL THEN 0 ELSE 1 END), in_stock DESC, price DESC
@@ -173,7 +173,7 @@ export async function getAllProducts(opts: {
 
 	const offset = (page - 1) * perPage;
 	const result = await db.execute({
-		sql: `SELECT id, name, slug, description, price, original_price, image, category, category_slug, tags, in_stock, sku, ean, weight
+		sql: `SELECT id, name, slug, description, price, original_price, image, gallery, category, category_slug, tags, in_stock, sku, ean, weight
 		      FROM products ${where} ${orderBy} LIMIT ? OFFSET ?`,
 		args: [...args, perPage, offset]
 	});
@@ -212,7 +212,7 @@ export async function getRelatedProducts(
 	const nativeSlugs = APP_TO_NATIVE_CATEGORIES[categorySlug] || [categorySlug];
 	const placeholders = nativeSlugs.map(() => '?').join(',');
 	const result = await db.execute({
-		sql: `SELECT id, name, slug, description, price, original_price, image, category, category_slug, tags, in_stock, sku, ean, weight
+		sql: `SELECT id, name, slug, description, price, original_price, image, gallery, category, category_slug, tags, in_stock, sku, ean, weight
 		      FROM products WHERE category_slug IN (${placeholders}) AND id != ? AND price > 0
 		      ORDER BY (in_stock > 0) DESC LIMIT ?`,
 		args: [...nativeSlugs, excludeId, limit]
