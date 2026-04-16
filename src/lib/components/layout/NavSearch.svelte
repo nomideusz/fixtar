@@ -70,6 +70,24 @@
 		}
 	});
 
+	/* Global Cmd/Ctrl+K to focus search */
+	$effect(() => {
+		function onShortcut(e: KeyboardEvent) {
+			if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+				e.preventDefault();
+				inputRef?.focus();
+				inputRef?.select();
+			}
+		}
+		window.addEventListener('keydown', onShortcut);
+		return () => window.removeEventListener('keydown', onShortcut);
+	});
+
+	let isMac = $state(false);
+	$effect(() => {
+		isMac = typeof navigator !== 'undefined' && /mac|iphone|ipad/i.test(navigator.platform);
+	});
+
 	async function search(q: string) {
 		if (!q.trim() || q.trim().length < 2) {
 			results = [];
@@ -191,10 +209,13 @@
 
 <div class="nav-search">
 	<div class="search-input-wrap">
+		<span class="search-icon" aria-hidden="true">
+			<MagnifyingGlassIcon size={18} weight="bold" />
+		</span>
 		<input
 			bind:this={inputRef}
 			type="search"
-			placeholder="Szukaj produktów..."
+			placeholder="Szukaj produktów, marek, kategorii…"
 			value={query}
 			oninput={handleInput}
 			onkeydown={handleKeydown}
@@ -218,8 +239,12 @@
 				}}
 				aria-label="Wyczyść wyszukiwanie"
 			>
-				<XIcon size={14} aria-hidden="true" />
+				<XIcon size={14} weight="bold" aria-hidden="true" />
 			</button>
+		{:else}
+			<kbd class="search-shortcut" aria-hidden="true">
+				{isMac ? '⌘' : 'Ctrl'} K
+			</kbd>
 		{/if}
 
 		<button
@@ -229,10 +254,6 @@
 			}}
 			aria-label="Szukaj">Szukaj</button
 		>
-
-		<button class="search-close" onclick={close} aria-label="Zamknij wyszukiwanie">
-			<kbd>ESC</kbd>
-		</button>
 	</div>
 
 	{#if hasDropdownContent}
@@ -345,21 +366,38 @@
 		position: relative;
 		display: flex;
 		align-items: stretch;
-		border: 2px solid var(--ft-line);
+		border: 1.5px solid var(--ft-line);
 		background: var(--ft-surface);
 		border-radius: 0;
-		transition: border-color 0.2s ease;
+		transition:
+			border-color 0.2s ease,
+			box-shadow 0.2s ease;
 	}
 
 	.search-input-wrap:focus-within {
 		border-color: var(--ft-text-strong);
+		box-shadow: 0 0 0 3px color-mix(in srgb, var(--ft-accent) 12%, transparent);
+	}
+
+	.search-icon {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+		padding: 0 4px 0 14px;
+		color: var(--ft-text-muted);
+		transition: color 0.2s ease;
+	}
+
+	.search-input-wrap:focus-within .search-icon {
+		color: var(--ft-text-strong);
 	}
 
 	.search-input {
 		flex: 1;
 		min-width: 0;
-		padding: 12px 48px 12px 16px;
-		font-size: 0.88rem;
+		padding: 12px 8px;
+		font-size: 0.9rem;
 		font-family: var(--font-sans);
 		font-weight: 500;
 		color: var(--ft-text-strong);
@@ -371,6 +409,68 @@
 	.search-input::placeholder {
 		color: var(--ft-text-faint);
 		font-weight: 400;
+	}
+
+	/* Hide native search clear cross (WebKit) */
+	.search-input::-webkit-search-cancel-button {
+		-webkit-appearance: none;
+		appearance: none;
+	}
+
+	.search-shortcut {
+		display: none;
+		align-items: center;
+		gap: 2px;
+		flex-shrink: 0;
+		align-self: center;
+		margin-right: 10px;
+		padding: 3px 8px;
+		font-family: var(--font-sans);
+		font-size: 0.68rem;
+		font-weight: 600;
+		color: var(--ft-text-faint);
+		background: var(--ft-frost);
+		border: 1px solid var(--ft-line);
+		border-radius: 4px;
+		letter-spacing: 0.04em;
+		white-space: nowrap;
+		pointer-events: none;
+	}
+
+	@media (min-width: 1024px) {
+		.search-shortcut {
+			display: inline-flex;
+		}
+	}
+
+	.search-clear {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		align-self: center;
+		flex-shrink: 0;
+		margin-right: 6px;
+		width: 28px;
+		height: 28px;
+		padding: 0;
+		border: none;
+		background: var(--ft-frost);
+		color: var(--ft-text-muted);
+		cursor: pointer;
+		border-radius: var(--radius-full, 999px);
+		transition:
+			background-color 0.15s ease,
+			color 0.15s ease;
+	}
+
+	.search-clear:hover {
+		color: var(--ft-surface);
+		background: var(--ft-text-strong);
+	}
+
+	.search-clear:focus-visible {
+		outline: 2px solid var(--ft-accent);
+		outline-offset: 2px;
 	}
 
 	.search-submit-btn {
@@ -386,7 +486,7 @@
 		font-size: 0.85rem;
 		text-transform: none;
 		letter-spacing: 0;
-		padding: 0 32px;
+		padding: 0 24px;
 		cursor: pointer;
 		white-space: nowrap;
 		flex-shrink: 0;
@@ -395,58 +495,18 @@
 			transform 0.1s ease;
 	}
 
+	@media (min-width: 768px) {
+		.search-submit-btn {
+			padding: 0 32px;
+		}
+	}
+
 	.search-submit-btn:hover {
 		background: var(--ft-cta);
 	}
 
 	.search-submit-btn:active {
 		transform: scale(0.97);
-	}
-
-	.search-clear {
-		position: absolute;
-		right: 124px;
-		top: 50%;
-		transform: translateY(-50%);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 28px;
-		height: 28px;
-		padding: 0;
-		border: none;
-		background: transparent;
-		color: var(--ft-text-muted);
-		cursor: pointer;
-		border-radius: 0;
-		transition:
-			background-color 0.15s ease,
-			color 0.15s ease;
-	}
-
-	.search-clear:hover {
-		color: var(--ft-dark);
-		background: var(--ft-frost);
-	}
-
-	.search-clear:focus-visible {
-		outline: 2px solid var(--ft-accent);
-		outline-offset: 2px;
-	}
-
-	.search-close {
-		display: none;
-	}
-
-	.search-close kbd {
-		font-size: 0.6rem;
-		font-family: inherit;
-		font-weight: 600;
-		color: var(--ft-text-faint);
-		padding: 2px 6px;
-		border: 1px solid var(--ft-line);
-		border-radius: 0;
-		background: var(--ft-surface);
 	}
 
 	/* ── Backdrop ── */

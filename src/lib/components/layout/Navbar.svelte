@@ -7,8 +7,6 @@
 	import FixTarIcon from '$lib/images/logo/fixtar-icon-black.png';
 	import NavSearch from './NavSearch.svelte';
 	import {
-		XIcon,
-		MagnifyingGlassIcon,
 		ShoppingCartSimpleIcon,
 		UserIcon,
 		UserGearIcon,
@@ -22,7 +20,6 @@
 	let { onCartOpen }: Props = $props();
 
 	let scrolled = $state(false);
-	let mobileSearchOpen = $state(false);
 	let accountMenuOpen = $state(false);
 
 	onMount(() => {
@@ -47,10 +44,6 @@
 		}
 		prevCartCount = cartCount;
 	});
-
-	function toggleMobileSearch() {
-		mobileSearchOpen = !mobileSearchOpen;
-	}
 
 	async function handleLogout() {
 		userStore.logout();
@@ -93,20 +86,6 @@
 
 		<!-- Actions -->
 		<div class="nav-actions">
-			<button
-				onclick={toggleMobileSearch}
-				class="nav-icon-btn mobile-search-btn"
-				class:is-active={mobileSearchOpen}
-				aria-label="Szukaj"
-				title="Szukaj"
-			>
-				{#if mobileSearchOpen}
-					<XIcon size={22} weight="bold" aria-hidden="true" />
-				{:else}
-					<MagnifyingGlassIcon size={22} weight="bold" aria-hidden="true" />
-				{/if}
-			</button>
-
 			<!-- Account -->
 			{#if userStore.current}
 				<!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -194,13 +173,6 @@
 			</button>
 		</div>
 	</div>
-
-	<!-- Mobile dropdown search -->
-	{#if mobileSearchOpen}
-		<div class="mobile-search-bar">
-			<NavSearch onClose={() => (mobileSearchOpen = false)} />
-		</div>
-	{/if}
 </nav>
 
 <style>
@@ -374,18 +346,6 @@
 		}
 	}
 
-	.mobile-search-bar {
-		display: block;
-		padding: 16px var(--ft-gutter);
-		background: var(--ft-frost);
-		border-top: 1px solid var(--ft-line);
-	}
-	@media (min-width: 768px) {
-		.mobile-search-bar {
-			display: none;
-		}
-	}
-
 	/* ── Action icons ── */
 	.nav-actions {
 		display: flex;
@@ -459,15 +419,6 @@
 		font-weight: 500;
 		text-transform: none;
 		letter-spacing: 0;
-	}
-
-	.mobile-search-btn {
-		display: flex;
-	}
-	@media (min-width: 768px) {
-		.mobile-search-btn {
-			display: none;
-		}
 	}
 
 	.nav-icon-btn:focus-visible {
