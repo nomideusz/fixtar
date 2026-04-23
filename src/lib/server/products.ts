@@ -66,7 +66,14 @@ export interface DBProduct {
 	ean: string;
 	weight: number;
 	gallery: string;
+	is_featured?: number;
 }
+
+const BASE_COLS =
+	'id, name, slug, description, price, original_price, image, category, category_slug, tags, in_stock, sku, ean, weight, is_featured';
+
+const BASE_COLS_WITH_GALLERY =
+	'id, name, slug, description, price, original_price, image, gallery, category, category_slug, tags, in_stock, sku, ean, weight, is_featured';
 
 export interface DBCategory {
 	category: string;
@@ -78,55 +85,50 @@ export interface DBCategory {
 
 export async function getFeaturedProducts(limit = 8): Promise<DBProduct[]> {
 	const db = getClient();
-	const pinnedSlugs = [
-		'wkretaka-bavaria-bvcd21',
-		'zestaw-siekier-axeset-bv3',
-		'przedluzacz-zwijany-bv30b-30m',
-		'wiertarka-udarowa-kid1700-led',
-		'pila-szablasta-eurcs-1700-j1f-gw3-20',
-		'szlifierka-oscylacyjna-krs1300-s1a-kt03-125',
-		'klucz-udarowy-akumulatorowy-eu2050-mls-20280',
-		'szlifierka-katowa-dl-raczka-euag-1800dr-ag5152cv'
-	];
 
-	const pinnedPlaceholders = pinnedSlugs.map(() => '?').join(',');
-	const pinnedResult = await db.execute({
-		sql: `SELECT id, name, slug, description, price, original_price, image, category, category_slug, tags, in_stock, sku, ean, weight
+	const featured = await db.execute({
+		sql: `SELECT ${BASE_COLS}
 		      FROM products
-		      WHERE price > 0 AND slug IN (${pinnedPlaceholders})
-		      ORDER BY CASE slug
-		      	WHEN 'wkretaka-bavaria-bvcd21' THEN 0
-		      	WHEN 'zestaw-siekier-axeset-bv3' THEN 1
-		      	WHEN 'przedluzacz-zwijany-bv30b-30m' THEN 2
-		      	WHEN 'wiertarka-udarowa-kid1700-led' THEN 3
-		      	WHEN 'pila-szablasta-eurcs-1700-j1f-gw3-20' THEN 4
-		      	WHEN 'szlifierka-oscylacyjna-krs1300-s1a-kt03-125' THEN 5
-		      	WHEN 'klucz-udarowy-akumulatorowy-eu2050-mls-20280' THEN 6
-		      	WHEN 'szlifierka-katowa-dl-raczka-euag-1800dr-ag5152cv' THEN 7
-		      	ELSE 999
-		      END`,
-		args: pinnedSlugs
+		      WHERE price > 0 AND is_featured = 1
+		      ORDER BY (CASE WHEN image != '' AND image IS NOT NULL THEN 0 ELSE 1 END), in_stock DESC, name ASC
+		      LIMIT ?`,
+		args: [limit]
 	});
 
-	const remainingLimit = Math.max(0, limit - pinnedResult.rows.length);
-
-	if (remainingLimit === 0) {
-		return pinnedResult.rows as unknown as DBProduct[];
+	const remaining = Math.max(0, limit - featured.rows.length);
+	if (remaining === 0) {
+		return featured.rows as unknown as DBProduct[];
 	}
 
-	const fallbackResult = await db.execute({
-		sql: `SELECT id, name, slug, description, price, original_price, image, category, category_slug, tags, in_stock, sku, ean, weight
+	const featuredIds = featured.rows.map((r: any) => String(r.id));
+	const exclude = featuredIds.length
+		? ` AND id NOT IN (${featuredIds.map(() => '?').join(',')})`
+		: '';
+
+	const fallback = await db.execute({
+		sql: `SELECT ${BASE_COLS}
 		      FROM products
-		      WHERE price > 0 AND slug NOT IN (${pinnedPlaceholders})
+		      WHERE price > 0${exclude}
 		      ORDER BY (CASE WHEN image != '' AND image IS NOT NULL THEN 0 ELSE 1 END), in_stock DESC, price DESC
 		      LIMIT ?`,
-		args: [...pinnedSlugs, remainingLimit]
+		args: [...featuredIds, remaining]
 	});
 
 	return [
-		...(pinnedResult.rows as unknown as DBProduct[]),
-		...(fallbackResult.rows as unknown as DBProduct[])
+		...(featured.rows as unknown as DBProduct[]),
+		...(fallback.rows as unknown as DBProduct[])
 	].slice(0, limit);
+}
+
+export async function setProductFeatured(productId: string, featured: boolean): Promise<void> {
+	const db = getClient();
+	const result = await db.execute({
+		sql: `UPDATE products SET is_featured = ? WHERE id = ?`,
+		args: [featured ? 1 : 0, productId]
+	});
+	if (result.rowsAffected === 0) {
+		throw new Error('Product not found');
+	}
 }
 
 export async function getDealsCount(): Promise<number> {
@@ -212,7 +214,7 @@ export async function getAllProducts(opts: {
 
 	const offset = (page - 1) * perPage;
 	const result = await db.execute({
-		sql: `SELECT id, name, slug, description, price, original_price, image, gallery, category, category_slug, tags, in_stock, sku, ean, weight
+		sql: `SELECT ${BASE_COLS_WITH_GALLERY}
 		      FROM products ${where} ${orderBy} LIMIT ? OFFSET ?`,
 		args: [...args, perPage, offset]
 	});
@@ -223,7 +225,7 @@ export async function getAllProducts(opts: {
 export async function getProductBySlug(slug: string): Promise<DBProduct | null> {
 	const db = getClient();
 	const result = await db.execute({
-		sql: `SELECT id, name, slug, description, price, original_price, image, gallery, category, category_slug, tags, in_stock, sku, ean, weight
+		sql: `SELECT ${BASE_COLS_WITH_GALLERY}
 		      FROM products WHERE slug = ? AND price > 0 LIMIT 1`,
 		args: [slug]
 	});
@@ -234,7 +236,7 @@ export async function getProductBySlug(slug: string): Promise<DBProduct | null> 
 export async function getProductById(id: string): Promise<DBProduct | null> {
 	const db = getClient();
 	const result = await db.execute({
-		sql: `SELECT id, name, slug, description, price, original_price, image, gallery, category, category_slug, tags, in_stock, sku, ean, weight
+		sql: `SELECT ${BASE_COLS_WITH_GALLERY}
 		      FROM products WHERE id = ? AND price > 0 LIMIT 1`,
 		args: [id]
 	});
@@ -251,7 +253,7 @@ export async function getRelatedProducts(
 	const nativeSlugs = APP_TO_NATIVE_CATEGORIES[categorySlug] || [categorySlug];
 	const placeholders = nativeSlugs.map(() => '?').join(',');
 	const result = await db.execute({
-		sql: `SELECT id, name, slug, description, price, original_price, image, category, category_slug, tags, in_stock, sku, ean, weight
+		sql: `SELECT ${BASE_COLS}
 		      FROM products WHERE category_slug IN (${placeholders}) AND id != ? AND price > 0
 		      ORDER BY (in_stock > 0) DESC LIMIT ?`,
 		args: [...nativeSlugs, excludeId, limit]
@@ -423,7 +425,7 @@ export function toStoreProduct(p: DBProduct): Product {
 		},
 		weight: p.weight || undefined,
 		attributes: { tags },
-		featured: false,
+		featured: Boolean(p.is_featured),
 		expand: {
 			categories: p.category
 				? [{ id: uiCategorySlug, name: uiCategoryName, slug: uiCategorySlug }]

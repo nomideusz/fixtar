@@ -1,6 +1,6 @@
 <script lang="ts">
 	import StatusBadge from './StatusBadge.svelte';
-	import { ImageSquareIcon, SpinnerGapIcon } from 'phosphor-svelte';
+	import { ImageSquareIcon, SpinnerGapIcon, StarIcon } from 'phosphor-svelte';
 
 	interface Props {
 		product: any;
@@ -9,15 +9,24 @@
 		onToggleSelect: () => void;
 		onStatusChange: (productId: string, newStatus: string) => void;
 		onManageImages: (product: any) => void;
+		onToggleFeatured: (product: any) => void;
 	}
 
-	let { product, selected, isLoading, onToggleSelect, onStatusChange, onManageImages }: Props =
-		$props();
+	let {
+		product,
+		selected,
+		isLoading,
+		onToggleSelect,
+		onStatusChange,
+		onManageImages,
+		onToggleFeatured
+	}: Props = $props();
 
 	const gallery = $derived((product.gallery ?? []) as string[]);
 	const extraCount = $derived(
 		gallery.filter((img: string) => img && img !== product.mainImage).length
 	);
+	const isFeatured = $derived(Boolean(product.featured));
 </script>
 
 <tr class="border-b border-[--ft-line] align-middle hover:bg-[--ft-frost]">
@@ -95,6 +104,18 @@
 
 	<td class="px-3 py-2 whitespace-nowrap">
 		<div class="flex items-center gap-2">
+			<button
+				type="button"
+				class="featured-btn"
+				class:is-on={isFeatured}
+				onclick={() => onToggleFeatured(product)}
+				disabled={isLoading}
+				title={isFeatured ? 'Usuń z polecanych' : 'Dodaj do polecanych'}
+				aria-label={isFeatured ? 'Usuń z polecanych' : 'Dodaj do polecanych'}
+				aria-pressed={isFeatured}
+			>
+				<StarIcon size={14} weight={isFeatured ? 'fill' : 'regular'} aria-hidden="true" />
+			</button>
 			<StatusBadge status={product.status} />
 			{#if isLoading}
 				<SpinnerGapIcon
@@ -208,5 +229,38 @@
 		outline: none;
 		border-color: var(--ft-text-strong);
 		color: var(--ft-text);
+	}
+
+	.featured-btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 28px;
+		height: 28px;
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-sm);
+		background: var(--ft-surface);
+		color: var(--ft-text-muted);
+		cursor: pointer;
+		transition:
+			border-color var(--dur-fast) ease,
+			background-color var(--dur-fast) ease,
+			color var(--dur-fast) ease;
+	}
+
+	.featured-btn:hover:not(:disabled) {
+		border-color: var(--ft-text-strong);
+		color: var(--ft-text-strong);
+	}
+
+	.featured-btn.is-on {
+		background: var(--ft-accent);
+		border-color: var(--ft-accent);
+		color: var(--ft-cta-text);
+	}
+
+	.featured-btn:disabled {
+		opacity: 0.4;
+		cursor: not-allowed;
 	}
 </style>

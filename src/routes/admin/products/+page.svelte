@@ -269,6 +269,31 @@
 		imageOrder = [...imageOrderInitial];
 	}
 
+	// --- Featured API ---
+	async function toggleFeatured(product: any) {
+		if (isLoading) return;
+		const nextFeatured = !product.featured;
+		isLoading = true;
+		try {
+			const response = await fetch('/api/admin/products/featured', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ productId: product.id, featured: nextFeatured })
+			});
+			const result = await response.json();
+			if (!response.ok || !result.success) {
+				showNotification(result.error || 'Nie udało się zmienić statusu', 'error');
+				return;
+			}
+			await invalidateAll();
+			showNotification(nextFeatured ? 'Dodano do polecanych' : 'Usunięto z polecanych');
+		} catch (error) {
+			showNotification(`Błąd: ${error}`, 'error');
+		} finally {
+			isLoading = false;
+		}
+	}
+
 	// --- Status API ---
 	async function updateStatus(productIds: string[], newStatus: string) {
 		isLoading = true;
@@ -487,6 +512,7 @@
 							onToggleSelect={() => toggleProductSelection(product.id)}
 							onStatusChange={(id, status) => updateStatus([id], status)}
 							onManageImages={openImagesModal}
+							onToggleFeatured={toggleFeatured}
 						/>
 					{/each}
 				</tbody>
