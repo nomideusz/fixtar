@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { cart, notifications, wishlist } from '$lib/stores';
 	import { afterNavigate } from '$app/navigation';
+	import Button from '$lib/components/ui/Button.svelte';
 	import Breadcrumbs from '$lib/components/ui/Breadcrumbs.svelte';
 	import ProductGallery from '$lib/components/products/ProductGallery.svelte';
 	import ImageZoomModal from '$lib/components/products/ImageZoomModal.svelte';
@@ -9,7 +10,7 @@
 	import { getStockInfo } from '$lib/utils/inventory';
 	import { parseProductDescription } from '$lib/utils/html';
 	import type { Product } from '$lib/stores/products.svelte';
-	import { HeartIcon, ShoppingCartSimpleIcon, MinusIcon, PlusIcon } from 'phosphor-svelte';
+	import { HeartIcon, TagIcon, ShoppingCartSimpleIcon, MinusIcon, PlusIcon } from 'phosphor-svelte';
 
 	interface Props {
 		data: {
@@ -97,6 +98,14 @@
 		notifications.success(`Dodano ${product.name} do koszyka`);
 	}
 
+	function buyNow() {
+		cart.addItem(
+			{ productId: product.id, name: product.name, price: product.price, image: product.mainImage },
+			quantity
+		);
+		window.location.href = '/checkout';
+	}
+
 	function toggleWishlist() {
 		const added = wishlist.toggle(product.id);
 		notifications.success(added ? 'Dodano do ulubionych' : 'Usunięto z ulubionych');
@@ -136,87 +145,35 @@
 
 		<!-- Info -->
 		<div class="pdp-info" style="min-width:0">
-			{#if primaryCategory}
-				<a class="pdp-category-tag" href="/products?category={primaryCategory.slug}">
-					{primaryCategory.name}
-				</a>
-			{/if}
-
+			<!-- Name -->
 			<h1 class="pdp-name">{product.name}</h1>
 
 			<!-- Price -->
 			<div class="pdp-price-row">
-				<span class="pdp-price" class:is-discounted={hasDiscount}
-					>{formatPrice(product.price)}</span
-				>
+				<span class="pdp-price">{formatPrice(product.price)}</span>
 				{#if hasDiscount}
 					<span class="pdp-compare">{formatPrice(product.compareAtPrice!)}</span>
-					<span class="pdp-discount">−{discountPercent}%</span>
+					<span class="pdp-discount">-{discountPercent}%</span>
 				{/if}
 			</div>
 
-			<!-- Stock -->
-			<div class="pdp-stock-row">
+			<!-- Meta -->
+			<div class="pdp-meta">
 				<span class="pdp-stock" class:in-stock={stock.inStock} class:out-of-stock={!stock.inStock}>
-					<span class="stock-dot" aria-hidden="true"></span>
+					<span class="stock-dot"></span>
 					{stock.label}
 				</span>
+				{#if product.expand?.categories?.length}
+					{#each product.expand.categories as cat (cat.id)}
+						<a href="/products?category={cat.slug}" class="pdp-category">
+							<TagIcon size={12} aria-hidden="true" />
+							{cat.name}
+						</a>
+					{/each}
+				{/if}
 			</div>
 
-			<!-- Inline Actions -->
-			{#if stock.inStock}
-				<div class="pdp-actions">
-					<div class="pdp-qty">
-						<button
-							class="qty-btn"
-							onclick={() => adjustQuantity(-1)}
-							disabled={quantity <= 1}
-							aria-label="Zmniejsz ilość"
-						>
-							<MinusIcon size={14} weight="bold" aria-hidden="true" />
-						</button>
-						<span class="qty-value" aria-live="polite">{quantity}</span>
-						<button
-							class="qty-btn"
-							onclick={() => adjustQuantity(1)}
-							disabled={quantity >= maxQuantity}
-							aria-label="Zwiększ ilość"
-						>
-							<PlusIcon size={14} weight="bold" aria-hidden="true" />
-						</button>
-					</div>
-
-					<button class="pdp-cart" onclick={addToCart}>
-						<ShoppingCartSimpleIcon size={18} weight="bold" aria-hidden="true" />
-						<span>Do koszyka</span>
-					</button>
-
-					<button
-						class="pdp-heart"
-						class:is-active={isWishlisted}
-						onclick={toggleWishlist}
-						aria-pressed={isWishlisted}
-						aria-label={isWishlisted ? 'Usuń z ulubionych' : 'Dodaj do ulubionych'}
-					>
-						<HeartIcon size={18} weight={isWishlisted ? 'fill' : 'regular'} aria-hidden="true" />
-					</button>
-				</div>
-			{:else}
-				<div class="pdp-actions">
-					<span class="pdp-oos">Produkt chwilowo niedostępny</span>
-					<button
-						class="pdp-heart"
-						class:is-active={isWishlisted}
-						onclick={toggleWishlist}
-						aria-pressed={isWishlisted}
-						aria-label={isWishlisted ? 'Usuń z ulubionych' : 'Dodaj do ulubionych'}
-					>
-						<HeartIcon size={18} weight={isWishlisted ? 'fill' : 'regular'} aria-hidden="true" />
-					</button>
-				</div>
-			{/if}
-
-			<!-- Specs + Contents -->
+			<!-- Specs + Contents (inline, above description) -->
 			{#if specTable.length > 0 || contents.length > 0}
 				<div class="pdp-specs">
 					<SpecTable specs={specTable} {contents} />
@@ -230,7 +187,7 @@
 				</div>
 				{#if descIsLong}
 					<button class="pdp-expand-btn" onclick={() => (descExpanded = !descExpanded)}>
-						{descExpanded ? 'Zwiń opis' : 'Czytaj więcej'}
+						{descExpanded ? '− Zwiń opis' : '+ Czytaj więcej'}
 					</button>
 				{/if}
 			{/if}
@@ -241,22 +198,52 @@
 	<RelatedProducts products={relatedProducts} categorySlug={primaryCategory?.slug} />
 </div>
 
-<!-- Mobile-only sticky bar: minimal price + CTA -->
-<div class="mobile-bar">
-	<div class="mobile-bar-inner ft-container">
-		<div class="mobile-bar-price">
-			<span class="mobile-bar-amount">{formatPrice(product.price * quantity)}</span>
-			{#if hasDiscount && stock.inStock}
-				<span class="mobile-bar-compare">{formatPrice(product.compareAtPrice! * quantity)}</span>
-			{/if}
-		</div>
+<!-- Sticky action bar — always visible -->
+<div class="action-bar">
+	<div class="action-bar-inner ft-container">
 		{#if stock.inStock}
-			<button class="mobile-bar-cart" onclick={addToCart} aria-label="Do koszyka">
-				<ShoppingCartSimpleIcon size={16} weight="bold" aria-hidden="true" />
-				<span>Do koszyka</span>
+			<!-- Quantity -->
+			<div class="action-qty">
+				<button
+					class="qty-btn"
+					onclick={() => adjustQuantity(-1)}
+					disabled={quantity <= 1}
+					aria-label="Mniej"
+				>
+					<MinusIcon size={14} weight="bold" aria-hidden="true" />
+				</button>
+				<span class="qty-value">{quantity}</span>
+				<button
+					class="qty-btn"
+					onclick={() => adjustQuantity(1)}
+					disabled={quantity >= maxQuantity}
+					aria-label="Więcej"
+				>
+					<PlusIcon size={14} weight="bold" aria-hidden="true" />
+				</button>
+			</div>
+
+			<!-- Price -->
+			<span class="action-price">{formatPrice(product.price * quantity)}</span>
+
+			<!-- Add to cart -->
+			<button class="action-cart" onclick={addToCart}>
+				<ShoppingCartSimpleIcon size={18} weight="bold" aria-hidden="true" />
+				<span class="action-cart-label">Do koszyka</span>
+			</button>
+
+			<!-- Wishlist -->
+			<button
+				class="action-heart"
+				class:is-active={isWishlisted}
+				onclick={toggleWishlist}
+				aria-label={isWishlisted ? 'Usuń z ulubionych' : 'Dodaj do ulubionych'}
+			>
+				<HeartIcon size={18} weight={isWishlisted ? 'fill' : 'bold'} aria-hidden="true" />
 			</button>
 		{:else}
-			<span class="mobile-bar-oos">Niedostępny</span>
+			<span class="action-price">{formatPrice(product.price)}</span>
+			<span class="action-oos">Niedostępny</span>
 		{/if}
 	</div>
 </div>
@@ -274,135 +261,104 @@
 	/* ── Page ── */
 	.pdp {
 		padding-top: clamp(16px, 2vh, 24px);
-		padding-bottom: clamp(40px, 6vh, 80px);
-		overflow-x: clip;
-	}
-
-	/* Make room for mobile sticky bar when visible */
-	@media (max-width: 1023px) {
-		.pdp {
-			padding-bottom: 96px;
-		}
+		padding-bottom: 100px; /* space for sticky bar */
+		overflow-x: clip; /* clip prevents horizontal overflow without breaking position:sticky */
 	}
 
 	.pdp-breadcrumbs {
-		margin-bottom: 20px;
+		margin-bottom: 16px;
 	}
 
 	/* ── Grid ── */
 	.pdp-grid {
 		display: grid;
 		grid-template-columns: 1fr;
-		gap: 32px;
+		gap: 24px;
 		min-width: 0;
 	}
 
 	@media (min-width: 1024px) {
 		.pdp-grid {
 			grid-template-columns: 1fr 1fr;
-			gap: 64px;
+			gap: 40px;
 			align-items: start;
 		}
 
 		.pdp-gallery {
 			position: sticky;
-			top: 112px;
+			top: 112px; /* navbar 100px + borders 5px + 7px gap */
 		}
-	}
-
-	/* ── Category pill ── */
-	.pdp-category-tag {
-		display: inline-flex;
-		align-items: center;
-		font-family: var(--font-sans);
-		font-size: 0.7rem;
-		font-weight: 600;
-		letter-spacing: 0.04em;
-		text-transform: uppercase;
-		color: var(--ft-text-muted);
-		text-decoration: none;
-		margin-bottom: 12px;
-		transition: color 150ms ease;
-	}
-
-	.pdp-category-tag:hover {
-		color: var(--ft-accent);
 	}
 
 	/* ── Name ── */
 	.pdp-name {
 		font-family: var(--font-display);
-		font-size: clamp(1.5rem, 3.2vw, 2rem);
+		font-size: clamp(1.2rem, 3vw, 1.6rem);
 		font-weight: 500;
-		color: var(--ft-text-strong);
-		letter-spacing: -0.02em;
-		line-height: 1.2;
+		color: var(--ft-dark);
+		letter-spacing: -0.015em;
+		line-height: 1.25;
 		overflow-wrap: anywhere;
 		word-break: break-word;
-		margin: 0;
 	}
 
 	/* ── Price ── */
 	.pdp-price-row {
 		display: flex;
 		align-items: baseline;
-		gap: 12px;
-		margin-top: 20px;
+		gap: 10px;
+		margin-top: 12px;
 		flex-wrap: wrap;
 	}
 
 	.pdp-price {
 		font-family: var(--font-display);
-		font-size: clamp(1.6rem, 3vw, 2rem);
+		font-size: clamp(1.4rem, 3vw, 1.8rem);
 		font-weight: 600;
-		color: var(--ft-text-strong);
-		letter-spacing: -0.02em;
-		font-variant-numeric: tabular-nums;
-	}
-
-	.pdp-price.is-discounted {
-		color: var(--color-danger);
+		color: var(--ft-cta);
+		letter-spacing: -0.015em;
 	}
 
 	.pdp-compare {
-		font-size: 0.95rem;
-		font-weight: 500;
+		font-size: 1rem;
 		color: var(--ft-text-faint);
 		text-decoration: line-through;
-		font-variant-numeric: tabular-nums;
 	}
 
 	.pdp-discount {
-		font-family: var(--font-sans);
-		font-size: 0.7rem;
-		font-weight: 700;
-		letter-spacing: 0.01em;
-		color: #ffffff;
+		font-family: var(--font-display);
+		font-size: 0.75rem;
+		font-weight: 500;
+		color: white;
 		background: var(--color-danger);
-		padding: 3px 8px;
-		border-radius: 2px;
-		font-variant-numeric: tabular-nums;
+		padding: 2px 8px;
+		border-radius: var(--radius-sm);
 	}
 
-	/* ── Stock ── */
-	.pdp-stock-row {
-		margin-top: 12px;
+	/* ── Meta ── */
+	.pdp-meta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 12px;
+		margin-top: 14px;
+		padding-bottom: 16px;
+		border-bottom: 1px solid var(--ft-line);
 	}
 
 	.pdp-stock {
 		display: inline-flex;
 		align-items: center;
-		gap: 6px;
-		font-family: var(--font-sans);
-		font-size: 0.8rem;
-		font-weight: 500;
+		gap: 5px;
+		font-size: 0.78rem;
+		font-weight: 600;
 	}
 
 	.pdp-stock.in-stock {
 		color: var(--color-success);
 	}
 	.pdp-stock.out-of-stock {
-		color: var(--ft-text-muted);
+		color: var(--color-danger);
 	}
 
 	.stock-dot {
@@ -412,154 +368,30 @@
 		background: currentColor;
 	}
 
-	/* ── Inline Actions ── */
-	.pdp-actions {
-		display: flex;
-		align-items: center;
-		gap: 10px;
-		margin-top: 24px;
-		padding-top: 24px;
-		border-top: 1px solid var(--ft-line);
-	}
-
-	.pdp-qty {
-		display: inline-flex;
-		align-items: stretch;
-		border: 1px solid var(--ft-line);
-		border-radius: 999px;
-		background: var(--ft-surface);
-		height: 44px;
-		overflow: hidden;
-	}
-
-	.qty-btn {
+	.pdp-category {
 		display: inline-flex;
 		align-items: center;
-		justify-content: center;
-		width: 40px;
-		height: 100%;
-		background: transparent;
-		border: none;
-		cursor: pointer;
-		color: var(--ft-text-strong);
-		transition:
-			color 150ms ease,
-			background 150ms ease;
-	}
-
-	.qty-btn:hover:not(:disabled) {
-		background: var(--ft-frost);
-	}
-
-	.qty-btn:disabled {
-		opacity: 0.3;
-		cursor: not-allowed;
-	}
-
-	.qty-btn:focus-visible {
-		outline: 2px solid var(--ft-focus-ring);
-		outline-offset: -2px;
-	}
-
-	.qty-value {
-		min-width: 32px;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		font-family: var(--font-sans);
-		font-size: 0.9rem;
+		gap: 4px;
+		font-size: 0.75rem;
 		font-weight: 600;
-		color: var(--ft-text-strong);
-		font-variant-numeric: tabular-nums;
-	}
-
-	.pdp-cart {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		gap: 8px;
-		flex: 1;
-		min-width: 0;
-		height: 44px;
-		padding: 0 20px;
-		background: var(--ft-cta);
-		color: var(--ft-cta-text);
-		border: none;
-		border-radius: 999px;
-		font-family: var(--font-sans);
-		font-size: 0.9rem;
-		font-weight: 600;
-		letter-spacing: -0.005em;
-		cursor: pointer;
-		white-space: nowrap;
-		transition:
-			background 150ms ease,
-			transform 150ms ease;
-	}
-
-	.pdp-cart:hover {
-		background: var(--ft-cta-hover);
-	}
-
-	.pdp-cart:active {
-		transform: scale(0.98);
-	}
-
-	.pdp-cart:focus-visible {
-		outline: 2px solid var(--ft-focus-ring);
-		outline-offset: 2px;
-	}
-
-	.pdp-heart {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		width: 44px;
-		height: 44px;
-		background: var(--ft-surface);
-		border: 1px solid var(--ft-line);
-		border-radius: 999px;
-		color: var(--ft-text-strong);
-		cursor: pointer;
-		flex-shrink: 0;
-		transition:
-			color 150ms ease,
-			border-color 150ms ease,
-			transform 150ms ease;
-	}
-
-	.pdp-heart:hover,
-	.pdp-heart.is-active {
-		color: var(--color-danger);
-		border-color: var(--color-danger);
-	}
-
-	.pdp-heart:active {
-		transform: scale(0.94);
-	}
-
-	.pdp-heart:focus-visible {
-		outline: 2px solid var(--ft-focus-ring);
-		outline-offset: 2px;
-	}
-
-	.pdp-oos {
-		flex: 1;
-		font-family: var(--font-sans);
-		font-size: 0.9rem;
-		font-weight: 500;
 		color: var(--ft-text-muted);
+		text-decoration: none;
+		transition: color 0.15s;
+	}
+
+	.pdp-category:hover {
+		color: var(--ft-accent);
 	}
 
 	/* ── Specs ── */
 	.pdp-specs {
-		margin-top: 28px;
+		margin-top: 16px;
 	}
 
 	/* ── Description ── */
 	.pdp-description {
-		margin-top: 24px;
-		font-size: 0.9rem;
+		margin-top: 16px;
+		font-size: 0.88rem;
 		line-height: 1.7;
 		color: var(--ft-text);
 		overflow-wrap: anywhere;
@@ -629,38 +461,31 @@
 		content: '';
 		position: absolute;
 		left: 0;
-		top: 0.65em;
-		width: 4px;
-		height: 4px;
+		top: 0.6em;
+		width: 5px;
+		height: 5px;
 		border-radius: 50%;
-		background: var(--ft-text-muted);
+		background: var(--ft-accent);
 	}
 
 	.pdp-expand-btn {
-		margin-top: 12px;
+		margin-top: 8px;
 		background: none;
 		border: none;
-		font-family: var(--font-sans);
 		font-size: 0.82rem;
 		font-weight: 600;
-		color: var(--ft-text-strong);
+		color: var(--ft-accent);
 		cursor: pointer;
-		padding: 4px 0;
-		text-decoration: underline;
-		text-underline-offset: 4px;
-		text-decoration-color: var(--ft-line);
-		transition:
-			color 150ms ease,
-			text-decoration-color 150ms ease;
+		padding: 0;
+		transition: opacity 0.15s;
 	}
 
 	.pdp-expand-btn:hover {
-		color: var(--ft-accent);
-		text-decoration-color: var(--ft-accent);
+		opacity: 0.7;
 	}
 
-	/* ── Mobile Sticky Bar ── */
-	.mobile-bar {
+	/* ── Sticky action bar ── */
+	.action-bar {
 		position: fixed;
 		bottom: 0;
 		left: 0;
@@ -668,75 +493,144 @@
 		z-index: 40;
 		background: var(--ft-surface);
 		border-top: 1px solid var(--ft-line);
+		box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.06);
 		padding: 10px 0;
 		padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
 	}
 
-	@media (min-width: 1024px) {
-		.mobile-bar {
-			display: none;
-		}
-	}
-
-	.mobile-bar-inner {
+	.action-bar-inner {
 		display: flex;
 		align-items: center;
 		gap: 12px;
 		min-width: 0;
 	}
 
-	.mobile-bar-price {
+	/* Quantity */
+	.action-qty {
 		display: flex;
-		flex-direction: column;
-		gap: 2px;
-		min-width: 0;
+		align-items: center;
+		border: 2px solid var(--ft-line);
+		border-radius: 0;
+		background: var(--ft-surface);
+	}
+
+	.qty-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 40px;
+		height: 40px;
+		background: transparent;
+		border: none;
+		cursor: pointer;
+		color: var(--ft-text-strong);
+		transition: all 0.15s ease;
+	}
+
+	.qty-btn:hover:not(:disabled) {
+		background: var(--ft-frost);
+		color: var(--ft-cta);
+	}
+
+	.qty-btn:disabled {
+		opacity: 0.3;
+		cursor: not-allowed;
+	}
+
+	.qty-value {
+		min-width: 36px;
+		text-align: center;
+		font-size: 0.95rem;
+		font-weight: 500;
+		color: var(--ft-dark);
+		border-left: 2px solid var(--ft-line);
+		border-right: 2px solid var(--ft-line);
+		height: 40px;
+		line-height: 40px;
+	}
+
+	/* Price */
+	.action-price {
+		font-family: var(--font-display);
+		font-size: 1.1rem;
+		font-weight: 600;
+		color: var(--ft-cta);
+		letter-spacing: -0.015em;
 		margin-right: auto;
 	}
 
-	.mobile-bar-amount {
-		font-family: var(--font-display);
-		font-size: 1rem;
-		font-weight: 600;
-		color: var(--ft-text-strong);
-		font-variant-numeric: tabular-nums;
-		letter-spacing: -0.01em;
-	}
-
-	.mobile-bar-compare {
-		font-family: var(--font-sans);
-		font-size: 0.75rem;
-		font-weight: 500;
-		color: var(--ft-text-faint);
-		text-decoration: line-through;
-		font-variant-numeric: tabular-nums;
-	}
-
-	.mobile-bar-cart {
-		display: inline-flex;
+	/* Cart button */
+	.action-cart {
+		display: flex;
 		align-items: center;
 		gap: 8px;
+		padding: 0 24px;
 		height: 44px;
-		padding: 0 20px;
 		background: var(--ft-cta);
-		color: var(--ft-cta-text);
-		border: none;
-		border-radius: 999px;
-		font-family: var(--font-sans);
-		font-size: 0.9rem;
-		font-weight: 600;
-		cursor: pointer;
-		white-space: nowrap;
-		transition: background 150ms ease;
-	}
-
-	.mobile-bar-cart:hover {
-		background: var(--ft-cta-hover);
-	}
-
-	.mobile-bar-oos {
-		font-family: var(--font-sans);
+		color: #ffffff;
+		border: 2px solid var(--ft-cta);
+		border-radius: 0;
+		font-family: var(--font-display);
 		font-size: 0.85rem;
-		font-weight: 500;
+		font-weight: 600;
+		text-transform: none;
+		letter-spacing: 0;
+		cursor: pointer;
+		transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+		white-space: nowrap;
+		box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.1);
+	}
+
+	.action-cart:hover {
+		background: #ffffff;
+		color: var(--ft-cta);
+		transform: scale(1.02) translateY(-2px);
+		box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.15);
+	}
+
+	.action-cart:active {
+		transform: scale(0.98) translateY(0);
+		box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.1);
+	}
+
+	.action-cart-label {
+		display: none;
+	}
+
+	@media (min-width: 480px) {
+		.action-cart-label {
+			display: inline;
+		}
+	}
+
+	/* Wishlist */
+	.action-heart {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 44px;
+		height: 44px;
+		background: var(--ft-surface);
+		border: 2px solid var(--ft-line);
+		border-radius: 0;
+		color: var(--ft-text-muted);
+		cursor: pointer;
+		transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+		flex-shrink: 0;
+	}
+
+	.action-heart:hover,
+	.action-heart.is-active {
+		color: var(--ft-cta);
+		border-color: var(--ft-cta);
+		transform: scale(1.05);
+		box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.1);
+	}
+
+	/* Out of stock */
+	.action-oos {
+		font-size: 0.82rem;
+		font-weight: 600;
 		color: var(--ft-text-muted);
 	}
 </style>

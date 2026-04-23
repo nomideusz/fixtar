@@ -1,6 +1,6 @@
 {
   "name": "@nomideusz/svelte-search",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Full-text search engine for Svelte 5 apps — FTS5, trigram fuzzy matching, geo proximity, autocomplete, Polish locale support.",
   "type": "module",
   "license": "MIT",
@@ -17,7 +17,7 @@
       "default": "./dist/locales/pl.js"
     }
   },
-  "files": ["dist", "!dist/**/*.test.*", "!dist/**/*.spec.*"],
+  "files": ["dist", "CHANGELOG.md", "!dist/**/*.test.*", "!dist/**/*.spec.*"],
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
@@ -42,7 +42,12 @@
     "svelte-check": "^4.3.6",
     "typescript": "^5.9.3",
     "vite": "^7.3.1",
-    "vitest": "^4.0.18"
+    "vitest": "^4.0.18",
+    "marked": "^17.0.3"
   },
-  "keywords": ["svelte", "search", "fts5", "trigram", "fuzzy", "geo", "autocomplete", "polish"]
+  "keywords": ["svelte", "search", "fts5", "trigram", "fuzzy", "geo", "autocomplete", "polish", "sqlite", "postgres"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nomideusz/svelte-search"
+  }
 }

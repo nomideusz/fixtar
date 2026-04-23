@@ -1,5 +1,5 @@
 {
-	"name": "FixTar",
+	"name": "fixtar",
 	"version": "0.0.1",
 	"scripts": {
 		"dev": "vite dev",
@@ -54,11 +54,6 @@
 		"drizzle-orm": "^0.45.1",
 		"phosphor-svelte": "^3.1.0",
 		"runed": "^0.37.1"
-	},
-	"pnpm": {
-		"onlyBuiltDependencies": [
-			"esbuild"
-		]
 	},
 	"packageManager": "pnpm@9.15.3",
 	"description": "This is an e-commerce web application built with SvelteKit, Svelte 5 Runes, simplified for better maintainability.",

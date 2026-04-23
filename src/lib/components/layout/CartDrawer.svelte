@@ -576,15 +576,13 @@
 	}
 
 	.cart-item__name-link:hover .cart-item__name {
-		color: var(--ft-accent);
-		text-decoration: underline;
-		text-underline-offset: 2px;
+		color: var(--ft-cta);
 	}
 
 	.cart-item__price {
 		font-size: 0.875rem;
 		font-weight: 700;
-		color: var(--ft-text-strong);
+		color: var(--ft-cta);
 	}
 
 	.cart-item__quantity {
@@ -615,8 +613,8 @@
 	}
 
 	.cart-item__quantity-btn:hover {
-		background-color: var(--ft-cta);
-		color: var(--ft-cta-text);
+		background-color: var(--ft-cta-light);
+		color: var(--ft-cta);
 		box-shadow: inset 0 0 0 1px var(--ft-cta);
 	}
 

@@ -63,7 +63,7 @@
 					<!-- Stars -->
 					<div class="stars" aria-label="Ocena {t.rating} z 5">
 						{#each Array(5) as _, s}
-							<span style="color: {s < t.rating ? '#f59e0b' : 'var(--ft-line)'}">
+							<span style="color: {s < t.rating ? 'var(--ft-cta)' : 'var(--ft-line)'}">
 								<StarIcon size={14} weight="fill" aria-hidden="true" />
 							</span>
 						{/each}
@@ -205,6 +205,7 @@
 		animation: ft-fade-up 0.4s var(--ease-out) both;
 		border: 1px solid var(--ft-line);
 		background: var(--ft-surface);
+		border-radius: var(--radius-full);
 		transition:
 			border-color 0.2s ease,
 			box-shadow 0.2s ease;

@@ -142,7 +142,7 @@
 		font-family: var(--font-display);
 		font-size: 0.82rem;
 		font-weight: 700;
-		color: var(--ft-accent);
+		color: var(--ft-cta);
 		font-variant-numeric: tabular-nums;
 	}
 

@@ -70,24 +70,6 @@
 		}
 	});
 
-	/* Global Cmd/Ctrl+K to focus search */
-	$effect(() => {
-		function onShortcut(e: KeyboardEvent) {
-			if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
-				e.preventDefault();
-				inputRef?.focus();
-				inputRef?.select();
-			}
-		}
-		window.addEventListener('keydown', onShortcut);
-		return () => window.removeEventListener('keydown', onShortcut);
-	});
-
-	let isMac = $state(false);
-	$effect(() => {
-		isMac = typeof navigator !== 'undefined' && /mac|iphone|ipad/i.test(navigator.platform);
-	});
-
 	async function search(q: string) {
 		if (!q.trim() || q.trim().length < 2) {
 			results = [];
@@ -209,22 +191,10 @@
 
 <div class="nav-search">
 	<div class="search-input-wrap">
-		<button
-			type="button"
-			class="search-icon"
-			onclick={() => {
-				if (query.trim()) goToSearch();
-				else inputRef?.focus();
-			}}
-			aria-label="Szukaj"
-			tabindex="-1"
-		>
-			<MagnifyingGlassIcon size={18} weight="bold" />
-		</button>
 		<input
 			bind:this={inputRef}
 			type="search"
-			placeholder="Szukaj produktów, marek, kategorii…"
+			placeholder="Szukaj produktów..."
 			value={query}
 			oninput={handleInput}
 			onkeydown={handleKeydown}
@@ -248,13 +218,21 @@
 				}}
 				aria-label="Wyczyść wyszukiwanie"
 			>
-				<XIcon size={14} weight="bold" aria-hidden="true" />
+				<XIcon size={14} aria-hidden="true" />
 			</button>
-		{:else}
-			<kbd class="search-shortcut" aria-hidden="true">
-				{isMac ? '⌘' : 'Ctrl'} K
-			</kbd>
 		{/if}
+
+		<button
+			class="search-submit-btn"
+			onclick={() => {
+				if (query.trim()) goToSearch();
+			}}
+			aria-label="Szukaj">Szukaj</button
+		>
+
+		<button class="search-close" onclick={close} aria-label="Zamknij wyszukiwanie">
+			<kbd>ESC</kbd>
+		</button>
 	</div>
 
 	{#if hasDropdownContent}
@@ -367,51 +345,21 @@
 		position: relative;
 		display: flex;
 		align-items: stretch;
-		height: 40px;
-		border: 1px solid var(--ft-line);
+		border: 2px solid var(--ft-line);
 		background: var(--ft-surface);
 		border-radius: 0;
-		transition:
-			border-color 0.15s ease,
-			background 0.15s ease;
-	}
-
-	.search-input-wrap:hover {
-		border-color: var(--ft-text-muted);
+		transition: border-color 0.2s ease;
 	}
 
 	.search-input-wrap:focus-within {
-		border-color: var(--ft-accent);
-		background: var(--ft-surface);
-	}
-
-	.search-icon {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		flex-shrink: 0;
-		width: 40px;
-		padding: 0;
-		border: none;
-		background: transparent;
-		color: var(--ft-text-muted);
-		cursor: pointer;
-		transition: color 0.15s ease;
-	}
-
-	.search-icon:hover {
-		color: var(--ft-accent);
-	}
-
-	.search-input-wrap:focus-within .search-icon {
-		color: var(--ft-accent);
+		border-color: var(--ft-text-strong);
 	}
 
 	.search-input {
 		flex: 1;
 		min-width: 0;
-		padding: 0 8px 0 0;
-		font-size: 0.85rem;
+		padding: 12px 48px 12px 16px;
+		font-size: 0.88rem;
 		font-family: var(--font-sans);
 		font-weight: 500;
 		color: var(--ft-text-strong);
@@ -425,45 +373,44 @@
 		font-weight: 400;
 	}
 
-	/* Hide native search clear cross (WebKit) */
-	.search-input::-webkit-search-cancel-button {
-		-webkit-appearance: none;
-		appearance: none;
-	}
-
-	.search-shortcut {
-		display: none;
+	.search-submit-btn {
+		display: inline-flex;
 		align-items: center;
-		gap: 2px;
-		flex-shrink: 0;
-		align-self: center;
-		margin-right: 10px;
-		padding: 3px 8px;
-		font-family: var(--font-sans);
-		font-size: 0.68rem;
+		justify-content: center;
+		background: var(--ft-text-strong);
+		color: var(--ft-surface);
+		border: none;
+		border-radius: 0;
+		font-family: var(--font-display);
 		font-weight: 600;
-		color: var(--ft-text-faint);
-		background: var(--ft-frost);
-		border: 1px solid var(--ft-line);
-		border-radius: 4px;
-		letter-spacing: 0.04em;
+		font-size: 0.85rem;
+		text-transform: none;
+		letter-spacing: 0;
+		padding: 0 32px;
+		cursor: pointer;
 		white-space: nowrap;
-		pointer-events: none;
+		flex-shrink: 0;
+		transition:
+			background-color 0.2s ease,
+			transform 0.1s ease;
 	}
 
-	@media (min-width: 1024px) {
-		.search-shortcut {
-			display: inline-flex;
-		}
+	.search-submit-btn:hover {
+		background: var(--ft-cta);
+	}
+
+	.search-submit-btn:active {
+		transform: scale(0.97);
 	}
 
 	.search-clear {
+		position: absolute;
+		right: 124px;
+		top: 50%;
+		transform: translateY(-50%);
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		align-self: center;
-		flex-shrink: 0;
-		margin-right: 4px;
 		width: 28px;
 		height: 28px;
 		padding: 0;
@@ -478,13 +425,28 @@
 	}
 
 	.search-clear:hover {
-		color: var(--ft-text-strong);
+		color: var(--ft-dark);
 		background: var(--ft-frost);
 	}
 
 	.search-clear:focus-visible {
 		outline: 2px solid var(--ft-accent);
-		outline-offset: -2px;
+		outline-offset: 2px;
+	}
+
+	.search-close {
+		display: none;
+	}
+
+	.search-close kbd {
+		font-size: 0.6rem;
+		font-family: inherit;
+		font-weight: 600;
+		color: var(--ft-text-faint);
+		padding: 2px 6px;
+		border: 1px solid var(--ft-line);
+		border-radius: 0;
+		background: var(--ft-surface);
 	}
 
 	/* ── Backdrop ── */
@@ -633,9 +595,9 @@
 	}
 
 	.dropdown-cat-chip:hover {
-		border-color: var(--ft-accent);
-		color: var(--ft-cta-text);
-		background: var(--ft-cta);
+		border-color: var(--ft-cta);
+		color: var(--ft-cta);
+		background: var(--ft-cta-light);
 	}
 
 	.dropdown-cat-chip:focus-visible {
@@ -719,8 +681,8 @@
 	.result-price {
 		flex-shrink: 0;
 		font-size: 0.78rem;
-		font-weight: 600;
-		color: var(--ft-text-strong);
+		font-weight: 500;
+		color: var(--ft-cta);
 	}
 
 	/* ── Loading ── */

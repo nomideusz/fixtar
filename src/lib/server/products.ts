@@ -74,20 +74,16 @@ export interface DBCategory {
 	count: number;
 }
 
-// Only surface products that have at least one photo (main image or non-empty gallery).
-const HAS_IMAGE_SQL =
-	"((image IS NOT NULL AND image != '') OR (gallery IS NOT NULL AND gallery != '' AND gallery != '[]'))";
-
 // ── Queries ────────────────────────────────────────────────
 
 export async function getFeaturedProducts(limit = 8): Promise<DBProduct[]> {
 	const db = getClient();
 	// Prefer products with images and prices, ordered by price desc (showcase best items)
 	const result = await db.execute({
-		sql: `SELECT id, name, slug, description, price, original_price, image, gallery, category, category_slug, tags, in_stock, sku, ean, weight
+		sql: `SELECT id, name, slug, description, price, original_price, image, category, category_slug, tags, in_stock, sku, ean, weight
 		      FROM products
-		      WHERE price > 0 AND ${HAS_IMAGE_SQL}
-		      ORDER BY in_stock DESC, price DESC
+		      WHERE price > 0
+		      ORDER BY (CASE WHEN image != '' AND image IS NOT NULL THEN 0 ELSE 1 END), in_stock DESC, price DESC
 		      LIMIT ?`,
 		args: [limit]
 	});
@@ -97,7 +93,7 @@ export async function getFeaturedProducts(limit = 8): Promise<DBProduct[]> {
 export async function getDealsCount(): Promise<number> {
 	const db = getClient();
 	const result = await db.execute(
-		`SELECT COUNT(*) as cnt FROM products WHERE original_price IS NOT NULL AND original_price > price AND ${HAS_IMAGE_SQL}`
+		'SELECT COUNT(*) as cnt FROM products WHERE original_price IS NOT NULL AND original_price > price'
 	);
 	return Number(result.rows[0]?.cnt ?? 0);
 }
@@ -124,7 +120,7 @@ export async function getAllProducts(opts: {
 		inStockOnly
 	} = opts;
 
-	let where = `WHERE price > 0 AND ${HAS_IMAGE_SQL}`;
+	let where = 'WHERE price > 0';
 	const args: (string | number)[] = [];
 
 	if (search) {
@@ -177,7 +173,7 @@ export async function getAllProducts(opts: {
 
 	const offset = (page - 1) * perPage;
 	const result = await db.execute({
-		sql: `SELECT id, name, slug, description, price, original_price, image, gallery, category, category_slug, tags, in_stock, sku, ean, weight
+		sql: `SELECT id, name, slug, description, price, original_price, image, category, category_slug, tags, in_stock, sku, ean, weight
 		      FROM products ${where} ${orderBy} LIMIT ? OFFSET ?`,
 		args: [...args, perPage, offset]
 	});
@@ -189,7 +185,7 @@ export async function getProductBySlug(slug: string): Promise<DBProduct | null> 
 	const db = getClient();
 	const result = await db.execute({
 		sql: `SELECT id, name, slug, description, price, original_price, image, gallery, category, category_slug, tags, in_stock, sku, ean, weight
-		      FROM products WHERE slug = ? AND price > 0 AND ${HAS_IMAGE_SQL} LIMIT 1`,
+		      FROM products WHERE slug = ? AND price > 0 LIMIT 1`,
 		args: [slug]
 	});
 	if (result.rows.length === 0) return null;
@@ -200,7 +196,7 @@ export async function getProductById(id: string): Promise<DBProduct | null> {
 	const db = getClient();
 	const result = await db.execute({
 		sql: `SELECT id, name, slug, description, price, original_price, image, gallery, category, category_slug, tags, in_stock, sku, ean, weight
-		      FROM products WHERE id = ? AND price > 0 AND ${HAS_IMAGE_SQL} LIMIT 1`,
+		      FROM products WHERE id = ? AND price > 0 LIMIT 1`,
 		args: [id]
 	});
 	if (result.rows.length === 0) return null;
@@ -216,8 +212,8 @@ export async function getRelatedProducts(
 	const nativeSlugs = APP_TO_NATIVE_CATEGORIES[categorySlug] || [categorySlug];
 	const placeholders = nativeSlugs.map(() => '?').join(',');
 	const result = await db.execute({
-		sql: `SELECT id, name, slug, description, price, original_price, image, gallery, category, category_slug, tags, in_stock, sku, ean, weight
-		      FROM products WHERE category_slug IN (${placeholders}) AND id != ? AND price > 0 AND ${HAS_IMAGE_SQL}
+		sql: `SELECT id, name, slug, description, price, original_price, image, category, category_slug, tags, in_stock, sku, ean, weight
+		      FROM products WHERE category_slug IN (${placeholders}) AND id != ? AND price > 0
 		      ORDER BY (in_stock > 0) DESC LIMIT ?`,
 		args: [...nativeSlugs, excludeId, limit]
 	});
@@ -229,7 +225,7 @@ export async function getCategories(): Promise<DBCategory[]> {
 	const result = await db.execute(
 		`SELECT category, category_slug, COUNT(*) as count
 		 FROM products
-		 WHERE category != '' AND price > 0 AND ${HAS_IMAGE_SQL}
+		 WHERE category != '' AND price > 0
 		 GROUP BY category, category_slug`
 	);
 
@@ -253,9 +249,7 @@ export async function getCategories(): Promise<DBCategory[]> {
 
 export async function getTotalProducts(): Promise<number> {
 	const db = getClient();
-	const result = await db.execute(
-		`SELECT COUNT(*) as c FROM products WHERE price > 0 AND ${HAS_IMAGE_SQL}`
-	);
+	const result = await db.execute('SELECT COUNT(*) as c FROM products WHERE price > 0');
 	return Number(result.rows[0].c);
 }
 

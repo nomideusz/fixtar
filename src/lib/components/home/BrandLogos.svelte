@@ -18,9 +18,9 @@
 					<div class="brands-group" aria-hidden={idx > 0 ? 'true' : undefined}>
 						{#each brands as brand (brand.slug + '-' + idx)}
 							<a
-								href="/products?brand={brand.slug}"
+								href="/products?search={brand.name}"
 								class="brand-item"
-								aria-label={idx === 0 ? `Filtruj katalog po marce ${brand.name}` : undefined}
+								aria-label={idx === 0 ? `Pokaż produkty marki ${brand.name}` : undefined}
 								tabindex={idx === 0 ? 0 : -1}
 							>
 								{brand.name}

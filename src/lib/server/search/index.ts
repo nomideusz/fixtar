@@ -160,12 +160,11 @@ export async function searchProducts(
 		offset: params.offset
 	});
 
-	// Filter out zero-price products and products without a photo
-	const hasPhoto = (r: ProductSearchResult) => r.price > 0 && !!r.image;
+	// Filter out zero-price products
 	return {
 		...response,
-		results: response.results.filter(hasPhoto).slice(0, params.limit ?? 20),
-		nearby: response.nearby.filter(hasPhoto)
+		results: response.results.filter((r) => r.price > 0).slice(0, params.limit ?? 20),
+		nearby: response.nearby.filter((r) => r.price > 0)
 	};
 }
 

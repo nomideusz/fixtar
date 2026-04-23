@@ -1,20 +1,17 @@
 <script lang="ts">
 	import type { Product } from '$lib/stores/products.svelte';
 	import type { Snippet } from 'svelte';
-	import { cart, notifications, wishlist } from '$lib/stores';
-	import {
-		ImageSquareIcon,
-		ShoppingCartSimpleIcon,
-		CheckIcon,
-		HeartIcon
-	} from 'phosphor-svelte';
+	import { cart, notifications } from '$lib/stores';
+	import { ImageSquareIcon, ShoppingCartSimpleIcon, CheckIcon } from 'phosphor-svelte';
 
 	interface Props {
 		product: Product;
+		onQuickView?: (product: Product) => void;
 		actions?: Snippet;
+		showBadges?: boolean;
 	}
 
-	let { product, actions }: Props = $props();
+	let { product, onQuickView, actions, showBadges = false }: Props = $props();
 
 	let isAdded = $state(false);
 
@@ -42,16 +39,7 @@
 		}, 1500);
 	}
 
-	function toggleWishlist(e: MouseEvent) {
-		e.preventDefault();
-		e.stopPropagation();
-		wishlist.toggle(product.id);
-	}
-
 	const mainImageUrl = $derived(product.mainImage || '');
-	const hoverImageUrl = $derived(
-		product.gallery?.find((url) => url && url !== product.mainImage) || ''
-	);
 	const inStock = $derived(isInStock(product));
 	const hasDiscount = $derived(product.compareAtPrice && product.compareAtPrice > product.price);
 	const discountPercent = $derived(
@@ -60,97 +48,83 @@
 			: 0
 	);
 	const productUrl = $derived(`/products/${product.slug?.trim() || product.id}`);
-	const isFavorite = $derived(wishlist.has(product.id));
-	const vtName = $derived(`product-img-${product.id.slice(0, 8)}`);
 </script>
 
 <div class="card" class:is-out={!inStock}>
-	<div class="card-img-wrap" style="view-transition-name:{vtName}">
-		<a
-			href={productUrl}
-			class="card-img-link"
-			aria-label={product.name}
-			data-sveltekit-preload-data="hover"
-		>
+	<!-- Image Wrapper HUD -->
+	<div class="card-img-wrap">
+		<!-- The main clickable area -->
+		<a href={productUrl} class="card-img-link" aria-label={product.name}>
 			<div class="card-img">
 				{#if mainImageUrl}
-					<img
-						src={mainImageUrl}
-						alt=""
-						loading="lazy"
-						width="320"
-						height="320"
-						class="img-primary"
-					/>
-					{#if hoverImageUrl}
-						<img
-							src={hoverImageUrl}
-							alt=""
-							loading="lazy"
-							width="320"
-							height="320"
-							aria-hidden="true"
-							class="img-hover"
-						/>
-					{/if}
+					<img src={mainImageUrl} alt="" loading="lazy" width="320" height="320" />
 				{:else}
 					<div class="card-img-empty" aria-hidden="true">
-						<ImageSquareIcon size={28} weight="light" />
+						<ImageSquareIcon size={28} weight="light" aria-hidden="true" />
 					</div>
 				{/if}
 			</div>
 		</a>
 
-		{#if hasDiscount}
-			<span class="tag-discount">−{discountPercent}%</span>
-		{/if}
+		<!-- TOP LEFT: Availability HUD -->
+		<div class="overlay-top-left">
+			{#if inStock}
+				<div class="hud-pill hud-pill--in" title="Dostępny od ręki">
+					<span class="status-dot status-dot--in" aria-hidden="true"></span>
+					<span class="hud-text">Dostępny</span>
+				</div>
+			{:else}
+				<div class="hud-pill hud-pill--out" title="Niedostępny">
+					<span class="status-dot status-dot--out" aria-hidden="true"></span>
+					<span class="hud-text">Brak w magazynie</span>
+				</div>
+			{/if}
+		</div>
 
-		<button
-			type="button"
-			class="wishlist-btn"
-			class:is-active={isFavorite}
-			onclick={toggleWishlist}
-			aria-label={isFavorite ? 'Usuń z ulubionych' : 'Dodaj do ulubionych'}
-			aria-pressed={isFavorite}
-		>
-			<HeartIcon size={18} weight={isFavorite ? 'fill' : 'regular'} />
-		</button>
+		<!-- TOP RIGHT: Tags -->
+		<div class="overlay-top-right">
+			{#if hasDiscount}
+				<span class="hud-tag hud-tag--discount">-{discountPercent}%</span>
+			{/if}
+			{#if showBadges && product.featured}
+				<span class="hud-tag hud-tag--featured">Polecany</span>
+			{/if}
+		</div>
 
-		{#if actions}
-			<div class="card-actions">{@render actions()}</div>
-		{:else if inStock}
-			<button
-				type="button"
-				class="cart-btn"
-				class:is-added={isAdded}
-				onclick={addToCart}
-				aria-label="Dodaj do koszyka"
-			>
-				{#if isAdded}
-					<CheckIcon size={18} weight="bold" />
-				{:else}
-					<ShoppingCartSimpleIcon size={18} weight="bold" />
-				{/if}
-			</button>
-		{/if}
+		<!-- BOTTOM RIGHT: Floating Cart -->
+		<div class="overlay-bottom-right">
+			{#if actions}
+				{@render actions()}
+			{:else if inStock}
+				<button
+					class="floating-cart-btn"
+					class:is-added={isAdded}
+					onclick={addToCart}
+					aria-label="Dodaj do koszyka"
+					title="Dodaj do koszyka"
+				>
+					{#if isAdded}
+						<CheckIcon size={20} weight="bold" />
+					{:else}
+						<ShoppingCartSimpleIcon size={20} weight="bold" />
+					{/if}
+				</button>
+			{/if}
+		</div>
 	</div>
 
+	<!-- Minimal Text Area Below -->
 	<div class="card-info">
 		<h3 class="card-name">
-			<a href={productUrl} class="card-name-link" data-sveltekit-preload-data="hover">
-				{product.name}
-			</a>
+			<a href={productUrl} class="card-name-link">{product.name}</a>
 		</h3>
 
-		<div class="card-price-row">
+		<div class="card-price-wrap">
 			<span class="card-price" class:is-discounted={hasDiscount}
 				>{product.price.toFixed(2)}&nbsp;zł</span
 			>
 			{#if hasDiscount}
 				<span class="card-old-price">{product.compareAtPrice?.toFixed(2)}&nbsp;zł</span>
-			{/if}
-			{#if !inStock}
-				<span class="card-oos">Niedostępny</span>
 			{/if}
 		</div>
 	</div>
@@ -161,268 +135,256 @@
 		display: flex;
 		flex-direction: column;
 		background: transparent;
+		text-decoration: none;
 		color: inherit;
 		height: 100%;
+		padding: 0;
 	}
 
-	/* ── Image Area ── */
+	.card.is-out .card-img img,
+	.card.is-out .card-img-empty {
+		opacity: 0.4;
+		filter: grayscale(0.5);
+		transition:
+			opacity 0.2s ease,
+			filter 0.2s ease;
+	}
+
+	.card.is-out:hover .card-img img,
+	.card.is-out:hover .card-img-empty {
+		opacity: 0.65;
+		filter: grayscale(0.2);
+	}
+
+	.card.is-out .card-info {
+		opacity: 0.5;
+		transition: opacity 0.2s ease;
+	}
+
+	.card.is-out:hover .card-info {
+		opacity: 0.75;
+	}
+
+	/* ── Image Area (The HUD) ── */
 	.card-img-wrap {
 		position: relative;
 		aspect-ratio: 1;
+		background: transparent;
 		overflow: hidden;
-		margin-bottom: 14px;
+		transition: box-shadow 0.2s ease;
+		margin-bottom: 12px;
 	}
 
 	.card-img-link {
 		position: absolute;
 		inset: 0;
-		display: block;
 		text-decoration: none;
 		color: inherit;
-		z-index: 1;
+		display: block;
+		z-index: 1; /* Below overlays */
 	}
 
 	.card-img {
 		position: absolute;
 		inset: 0;
-		display: grid;
-		place-items: center;
-		padding: 20px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		padding: 24px; /* Internal breathing room for the tool */
 	}
 
-	.card-img > img {
-		grid-area: 1 / 1;
+	.card-img img {
 		max-width: 100%;
 		max-height: 100%;
 		width: auto;
 		height: auto;
 		object-fit: contain;
+		/* Crop 2px off the image boundaries to hide baked-in borders */
 		clip-path: inset(2px);
-		transition:
-			transform 600ms cubic-bezier(0.22, 1, 0.36, 1),
-			opacity 300ms ease;
+		transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 	}
 
-	.card-img > .img-hover {
-		opacity: 0;
-	}
-
-	.card:hover .card-img > .img-primary {
-		transform: scale(1.04);
-	}
-
-	.card:hover .card-img:has(.img-hover) > .img-primary {
-		opacity: 0;
-	}
-
-	.card:hover .card-img > .img-hover {
-		opacity: 1;
+	.card:hover .card-img img {
+		transform: scale(1.06);
 	}
 
 	.card-img-empty {
 		color: var(--ft-text-faint);
 	}
 
-	.card.is-out .card-img img,
-	.card.is-out .card-img-empty {
-		opacity: 0.45;
-		filter: grayscale(0.6);
-	}
-
-	.card.is-out .card-info {
-		opacity: 0.7;
-	}
-
-	/* ── Discount tag (only when meaningful) ── */
-	.tag-discount {
+	/* ── Floating Overlays ── */
+	.overlay-top-left {
 		position: absolute;
 		top: 10px;
 		left: 10px;
 		z-index: 2;
-		font-family: var(--font-sans);
-		font-size: 0.7rem;
-		font-weight: 700;
-		letter-spacing: 0.01em;
-		padding: 4px 8px;
-		color: #ffffff;
-		background: var(--color-danger);
-		border-radius: 2px;
-		font-variant-numeric: tabular-nums;
+		pointer-events: none; /* Let clicks pass through to the image link */
 	}
 
-	/* ── Wishlist — reveals on hover (desktop), always on touch ── */
-	.wishlist-btn {
+	.overlay-top-right {
 		position: absolute;
 		top: 10px;
 		right: 10px;
-		z-index: 3;
 		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 36px;
-		height: 36px;
-		padding: 0;
-		color: var(--ft-text-strong);
-		background: rgba(255, 255, 255, 0.92);
-		backdrop-filter: blur(6px);
-		border: 1px solid var(--ft-line);
-		border-radius: 999px;
-		cursor: pointer;
-		opacity: 0;
-		transform: translateY(-4px);
-		transition:
-			opacity 180ms ease,
-			transform 180ms ease,
-			color 150ms ease,
-			border-color 150ms ease;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 6px;
+		z-index: 2;
+		pointer-events: none;
 	}
 
-	.card:hover .wishlist-btn,
-	.wishlist-btn:focus-visible,
-	.wishlist-btn.is-active {
-		opacity: 1;
-		transform: translateY(0);
-	}
-
-	.wishlist-btn:hover {
-		color: var(--color-danger);
-		border-color: var(--color-danger);
-	}
-
-	.wishlist-btn.is-active {
-		color: var(--color-danger);
-		border-color: var(--color-danger);
-	}
-
-	.wishlist-btn:focus-visible {
-		outline: 2px solid var(--ft-focus-ring);
-		outline-offset: 2px;
-	}
-
-	/* ── Cart — reveals on hover (desktop), always on touch ── */
-	.cart-btn,
-	.card-actions {
+	.overlay-bottom-right {
 		position: absolute;
-		right: 10px;
 		bottom: 10px;
-		z-index: 3;
-		opacity: 0;
-		transform: translateY(4px);
-		transition:
-			opacity 180ms ease,
-			transform 180ms ease;
+		right: 10px;
+		z-index: 3; /* Interactive element needs pointer events */
 	}
 
-	.card:hover .cart-btn,
-	.card:hover .card-actions,
-	.cart-btn:focus-visible {
-		opacity: 1;
-		transform: translateY(0);
+	/* ── HUD Elements ── */
+	.hud-pill {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 4px 8px;
+		background: rgba(255, 255, 255, 0.95);
+		backdrop-filter: blur(4px);
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-full);
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 	}
 
-	.cart-btn {
+	.hud-text {
+		font-family: var(--font-sans);
+		font-size: 0.65rem;
+		font-weight: 600;
+		text-transform: none;
+		letter-spacing: 0;
+		color: var(--ft-text-strong);
+	}
+
+	.status-dot {
+		width: 6px;
+		height: 6px;
+		border-radius: var(--radius-full);
+	}
+
+	.status-dot--in {
+		background: var(--color-success);
+		box-shadow: 0 0 6px var(--color-success);
+	}
+
+	.status-dot--out {
+		background: var(--color-danger);
+	}
+
+	.hud-tag {
+		font-family: var(--font-sans);
+		font-size: 0.65rem;
+		font-weight: 600;
+		text-transform: none;
+		letter-spacing: 0;
+		padding: 4px 8px;
+		color: white;
+		border-radius: var(--radius-full);
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+	}
+
+	.hud-tag--discount {
+		background: var(--color-danger);
+	}
+
+	.hud-tag--featured {
+		background: var(--ft-accent);
+	}
+
+	/* ── Floating Cart Button ── */
+	.floating-cart-btn {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 42px;
-		height: 42px;
-		padding: 0;
+		width: 44px;
+		height: 44px;
 		color: var(--ft-cta-text);
 		background: var(--ft-cta);
-		border: none;
-		border-radius: 999px;
+		border: 2px solid var(--ft-cta);
+		border-radius: var(--radius-full);
+		transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 		cursor: pointer;
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-		transition:
-			opacity 180ms ease,
-			transform 180ms ease,
-			background 150ms ease,
-			color 150ms ease;
+		box-shadow: var(--ft-shadow-md);
 	}
 
-	.cart-btn:hover {
-		background: var(--ft-cta-hover);
+	.floating-cart-btn:hover:not(:disabled) {
+		background: #ffffff;
+		color: var(--ft-cta);
+		transform: scale(1.08);
+		box-shadow: var(--ft-shadow-lg);
 	}
 
-	.cart-btn.is-added {
+	.floating-cart-btn.is-added {
 		background: var(--color-success);
+		border-color: var(--color-success);
 		color: #ffffff;
-		opacity: 1;
-		transform: translateY(0) scale(1.05);
+		transform: scale(1.08);
 	}
 
-	.cart-btn:active {
-		transform: translateY(0) scale(0.94);
+	.floating-cart-btn:active:not(:disabled) {
+		transform: scale(0.92);
 	}
 
-	.cart-btn:focus-visible {
-		outline: 2px solid var(--ft-focus-ring);
-		outline-offset: 2px;
+	.floating-cart-btn:disabled {
+		opacity: 0.4;
+		cursor: not-allowed;
+		color: var(--ft-text-faint);
+		background: rgba(255, 255, 255, 0.7);
+		box-shadow: none;
 	}
 
-	/* Touch devices: show actions by default (no hover) */
-	@media (hover: none) {
-		.wishlist-btn,
-		.cart-btn,
-		.card-actions {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
-
-	/* ── Text Area ── */
+	/* ── Text Area (Minimal) ── */
 	.card-info {
 		display: flex;
 		flex-direction: column;
 		flex: 1;
-		gap: 6px;
+		padding: 0 4px; /* Slight inset from edges to align text nicely */
 	}
 
 	.card-name {
 		font-family: var(--font-sans);
-		font-size: 0.95rem;
-		font-weight: 500;
-		color: var(--ft-text-strong);
-		line-height: 1.4;
-		letter-spacing: -0.005em;
+		font-size: 1rem;
+		font-weight: 600;
+		color: var(--ft-dark);
+		line-height: 1.35;
 		display: -webkit-box;
 		-webkit-line-clamp: 2;
 		line-clamp: 2;
 		-webkit-box-orient: vertical;
 		overflow: hidden;
+		margin-bottom: 8px;
 	}
 
 	.card-name-link {
 		color: inherit;
 		text-decoration: none;
-		transition: color 150ms ease;
+		transition: color 0.15s ease;
 	}
 
 	.card-name-link:hover {
 		color: var(--ft-accent);
 	}
 
-	.card-name-link:focus-visible {
-		outline: 2px solid var(--ft-focus-ring);
-		outline-offset: 2px;
-		border-radius: 2px;
-	}
-
-	.card-price-row {
+	.card-price-wrap {
 		display: flex;
 		align-items: baseline;
-		flex-wrap: wrap;
-		gap: 4px 8px;
+		gap: 8px;
 		margin-top: auto;
 	}
 
 	.card-price {
 		font-family: var(--font-sans);
 		font-weight: 600;
-		font-size: 1rem;
+		font-size: clamp(0.95rem, 2.5vw, 1.15rem);
 		color: var(--ft-text-strong);
 		font-variant-numeric: tabular-nums;
-		letter-spacing: -0.01em;
 	}
 
 	.card-price.is-discounted {
@@ -432,34 +394,8 @@
 	.card-old-price {
 		font-family: var(--font-sans);
 		font-size: 0.8rem;
-		font-weight: 500;
+		font-weight: 600;
 		color: var(--ft-text-faint);
 		text-decoration: line-through;
-		font-variant-numeric: tabular-nums;
-	}
-
-	.card-oos {
-		font-family: var(--font-sans);
-		font-size: 0.7rem;
-		font-weight: 600;
-		color: var(--ft-text-muted);
-		text-transform: uppercase;
-		letter-spacing: 0.04em;
-		padding: 2px 8px;
-		background: var(--ft-frost);
-		border: 1px solid var(--ft-line);
-		margin-left: auto;
-		white-space: nowrap;
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.card-img img,
-		.wishlist-btn,
-		.cart-btn {
-			transition: none;
-		}
-		.card:hover .card-img .img-primary {
-			transform: none;
-		}
 	}
 </style>

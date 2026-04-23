@@ -194,8 +194,8 @@
 		position: relative;
 		width: 100%;
 		height: calc(
-			100svh - 120px
-		); /* Fill standard desktop viewport (minus 76px nav + ~44px promo banner) */
+			100svh - 150px
+		); /* Fill standard desktop viewport (minus ~104px nav + 46px promo banner) */
 		min-height: 480px;
 		overflow: hidden;
 		background: var(--ft-frost);
