@@ -28,7 +28,12 @@
 				<h1 class="text-xl font-semibold text-[--ft-text-strong]">FixTar Admin</h1>
 				<div class="flex items-center gap-4">
 					<span class="text-sm text-[--ft-text-muted]">{userStore.current?.email}</span>
-					<a href="/" class="text-sm text-[--ft-accent] hover:text-[--ft-accent-hover]">Back to Store</a>
+					<a
+						href="/"
+						class="text-sm text-[--ft-text] underline-offset-4 hover:text-[--ft-text-strong] hover:underline"
+					>
+						Back to Store →
+					</a>
 				</div>
 			</div>
 		</div>

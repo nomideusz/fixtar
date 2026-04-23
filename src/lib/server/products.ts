@@ -78,16 +78,55 @@ export interface DBCategory {
 
 export async function getFeaturedProducts(limit = 8): Promise<DBProduct[]> {
 	const db = getClient();
-	// Prefer products with images and prices, ordered by price desc (showcase best items)
-	const result = await db.execute({
+	const pinnedSlugs = [
+		'wkretaka-bavaria-bvcd21',
+		'zestaw-siekier-axeset-bv3',
+		'przedluzacz-zwijany-bv30b-30m',
+		'wiertarka-udarowa-kid1700-led',
+		'pila-szablasta-eurcs-1700-j1f-gw3-20',
+		'szlifierka-oscylacyjna-krs1300-s1a-kt03-125',
+		'klucz-udarowy-akumulatorowy-eu2050-mls-20280',
+		'szlifierka-katowa-dl-raczka-euag-1800dr-ag5152cv'
+	];
+
+	const pinnedPlaceholders = pinnedSlugs.map(() => '?').join(',');
+	const pinnedResult = await db.execute({
 		sql: `SELECT id, name, slug, description, price, original_price, image, category, category_slug, tags, in_stock, sku, ean, weight
 		      FROM products
-		      WHERE price > 0
+		      WHERE price > 0 AND slug IN (${pinnedPlaceholders})
+		      ORDER BY CASE slug
+		      	WHEN 'wkretaka-bavaria-bvcd21' THEN 0
+		      	WHEN 'zestaw-siekier-axeset-bv3' THEN 1
+		      	WHEN 'przedluzacz-zwijany-bv30b-30m' THEN 2
+		      	WHEN 'wiertarka-udarowa-kid1700-led' THEN 3
+		      	WHEN 'pila-szablasta-eurcs-1700-j1f-gw3-20' THEN 4
+		      	WHEN 'szlifierka-oscylacyjna-krs1300-s1a-kt03-125' THEN 5
+		      	WHEN 'klucz-udarowy-akumulatorowy-eu2050-mls-20280' THEN 6
+		      	WHEN 'szlifierka-katowa-dl-raczka-euag-1800dr-ag5152cv' THEN 7
+		      	ELSE 999
+		      END`,
+		args: pinnedSlugs
+	});
+
+	const remainingLimit = Math.max(0, limit - pinnedResult.rows.length);
+
+	if (remainingLimit === 0) {
+		return pinnedResult.rows as unknown as DBProduct[];
+	}
+
+	const fallbackResult = await db.execute({
+		sql: `SELECT id, name, slug, description, price, original_price, image, category, category_slug, tags, in_stock, sku, ean, weight
+		      FROM products
+		      WHERE price > 0 AND slug NOT IN (${pinnedPlaceholders})
 		      ORDER BY (CASE WHEN image != '' AND image IS NOT NULL THEN 0 ELSE 1 END), in_stock DESC, price DESC
 		      LIMIT ?`,
-		args: [limit]
+		args: [...pinnedSlugs, remainingLimit]
 	});
-	return result.rows as unknown as DBProduct[];
+
+	return [
+		...(pinnedResult.rows as unknown as DBProduct[]),
+		...(fallbackResult.rows as unknown as DBProduct[])
+	].slice(0, limit);
 }
 
 export async function getDealsCount(): Promise<number> {
@@ -173,7 +212,7 @@ export async function getAllProducts(opts: {
 
 	const offset = (page - 1) * perPage;
 	const result = await db.execute({
-		sql: `SELECT id, name, slug, description, price, original_price, image, category, category_slug, tags, in_stock, sku, ean, weight
+		sql: `SELECT id, name, slug, description, price, original_price, image, gallery, category, category_slug, tags, in_stock, sku, ean, weight
 		      FROM products ${where} ${orderBy} LIMIT ? OFFSET ?`,
 		args: [...args, perPage, offset]
 	});
@@ -263,6 +302,84 @@ function parseGallery(raw: string | null | undefined): string[] {
 	} catch {
 		return [];
 	}
+}
+
+function toStoredImagePath(image: string): string {
+	if (!image) return '';
+	return image.startsWith('/img/products/') ? image.replace('/img/products/', '') : image;
+}
+
+function normalizeGalleryForStorage(images: string[]): string[] {
+	return images
+		.map((img) => toStoredImagePath(img))
+		.filter((img, index, arr) => !!img && arr.indexOf(img) === index);
+}
+
+export async function updateProductMainImage(
+	productId: string,
+	selectedImage: string
+): Promise<void> {
+	const product = await getProductById(productId);
+	if (!product) throw new Error('Product not found');
+
+	const nextMainImage = toStoredImagePath(selectedImage);
+	if (!nextMainImage) throw new Error('Invalid image');
+
+	const currentMainImage = toStoredImagePath(product.image || '');
+	const currentGallery = normalizeGalleryForStorage(parseGallery(product.gallery));
+
+	const available = new Set([currentMainImage, ...currentGallery].filter(Boolean));
+	if (!available.has(nextMainImage)) {
+		throw new Error('Selected image does not belong to this product');
+	}
+
+	const nextGallery = currentGallery.filter((img) => img !== nextMainImage);
+	if (currentMainImage && currentMainImage !== nextMainImage) {
+		nextGallery.unshift(currentMainImage);
+	}
+
+	await writeProductImages(productId, nextMainImage, nextGallery);
+}
+
+export async function updateProductImages(
+	productId: string,
+	mainImage: string,
+	gallery: string[]
+): Promise<void> {
+	const product = await getProductById(productId);
+	if (!product) throw new Error('Product not found');
+
+	const nextMain = toStoredImagePath(mainImage);
+	if (!nextMain) throw new Error('Invalid main image');
+
+	const nextGallery = normalizeGalleryForStorage(gallery).filter((img) => img !== nextMain);
+
+	const currentMain = toStoredImagePath(product.image || '');
+	const currentGallery = normalizeGalleryForStorage(parseGallery(product.gallery));
+	const available = new Set([currentMain, ...currentGallery].filter(Boolean));
+
+	if (!available.has(nextMain)) {
+		throw new Error('Selected main image does not belong to this product');
+	}
+	for (const img of nextGallery) {
+		if (!available.has(img)) {
+			throw new Error('Gallery contains an image that does not belong to this product');
+		}
+	}
+
+	await writeProductImages(productId, nextMain, nextGallery);
+}
+
+async function writeProductImages(
+	productId: string,
+	mainImage: string,
+	gallery: string[]
+): Promise<void> {
+	const db = getClient();
+	await db.execute({
+		sql: `UPDATE products SET image = ?, gallery = ? WHERE id = ?`,
+		args: [mainImage, JSON.stringify(normalizeGalleryForStorage(gallery)), productId]
+	});
 }
 
 // ── Helpers to convert DB row → store Product shape ────────

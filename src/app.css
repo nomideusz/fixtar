@@ -1,141 +1,165 @@
 /* ==========================================================================
-   FixTar — Minimal Design System
-   Inspired by Scandinavian minimalism: bold, mechanical, premium.
-   Soft 4-color hierarchy: Slate, Blue, White, Cool Gray.
-   Plus Jakarta Sans headlines + Inter body.
+   FixTar — Design System
+   Precision minimalism for a professional tools shop.
+   Questrial (400, only weight) + Ioskeley Mono. One bright yellow-green accent.
    ========================================================================== */
 
 @import 'tailwindcss';
 
 /* ==========================================================================
-   1. THEME TOKENS
+   0. LOCAL FONTS
+   ========================================================================== */
+
+@font-face {
+	font-family: 'IoskeleyMono';
+	src: url('/IoskeleyMono-Web/WOFF2/IoskeleyMono-Regular.woff2') format('woff2');
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'IoskeleyMono';
+	src: url('/IoskeleyMono-Web/WOFF2/IoskeleyMono-Medium.woff2') format('woff2');
+	font-weight: 500;
+	font-style: normal;
+	font-display: swap;
+}
+
+/* ==========================================================================
+   1. THEME TOKENS (Tailwind v4 @theme — single source of truth)
    ========================================================================== */
 
 @theme {
-	/* Honda HRC-inspired Premium Color System: Pure White / Carbon Black / Metallic Gray / Racing Red / Deep Navy */
-	--color-brand-500: #3b82f6; /* High-Octane Racing Red */
-	--color-brand-600: #2563eb;
-	--color-brand-700: #1d4ed8;
-
-	--color-cta: #3b82f6; /* Signal Red - primary actions */
-	--color-cta-hover: #2563eb;
-	--color-cta-light: rgba(59, 130, 246, 0.08);
-
-	/* Honda HRC Aggressive: Red, Black, Silver */
-	--color-blue: #0a0f1a; /* Carbon Black */
-	--color-blue-light: #1f2937; /* Slate Dark */
-
-	--color-warm: #8c96a6; /* Clean Metallic Gray */
-	--color-warm-bg: #f0f2f5;
-
+	/* Brand palette:
+	 *   --color-text     #272D2E  near-black with slight warmth
+	 *   --color-accent   #B8F200  bright yellow-green for tools and electro tools
+	 *   --color-info     #0778C1  secondary blue
+	 *   --color-surface-subtle #E8EEEF  cool industrial surface
+	 */
+	--color-bg: #ffffff;
+	--color-surface: #ffffff;
+	--color-surface-subtle: #e8eeef;
+	--color-border: #dfe4e6;
+	--color-border-strong: #c3ccd0;
+	--color-text: #272d2e;
+	--color-text-muted: #6b7276;
+	--color-text-faint: #9ba3a6;
+	--color-accent: #b8f200;
+	--color-accent-hover: #a4d900;
+	--color-accent-ink: #272d2e;
+	--color-accent-text: #5f7a00;
+	--color-accent-text-hover: #4f6600;
+	--color-info: #0778c1;
+	--color-info-hover: #0560a0;
 	--color-success: #16a34a;
 	--color-warning: #f59e0b;
-	--color-danger: #3b82f6;
+	--color-danger: #dc2626;
 
-	--font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-	--font-display: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-	--font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+	/* Typography */
+	--font-sans: Questrial, system-ui, -apple-system, sans-serif;
+	--font-display: Questrial, system-ui, -apple-system, sans-serif;
+	--font-mono: 'IoskeleyMono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
-	/* Rigid Geometry */
-	--radius-sm: 0.375rem;
-	--radius-md: 0.75rem;
-	--radius-lg: 1rem;
-	--radius-xl: 1.5rem;
-	--radius-2xl: 2rem;
-	--radius-3xl: 3rem;
+	/* Radii — only three */
+	--radius-sm: 4px;
+	--radius-md: 8px;
 	--radius-full: 9999px;
 }
 
 /* ==========================================================================
-   2. SEMANTIC TOKENS — Light, clean white
+   2. SEMANTIC ALIASES (kept under --ft-* so existing markup keeps working)
    ========================================================================== */
 
 :root {
-	/* ── Core palette — pure white for that sterile showroom feel ── */
-	--ft-bg: #ffffff;
-	--ft-surface: #ffffff;
-	--ft-dark: #1f2937; /* Carbon Black/Navy */
-	--ft-text: #4b5563; /* Cool gray body text */
-	--ft-text-strong: #111827;
-	--ft-text-muted: #6b7280;
-	--ft-text-faint: #9ca3af;
+	/* Core palette */
+	--ft-bg: var(--color-bg);
+	--ft-surface: var(--color-surface);
+	--ft-frost: var(--color-surface-subtle);
+	--ft-line: var(--color-border);
+	--ft-line-strong: var(--color-border-strong);
+	--ft-text: var(--color-text);
+	--ft-text-strong: var(--color-text);
+	--ft-text-muted: var(--color-text-muted);
+	--ft-text-faint: var(--color-text-faint);
+	--ft-dark: var(--color-text);
 
-	/* ── Action colors ── */
-	--ft-cta: #ccff00; /* Volt Green/Yellow */
-	--ft-cta-hover: #b3e600; /* Darker Volt Green */
-	--ft-cta-light: rgba(204, 255, 0, 0.15);
-	--ft-cta-text: #111827;
+	/* Single accent */
+	--ft-accent: var(--color-accent);
+	--ft-accent-hover: var(--color-accent-hover);
+	--ft-accent-text: var(--color-accent-text);
+	--ft-accent-text-hover: var(--color-accent-text-hover);
+	--ft-cta: var(--color-accent);
+	--ft-cta-hover: var(--color-accent-hover);
+	--ft-cta-light: rgba(184, 242, 0, 0.18);
+	--ft-cta-text: var(--color-accent-ink);
 
-	--ft-accent: #111827; /* Carbon Black */
-	--ft-accent-hover: #374151;
+	/* Supporting semantic colors */
+	--ft-warm: var(--color-text-muted);
+	--ft-warm-bg: var(--color-surface-subtle);
 
-	--ft-warm: #8c96a6; /* Replaced clashing tan/beige with metallic sliver/gray */
-	--ft-warm-bg: #f4f5f7; /* Crisp metallic surface */
+	/* Layout */
+	--ft-container: 1680px;
+	--ft-gutter: clamp(20px, 4vw, 64px);
 
-	/* ── Surfaces & borders ── */
-	--ft-line: #f3f4f6;
-	--ft-frost: #f9fafb;
+	/* Motion */
+	--dur-fast: 120ms;
+	--dur-med: 180ms;
+	--ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 
-	/* ── Elevation — Flat borders instead of shadows ── */
-	--ft-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
-	--ft-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-	--ft-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
-
-	/* ── Layout ── */
-	--ft-container: 1760px;
-	--ft-gutter: clamp(24px, 5vw, 80px);
-
-	/* ── Motion — Sharp and Mechanical ── */
-	--dur-fast: 0.1s;
-	--dur-med: 0.15s;
-	--ease-out: ease-out;
-
-	/*
-	 * Legacy aliases — for components not yet migrated to canonical tokens.
-	 * IMPORTANT: Never re-declare a canonical token here (creates circular ref).
-	 */
+	/* Legacy aliases — preserve compatibility, no circular refs */
 	--ft-primary: var(--ft-cta);
 	--ft-primary-hover: var(--ft-cta-hover);
 	--ft-primary-light: var(--ft-cta-light);
 	--ft-primary-active: var(--ft-cta-hover);
 	--ft-primary-ring: var(--ft-cta);
+
 	--ft-border: var(--ft-line);
-	--ft-border-hover: var(--ft-accent);
-	--ft-card: #ffffff;
+	--ft-border-hover: var(--ft-dark);
+	--ft-border-subtle: var(--ft-frost);
+	--ft-border-focus: var(--ft-cta);
+
+	--ft-card: var(--ft-surface);
 	--ft-card-hover: var(--ft-frost);
-	--ft-card-solid: #ffffff;
+	--ft-card-solid: var(--ft-surface);
+
 	--ft-surface-alt: var(--ft-bg);
 	--ft-surface-secondary: var(--ft-frost);
 	--ft-surface-tertiary: var(--ft-frost);
-	--ft-surface-elevated: #ffffff;
+	--ft-surface-elevated: var(--ft-surface);
 	--ft-surface-overlay: rgba(0, 0, 0, 0.4);
+
 	--ft-text-secondary: var(--ft-text-muted);
-	--ft-text-inverse: #ffffff;
-	--ft-text-brand: var(--ft-accent);
-	--ft-border-subtle: var(--ft-frost);
+	--ft-text-inverse: var(--ft-bg);
+	--ft-text-brand: var(--ft-accent-text);
+
 	--ft-focus-ring: var(--ft-cta);
 	--ft-focus-offset: 2px;
-	--ft-border-focus: var(--ft-cta);
 
-	/* Brand overlay tokens (Carbon-based) */
-	--ft-brand-subtle: rgba(10, 15, 26, 0.03);
-	--ft-brand-muted: rgba(10, 15, 26, 0.08);
-	--ft-brand-light: rgba(10, 15, 26, 0.12);
-	--ft-brand-medium: rgba(10, 15, 26, 0.15);
-	--ft-brand-border: rgba(10, 15, 26, 0.15);
-	--ft-brand-glow: rgba(10, 15, 26, 0.1);
-	--ft-grid-line: rgba(10, 15, 26, 0.05);
-	--ft-grid-line-subtle: rgba(10, 15, 26, 0.02);
-	--ft-divider: rgba(10, 15, 26, 0.15);
-	--ft-shadow: rgba(10, 15, 26, 0.08);
-	--ft-shadow-heavy: rgba(10, 15, 26, 0.15);
+	/* Brand overlay tokens */
+	--ft-brand-subtle: rgba(39, 45, 46, 0.03);
+	--ft-brand-muted: rgba(39, 45, 46, 0.08);
+	--ft-brand-light: rgba(39, 45, 46, 0.12);
+	--ft-brand-medium: rgba(39, 45, 46, 0.15);
+	--ft-brand-border: rgba(39, 45, 46, 0.15);
+	--ft-brand-glow: rgba(39, 45, 46, 0.1);
+	--ft-grid-line: rgba(39, 45, 46, 0.05);
+	--ft-grid-line-subtle: rgba(39, 45, 46, 0.02);
+	--ft-divider: rgba(39, 45, 46, 0.15);
+
+	/* Shadow aliases retained for compatibility, but flattened */
+	--ft-shadow-sm: none;
+	--ft-shadow-md: none;
+	--ft-shadow-lg: none;
+	--ft-shadow: rgba(39, 45, 46, 0.08);
+	--ft-shadow-heavy: rgba(39, 45, 46, 0.15);
 
 	/* Old dark theme aliases */
 	--ft-dark-deeper: var(--ft-bg);
-	--ft-dark-card: #ffffff;
+	--ft-dark-card: var(--ft-surface);
 	--ft-dark-card-hover: var(--ft-frost);
 	--ft-dark-border: var(--ft-line);
-	--ft-dark-border-hover: var(--ft-accent);
+	--ft-dark-border-hover: var(--ft-dark);
 	--ft-dark-text: var(--ft-text-strong);
 	--ft-dark-text-secondary: var(--ft-text-muted);
 	--ft-dark-text-muted: var(--ft-text-faint);
@@ -149,7 +173,7 @@
 }
 
 /* ==========================================================================
-   3. BASE STYLES
+   3. BASE
    ========================================================================== */
 
 @layer base {
@@ -162,23 +186,24 @@
 	}
 
 	html {
-		/* scroll-behavior: smooth removed as it breaks SvelteKit scroll restoration on navigation */
 		touch-action: manipulation;
+		overflow-x: clip;
 	}
 
 	body {
 		font-family: var(--font-sans);
 		background: var(--ft-bg);
 		color: var(--ft-text);
-		line-height: 1.7;
-		font-size: 15px;
+		line-height: 1.6;
+		font-size: 16px;
+		overflow-x: clip;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 	}
 
 	::selection {
-		background: var(--ft-frost);
-		color: var(--ft-dark);
+		background: color-mix(in srgb, var(--color-accent) 30%, transparent);
+		color: var(--ft-text);
 	}
 
 	:focus-visible {
@@ -186,38 +211,38 @@
 		outline-offset: 2px;
 	}
 
-	input[type='text']:focus-visible,
-	input[type='search']:focus-visible,
-	input[type='email']:focus-visible,
+	input:focus-visible,
 	select:focus-visible,
 	textarea:focus-visible {
 		outline: none;
 	}
 
 	a {
-		color: var(--ft-dark);
+		color: inherit;
 		text-decoration: none;
 		transition: color var(--dur-fast) ease;
 	}
 
 	a:hover {
-		color: var(--ft-accent);
+		color: var(--ft-accent-text);
 	}
 
-	/* ── Typography ── */
+	/* Questrial has a single weight (400). Hierarchy comes from size + color. */
 	h1,
 	h2,
 	h3,
-	h4 {
+	h4,
+	h5,
+	h6 {
 		font-family: var(--font-display);
-		font-weight: 600;
-		color: var(--ft-dark);
-		letter-spacing: -0.015em;
+		font-weight: 400;
+		color: var(--ft-text-strong);
+		letter-spacing: -0.02em;
+		line-height: 1.15;
 	}
 
 	h1 {
-		font-size: clamp(2.4rem, 5vw, 3.8rem);
-		line-height: 1.08;
+		font-size: clamp(2.25rem, 5vw, 3.5rem);
 	}
 
 	h2 {
@@ -225,217 +250,148 @@
 	}
 
 	h3 {
-		font-family: var(--font-sans);
-		font-size: 1.1rem;
-		font-weight: 600;
-		line-height: 1.35;
+		font-size: 1.125rem;
 		letter-spacing: -0.01em;
 	}
 
-	h4 {
-		font-family: var(--font-mono);
-		font-size: 0.68rem;
-		font-weight: 600;
-		text-transform: none;
-		letter-spacing: 0.12em;
-		color: var(--ft-accent);
+	h4,
+	h5,
+	h6 {
+		font-size: 0.9375rem;
 	}
+}
 
-	/* ── Section label (uppercase kicker) ── */
+/* ==========================================================================
+   4. PRIMITIVES
+   ========================================================================== */
+
+@layer components {
+	/* Monospace kicker above a section heading */
 	.ft-label {
 		font-family: var(--font-mono);
-		font-size: 0.68rem;
-		text-transform: none;
-		letter-spacing: 0;
-		color: var(--ft-accent);
-		font-weight: 600;
+		font-size: 0.75rem;
+		letter-spacing: 0.02em;
+		color: var(--ft-text-muted);
+		text-transform: lowercase;
 	}
 
-	/* ── Card base ── */
+	/* Monospace tabular — prices, SKUs, order numbers */
+	.ft-mono,
+	.text-money {
+		font-family: var(--font-mono);
+		font-variant-numeric: tabular-nums;
+	}
+
+	.text-money {
+		color: var(--ft-accent-text);
+	}
+
 	.ft-card {
 		background: var(--ft-surface);
 		border: 1px solid var(--ft-line);
 		border-radius: var(--radius-md);
-		box-shadow: var(--ft-shadow-sm);
-		transition:
-			border-color var(--dur-med) ease,
-			box-shadow var(--dur-med) ease,
-			transform var(--dur-med) ease;
+		transition: border-color var(--dur-med) ease;
 	}
 
 	.ft-card:hover {
-		border-color: var(--ft-line);
-		box-shadow: var(--ft-shadow-md);
-		transform: translateY(-2px);
+		border-color: var(--ft-dark);
 	}
 
-	/* ── Staggered fade-in ── */
-	@keyframes ft-fade-up {
-		from {
-			opacity: 0;
-		}
-		to {
-			opacity: 1;
-		}
-	}
-
-	.ft-animate {
-		animation: ft-fade-up 0.15s linear both;
-	}
-} /* end @layer base */
-
-/* ==========================================================================
-   4. COMPONENT CLASSES
-   ========================================================================== */
-
-@theme {
-	/* ... rest of theme ... */
-}
-
-@layer components {
-	.btn-primary {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		gap: 8px;
-		background-color: var(--ft-accent); /* Carbon Black in Light Mode, White in Dark Mode */
-		color: var(--ft-surface); /* Inverse of accent intuitively, but we map to surface for ease */
-		font-family: var(--font-display);
-		font-weight: 600;
-		font-size: 0.78rem;
-		text-transform: none;
-		letter-spacing: 0;
-		padding: 14px 32px;
-		border: 1px solid var(--ft-accent);
-		border-radius: var(--radius-full);
-		cursor: pointer;
-		transition:
-			background-color var(--dur-fast) ease,
-			border-color var(--dur-fast) ease,
-			box-shadow var(--dur-fast) ease,
-			transform var(--dur-fast) ease;
-	}
-
-	.btn-primary:hover {
-		background-color: var(--ft-accent-hover);
-		border-color: var(--ft-accent-hover);
-	}
-
-	/* Signal Red Button - for Deals, Flash Sales, Urgent Actions */
+	.btn-primary,
+	.btn-secondary,
 	.btn-cta {
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
 		gap: 8px;
-		background-color: var(--ft-cta);
-		color: var(--ft-cta-text);
-		font-family: var(--font-display);
-		font-weight: 600;
-		font-size: 0.78rem;
-		text-transform: none;
-		letter-spacing: 0;
-		padding: 14px 32px;
-		border: 1px solid var(--ft-cta);
-		border-radius: var(--radius-full);
+		font-family: var(--font-sans);
+		font-size: 0.9375rem;
+		font-weight: 400;
+		padding: 12px 24px;
+		border-radius: var(--radius-sm);
 		cursor: pointer;
 		transition:
 			background-color var(--dur-fast) ease,
 			border-color var(--dur-fast) ease,
-			box-shadow var(--dur-fast) ease,
-			transform var(--dur-fast) ease;
+			color var(--dur-fast) ease;
+		border: 1px solid transparent;
+		min-height: 44px;
+	}
+
+	.btn-primary {
+		background: var(--ft-dark);
+		color: var(--ft-bg);
+		border-color: var(--ft-dark);
+	}
+
+	.btn-primary:hover {
+		background: var(--ft-accent);
+		border-color: var(--ft-accent);
+		color: var(--ft-cta-text);
+	}
+
+	.btn-cta {
+		background: var(--ft-cta);
+		color: var(--ft-cta-text);
+		border-color: var(--ft-cta);
 	}
 
 	.btn-cta:hover {
-		background-color: var(--ft-cta-hover);
+		background: var(--ft-cta-hover);
 		border-color: var(--ft-cta-hover);
 	}
 
 	.btn-secondary {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		gap: 8px;
 		background: transparent;
-		color: var(--ft-dark);
-		font-family: var(--font-display);
-		font-weight: 600;
-		font-size: 0.78rem;
-		text-transform: none;
-		letter-spacing: 0;
-		padding: 14px 32px;
-		border: 1px solid var(--ft-line);
-		border-radius: var(--radius-full);
-		cursor: pointer;
-		transition:
-			border-color var(--dur-fast) ease,
-			color var(--dur-fast) ease;
+		color: var(--ft-text);
+		border-color: var(--ft-line);
 	}
 
 	.btn-secondary:hover {
-		border-color: var(--ft-accent);
-		color: var(--ft-accent);
+		border-color: var(--ft-dark);
+		color: var(--ft-text);
 	}
 
 	.input {
 		width: 100%;
-		padding: 0.75rem;
+		padding: 10px 14px;
 		border: 1px solid var(--ft-line);
-		border-radius: var(--radius-full);
-		background-color: var(--ft-surface);
-		color: var(--ft-dark);
+		border-radius: var(--radius-sm);
+		background: var(--ft-surface);
+		color: var(--ft-text);
 		font-family: var(--font-sans);
-		font-size: 1rem;
-		transition:
-			border-color var(--dur-fast) ease,
-			box-shadow var(--dur-fast) ease;
+		font-size: 0.9375rem;
+		transition: border-color var(--dur-fast) ease;
 	}
 
 	.input:focus {
-		border-color: var(--ft-accent);
-		box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+		border-color: var(--ft-dark);
+		box-shadow: none;
 	}
 }
 
 /* ==========================================================================
-   5. UTILITIES
+   5. LAYOUT UTILITIES
    ========================================================================== */
 
-/* Page container — matches homepage sections */
 .ft-container {
 	max-width: var(--ft-container);
-	margin-left: auto;
-	margin-right: auto;
-	padding-left: var(--ft-gutter);
-	padding-right: var(--ft-gutter);
+	margin-inline: auto;
+	padding-inline: var(--ft-gutter);
 }
 
-/*
- * Page section spacing — consistent vertical rhythm
- *
- *   .ft-section        — standard page section      (48 → 64px)
- *   .ft-section-lg     — hero-adjacent / spacious    (64 → 96px)
- *   .ft-section-sm     — compact (toolbars, sub-nav) (32 → 40px)
- *
- * Navbar clearance:
- *   .ft-below-nav      — top-padding to clear fixed navbar (72px)
- */
-
 .ft-section {
-	padding-top: clamp(48px, 6vh, 64px);
-	padding-bottom: clamp(48px, 6vh, 64px);
+	padding-block: clamp(36px, 4.5vh, 52px);
 }
 
 .ft-section-lg {
-	padding-top: clamp(64px, 8vh, 96px);
-	padding-bottom: clamp(64px, 8vh, 96px);
+	padding-block: clamp(52px, 6.5vh, 80px);
 }
 
 .ft-section-sm {
-	padding-top: clamp(32px, 4vh, 40px);
-	padding-bottom: clamp(32px, 4vh, 40px);
+	padding-block: clamp(24px, 3vh, 32px);
 }
 
-/* Utility to prevent doubled padding between sections */
 .ft-section-no-pt {
 	padding-top: 0 !important;
 }
@@ -448,6 +404,7 @@
 	.no-scrollbar::-webkit-scrollbar {
 		display: none;
 	}
+
 	.no-scrollbar {
 		-ms-overflow-style: none;
 		scrollbar-width: none;
@@ -455,11 +412,6 @@
 
 	.animate-notification-progress {
 		animation: notification-progress linear forwards;
-	}
-
-	.text-money {
-		color: var(--ft-accent);
-		font-variant-numeric: tabular-nums;
 	}
 }
 
@@ -476,7 +428,6 @@
    6. VIEW TRANSITIONS
    ========================================================================== */
 
-/* Cross-fade for page content during navigation */
 @keyframes ft-vt-fade-in {
 	from {
 		opacity: 0;
@@ -507,39 +458,39 @@
 	animation: ft-vt-fade-in 0.2s ease-out forwards;
 }
 
-/* Navbar stays in place during transitions */
 ::view-transition-old(navbar),
 ::view-transition-new(navbar) {
 	animation: none;
 }
 
-/* Product image — smooth morph between card and detail */
 ::view-transition-group(*) {
 	animation-duration: 0.25s;
 	animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* ==========================================================================
-   7. STAGGER ANIMATIONS
+   7. STAGGER
    ========================================================================== */
 
-/* Product card stagger — applied via .ft-stagger on grid children */
 @keyframes ft-card-enter {
 	from {
 		opacity: 0;
+		transform: translateY(8px);
 	}
 	to {
 		opacity: 1;
+		transform: translateY(0);
 	}
 }
 
-.ft-stagger > * {
-	animation: ft-card-enter 0.15s linear both;
+.ft-animate {
+	animation: ft-card-enter 240ms var(--ease-out) both;
 }
 
-.ft-stagger > *:nth-child(1) {
-	animation-delay: 0ms;
+.ft-stagger > * {
+	animation: ft-card-enter 240ms var(--ease-out) both;
 }
+
 .ft-stagger > *:nth-child(2) {
 	animation-delay: 40ms;
 }
@@ -561,52 +512,20 @@
 .ft-stagger > *:nth-child(8) {
 	animation-delay: 280ms;
 }
-.ft-stagger > *:nth-child(9) {
+.ft-stagger > *:nth-child(n + 9) {
 	animation-delay: 320ms;
 }
-.ft-stagger > *:nth-child(10) {
-	animation-delay: 360ms;
-}
-.ft-stagger > *:nth-child(11) {
-	animation-delay: 400ms;
-}
-.ft-stagger > *:nth-child(12) {
-	animation-delay: 440ms;
-}
-.ft-stagger > *:nth-child(n + 13) {
-	animation-delay: 480ms;
-}
 
 /* ==========================================================================
-   8. REDUCED MOTION
-   ========================================================================== */
-
-@media (prefers-reduced-motion: reduce) {
-	*,
-	*::before,
-	*::after {
-		animation-duration: 0.01ms !important;
-		animation-iteration-count: 1 !important;
-		transition-duration: 0.01ms !important;
-		scroll-behavior: auto !important;
-	}
-
-	::view-transition-old(root),
-	::view-transition-new(root) {
-		animation: none !important;
-	}
-}
-
-/* ==========================================================================
-   9. LAZY SECTIONS (Intersection Observer)
+   8. LAZY REVEAL
    ========================================================================== */
 
 .ft-lazy {
 	opacity: 0;
-	transform: translateY(16px);
+	transform: translateY(12px);
 	transition:
-		opacity 0.5s ease-out,
-		transform 0.5s ease-out;
+		opacity 400ms var(--ease-out),
+		transform 400ms var(--ease-out);
 }
 
 .ft-lazy.is-visible {
@@ -614,7 +533,25 @@
 	transform: translateY(0);
 }
 
+/* ==========================================================================
+   9. REDUCED MOTION
+   ========================================================================== */
+
 @media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 1ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 1ms !important;
+		scroll-behavior: auto !important;
+	}
+
+	::view-transition-old(root),
+	::view-transition-new(root) {
+		animation: none !important;
+	}
+
 	.ft-lazy {
 		opacity: 1;
 		transform: none;
@@ -623,11 +560,10 @@
 }
 
 /* ==========================================================================
-   10. PRINT STYLES
+   10. PRINT
    ========================================================================== */
 
 @media print {
-	/* Hide non-essential UI */
 	nav,
 	footer,
 	.cart-backdrop,
@@ -644,7 +580,6 @@
 		display: none !important;
 	}
 
-	/* Reset backgrounds */
 	body {
 		background: white !important;
 		color: black !important;
@@ -659,7 +594,6 @@
 		text-shadow: none !important;
 	}
 
-	/* Show URLs after links */
 	a[href]::after {
 		content: ' (' attr(href) ')';
 		font-size: 0.8em;
@@ -671,7 +605,6 @@
 		content: '';
 	}
 
-	/* Sensible page breaks */
 	h1,
 	h2,
 	h3 {
@@ -690,7 +623,6 @@
 		padding: 0 !important;
 	}
 
-	/* Product grid: 2 columns for print */
 	.product-grid {
 		grid-template-columns: repeat(2, 1fr) !important;
 		gap: 16px !important;

@@ -42,7 +42,7 @@
 		removingId = product.id;
 		setTimeout(() => {
 			wishlist.remove(product.id);
-			products = products.filter(p => p.id !== product.id);
+			products = products.filter((p) => p.id !== product.id);
 			notifications.success(`Usunięto ${product.name} z ulubionych`);
 			removingId = null;
 		}, 200);
@@ -80,7 +80,10 @@
 		<div>
 			<h1 class="fav-title">Ulubione</h1>
 			{#if products.length > 0}
-				<p class="fav-count">{products.length} {products.length === 1 ? 'produkt' : products.length < 5 ? 'produkty' : 'produktów'}</p>
+				<p class="fav-count">
+					{products.length}
+					{products.length === 1 ? 'produkt' : products.length < 5 ? 'produkty' : 'produktów'}
+				</p>
 			{/if}
 		</div>
 		{#if products.length > 1}
@@ -105,7 +108,7 @@
 			{/each}
 		</div>
 
-	<!-- Empty state -->
+		<!-- Empty state -->
 	{:else if isEmpty}
 		<div class="fav-empty">
 			<span class="fav-empty-icon"><HeartIcon size={48} weight="light" aria-hidden="true" /></span>
@@ -116,7 +119,7 @@
 			<a href="/products" class="fav-empty-link">Przeglądaj produkty →</a>
 		</div>
 
-	<!-- Products -->
+		<!-- Products -->
 	{:else}
 		<div class="fav-grid">
 			{#each products as product (product.id)}
@@ -125,9 +128,17 @@
 					<a href="/products/{product.slug || product.id}" class="fav-item-img-link">
 						<div class="fav-item-img">
 							{#if product.mainImage}
-								<img src={product.mainImage} alt={product.name} loading="lazy" width="200" height="200" />
+								<img
+									src={product.mainImage}
+									alt={product.name}
+									loading="lazy"
+									width="200"
+									height="200"
+								/>
 							{:else}
-								<span style="color:var(--ft-text-faint)"><ImageSquareIcon size={32} weight="light" aria-hidden="true" /></span>
+								<span style="color:var(--ft-text-faint)"
+									><ImageSquareIcon size={32} weight="light" aria-hidden="true" /></span
+								>
 							{/if}
 						</div>
 					</a>
@@ -217,7 +228,9 @@
 		background: none;
 		border: 1px solid var(--ft-line);
 		cursor: pointer;
-		transition: color 0.15s, border-color 0.15s;
+		transition:
+			color 0.15s,
+			border-color 0.15s;
 		white-space: nowrap;
 	}
 
@@ -241,7 +254,9 @@
 		gap: 16px;
 		padding: 16px;
 		background: var(--ft-surface);
-		transition: opacity 0.2s ease, background-color 0.15s ease;
+		transition:
+			opacity 0.2s ease,
+			background-color 0.15s ease;
 	}
 
 	.fav-item:hover {
@@ -317,7 +332,7 @@
 	}
 
 	.fav-item-name:hover {
-		color: var(--ft-accent);
+		color: var(--ft-accent-text);
 	}
 
 	/* ── Price ── */
@@ -377,7 +392,9 @@
 		background: transparent;
 		border: 2px solid var(--ft-cta);
 		cursor: pointer;
-		transition: background-color 0.15s, color 0.15s;
+		transition:
+			background-color 0.15s,
+			color 0.15s;
 		white-space: nowrap;
 	}
 
@@ -410,7 +427,9 @@
 		border: 1px solid var(--ft-line);
 		color: var(--ft-text-faint);
 		cursor: pointer;
-		transition: color 0.15s, border-color 0.15s;
+		transition:
+			color 0.15s,
+			border-color 0.15s;
 	}
 
 	.fav-btn-remove:hover {
@@ -454,7 +473,7 @@
 		font-family: var(--font-display);
 		font-size: 0.82rem;
 		font-weight: 700;
-		color: var(--ft-accent);
+		color: var(--ft-accent-text);
 		text-decoration: none;
 		transition: opacity 0.15s;
 	}
@@ -469,7 +488,12 @@
 	}
 
 	.skeleton-pulse {
-		background: linear-gradient(90deg, var(--ft-frost) 25%, var(--ft-line) 50%, var(--ft-frost) 75%);
+		background: linear-gradient(
+			90deg,
+			var(--ft-frost) 25%,
+			var(--ft-line) 50%,
+			var(--ft-frost) 75%
+		);
 		background-size: 200% 100%;
 		animation: skeleton-shimmer 1.5s ease-in-out infinite;
 	}
@@ -477,7 +501,12 @@
 	.skeleton-line {
 		height: 14px;
 		border-radius: 2px;
-		background: linear-gradient(90deg, var(--ft-frost) 25%, var(--ft-line) 50%, var(--ft-frost) 75%);
+		background: linear-gradient(
+			90deg,
+			var(--ft-frost) 25%,
+			var(--ft-line) 50%,
+			var(--ft-frost) 75%
+		);
 		background-size: 200% 100%;
 		animation: skeleton-shimmer 1.5s ease-in-out infinite;
 	}
@@ -492,7 +521,11 @@
 	}
 
 	@keyframes skeleton-shimmer {
-		0% { background-position: 200% 0; }
-		100% { background-position: -200% 0; }
+		0% {
+			background-position: 200% 0;
+		}
+		100% {
+			background-position: -200% 0;
+		}
 	}
 </style>

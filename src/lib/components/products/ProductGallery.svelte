@@ -18,12 +18,14 @@
 		images,
 		productName,
 		badges = [],
-		selectedImageIndex: externalIndex,
+		selectedImageIndex: externalIndex = 0,
 		onZoomRequest
 	}: Props = $props();
 
-	let selectedImageIndex = $state(0);
-	let imageZoomed = $state(false);
+	let selectedImageIndex = $derived.by(() => {
+		const maxIndex = Math.max(images.length - 1, 0);
+		return Math.min(Math.max(externalIndex, 0), maxIndex);
+	});
 
 	const hasMultiple = $derived(images.length > 1);
 	const canGoPrev = $derived(selectedImageIndex > 0);
@@ -34,7 +36,6 @@
 		if (next >= 0 && next < images.length) selectedImageIndex = next;
 	}
 
-	// Thumbnail scroll into view
 	let thumbContainer: HTMLDivElement | undefined = $state();
 
 	$effect(() => {
@@ -88,7 +89,7 @@
 			<!-- Main clickable image -->
 			<button
 				class="main-image-btn"
-				onclick={() => (onZoomRequest ? onZoomRequest(selectedImageIndex) : (imageZoomed = true))}
+				onclick={() => onZoomRequest?.(selectedImageIndex)}
 				aria-label="Powiększ zdjęcie produktu"
 			>
 				<img
@@ -151,17 +152,15 @@
 {/if}
 
 <style>
-	/* ── Layout ── */
 	.gallery {
 		display: flex;
 		gap: 12px;
 	}
 
-	/* ── Vertical Thumbnail Rail (desktop) ── */
 	.thumb-rail {
 		display: none;
 		flex-direction: column;
-		gap: 6px;
+		gap: 8px;
 		width: 72px;
 		flex-shrink: 0;
 		max-height: 560px;
@@ -169,6 +168,7 @@
 		overflow-x: hidden;
 		scrollbar-width: none;
 	}
+
 	.thumb-rail::-webkit-scrollbar {
 		display: none;
 	}
@@ -183,48 +183,62 @@
 		width: 72px;
 		height: 72px;
 		flex-shrink: 0;
-		border: 2px solid transparent;
-		background: transparent;
-		padding: 2px;
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-sm);
+		background: var(--ft-surface);
+		padding: 4px;
 		cursor: pointer;
-		opacity: 0.5;
-		transition: all 0.2s ease;
+		opacity: 0.72;
+		transition:
+			border-color var(--dur-fast) ease,
+			opacity var(--dur-fast) ease,
+			background-color var(--dur-fast) ease;
 	}
+
 	.thumb img {
 		width: 100%;
 		height: 100%;
 		object-fit: contain;
-		clip-path: inset(2px); /* hide baked-in image borders */
-	}
-	.thumb:hover {
-		opacity: 0.8;
-	}
-	.thumb.is-active {
-		opacity: 1;
-		border-color: var(--ft-cta);
+		clip-path: inset(2px);
 	}
 
-	/* ── Main Image ── */
+	.thumb:hover {
+		opacity: 1;
+		border-color: var(--ft-line-strong);
+	}
+
+	.thumb.is-active {
+		opacity: 1;
+		border-color: var(--ft-accent);
+		background: color-mix(in srgb, var(--ft-accent) 8%, white);
+	}
+
 	.main-image-wrap {
 		position: relative;
 		flex: 1;
 		min-width: 0;
-		border: none;
-		background: transparent;
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-md);
+		background: var(--ft-surface);
 		overflow: hidden;
+		transition: border-color var(--dur-med) ease;
+	}
+
+	.main-image-wrap:hover {
+		border-color: var(--ft-line-strong);
 	}
 
 	.main-image-btn {
+		position: relative;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		width: 100%;
 		aspect-ratio: 1 / 1;
-		padding: 16px;
+		padding: 20px;
 		background: none;
 		border: none;
 		cursor: zoom-in;
-		position: relative;
 	}
 
 	.main-img {
@@ -234,39 +248,42 @@
 		height: auto;
 		object-fit: contain;
 		clip-path: inset(2px);
-		transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+		transition: transform 240ms var(--ease-out);
 		user-select: none;
 	}
 
 	.main-image-btn:hover .main-img {
-		transform: scale(1.04);
+		transform: scale(1.025);
 	}
 
-	/* Zoom hint — bottom-right icon */
 	.zoom-hint {
 		position: absolute;
-		bottom: 12px;
 		right: 12px;
-		width: 40px;
-		height: 40px;
+		bottom: 12px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		width: 40px;
+		height: 40px;
 		background: var(--ft-surface);
-		border: 2px solid transparent;
-		color: var(--ft-text-strong);
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-sm);
+		color: var(--ft-text-muted);
 		opacity: 0;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-		transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-	}
-	.main-image-btn:hover .zoom-hint {
-		opacity: 1;
-		color: var(--ft-cta);
-		border-color: var(--ft-cta);
-		transform: scale(1.1);
+		transition:
+			opacity var(--dur-fast) ease,
+			color var(--dur-fast) ease,
+			border-color var(--dur-fast) ease,
+			background-color var(--dur-fast) ease;
 	}
 
-	/* ── Badges ── */
+	.main-image-btn:hover .zoom-hint {
+		opacity: 1;
+		color: var(--ft-accent-text);
+		border-color: var(--ft-accent);
+		background: color-mix(in srgb, var(--ft-accent) 8%, white);
+	}
+
 	.badge-stack {
 		position: absolute;
 		top: 12px;
@@ -277,18 +294,19 @@
 		gap: 6px;
 		pointer-events: none;
 	}
+
 	.badge {
 		display: inline-block;
 		padding: 4px 10px;
 		font-family: var(--font-mono);
-		font-size: 0.68rem;
-		font-weight: 500;
-		text-transform: none;
-		letter-spacing: 0.06em;
-		color: #fff;
+		font-size: 0.75rem;
+		font-weight: 400;
+		letter-spacing: 0.02em;
+		text-transform: lowercase;
+		border: 1px solid transparent;
+		border-radius: var(--radius-full);
 	}
 
-	/* ── Counter ── */
 	.counter {
 		position: absolute;
 		top: 12px;
@@ -296,60 +314,72 @@
 		z-index: 2;
 		padding: 4px 10px;
 		font-family: var(--font-mono);
-		font-size: 0.68rem;
-		font-weight: 600;
+		font-size: 0.75rem;
+		font-weight: 400;
+		letter-spacing: 0.02em;
 		color: var(--ft-text-muted);
 		background: var(--ft-surface);
 		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-full);
 		pointer-events: none;
 	}
 
-	/* ── Nav Arrows ── */
 	.nav-arrow {
 		position: absolute;
 		top: 50%;
 		transform: translateY(-50%);
 		z-index: 2;
-		width: 44px;
-		height: 44px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		width: 44px;
+		height: 44px;
 		background: var(--ft-surface);
-		border: 2px solid transparent;
-		color: var(--ft-text-strong);
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-sm);
+		color: var(--ft-text);
 		cursor: pointer;
 		opacity: 0;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-		transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+		transition:
+			opacity var(--dur-fast) ease,
+			color var(--dur-fast) ease,
+			border-color var(--dur-fast) ease,
+			background-color var(--dur-fast) ease,
+			transform var(--dur-fast) ease;
 	}
+
 	.main-image-wrap:hover .nav-arrow:not(:disabled) {
 		opacity: 1;
 	}
+
 	.nav-arrow:hover:not(:disabled) {
-		border-color: var(--ft-cta);
-		color: var(--ft-cta);
-		transform: translateY(-50%) scale(1.1);
+		border-color: var(--ft-accent);
+		color: var(--ft-accent-text);
+		background: color-mix(in srgb, var(--ft-accent) 8%, white);
+		transform: translateY(-50%);
 	}
+
 	.nav-arrow:disabled {
 		opacity: 0 !important;
 		cursor: default;
 	}
+
 	.nav-arrow--prev {
 		left: 8px;
 	}
+
 	.nav-arrow--next {
 		right: 8px;
 	}
 
-	/* ── Mobile Thumbnails (horizontal) ── */
 	.thumb-rail-mobile {
 		display: flex;
-		gap: 6px;
+		gap: 8px;
 		overflow-x: auto;
-		padding: 10px 0 4px;
+		padding: 12px 0 4px;
 		scrollbar-width: none;
 	}
+
 	.thumb-rail-mobile::-webkit-scrollbar {
 		display: none;
 	}
@@ -364,38 +394,47 @@
 		width: 56px;
 		height: 56px;
 		flex-shrink: 0;
-		border: 2px solid transparent;
-		background: transparent;
-		padding: 2px;
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-sm);
+		background: var(--ft-surface);
+		padding: 4px;
 		cursor: pointer;
-		opacity: 0.5;
-		transition: all 0.2s ease;
+		opacity: 0.72;
+		transition:
+			border-color var(--dur-fast) ease,
+			opacity var(--dur-fast) ease,
+			background-color var(--dur-fast) ease;
 	}
+
 	.thumb-mobile img {
 		width: 100%;
 		height: 100%;
 		object-fit: contain;
 		clip-path: inset(2px);
 	}
+
 	.thumb-mobile:hover {
-		opacity: 0.8;
-	}
-	.thumb-mobile.is-active {
 		opacity: 1;
-		border-color: var(--ft-cta);
+		border-color: var(--ft-line-strong);
 	}
 
-	/* ── Empty State ── */
+	.thumb-mobile.is-active {
+		opacity: 1;
+		border-color: var(--ft-accent);
+		background: color-mix(in srgb, var(--ft-accent) 8%, white);
+	}
+
 	.empty-state {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		height: 400px;
-		border: none;
-		background: transparent;
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-md);
+		background: var(--ft-surface);
 		color: var(--ft-text-faint);
 		gap: 12px;
-		font-size: 0.85rem;
+		font-size: 0.9375rem;
 	}
 </style>

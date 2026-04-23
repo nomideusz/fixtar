@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { fade, fly } from 'svelte/transition';
 	import Button from '$lib/components/ui/Button.svelte';
-	import { TrashIcon, XIcon } from 'phosphor-svelte';
+	import { TrashIcon, XIcon, UserIcon, UserGearIcon, SignOutIcon } from 'phosphor-svelte';
 	import type { TranslationKey } from '$lib/i18n/translations';
-	import { cart } from '$lib/stores';
+	import { cart, userStore } from '$lib/stores';
 	import type { CartItem } from '$lib/stores';
 
 	// --- Props ---
@@ -32,6 +32,16 @@
 
 	function close() {
 		toggleCart();
+	}
+
+	async function handleLogout() {
+		userStore.logout();
+		try {
+			await fetch('/auth/logout', { method: 'POST', credentials: 'include' });
+		} catch {
+			// Ignore network/logout endpoint failures and continue local sign-out redirect.
+		}
+		window.location.href = '/';
 	}
 
 	function handleKeydown(e: KeyboardEvent) {
@@ -163,10 +173,10 @@
 	<div
 		role="button"
 		tabindex="0"
-		class="cart-backdrop"
+		class="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
 		onclick={close}
 		onkeydown={handleKeydown}
-		transition:fade={{ duration: 100 }}
+		transition:fade={{ duration: 150 }}
 		onintrostart={handleTransitionStart}
 		onintroend={handleTransitionEnd}
 		onoutrostart={handleTransitionStart}
@@ -176,133 +186,223 @@
 	<!-- Drawer -->
 	<div
 		bind:this={drawerElement}
-		class="cart-drawer"
+		class="bg-surface border-border fixed inset-y-0 right-0 z-50 flex w-full flex-col border-l shadow-2xl sm:max-w-md"
 		role="dialog"
 		aria-label={t('yourCart')}
-		in:fly={{ duration: 150, x: 400 }}
-		out:fly={{ duration: 150, x: 400 }}
+		in:fly={{ duration: 250, x: 400, opacity: 1 }}
+		out:fly={{ duration: 200, x: 400, opacity: 1 }}
 		onintrostart={handleTransitionStart}
 		onintroend={handleTransitionEnd}
 		onoutrostart={handleTransitionStart}
 		onoutroend={handleTransitionEnd}
 	>
 		<!-- Header -->
-		<div class="cart-drawer__header">
+		<div class="border-border bg-surface/50 flex shrink-0 items-start justify-between border-b p-6">
 			{#if pendingClearAll}
-				<p class="cart-drawer__confirm-text">Usunąć wszystko?</p>
-				<div class="cart-drawer__actions">
-					<button
-						onclick={confirmClearAll}
-						class="cart-drawer__confirm-btn cart-drawer__confirm-btn--yes">Tak</button
-					>
-					<button
-						onclick={cancelClearAll}
-						class="cart-drawer__confirm-btn cart-drawer__confirm-btn--no">Nie</button
-					>
+				<div class="flex w-full items-center justify-between">
+					<p class="text-text font-medium">Usunąć wszystko?</p>
+					<div class="flex gap-2">
+						<button
+							onclick={confirmClearAll}
+							class="bg-danger hover:bg-danger/90 rounded px-4 py-1.5 text-sm font-medium text-white transition-colors"
+						>
+							Tak
+						</button>
+						<button
+							onclick={cancelClearAll}
+							class="border-border text-text hover:bg-surface-subtle rounded border px-4 py-1.5 text-sm font-medium transition-colors"
+						>
+							Nie
+						</button>
+					</div>
 				</div>
 			{:else}
-				<h5 class="cart-drawer__title">
-					{t('yourCart')} ({cart.count})
-				</h5>
-				<div class="cart-drawer__actions">
+				<div class="flex flex-col gap-2">
+					<div class="text-text-muted font-mono text-xs tracking-wider uppercase">
+						Koszyk i konto
+					</div>
+					<div class="flex items-baseline gap-3">
+						<h5 class="text-text font-display text-2xl">
+							{t('yourCart')} <span class="text-text-muted">({cart.count})</span>
+						</h5>
+						<span class="bg-success/10 text-success rounded-full px-2.5 py-0.5 text-xs font-medium">
+							Bezpieczne zamówienie
+						</span>
+					</div>
+
+					{#if userStore.current}
+						<div class="mt-2 flex flex-wrap items-center gap-4 text-sm">
+							<a
+								href="/account"
+								class="text-text-muted hover:text-accent-text flex items-center gap-1.5 transition-colors"
+								onclick={close}
+							>
+								<UserGearIcon size={16} weight="regular" aria-hidden="true" />
+								Moje konto
+							</a>
+							{#if userStore.current.isAdmin}
+								<a
+									href="/admin/products"
+									class="text-text-muted hover:text-accent-text flex items-center gap-1.5 transition-colors"
+									onclick={close}
+								>
+									<UserGearIcon size={16} weight="regular" aria-hidden="true" />
+									Produkty admin
+								</a>
+							{/if}
+							<button
+								class="text-text-muted hover:text-danger flex items-center gap-1.5 transition-colors"
+								onclick={handleLogout}
+							>
+								<SignOutIcon size={16} weight="regular" aria-hidden="true" />
+								Wyloguj
+							</button>
+						</div>
+					{:else}
+						<div class="bg-surface-subtle mt-2 flex flex-col gap-2 rounded-md p-3 text-sm">
+							<p class="text-text-muted">
+								Zaloguj się, aby szybciej finalizować zamówienia i śledzić historię.
+							</p>
+							<a
+								href="/auth/login"
+								class="text-accent-text hover:text-accent-text-hover flex w-fit items-center gap-1.5 font-medium transition-colors"
+								onclick={close}
+							>
+								<UserIcon size={16} weight="regular" aria-hidden="true" />
+								Zaloguj się
+							</a>
+						</div>
+					{/if}
+				</div>
+
+				<div class="flex items-center gap-2">
 					{#if cart.items.length > 0}
 						<button
 							onclick={requestClearAll}
-							class="cart-drawer__icon-btn cart-drawer__icon-btn--clear"
+							class="text-text-muted hover:bg-danger/10 hover:text-danger flex h-8 w-8 items-center justify-center rounded-full transition-colors"
 							title={t('clearCart')}
 							aria-label={t('clearCart')}
 						>
-							<TrashIcon size={16} aria-hidden="true" />
+							<TrashIcon size={18} aria-hidden="true" />
 						</button>
 					{/if}
 					<button
 						onclick={close}
-						class="cart-drawer__icon-btn cart-drawer__icon-btn--close"
+						class="bg-surface-subtle text-text hover:bg-border flex h-8 w-8 items-center justify-center rounded-full transition-colors"
 						aria-label={t('closeCartDrawer')}
 					>
-						<XIcon size={16} aria-hidden="true" />
+						<XIcon size={18} aria-hidden="true" />
 					</button>
 				</div>
 			{/if}
 		</div>
 
 		<!-- Body -->
-		<div class="cart-drawer__body">
+		<div class="flex flex-1 flex-col overflow-hidden">
 			{#if cart.items.length === 0}
-				<div class="cart-drawer__empty">
-					<p class="cart-drawer__empty-text">{t('cartEmpty')}</p>
-					<Button variant="primary" class="cart-drawer__empty-button" onclick={close}>
+				<div class="flex flex-1 flex-col items-center justify-center p-8 text-center">
+					<div
+						class="bg-surface-subtle text-text-muted mb-4 flex h-16 w-16 items-center justify-center rounded-full"
+					>
+						<TrashIcon size={32} weight="light" aria-hidden="true" />
+					</div>
+					<p class="text-text-muted mb-6 text-lg">{t('cartEmpty')}</p>
+					<Button variant="primary" onclick={close} class="w-full sm:w-auto">
 						{t('browseProducts')}
 					</Button>
 				</div>
 			{:else}
-				<!-- Items -->
-				<div class="cart-drawer__items">
+				<!-- Items List -->
+				<div class="flex-1 space-y-4 overflow-y-auto p-6">
 					{#each cart.items as item (item.productId)}
-						<div class="cart-item" class:cart-item--pending={pendingRemoveId === item.productId}>
-							<div class="cart-item__content">
-								<a
-									href={productHref(item)}
-									class="cart-item__image-link"
-									onclick={close}
-									aria-label={item.name}
-								>
-									<img
-										src={item.image}
-										alt={item.name}
-										class="cart-item__image"
-										width="64"
-										height="64"
-										loading="lazy"
-									/>
-								</a>
-								<div class="cart-item__details">
-									<a href={productHref(item)} class="cart-item__name-link" onclick={close}>
-										<p class="cart-item__name">{item.name}</p>
+						<div
+							class="group border-border bg-surface hover:border-border-strong relative flex gap-4 rounded-md border p-4 shadow-sm transition-colors {pendingRemoveId ===
+							item.productId
+								? 'border-danger/30 bg-danger/5'
+								: ''}"
+						>
+							<a
+								href={productHref(item)}
+								class="border-border shrink-0 overflow-hidden rounded-md border bg-white"
+								onclick={close}
+								aria-label={item.name}
+							>
+								<img
+									src={item.image}
+									alt={item.name}
+									class="h-20 w-20 object-cover object-center"
+									loading="lazy"
+								/>
+							</a>
+							<div class="flex flex-1 flex-col justify-between">
+								<div class="pr-6">
+									<a
+										href={productHref(item)}
+										class="text-text hover:text-accent-text line-clamp-2 text-sm leading-snug font-medium transition-colors"
+										onclick={close}
+									>
+										{item.name}
 									</a>
-									<p class="cart-item__price">
-										{formatPrice(item.price)} × {item.quantity} = {itemTotal(item)}
+									<p class="text-text-muted mt-1 font-mono text-xs">
+										{formatPrice(item.price)} szt.
 									</p>
-									<div class="cart-item__quantity">
+								</div>
+
+								<div class="mt-3 flex items-center justify-between">
+									<div
+										class="border-border bg-surface-subtle flex items-center overflow-hidden rounded border"
+									>
 										<button
-											class="cart-item__quantity-btn cart-item__quantity-btn--minus"
+											class="text-text-muted hover:bg-border hover:text-text flex h-8 w-8 items-center justify-center transition-colors"
 											onclick={() =>
 												cart.updateQuantity(item.productId, Math.max(1, item.quantity - 1))}
 											aria-label={t('decreaseQuantity')}
 										>
 											-
 										</button>
-										<span class="cart-item__quantity-display">{item.quantity}</span>
+										<span class="w-8 text-center font-mono text-sm font-medium"
+											>{item.quantity}</span
+										>
 										<button
-											class="cart-item__quantity-btn cart-item__quantity-btn--plus"
+											class="text-text-muted hover:bg-border hover:text-text flex h-8 w-8 items-center justify-center transition-colors"
 											onclick={() => cart.updateQuantity(item.productId, item.quantity + 1)}
 											aria-label={t('increaseQuantity')}
 										>
 											+
 										</button>
 									</div>
+									<span class="text-text font-mono text-sm font-bold">{itemTotal(item)}</span>
 								</div>
 							</div>
+
+							<!-- Item Actions -->
 							{#if pendingRemoveId === item.productId}
-								<div class="cart-item__confirm">
-									<button
-										onclick={confirmRemove}
-										class="cart-drawer__confirm-btn cart-drawer__confirm-btn--yes"
-										aria-label="Potwierdź usunięcie">Usuń</button
-									>
-									<button
-										onclick={cancelRemove}
-										class="cart-drawer__confirm-btn cart-drawer__confirm-btn--no"
-										aria-label="Anuluj usunięcie">Nie</button
-									>
+								<div
+									class="bg-surface/95 absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 rounded-md p-4 text-center backdrop-blur-sm"
+								>
+									<span class="text-text mb-1 text-sm font-medium">Na pewno usunąć?</span>
+									<div class="flex gap-2">
+										<button
+											onclick={confirmRemove}
+											class="bg-danger hover:bg-danger/90 rounded px-4 py-1.5 text-sm font-medium text-white transition-colors"
+										>
+											Usuń
+										</button>
+										<button
+											onclick={cancelRemove}
+											class="border-border text-text hover:bg-surface-subtle rounded border px-4 py-1.5 text-sm font-medium transition-colors"
+										>
+											Anuluj
+										</button>
+									</div>
 								</div>
 							{:else}
 								<button
 									onclick={() => requestRemove(item.productId)}
-									class="cart-drawer__icon-btn cart-drawer__icon-btn--remove"
+									class="text-text-muted/50 hover:bg-danger/10 hover:text-danger absolute top-2 right-2 flex h-8 w-8 items-center justify-center rounded opacity-0 transition-all group-hover:opacity-100 focus-visible:opacity-100"
 									aria-label={t('remove')}
 								>
-									<XIcon size={14} aria-hidden="true" />
+									<XIcon size={16} aria-hidden="true" />
 								</button>
 							{/if}
 						</div>
@@ -310,46 +410,51 @@
 				</div>
 
 				<!-- Footer -->
-				<div class="cart-drawer__footer">
-					<div class="cart-drawer__summary">
-						<span class="cart-drawer__summary-label">{t('subtotal')}</span>
-						<span class="cart-drawer__summary-price">
+				<div class="border-border bg-surface-subtle/30 shrink-0 border-t p-6">
+					<div class="mb-4 flex items-center justify-between text-lg">
+						<span class="text-text-muted font-medium">{t('subtotal')}</span>
+						<span class="text-text font-mono text-xl font-bold">
 							{formatPrice(cart.total)}
 						</span>
 					</div>
-					<p class="cart-drawer__shipping-note">{t('shippingNote')}</p>
-					<Button
-						variant="primary"
-						fullWidth
-						href="/checkout"
-						onclick={close}
-						class="cart-drawer__checkout-btn"
-					>
-						{t('proceedToCheckout')}
-					</Button>
-					<Button variant="outline" fullWidth onclick={close}>
-						{t('continueShopping')}
-					</Button>
+					<p class="text-text-muted mb-4 text-center text-xs">{t('shippingNote')}</p>
+
+					<div class="flex flex-col gap-3">
+						<Button
+							variant="primary"
+							href="/checkout"
+							onclick={close}
+							class="w-full justify-center"
+						>
+							{t('proceedToCheckout')}
+						</Button>
+						<Button variant="outline" onclick={close} class="bg-surface w-full justify-center">
+							{t('continueShopping')}
+						</Button>
+					</div>
 
 					<!-- Trust Badges -->
-					<div class="cart-drawer__payments" aria-label="Zaufane metody płatności">
-						<span class="pay-chip" aria-label="Apple Pay">
-							<svg width="20" height="20" fill="currentColor" aria-hidden="true">
+					<div
+						class="text-text-faint mt-6 flex items-center justify-center gap-4"
+						aria-label="Zaufane metody płatności"
+					>
+						<span aria-label="Apple Pay">
+							<svg width="24" height="24" fill="currentColor" aria-hidden="true">
 								<use href="/sprite.svg#icon-apple" />
 							</svg>
 						</span>
-						<span class="pay-chip" aria-label="Google Pay">
-							<svg width="20" height="20" fill="currentColor" aria-hidden="true">
+						<span aria-label="Google Pay">
+							<svg width="24" height="24" fill="currentColor" aria-hidden="true">
 								<use href="/sprite.svg#icon-google-icon" />
 							</svg>
 						</span>
-						<span class="pay-chip" aria-label="Visa">
-							<svg width="28" height="10" fill="currentColor" aria-hidden="true">
+						<span aria-label="Visa">
+							<svg width="32" height="12" fill="currentColor" aria-hidden="true">
 								<use href="/sprite.svg#icon-visa" />
 							</svg>
 						</span>
-						<span class="pay-chip" aria-label="Mastercard">
-							<svg width="18" height="12" fill="currentColor" aria-hidden="true">
+						<span aria-label="Mastercard">
+							<svg width="24" height="16" fill="currentColor" aria-hidden="true">
 								<use href="/sprite.svg#icon-mastercard" />
 							</svg>
 						</span>
@@ -359,344 +464,3 @@
 		</div>
 	</div>
 {/if}
-
-<style>
-	.cart-backdrop {
-		position: fixed;
-		inset: 0;
-		z-index: 150;
-		background-color: var(--ft-surface-overlay);
-	}
-
-	.cart-drawer {
-		position: fixed;
-		top: 0;
-		right: 0;
-		z-index: 151;
-		display: flex;
-		height: 100%;
-		width: min(100%, 36rem);
-		flex-direction: column;
-		background-color: var(--ft-surface);
-		border-left: 1px solid var(--ft-line);
-		overscroll-behavior: contain;
-	}
-
-	@media (min-width: 1280px) {
-		.cart-drawer {
-			width: min(100%, 38rem);
-		}
-	}
-
-	.cart-drawer__header {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		background-color: var(--ft-frost);
-		padding: 1rem 1.25rem;
-		color: var(--ft-text);
-		border-bottom: 1px solid var(--ft-line);
-	}
-
-	.cart-drawer__title {
-		font-family: var(--font-display);
-		font-size: 1.125rem;
-		font-weight: 600;
-		line-height: 1.3;
-	}
-
-	.cart-drawer__actions {
-		display: flex;
-		align-items: center;
-		gap: 0.375rem;
-	}
-
-	.cart-drawer__icon-btn {
-		background: none;
-		border: none;
-		cursor: pointer;
-		padding: 0.45rem;
-		border-radius: var(--radius-md);
-		font-size: 0.95rem;
-		line-height: 1;
-		transition:
-			color 0.2s,
-			background-color 0.2s;
-		color: var(--ft-text-muted);
-	}
-
-	.cart-drawer__icon-btn:hover {
-		background-color: var(--ft-frost);
-	}
-
-	.cart-drawer__icon-btn--close:hover {
-		color: var(--ft-text);
-	}
-
-	.cart-drawer__icon-btn--clear:hover,
-	.cart-drawer__icon-btn--remove:hover {
-		color: var(--color-danger);
-		background-color: color-mix(in srgb, var(--color-danger) 12%, transparent);
-	}
-
-	/* --- Confirmation UI --- */
-
-	.cart-drawer__confirm-text {
-		font-family: var(--font-display);
-		font-size: 0.9rem;
-		font-weight: 600;
-		color: var(--color-danger);
-	}
-
-	.cart-drawer__confirm-btn {
-		border: none;
-		cursor: pointer;
-		padding: 0.35rem 0.75rem;
-		border-radius: var(--radius-sm);
-		font-size: 0.8rem;
-		font-weight: 600;
-		font-family: var(--font-display);
-		line-height: 1.3;
-		transition: opacity 0.15s;
-	}
-
-	.cart-drawer__confirm-btn:hover {
-		opacity: 0.85;
-	}
-
-	.cart-drawer__confirm-btn--yes {
-		background-color: var(--color-danger);
-		color: #fff;
-	}
-
-	.cart-drawer__confirm-btn--no {
-		background-color: var(--ft-frost);
-		color: var(--ft-text);
-		border: 1px solid var(--ft-line);
-	}
-
-	.cart-item__confirm {
-		display: flex;
-		flex-direction: column;
-		gap: 0.25rem;
-		flex-shrink: 0;
-	}
-
-	.cart-item--pending {
-		border-color: color-mix(in srgb, var(--color-danger) 30%, transparent);
-		background-color: color-mix(in srgb, var(--color-danger) 3%, var(--ft-surface));
-	}
-
-	/* --- Drawer body --- */
-
-	.cart-drawer__body {
-		display: flex;
-		flex: 1;
-		min-height: 0;
-		flex-direction: column;
-		padding: 1rem 1.25rem;
-	}
-
-	.cart-drawer__empty {
-		display: flex;
-		height: 100%;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		gap: 1rem;
-	}
-
-	:global(.cart-drawer__empty-button) {
-		margin-top: 0.5rem;
-	}
-
-	.cart-drawer__items {
-		flex: 1;
-		overflow-y: auto;
-		display: flex;
-		flex-direction: column;
-		gap: 0.75rem;
-	}
-
-	.cart-item {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		border: 1px solid var(--ft-line);
-		background-color: var(--ft-surface);
-		padding: 0.875rem;
-		border-radius: var(--radius-md);
-		transition:
-			border-color 0.2s,
-			background-color 0.2s;
-	}
-
-	.cart-item__content {
-		display: flex;
-		align-items: center;
-		min-width: 0;
-	}
-
-	.cart-item__image {
-		height: 6rem;
-		width: 6rem;
-		border-radius: var(--radius-md);
-		object-fit: cover;
-		border: 1px solid var(--ft-line);
-	}
-
-	.cart-item__image-link {
-		display: inline-flex;
-		border-radius: var(--radius-md);
-	}
-
-	.cart-item__image-link:focus-visible,
-	.cart-item__name-link:focus-visible {
-		outline: 2px solid var(--ft-accent);
-		outline-offset: 2px;
-	}
-
-	.cart-item__details {
-		margin-left: 0.875rem;
-		display: flex;
-		flex-direction: column;
-		gap: 0.375rem;
-		min-width: 0;
-	}
-
-	.cart-item__name {
-		font-weight: 600;
-		font-size: 1rem;
-		line-height: 1.35;
-		color: var(--ft-text);
-	}
-
-	.cart-item__name-link {
-		text-decoration: none;
-	}
-
-	.cart-item__name-link:hover .cart-item__name {
-		color: var(--ft-cta);
-	}
-
-	.cart-item__price {
-		font-size: 0.875rem;
-		font-weight: 700;
-		color: var(--ft-cta);
-	}
-
-	.cart-item__quantity {
-		margin-top: 0.375rem;
-		display: flex;
-		align-items: center;
-		border: 1px solid var(--ft-line);
-		border-radius: var(--radius-sm);
-		overflow: hidden;
-		width: fit-content;
-	}
-
-	.cart-item__quantity-btn {
-		min-width: 2rem;
-		min-height: 2rem;
-		padding: 0 0.5rem;
-		background-color: var(--ft-frost);
-		transition:
-			background-color 0.2s,
-			color 0.2s;
-		border: none;
-		cursor: pointer;
-		color: var(--ft-text);
-		font-weight: 600;
-		font-size: 0.95rem;
-		line-height: 1;
-		box-shadow: inset 0 0 0 1px transparent;
-	}
-
-	.cart-item__quantity-btn:hover {
-		background-color: var(--ft-cta-light);
-		color: var(--ft-cta);
-		box-shadow: inset 0 0 0 1px var(--ft-cta);
-	}
-
-	:global(.cart-drawer__checkout-btn:hover),
-	:global(.cart-drawer__footer .btn-outline:hover) {
-		opacity: 0.9;
-	}
-
-	.cart-item__quantity-btn--minus {
-		border-top-left-radius: var(--radius-sm);
-		border-bottom-left-radius: var(--radius-sm);
-	}
-
-	.cart-item__quantity-btn--plus {
-		border-top-right-radius: var(--radius-sm);
-		border-bottom-right-radius: var(--radius-sm);
-	}
-
-	.cart-item__quantity-display {
-		background-color: var(--ft-surface);
-		min-height: 2rem;
-		padding: 0.2rem 0.5rem;
-		color: var(--ft-text);
-		min-width: 2rem;
-		text-align: center;
-		font-size: 0.875rem;
-		font-weight: 600;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		border-left: 1px solid var(--ft-line);
-		border-right: 1px solid var(--ft-line);
-	}
-
-	.cart-drawer__footer {
-		margin-top: 1rem;
-		border-top: 1px solid var(--ft-line);
-		padding-top: 1rem;
-	}
-
-	.cart-drawer__summary-label,
-	.cart-drawer__empty-text {
-		color: var(--ft-text-muted);
-		font-size: 0.875rem;
-	}
-
-	.cart-drawer__summary {
-		margin-bottom: 0.375rem;
-		display: flex;
-		justify-content: space-between;
-	}
-
-	.cart-drawer__summary-price {
-		font-weight: 600;
-		color: var(--ft-text);
-		font-size: 1.125rem;
-		line-height: 1.2;
-	}
-
-	.cart-drawer__shipping-note {
-		margin-bottom: 0.875rem;
-		font-size: 0.875rem;
-		line-height: 1.4;
-		color: var(--ft-text-muted);
-	}
-
-	:global(.cart-drawer__checkout-btn) {
-		margin-bottom: 0.5rem;
-	}
-	.cart-drawer__payments {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		gap: 12px;
-		margin-top: 1.5rem;
-	}
-
-	.pay-chip {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		height: 24px;
-		color: var(--ft-text-faint);
-	}
-</style>

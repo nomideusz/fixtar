@@ -14,7 +14,16 @@
  */
 
 export interface ParsedDescription {
-	/** Clean marketing prose as HTML (no specs, no duplicates) */
+	/**
+	 * Clean marketing prose as HTML (no specs, no duplicates).
+	 *
+	 * Safety contract:
+	 * - source BaseLinker HTML is stripped during normalization
+	 * - output HTML is rebuilt only from parser-controlled tags in `buildHtml()`
+	 * - all text content is escaped via `esc()` before insertion
+	 *
+	 * This makes the returned HTML safe to render with `{@html}` in product pages.
+	 */
 	html: string;
 	/** Technical specifications extracted as key-value pairs */
 	specs: Array<{ key: string; value: string }>;
@@ -22,35 +31,57 @@ export interface ParsedDescription {
 	contents: string[];
 }
 
-/** Emoji and symbol markers used as separators in BaseLinker descriptions */
-const MARKER_RE = /[✅⚡⏩✨🔧🛠⭐🔥💥❤🏆🚀💡🎯👉👍📦📌🔒🔑⚙️•❗❄☀⛅🌡➕➖\u2714\u2716\u25CF\u25AA\u25B6\u23E9\u2705\uFE0F]/gu;
+/**
+ * Emoji and symbol markers used as separators in BaseLinker descriptions.
+ *
+ * Note:
+ * - keep this as a plain string character class to avoid diagnostics around
+ *   combined variation-selector sequences inside regex literals
+ * - FE0F is handled separately where needed
+ */
+const MARKER_CLASS = '✅⚡⏩✨🔧🛠⭐🔥💥❤🏆🚀💡🎯👉👍📦📌🔒🔑⚙•❗❄☀⛅🌡➕➖✔✖●▪▶⏩✅';
+
+const MARKER_RE = new RegExp(`[${MARKER_CLASS}]`, 'gu');
 
 /** Section heading patterns that start a spec block */
-const SPEC_HEADING_RE = /^(Dane\s+[Tt]echniczne|Parametry\s+[Tt]echniczne|Specyfikacja\s+[Tt]echniczna|Parametry|Specyfikacja)\s*:?\s*$/i;
+const SPEC_HEADING_RE =
+	/^(Dane\s+[Tt]echniczne|Parametry\s+[Tt]echniczne|Specyfikacja\s+[Tt]echniczna|Parametry|Specyfikacja)\s*:?\s*$/i;
 
 /** Section heading patterns that start a contents block */
-const CONTENTS_HEADING_RE = /^(W\s+[Zz]estawie(?:\s+[\wąćęłńóśźż]+)?|Zestaw\s+[Zz]awiera|W\s+[Kk]omplecie|Kompletny\s+[Zz]estaw|Zawartość\s+(?:zestawu|opakowania))\s*:?\s*$/i;
+const CONTENTS_HEADING_RE =
+	/^(W\s+[Zz]estawie(?:\s+[\wąćęłńóśźż]+)?|Zestaw\s+[Zz]awiera|W\s+[Kk]omplecie|Kompletny\s+[Zz]estaw|Zawartość\s+(?:zestawu|opakowania))\s*:?\s*$/i;
 
 /** Looser check — does this line START with a contents heading? (for mid-sentence detection) */
-const CONTENTS_START_RE = /^(W\s+zestawie(?:\s+[\wąćęłńóśźż]+)?\s*:|Zestaw\s+zawiera\s*:|W\s+komplecie\s*:)/i;
+const CONTENTS_START_RE =
+	/^(W\s+zestawie(?:\s+[\wąćęłńóśźż]+)?\s*:|Zestaw\s+zawiera\s*:|W\s+komplecie\s*:)/i;
 
 /** Section heading patterns that start a features/benefits block (stays in HTML) */
-const SECTION_HEADING_RE = /^(Cechy\s+produktu|Główne\s+(?:cechy|zalety)|Najważniejsze\s+zalety|Kluczowe\s+cechy|Zastosowanie|Funkcje|Opis\s+produktu)\s*:?\s*$/i;
+const SECTION_HEADING_RE =
+	/^(Cechy\s+produktu|Główne\s+(?:cechy|zalety)|Najważniejsze\s+zalety|Kluczowe\s+cechy|Zastosowanie|Funkcje|Opis\s+produktu)\s*:?\s*$/i;
 
 /** A "Key: Value" spec line — short key (2-40 chars), then colon, then value with a unit */
 const SPEC_KV_RE = /^([A-ZĘÓĄŚŁŻŹĆŃa-zęóąśłżźćń][^:]{1,40}?)\s*:\s*(.+)$/;
 
 /** Value looks like a technical measurement (contains digits + units) */
-const UNIT_RE = /\d+(?:[.,]\d+)?\s*(?:W|kW|V|Hz|RPM|obr\/min|mm|cm|m|kg|g|bar|Nm|Ah|mAh|J|dB|°|L|l|szt|sztuki?)\b/i;
+const UNIT_RE =
+	/\d+(?:[.,]\d+)?\s*(?:W|kW|V|Hz|RPM|obr\/min|mm|cm|m|kg|g|bar|Nm|Ah|mAh|J|dB|°|L|l|szt|sztuki?)\b/i;
 
 // ─────────────────────────────────────────────────────────────
 
 export function parseProductDescription(text: string): ParsedDescription {
-	if (!text || typeof text !== 'string') return { html: '', specs: [], contents: [] };
+	if (!text || typeof text !== 'string') {
+		return { html: '', specs: [], contents: [] };
+	}
 
+	// Safety note:
+	// This parser does not preserve upstream HTML. It strips all incoming tags/entities,
+	// extracts structured content, and then rebuilds a limited HTML subset from escaped text.
+	// The returned `html` is therefore parser-generated, not raw vendor HTML.
+	//
 	// 1. Normalize
-	let s = text
-		.replace(/\r\n/g, '\n').replace(/\r/g, '\n')
+	const normalized = text
+		.replace(/\r\n/g, '\n')
+		.replace(/\r/g, '\n')
 		.replace(/&nbsp;/gi, ' ')
 		.replace(/\\/g, ' ')
 		.replace(/<br\s*\/?>/gi, '\n')
@@ -59,10 +90,10 @@ export function parseProductDescription(text: string): ParsedDescription {
 		.trim();
 
 	// 2. Split into logical lines using emoji markers + newlines
-	const rawLines = splitOnMarkers(s);
+	const rawLines = splitOnMarkers(normalized);
 
 	// 3. Clean lines: strip Allegro SEO title prefixes
-	const lines = rawLines.map(stripAllegroPrefix).filter(l => l.length > 0);
+	const lines = rawLines.map(stripAllegroPrefix).filter((line) => line.length > 0);
 
 	// 4. Walk through lines, classify into sections
 	const specs: Array<{ key: string; value: string }> = [];
@@ -85,6 +116,7 @@ export function parseProductDescription(text: string): ParsedDescription {
 			mode = 'contents';
 			continue;
 		}
+
 		// Mid-line contents heading: "W zestawie: item1 item2"
 		const contentsStart = CONTENTS_START_RE.exec(line);
 		if (contentsStart) {
@@ -95,11 +127,13 @@ export function parseProductDescription(text: string): ParsedDescription {
 			}
 			continue;
 		}
+
 		if (SECTION_HEADING_RE.test(line)) {
 			mode = 'prose';
 			proseBlocks.push({ type: 'heading', content: cleanHeading(line) });
 			continue;
 		}
+
 		// Generic heading (short line ending with colon, ALL CAPS)
 		if (isGenericHeading(line)) {
 			// If the heading looks spec-like, switch to specs mode
@@ -135,12 +169,10 @@ export function parseProductDescription(text: string): ParsedDescription {
 				// Long text → switch back to prose
 				mode = 'prose';
 				proseBlocks.push({ type: 'text', content: line });
-			}
-			// Short non-KV lines in spec mode are skipped (noise like "x2 Zapasowe szczotki")
-			// but could be contents items if short enough
-			else if (line.length > 5 && line.length < 80) {
-				// Stray item in spec block — might be a contents item misplaced
-				// Keep in specs mode but don't output
+			} else if (line.length > 5 && line.length < 80) {
+				// Short non-KV lines in spec mode are skipped (noise like "x2 Zapasowe szczotki")
+				// but could be contents items if short enough.
+				// Keep in specs mode but don't output.
 			}
 			continue;
 		}
@@ -148,7 +180,11 @@ export function parseProductDescription(text: string): ParsedDescription {
 		if (mode === 'contents') {
 			// Check if this is actually a spec line (misplaced in contents block)
 			const contentsKv = tryParseSpec(line);
-			if (contentsKv && isLikelySpec(contentsKv) && !seenSpecKeys.has(contentsKv.key.toLowerCase())) {
+			if (
+				contentsKv &&
+				isLikelySpec(contentsKv) &&
+				!seenSpecKeys.has(contentsKv.key.toLowerCase())
+			) {
 				seenSpecKeys.add(contentsKv.key.toLowerCase());
 				specs.push(contentsKv);
 				continue;
@@ -193,10 +229,10 @@ export function parseProductDescription(text: string): ParsedDescription {
 		}
 	}
 
-	// 4. Deduplicate prose
+	// 5. Deduplicate prose
 	const dedupedBlocks = deduplicateBlocks(proseBlocks);
 
-	// 5. Build HTML from deduplicated prose
+	// 6. Build HTML from deduplicated prose
 	const html = buildHtml(dedupedBlocks);
 
 	return { html, specs, contents };
@@ -214,7 +250,8 @@ export function formatProductDescription(text: string): string {
 // ─────────────────────────────────────────────────────────────
 
 /** Patterns that act as section boundaries — split lines here when found mid-text */
-const SECTION_BOUNDARY_RE = /\b(W\s+zestawie(?:\s+[\wąćęłńóśźż]+)?\s*:|Zestaw\s+zawiera\s*:|W\s+komplecie\s*:|Dane\s+[Tt]echniczne\s*:|Parametry\s*:|Specyfikacja\s*:)/gi;
+const SECTION_BOUNDARY_RE =
+	/\b(W\s+zestawie(?:\s+[\wąćęłńóśźż]+)?\s*:|Zestaw\s+zawiera\s*:|W\s+komplecie\s*:|Dane\s+[Tt]echniczne\s*:|Parametry\s*:|Specyfikacja\s*:)/gi;
 
 function splitOnMarkers(text: string): string[] {
 	const roughLines = text.split('\n');
@@ -224,6 +261,7 @@ function splitOnMarkers(text: string): string[] {
 		const positions: number[] = [];
 		const re = new RegExp(MARKER_RE.source, 'gu');
 		let match: RegExpExecArray | null;
+
 		while ((match = re.exec(line)) !== null) {
 			positions.push(match.index);
 		}
@@ -268,11 +306,13 @@ function splitAtSectionBoundaries(line: string): string[] {
 
 	const parts: string[] = [];
 	let start = 0;
+
 	for (const pos of splits) {
 		const before = line.substring(start, pos).trim();
 		if (before) parts.push(before);
 		start = pos;
 	}
+
 	const rest = line.substring(start).trim();
 	if (rest) parts.push(rest);
 
@@ -291,16 +331,16 @@ function stripAllegroPrefix(line: string): string {
 	// Find where ALL-CAPS section ends and normal mixed-case prose begins.
 	// Detect transition: a Capitalized word (not ALL-CAPS, ≥4 letters with lowercase)
 	// preceded by mostly uppercase content.
-	const transition = line.match(
-		/^(.{15,}?)\s+([A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]{3,}.+)/
-	);
+	const transition = line.match(/^(.{15,}?)\s+([A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]{3,}.+)/);
 
 	if (transition) {
 		const capsPrefix = transition[1].trim();
 		const restText = transition[2].trim();
+
 		// Only strip if the prefix is mostly ALL-CAPS (>70% uppercase letters)
 		const letters = capsPrefix.replace(/[^a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]/g, '');
 		const upperCount = (letters.match(/[A-ZĄĆĘŁŃÓŚŹŻ]/g) || []).length;
+
 		if (letters.length > 5 && upperCount / letters.length > 0.7 && restText.length > 20) {
 			return restText;
 		}
@@ -314,8 +354,9 @@ function stripAllegroPrefix(line: string): string {
 	return line;
 }
 
-function stripLeadingEmoji(s: string): string {
-	return s.replace(new RegExp(`^(?:${MARKER_RE.source}|\\uFE0F|\\s)+`, 'gu'), '').trim();
+function stripLeadingEmoji(text: string): string {
+	const leadingMarkersRe = new RegExp(`^(?:[${MARKER_CLASS}]|\\uFE0F|\\s)+`, 'gu');
+	return text.replace(leadingMarkersRe, '').trim();
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -325,10 +366,21 @@ function stripLeadingEmoji(s: string): string {
 function isGenericHeading(line: string): boolean {
 	// Short line ending with colon
 	if (line.length <= 80 && /^[^:]+:\s*$/.test(line)) return true;
+
 	// Short ALL-CAPS line (2+ words, > 8 chars, no big numbers)
-	if (line.length <= 100 && line.length > 8 && line === line.toUpperCase() && /\s/.test(line) && !/\d{3,}/.test(line)) return true;
+	if (
+		line.length <= 100 &&
+		line.length > 8 &&
+		line === line.toUpperCase() &&
+		/\s/.test(line) &&
+		!/\d{3,}/.test(line)
+	) {
+		return true;
+	}
+
 	// "W zestawie znajdziesz:" and similar verb forms
 	if (/^(W\s+zestawie\s+\w+|Zestaw\s+\w+)\s*:\s*$/i.test(line)) return true;
+
 	return false;
 }
 
@@ -342,17 +394,33 @@ function isShortLine(line: string): boolean {
 
 /** Try to parse "Key: Value" from a line, with smart value truncation */
 function tryParseSpec(line: string): { key: string; value: string } | null {
-	const m = SPEC_KV_RE.exec(line);
-	if (!m) return null;
-	const key = m[1].trim();
-	let value = m[2].trim();
+	const match = SPEC_KV_RE.exec(line);
+	if (!match) return null;
+
+	const key = match[1].trim();
+	let value = match[2].trim();
+
 	if (key.length < 2) return null;
+
 	// Skip known non-spec patterns
 	const keyLower = key.toLowerCase();
-	if (['opis', 'cechy', 'uwagi', 'funkcje', 'właściwości', 'bezpieczeństwo', 'komfort', 'łatwa obsługa'].includes(keyLower)) return null;
+	if (
+		[
+			'opis',
+			'cechy',
+			'uwagi',
+			'funkcje',
+			'właściwości',
+			'bezpieczeństwo',
+			'komfort',
+			'łatwa obsługa'
+		].includes(keyLower)
+	) {
+		return null;
+	}
 
 	// 1. Strip leading weather/decorative emoji from value
-	value = value.replace(/^[❄️☀️⛅🌡️\s]+/gu, '').trim();
+	value = value.replace(/^(?:❄|☀|⛅|🌡|\uFE0F|\s)+/gu, '').trim();
 
 	// 2. Strip marketing fluff after em-dash/dash
 	// "10 m – idealny zasięg do pracy" → "10 m"
@@ -368,6 +436,7 @@ function tryParseSpec(line: string): { key: string; value: string } | null {
 		const unitEnd = value.match(
 			/^((?:od\s+)?[+-]?\d+(?:[.,]\d+)?\s*(?:W|kW|V|Hz|RPM|obr\/min|mm|cm|m|kg|g|bar|BAR|Nm|Ah|mAh|J|dB|°\s*C?|L|l|szt\.?|sztuki?)(?:\s*(?:x|×|do|[-–])\s*[+-]?[\d.,]+\s*(?:°\s*C?|mm|cm|m|kg|W|V|BAR)?)?)\s+[A-ZĄĆĘŁŃÓŚŹŻ]/i
 		);
+
 		if (unitEnd) {
 			value = unitEnd[1].trim();
 		} else if (value.length > 80) {
@@ -385,11 +454,15 @@ function tryParseSpec(line: string): { key: string; value: string } | null {
 function isLikelySpec(kv: { key: string; value: string }): boolean {
 	// Value contains a unit → almost certainly a spec
 	if (UNIT_RE.test(kv.value)) return true;
+
 	// Known spec key names
-	const specKeys = /^(moc|napięcie|zasilanie|częstotliwość|obroty|prędkość|średnica|waga|masa|pojemność|ciśnienie|moment|bateria|akumulator|model|producent|długość|szerokość|wysokość|wymiary|gwarancja|klasa|typ|rodzaj|kolor|materiał|złączka|uchwyt|max|min)\b/i;
+	const specKeys =
+		/^(moc|napięcie|zasilanie|częstotliwość|obroty|prędkość|średnica|waga|masa|pojemność|ciśnienie|moment|bateria|akumulator|model|producent|długość|szerokość|wysokość|wymiary|gwarancja|klasa|typ|rodzaj|kolor|materiał|złączka|uchwyt|max|min)\b/i;
 	if (specKeys.test(kv.key)) return true;
+
 	// Short value with numbers
 	if (kv.value.length <= 40 && /\d/.test(kv.value)) return true;
+
 	return false;
 }
 
@@ -401,19 +474,27 @@ function isLikelySpec(kv: { key: string; value: string }): boolean {
  * Remove duplicate or near-duplicate blocks.
  * Uses normalized sentence fingerprints to detect repetition.
  */
+
 /** Patterns that are pure marketing filler — remove entirely */
-const MARKETING_FILLER_RE = /^(Nie zwlekaj!?|Nie czekaj!?|Zamów (?:teraz|już dziś)|Postaw na|Wybierz .{5,40} i (?:zyskaj|ciesz)|Z .{3,20} (?:praca|mieszanie|cięcie) .{5,40}(?:prostsze|łatwiejsze|efektywne)|Dołącz do Profesjonalistów)/i;
+const MARKETING_FILLER_RE =
+	/^(Nie zwlekaj!?|Nie czekaj!?|Zamów (?:teraz|już dziś)|Postaw na|Wybierz .{5,40} i (?:zyskaj|ciesz)|Z .{3,20} (?:praca|mieszanie|cięcie) .{5,40}(?:prostsze|łatwiejsze|efektywne)|Dołącz do Profesjonalistów)/i;
 
 /** ALL-CAPS title lines that add no value — these are Allegro SEO titles */
-const ALLEGRO_TITLE_RE = /^[A-ZĄĆĘŁŃÓŚŹŻ0-9\s,+\-\/().!]{15,}$/;
+const ALLEGRO_TITLE_RE = /^[A-ZĄĆĘŁŃÓŚŹŻ0-9\s,+\-/().!]{15,}$/;
 
-function deduplicateBlocks(blocks: Array<{ type: string; content: string }>): Array<{ type: string; content: string }> {
+function deduplicateBlocks(
+	blocks: Array<{ type: string; content: string }>
+): Array<{ type: string; content: string }> {
 	const seenFingerprints = new Set<string>();
 	const result: Array<{ type: string; content: string }> = [];
 
 	for (const block of blocks) {
 		// Skip ALL-CAPS Allegro SEO title lines
-		if (block.type !== 'heading' && ALLEGRO_TITLE_RE.test(block.content) && block.content === block.content.toUpperCase()) {
+		if (
+			block.type !== 'heading' &&
+			ALLEGRO_TITLE_RE.test(block.content) &&
+			block.content === block.content.toUpperCase()
+		) {
 			continue;
 		}
 
@@ -438,6 +519,7 @@ function deduplicateBlocks(blocks: Array<{ type: string; content: string }>): Ar
 				novelSentences.push(sentence);
 				continue;
 			}
+
 			if (!seenFingerprints.has(fp)) {
 				seenFingerprints.add(fp);
 				novelSentences.push(sentence);
@@ -468,13 +550,20 @@ function fingerprint(text: string): string {
 function extractSentences(text: string): string[] {
 	// Split on sentence-ending punctuation followed by space or end
 	const parts = text.split(/(?<=[.!?])\s+/);
-	return parts.filter(p => p.trim().length > 0);
+	return parts.filter((part) => part.trim().length > 0);
 }
 
 // ─────────────────────────────────────────────────────────────
 // HTML generation
 // ─────────────────────────────────────────────────────────────
 
+/**
+ * Build the final HTML from parser-classified blocks.
+ *
+ * Only a small controlled tag set is emitted here (`h3`, `ul`, `li`, `p`),
+ * and every text node is escaped with `esc()`. This is the final step that
+ * enforces the sanitized HTML contract used by product pages.
+ */
 function buildHtml(blocks: Array<{ type: string; content: string }>): string {
 	const html: string[] = [];
 	let i = 0;
@@ -511,23 +600,27 @@ function buildHtml(blocks: Array<{ type: string; content: string }>): string {
 
 function splitParagraphs(text: string): string[] {
 	if (text.length <= 300) return [text];
+
 	const sentences = text.match(/[^.!?]+[.!?]+\s*/g) || [text];
-	const paras: string[] = [];
+	const paragraphs: string[] = [];
 	let current = '';
+
 	for (const sentence of sentences) {
 		if (current.length + sentence.length > 350 && current.length > 80) {
-			paras.push(current.trim());
+			paragraphs.push(current.trim());
 			current = sentence;
 		} else {
 			current += sentence;
 		}
 	}
-	if (current.trim()) paras.push(current.trim());
-	return paras;
+
+	if (current.trim()) paragraphs.push(current.trim());
+
+	return paragraphs;
 }
 
-function esc(s: string): string {
-	return s
+function esc(text: string): string {
+	return text
 		.replace(/&/g, '&amp;')
 		.replace(/</g, '&lt;')
 		.replace(/>/g, '&gt;')

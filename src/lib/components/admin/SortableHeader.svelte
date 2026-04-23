@@ -14,9 +14,15 @@
 	const isActive = $derived(currentField === field);
 </script>
 
-<button onclick={() => onSort(field)} class="hover:text-[--ft-accent] flex items-center">
-	{label}
+<button
+	onclick={() => onSort(field)}
+	class="flex items-center gap-1 text-[--ft-text-muted] transition-colors duration-150 hover:text-[--ft-text]"
+>
+	<span>{label}</span>
 	{#if isActive}
-		<CaretDownIcon class="ml-1 h-4 w-4 {currentOrder === 'asc' ? 'rotate-180' : ''}" aria-hidden="true" />
+		<CaretDownIcon
+			class="h-4 w-4 text-[--ft-accent] {currentOrder === 'asc' ? 'rotate-180' : ''}"
+			aria-hidden="true"
+		/>
 	{/if}
 </button>

@@ -19,7 +19,7 @@
 		sm: 'max-w-sm',
 		md: 'max-w-md',
 		lg: 'max-w-lg',
-		xl: 'max-w-xl'
+		xl: 'max-w-2xl'
 	};
 
 	$effect(() => {
@@ -48,7 +48,7 @@
 
 <dialog
 	bind:this={dialog}
-	class="rounded-lg p-0 shadow-xl backdrop:bg-black/50 {sizeClasses[size]} w-full"
+	class="ft-dialog rounded-lg p-0 shadow-xl backdrop:bg-black/50 {sizeClasses[size]} w-full"
 	onclick={handleBackdropClick}
 	onkeydown={handleEscape}
 >
@@ -78,7 +78,18 @@
 		background-color: var(--ft-surface-overlay);
 	}
 
-	dialog {
+	dialog.ft-dialog {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		margin: 0;
+		transform: translate(-50%, -50%);
+		max-height: min(90dvh, 90vh);
 		overscroll-behavior: contain;
+	}
+
+	dialog.ft-dialog > div {
+		max-height: inherit;
+		overflow-y: auto;
 	}
 </style>

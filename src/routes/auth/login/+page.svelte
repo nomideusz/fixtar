@@ -68,7 +68,7 @@
 					width="120"
 					height="48"
 				/>
-				<h1 class="mb-2 text-2xl font-bold text-[--ft-text]">Logowanie</h1>
+				<h1 class="mb-2 text-2xl text-[--ft-text]">Logowanie</h1>
 				<p class="text-[--ft-text-muted]">Wprowadź swoje dane logowania</p>
 			</div>
 
@@ -112,7 +112,7 @@
 				>
 					{#if errors.general}
 						<div
-							class="bg-danger/5 border-danger/30 text-danger rounded-lg border px-4 py-3 text-sm"
+							class="text-danger border-danger/30 bg-danger/5 rounded-md border px-4 py-3 text-sm"
 						>
 							{errors.general}
 						</div>
@@ -148,12 +148,15 @@
 								type="checkbox"
 								name="rememberMe"
 								bind:checked={rememberMe}
-								class="h-4 w-4 rounded border-[--ft-line] text-[--ft-accent] focus:ring-[--ft-accent]"
+								class="h-4 w-4 rounded border-[--ft-line] bg-[--ft-surface] text-[--ft-accent] focus:ring-2 focus:ring-[--ft-accent]/20"
 							/>
 							<span class="ml-2 text-[--ft-text]">Zapamiętaj mnie</span>
 						</label>
 
-						<a href="/auth/forgot-password" class="text-[--ft-accent] hover:text-[--ft-accent]">
+						<a
+							href="/auth/forgot-password"
+							class="font-mono text-xs text-[--ft-text-muted] hover:text-[--ft-text]"
+						>
 							Zapomniałeś hasła?
 						</a>
 					</div>
@@ -175,7 +178,9 @@
 							<div class="w-full border-t border-[--ft-line]"></div>
 						</div>
 						<div class="relative flex justify-center text-sm">
-							<span class="bg-[--ft-frost] px-2 text-[--ft-text-muted]">lub</span>
+							<span class="bg-[--ft-surface] px-2 font-mono text-xs text-[--ft-text-muted]"
+								>lub</span
+							>
 						</div>
 					</div>
 
@@ -201,7 +206,10 @@
 			<div class="mt-6 text-center">
 				<p class="text-sm text-[--ft-text-muted]">
 					Nie masz konta?
-					<a href="/auth/register" class="font-medium text-[--ft-accent] hover:text-[--ft-accent]">
+					<a
+						href="/auth/register"
+						class="font-mono text-xs text-[--ft-accent] hover:text-[--ft-text]"
+					>
 						Zarejestruj się
 					</a>
 				</p>
@@ -219,18 +227,20 @@
 		padding: 0.75rem;
 		min-height: 44px;
 		border: 1px solid var(--ft-line);
-		border-radius: 0.5rem;
+		border-radius: var(--radius-sm);
 		background: var(--ft-surface);
-		font-size: 0.875rem;
+		font-size: 0.9375rem;
 		color: var(--ft-text);
 		transition:
-			border-color 0.2s,
-			background-color 0.2s;
+			border-color var(--dur-fast) ease,
+			background-color var(--dur-fast) ease,
+			color var(--dur-fast) ease;
 		cursor: pointer;
 	}
 
 	.social-login-button:hover {
-		border-color: var(--ft-cta);
+		border-color: var(--ft-line-strong);
 		background-color: var(--ft-frost);
+		color: var(--ft-text);
 	}
 </style>

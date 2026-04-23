@@ -4,6 +4,9 @@ import { getAllProducts, getCategories, toStoreProduct } from '$lib/server/produ
 export const load: PageServerLoad = async ({ url }) => {
 	const searchQuery = url.searchParams.get('search') || '';
 	const categoryFilter = url.searchParams.get('category') || '';
+	const statusFilter = url.searchParams.get('status') || '';
+	const sort = url.searchParams.get('sort') || 'created';
+	const order = url.searchParams.get('order') || 'desc';
 	const currentPage = parseInt(url.searchParams.get('page') || '1');
 	const perPage = 20;
 
@@ -32,24 +35,27 @@ export const load: PageServerLoad = async ({ url }) => {
 		productCount: Number(c.count)
 	}));
 
+	const totalPages = Math.max(1, Math.ceil(totalItems / perPage));
+
 	return {
 		products,
 		categories,
-		stats: {
+		statusCounts: {
 			active: totalItems,
 			draft: 0,
 			inactive: 0
 		},
-		totalItems,
-		totalPages: Math.max(1, Math.ceil(totalItems / perPage)),
-		currentPage,
+		pagination: {
+			currentPage,
+			totalPages,
+			totalItems
+		},
 		filters: {
 			search: searchQuery,
-			status: '',
-			category: categoryFilter
-		},
-		searchQuery,
-		statusFilter: '',
-		categoryFilter
+			status: statusFilter,
+			category: categoryFilter,
+			sort,
+			order
+		}
 	};
 };

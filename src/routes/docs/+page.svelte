@@ -15,8 +15,12 @@
 	<div class="docs-header">
 		<h1 class="docs-title">Dokumentacja</h1>
 		<div class="lang-switch">
-			<button class="lang-btn" class:active={lang === 'uk'} onclick={() => (lang = 'uk')}>Українська</button>
-			<button class="lang-btn" class:active={lang === 'pl'} onclick={() => (lang = 'pl')}>Polski</button>
+			<button class="lang-btn" class:active={lang === 'uk'} onclick={() => (lang = 'uk')}
+				>Українська</button
+			>
+			<button class="lang-btn" class:active={lang === 'pl'} onclick={() => (lang = 'pl')}
+				>Polski</button
+			>
 		</div>
 	</div>
 
@@ -65,7 +69,9 @@
 		background: var(--ft-surface);
 		color: var(--ft-text-muted);
 		cursor: pointer;
-		transition: background-color 0.15s, color 0.15s;
+		transition:
+			background-color 0.15s,
+			color 0.15s;
 	}
 
 	.lang-btn.active {
@@ -190,7 +196,7 @@
 	}
 
 	.docs-body :global(a) {
-		color: var(--ft-accent);
+		color: var(--ft-accent-text);
 		text-decoration: none;
 	}
 

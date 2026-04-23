@@ -119,7 +119,7 @@
 	}
 
 	.brand-item:hover {
-		color: var(--ft-accent);
+		color: var(--ft-accent-text);
 		transform: translateY(-2px);
 	}
 </style>

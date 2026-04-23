@@ -3,7 +3,14 @@
 	import { goto } from '$app/navigation';
 	import Card from '$lib/components/ui/Card.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
-	import { PackageIcon, CheckCircleIcon, WarningCircleIcon, TagIcon, LinkIcon, CaretRightIcon } from 'phosphor-svelte';
+	import {
+		PackageIcon,
+		CheckCircleIcon,
+		WarningCircleIcon,
+		TagIcon,
+		LinkIcon,
+		CaretRightIcon
+	} from 'phosphor-svelte';
 
 	interface Props {
 		data: {
@@ -35,10 +42,14 @@
 	});
 
 	const activePercentage = $derived(
-		data.stats.totalProducts > 0 ? Math.round((data.stats.activeProducts / data.stats.totalProducts) * 100) : 0
+		data.stats.totalProducts > 0
+			? Math.round((data.stats.activeProducts / data.stats.totalProducts) * 100)
+			: 0
 	);
 	const draftPercentage = $derived(
-		data.stats.totalProducts > 0 ? Math.round((data.stats.draftProducts / data.stats.totalProducts) * 100) : 0
+		data.stats.totalProducts > 0
+			? Math.round((data.stats.draftProducts / data.stats.totalProducts) * 100)
+			: 0
 	);
 </script>
 
@@ -48,157 +59,244 @@
 </svelte:head>
 
 <div class="ft-container ft-section-sm">
-	<div class="mb-8">
-		<h1 class="text-3xl font-bold text-[--ft-text-strong]">Admin Dashboard</h1>
-		<p class="mt-2 text-[--ft-text-muted]">Manage your store from one place</p>
-		{#if data.error}
-			<div class="bg-danger/5 border-danger/10 mt-4 rounded-md border p-4">
-				<p class="text-danger">WarningIcon: {data.error}</p>
-			</div>
-		{/if}
-	</div>
+	<!-- Page header -->
+	<header class="mb-8">
+		<p class="admin-kicker">admin</p>
+		<h1 class="mt-1 text-2xl font-normal tracking-tight text-[--ft-text-strong]">Dashboard</h1>
+		<p class="mt-2 text-sm text-[--ft-text-muted]">Overview of your store.</p>
+	</header>
 
-	<!-- Statistics Grid -->
-	<div class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-		<Card>
-			<div class="flex items-center justify-between">
+	{#if data.error}
+		<div
+			class="mb-6 flex items-center gap-3 rounded-md border p-4"
+			style="border-color: color-mix(in srgb, var(--color-danger) 24%, transparent); background: color-mix(in srgb, var(--color-danger) 6%, white);"
+		>
+			<WarningCircleIcon class="h-5 w-5 shrink-0" style="color: var(--color-danger);" aria-hidden="true" />
+			<p class="text-sm" style="color: var(--color-danger);">{data.error}</p>
+		</div>
+	{/if}
+
+	<!-- Stats -->
+	<div class="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+		<Card class="p-4">
+			<div class="flex items-start justify-between gap-4">
 				<div>
-					<p class="text-sm text-[--ft-text-muted]">Total Products</p>
-					<p class="text-2xl font-bold text-[--ft-text-strong]">{data.stats.totalProducts}</p>
+					<p class="text-xs text-[--ft-text-muted]">Total products</p>
+					<p class="mt-1 text-2xl font-normal text-[--ft-text-strong]">
+						{data.stats.totalProducts}
+					</p>
 					<p class="mt-1 text-xs text-[--ft-text-faint]">All products in system</p>
 				</div>
-				<div class="rounded-full bg-[--ft-frost] p-3">
-					<PackageIcon class="h-6 w-6 text-[--ft-accent]" aria-hidden="true" />
+				<div class="stat-icon">
+					<PackageIcon class="h-5 w-5" aria-hidden="true" />
 				</div>
 			</div>
 		</Card>
 
-		<Card>
-			<div class="flex items-center justify-between">
+		<Card class="p-4">
+			<div class="flex items-start justify-between gap-4">
 				<div>
-					<p class="text-sm text-[--ft-text-muted]">Active Products</p>
-					<p class="text-success text-2xl font-bold">{data.stats.activeProducts}</p>
-					<p class="mt-1 text-xs text-[--ft-text-faint]">{activePercentage}% of total products</p>
+					<p class="text-xs text-[--ft-text-muted]">Active</p>
+					<p class="mt-1 text-2xl font-normal" style="color: var(--color-success);">
+						{data.stats.activeProducts}
+					</p>
+					<p class="mt-1 text-xs text-[--ft-text-faint]">{activePercentage}% of total</p>
 				</div>
-				<div class="bg-success/10 rounded-full p-3">
-					<CheckCircleIcon class="text-success h-6 w-6" aria-hidden="true" />
+				<div class="stat-icon" style="color: var(--color-success);">
+					<CheckCircleIcon class="h-5 w-5" aria-hidden="true" />
 				</div>
 			</div>
 		</Card>
 
-		<Card>
-			<div class="flex items-center justify-between">
+		<Card class="p-4">
+			<div class="flex items-start justify-between gap-4">
 				<div>
-					<p class="text-sm text-[--ft-text-muted]">Draft Products</p>
-					<p class="text-[--ft-warm] text-2xl font-bold">{data.stats.draftProducts}</p>
-					<p class="mt-1 text-xs text-[--ft-text-faint]">{draftPercentage}% waiting for review</p>
+					<p class="text-xs text-[--ft-text-muted]">Drafts</p>
+					<p class="mt-1 text-2xl font-normal" style="color: var(--color-warning);">
+						{data.stats.draftProducts}
+					</p>
+					<p class="mt-1 text-xs text-[--ft-text-faint]">{draftPercentage}% awaiting review</p>
 				</div>
-				<div class="bg-[--ft-frost] rounded-full p-3">
-					<WarningCircleIcon class="h-6 w-6 text-[--ft-warm]" aria-hidden="true" />
+				<div class="stat-icon" style="color: var(--color-warning);">
+					<WarningCircleIcon class="h-5 w-5" aria-hidden="true" />
 				</div>
 			</div>
 		</Card>
 
-		<Card>
-			<div class="flex items-center justify-between">
+		<Card class="p-4">
+			<div class="flex items-start justify-between gap-4">
 				<div>
-					<p class="text-sm text-[--ft-text-muted]">Categories</p>
-					<p class="text-[--ft-accent] text-2xl font-bold">{data.stats.totalCategories}</p>
+					<p class="text-xs text-[--ft-text-muted]">Categories</p>
+					<p class="mt-1 text-2xl font-normal text-[--ft-text-strong]">
+						{data.stats.totalCategories}
+					</p>
 					<p class="mt-1 text-xs text-[--ft-text-faint]">Product categories</p>
 				</div>
-				<div class="bg-[--ft-frost] rounded-full p-3">
-					<TagIcon class="h-6 w-6 text-[--ft-accent]" aria-hidden="true" />
+				<div class="stat-icon">
+					<TagIcon class="h-5 w-5" aria-hidden="true" />
 				</div>
 			</div>
 		</Card>
 	</div>
 
-	<!-- Quick Actions & Recent Activity -->
-	<div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
+	<!-- Actions + recent -->
+	<div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
 		<Card>
-			<h2 class="mb-4 text-xl font-semibold text-[--ft-text-strong]">Product Management</h2>
-			<div class="space-y-3">
-				<a href="/admin/products" class="flex items-center justify-between rounded-lg p-3 transition-colors hover:bg-[--ft-frost]">
-					<div class="flex items-center">
-						<PackageIcon class="mr-3 h-5 w-5 text-[--ft-text-muted]" aria-hidden="true" />
-						<div>
-							<span class="font-medium text-[--ft-text]">Manage Products</span>
-							<p class="text-sm text-[--ft-text-muted]">View and edit all products</p>
-						</div>
+			<h2 class="mb-4 text-base font-medium text-[--ft-text-strong]">Product Management</h2>
+			<div class="flex flex-col">
+				<a href="/admin/products" class="action-row">
+					<PackageIcon class="action-icon" aria-hidden="true" />
+					<div class="min-w-0 flex-1">
+						<span class="action-title">Manage products</span>
+						<p class="action-desc">View and edit all products</p>
 					</div>
-					<CaretRightIcon class="h-5 w-5 text-[--ft-text-faint]" aria-hidden="true" />
+					<CaretRightIcon class="action-chevron" aria-hidden="true" />
 				</a>
 
 				{#if data.stats.draftProducts > 0}
-					<a href="/admin/products?status=draft" class="flex items-center justify-between rounded-lg border border-[--ft-accent]/20 p-3 transition-colors hover:bg-[--ft-frost]">
-						<div class="flex items-center">
-							<WarningCircleIcon class="mr-3 h-5 w-5 text-[--ft-warm]" aria-hidden="true" />
-							<div>
-								<span class="font-medium text-[--ft-text-strong]">Review Draft Products</span>
-								<p class="text-sm text-[--ft-accent]">{data.stats.draftProducts} products need review</p>
-							</div>
+					<a href="/admin/products?status=draft" class="action-row">
+						<WarningCircleIcon class="action-icon" style="color: var(--color-warning);" aria-hidden="true" />
+						<div class="min-w-0 flex-1">
+							<span class="action-title">Review drafts</span>
+							<p class="action-desc">
+								{data.stats.draftProducts}
+								{data.stats.draftProducts === 1 ? 'product needs' : 'products need'} review
+							</p>
 						</div>
-						<CaretRightIcon class="h-5 w-5 text-[--ft-text-faint]" aria-hidden="true" />
+						<CaretRightIcon class="action-chevron" aria-hidden="true" />
 					</a>
 				{/if}
 
-				<a href="/admin/baselinker" class="flex items-center justify-between rounded-lg p-3 transition-colors hover:bg-[--ft-frost]">
-					<div class="flex items-center">
-						<LinkIcon class="mr-3 h-5 w-5 text-[--ft-text-muted]" aria-hidden="true" />
-						<div>
-							<span class="font-medium text-[--ft-text]">BaseLinker Integration</span>
-							<p class="text-sm text-[--ft-text-muted]">Sync products and manage orders</p>
-						</div>
+				<a href="/admin/baselinker" class="action-row">
+					<LinkIcon class="action-icon" aria-hidden="true" />
+					<div class="min-w-0 flex-1">
+						<span class="action-title">BaseLinker</span>
+						<p class="action-desc">Sync products and manage orders</p>
 					</div>
-					<CaretRightIcon class="h-5 w-5 text-[--ft-text-faint]" aria-hidden="true" />
+					<CaretRightIcon class="action-chevron" aria-hidden="true" />
 				</a>
 			</div>
 		</Card>
 
 		<Card>
-			<h2 class="mb-4 text-xl font-semibold text-[--ft-text-strong]">Recently Added Products</h2>
-			<div class="space-y-3">
+			<h2 class="mb-4 text-base font-medium text-[--ft-text-strong]">Recently added</h2>
+			<ul class="divide-y divide-[--ft-line]">
 				{#each data.recentProducts as product (product.id)}
-					<div class="flex items-center justify-between gap-3 py-2">
+					<li class="flex items-center justify-between gap-3 py-3">
 						<div class="min-w-0 flex-1">
-							<p class="truncate text-sm font-medium text-[--ft-text]">{product.name}</p>
-							<p class="truncate text-sm text-[--ft-text-muted]">
-								{product.sku ? `SKU: ${product.sku}` : 'No SKU'} • {product.price.toFixed(2)} zł
+							<p class="truncate text-sm text-[--ft-text-strong]">{product.name}</p>
+							<p class="truncate text-xs text-[--ft-text-muted]">
+								<span class="font-mono">{product.sku || '—'}</span>
+								<span class="mx-1">·</span>
+								<span class="font-mono">{product.price.toFixed(2)} zł</span>
 							</p>
 						</div>
-						<span class="shrink-0 rounded-full px-2 py-1 text-xs font-medium whitespace-nowrap {product.status === 'active'
-							? 'bg-success/10 text-success'
-							: product.status === 'draft'
-								? 'bg-[--ft-frost] text-[--ft-warm]'
-								: 'bg-[--ft-frost] text-[--ft-text-muted]'}">
+						<span
+							class="inline-flex shrink-0 items-center rounded-full border px-2 py-0.5 text-xs"
+							style={product.status === 'active'
+								? 'border-color: color-mix(in srgb, var(--color-success) 30%, transparent); background: color-mix(in srgb, var(--color-success) 10%, white); color: var(--color-success);'
+								: product.status === 'draft'
+									? 'border-color: color-mix(in srgb, var(--color-warning) 32%, transparent); background: color-mix(in srgb, var(--color-warning) 10%, white); color: var(--color-warning);'
+									: 'border-color: var(--ft-line); background: var(--ft-surface); color: var(--ft-text-muted);'}
+						>
 							{product.status}
 						</span>
-					</div>
+					</li>
 				{:else}
-					<div class="text-center py-4 text-[--ft-text-muted]">No recent products found</div>
+					<li class="py-6 text-center text-sm text-[--ft-text-muted]">No recent products.</li>
 				{/each}
-			</div>
+			</ul>
 
 			{#if data.recentProducts.length > 0}
-				<div class="mt-4 border-t border-[--ft-line] pt-4">
-					<a href="/admin/products" class="text-sm font-medium text-[--ft-accent] hover:text-[--ft-accent-hover]">View all products →</a>
+				<div class="mt-4 border-t border-[--ft-line] pt-3">
+					<a
+						href="/admin/products"
+						class="text-sm text-[--ft-text] underline-offset-4 hover:text-[--ft-text-strong] hover:underline"
+					>
+						View all products →
+					</a>
 				</div>
 			{/if}
 		</Card>
 	</div>
 
-	<!-- Quick Actions -->
+	<!-- Quick actions -->
 	<div class="mt-8">
 		<Card>
-			<h2 class="mb-4 text-xl font-semibold text-[--ft-text-strong]">Quick Actions</h2>
-			<div class="flex flex-wrap gap-4">
-				<Button href="/admin/products">Manage Products</Button>
+			<h2 class="mb-4 text-base font-medium text-[--ft-text-strong]">Quick actions</h2>
+			<div class="flex flex-wrap gap-3">
+				<Button href="/admin/products">Manage products</Button>
 				<Button href="/admin/baselinker" variant="secondary">BaseLinker</Button>
 				{#if data.stats.draftProducts > 0}
-					<Button href="/admin/products?status=draft" variant="ghost">Review Drafts ({data.stats.draftProducts})</Button>
+					<Button href="/admin/products?status=draft" variant="ghost">
+						Review drafts ({data.stats.draftProducts})
+					</Button>
 				{/if}
-				<Button href="/admin/orders" variant="secondary">View Orders</Button>
+				<Button href="/admin/orders" variant="secondary">Orders</Button>
 			</div>
 		</Card>
 	</div>
 </div>
+
+<style>
+	.admin-kicker {
+		font-family: var(--font-mono);
+		font-size: 0.72rem;
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+		color: var(--ft-text-muted);
+	}
+
+	.stat-icon {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 36px;
+		height: 36px;
+		border-radius: var(--radius-sm);
+		background: var(--ft-frost);
+		color: var(--ft-text-muted);
+		flex-shrink: 0;
+	}
+
+	.action-row {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding: 12px;
+		margin: 0 -12px;
+		border-radius: var(--radius-sm);
+		text-decoration: none;
+		transition: background-color var(--dur-fast) ease;
+	}
+
+	.action-row:hover {
+		background: var(--ft-frost);
+	}
+
+	:global(.action-icon) {
+		width: 20px;
+		height: 20px;
+		flex-shrink: 0;
+		color: var(--ft-text-muted);
+	}
+
+	.action-title {
+		display: block;
+		font-size: 0.9375rem;
+		color: var(--ft-text-strong);
+	}
+
+	.action-desc {
+		font-size: 0.8125rem;
+		color: var(--ft-text-muted);
+		margin-top: 2px;
+	}
+
+	:global(.action-chevron) {
+		width: 16px;
+		height: 16px;
+		color: var(--ft-text-faint);
+		flex-shrink: 0;
+	}
+</style>

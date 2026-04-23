@@ -17,12 +17,12 @@
 	<div class="relative overflow-hidden">
 		<div class="relative p-6">
 			<div
-				class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[--ft-accent]/20"
+				class="mb-4 flex h-12 w-12 items-center justify-center rounded-md border border-[--ft-line] bg-[--ft-frost]"
 			>
 				{@render icon()}
 			</div>
 			<h3
-				class="group-hover:text-[--ft-accent] mb-2 text-lg font-bold text-[--ft-text] transition-colors duration-200"
+				class="mb-2 text-lg font-normal text-[--ft-text] transition-colors duration-200 group-hover:text-[--ft-accent]"
 			>
 				{title}
 			</h3>
@@ -33,7 +33,7 @@
 				{href}
 				variant="outline"
 				size="sm"
-				class="group-hover:border-[--ft-accent] group-hover:text-[--ft-accent] w-full transition-colors duration-200"
+				class="w-full transition-colors duration-200 group-hover:border-[--ft-line-strong] group-hover:text-[--ft-text]"
 			>
 				Przejdź
 			</Button>

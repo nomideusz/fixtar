@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { page } from '$app/stores';
 	import {
-		MagnifyingGlassIcon,
 		XIcon,
 		ClockCounterClockwiseIcon,
 		ImageSquareIcon,
@@ -52,14 +50,18 @@
 		recentSearches = updated;
 		try {
 			localStorage.setItem('ft-recent-searches', JSON.stringify(updated));
-		} catch {}
+		} catch {
+			/* ignore localStorage write failures */
+		}
 	}
 
 	function clearRecent() {
 		recentSearches = [];
 		try {
 			localStorage.removeItem('ft-recent-searches');
-		} catch {}
+		} catch {
+			/* ignore localStorage removal failures */
+		}
 	}
 
 	$effect(() => {
@@ -251,7 +253,7 @@
 							<span class="dropdown-section-title">Ostatnie wyszukiwania</span>
 							<button class="dropdown-clear-btn" onclick={clearRecent}>Wyczyść</button>
 						</div>
-						{#each recentSearches as recent}
+						{#each recentSearches as recent (recent)}
 							<button
 								class="dropdown-recent"
 								onclick={() => goToRecentSearch(recent)}
@@ -269,7 +271,7 @@
 				<div class="dropdown-section" class:has-border={recentSearches.length > 0}>
 					<span class="dropdown-section-title">Popularne kategorie</span>
 					<div class="dropdown-cats">
-						{#each popularCategories as cat}
+						{#each popularCategories as cat (cat.slug)}
 							<button class="dropdown-cat-chip" onclick={() => goToCategory(cat.slug)}>
 								{cat.name}
 							</button>
@@ -345,10 +347,12 @@
 		position: relative;
 		display: flex;
 		align-items: stretch;
-		border: 2px solid var(--ft-line);
+		border: 1px solid var(--ft-line);
 		background: var(--ft-surface);
-		border-radius: 0;
-		transition: border-color 0.2s ease;
+		border-radius: var(--radius-sm);
+		transition:
+			border-color var(--dur-fast) ease,
+			background-color var(--dur-fast) ease;
 	}
 
 	.search-input-wrap:focus-within {
@@ -359,9 +363,9 @@
 		flex: 1;
 		min-width: 0;
 		padding: 12px 48px 12px 16px;
-		font-size: 0.88rem;
+		font-size: 0.9375rem;
 		font-family: var(--font-sans);
-		font-weight: 500;
+		font-weight: 400;
 		color: var(--ft-text-strong);
 		background: transparent;
 		border: none;
@@ -377,22 +381,25 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		background: var(--ft-text-strong);
-		color: var(--ft-surface);
+		background: var(--ft-dark);
+		color: var(--ft-bg);
 		border: none;
-		border-radius: 0;
-		font-family: var(--font-display);
-		font-weight: 600;
-		font-size: 0.85rem;
+		border-left: 1px solid var(--ft-line);
+		border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+		font-family: var(--font-sans);
+		font-weight: 400;
+		font-size: 0.9375rem;
 		text-transform: none;
 		letter-spacing: 0;
-		padding: 0 32px;
+		padding: 0 24px;
 		cursor: pointer;
 		white-space: nowrap;
 		flex-shrink: 0;
+		min-height: 44px;
 		transition:
-			background-color 0.2s ease,
-			transform 0.1s ease;
+			background-color var(--dur-fast) ease,
+			color var(--dur-fast) ease,
+			border-color var(--dur-fast) ease;
 	}
 
 	.search-submit-btn:hover {
@@ -405,7 +412,7 @@
 
 	.search-clear {
 		position: absolute;
-		right: 124px;
+		right: 108px;
 		top: 50%;
 		transform: translateY(-50%);
 		display: flex;
@@ -418,10 +425,10 @@
 		background: transparent;
 		color: var(--ft-text-muted);
 		cursor: pointer;
-		border-radius: 0;
+		border-radius: var(--radius-sm);
 		transition:
-			background-color 0.15s ease,
-			color 0.15s ease;
+			background-color var(--dur-fast) ease,
+			color var(--dur-fast) ease;
 	}
 
 	.search-clear:hover {
@@ -465,10 +472,9 @@
 		z-index: 50;
 		background: var(--ft-surface);
 		border: 1px solid var(--ft-line);
-		border-radius: 0;
-		box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
+		border-radius: var(--radius-md);
 		overflow: hidden;
-		animation: dropdownSlideIn 0.15s ease-out;
+		animation: dropdownSlideIn 180ms var(--ease-out);
 	}
 
 	@keyframes dropdownSlideIn {
@@ -503,10 +509,11 @@
 	.dropdown-section-title {
 		display: block;
 		padding: 6px 8px 4px;
-		font-size: 0.65rem;
-		font-weight: 600;
-		text-transform: none;
-		letter-spacing: 0.08em;
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		font-weight: 400;
+		text-transform: lowercase;
+		letter-spacing: 0.02em;
 		color: var(--ft-text-muted);
 	}
 
@@ -515,19 +522,19 @@
 	}
 
 	.dropdown-clear-btn {
-		font-size: 0.65rem;
-		font-weight: 500;
+		font-size: 0.75rem;
+		font-weight: 400;
 		color: var(--ft-text-faint);
 		background: none;
 		border: none;
 		cursor: pointer;
 		padding: 2px 6px;
-		border-radius: 0;
-		transition: color 0.15s ease;
+		border-radius: var(--radius-sm);
+		transition: color var(--dur-fast) ease;
 	}
 
 	.dropdown-clear-btn:hover {
-		color: var(--ft-accent);
+		color: var(--ft-accent-text);
 	}
 
 	.dropdown-clear-btn:focus-visible {
@@ -542,14 +549,14 @@
 		gap: 10px;
 		width: 100%;
 		padding: 10px 10px;
-		font-size: 0.82rem;
+		font-size: 0.875rem;
 		color: var(--ft-text);
 		background: none;
 		border: none;
 		cursor: pointer;
-		border-radius: 0;
+		border-radius: var(--radius-sm);
 		text-align: left;
-		transition: background 0.1s ease;
+		transition: background-color var(--dur-fast) ease;
 	}
 
 	.dropdown-recent:hover,
@@ -580,17 +587,17 @@
 		align-items: center;
 		padding: 6px 14px;
 		font-size: 0.75rem;
-		font-weight: 500;
+		font-weight: 400;
 		color: var(--ft-text);
 		background: var(--ft-frost);
 		border: 1px solid var(--ft-line);
-		border-radius: 0;
+		border-radius: var(--radius-full);
 		cursor: pointer;
 		text-decoration: none;
 		transition:
-			border-color 0.15s ease,
-			color 0.15s ease,
-			background-color 0.15s ease;
+			border-color var(--dur-fast) ease,
+			color var(--dur-fast) ease,
+			background-color var(--dur-fast) ease;
 		min-height: 32px;
 	}
 
@@ -619,9 +626,9 @@
 		background: none;
 		border: none;
 		cursor: pointer;
-		border-radius: 0;
+		border-radius: var(--radius-sm);
 		text-align: left;
-		transition: background 0.1s ease;
+		transition: background-color var(--dur-fast) ease;
 	}
 
 	.dropdown-result:hover,
@@ -640,8 +647,9 @@
 		width: 40px;
 		height: 40px;
 		object-fit: contain;
-		border-radius: 0;
+		border-radius: var(--radius-sm);
 		background: var(--ft-frost);
+		border: 1px solid var(--ft-line);
 	}
 
 	.result-thumb-placeholder {
@@ -651,9 +659,10 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		border-radius: 0;
+		border-radius: var(--radius-sm);
 		background: var(--ft-frost);
 		color: var(--ft-text-faint);
+		border: 1px solid var(--ft-line);
 	}
 
 	.result-info {
@@ -665,8 +674,8 @@
 	}
 
 	.result-name {
-		font-size: 0.82rem;
-		font-weight: 500;
+		font-size: 0.875rem;
+		font-weight: 400;
 		color: var(--ft-dark);
 		white-space: nowrap;
 		overflow: hidden;
@@ -680,9 +689,11 @@
 
 	.result-price {
 		flex-shrink: 0;
+		font-family: var(--font-mono);
 		font-size: 0.78rem;
-		font-weight: 500;
-		color: var(--ft-cta);
+		font-weight: 400;
+		color: var(--ft-accent-text);
+		font-variant-numeric: tabular-nums;
 	}
 
 	/* ── Loading ── */
@@ -742,14 +753,16 @@
 		gap: 6px;
 		width: 100%;
 		padding: 14px;
-		font-size: 0.78rem;
-		font-weight: 600;
-		color: var(--ft-accent);
+		font-size: 0.875rem;
+		font-weight: 400;
+		color: var(--ft-accent-text);
 		background: var(--ft-frost);
 		border: none;
 		border-top: 1px solid var(--ft-line);
 		cursor: pointer;
-		transition: background-color 0.15s ease;
+		transition:
+			background-color var(--dur-fast) ease,
+			color var(--dur-fast) ease;
 	}
 
 	.dropdown-all:hover {

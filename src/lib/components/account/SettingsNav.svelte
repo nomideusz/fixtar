@@ -33,20 +33,20 @@
 			>
 				<div class="flex items-center">
 					<div
-						class="mr-3 flex h-10 w-10 items-center justify-center rounded-lg {activeSection ===
+						class="mr-3 flex h-10 w-10 items-center justify-center rounded-md border {activeSection ===
 						section.id
-							? 'bg-[--ft-accent]/20'
-							: 'bg-[--ft-frost]'} transition-colors duration-200"
+							? 'border-[--ft-accent] bg-[--ft-accent]/12'
+							: 'border-[--ft-line] bg-[--ft-surface]'} transition-colors duration-200"
 					>
 						<Icon
 							class="h-5 w-5 {activeSection === section.id
-								? 'text-[--ft-accent]'
+								? 'text-[--ft-text]'
 								: 'text-[--ft-text-muted]'}"
 							aria-hidden="true"
 						/>
 					</div>
 					<div class="text-left">
-						<div class="text-sm font-semibold text-[--ft-text]">{section.title}</div>
+						<div class="text-sm font-normal text-[--ft-text]">{section.title}</div>
 						<div class="hidden text-xs text-[--ft-text-muted] sm:block">{section.description}</div>
 					</div>
 				</div>
@@ -58,28 +58,33 @@
 <style>
 	.settings-nav-item {
 		padding: 1rem;
-		border-radius: 0.75rem;
-		border: 1px solid transparent;
-		transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+		border-radius: var(--radius-md);
+		border: 1px solid var(--ft-line);
+		transition:
+			background-color var(--dur-fast) ease,
+			border-color var(--dur-fast) ease,
+			color var(--dur-fast) ease;
 		cursor: pointer;
 		text-align: left;
 		width: 100%;
+		background-color: var(--ft-surface);
+		color: var(--ft-text);
 	}
 
 	.settings-nav-active {
-		background-color: var(--ft-cta-light);
-		border-color: color-mix(in srgb, var(--ft-cta) 20%, transparent);
-		color: var(--ft-cta);
+		background-color: color-mix(in srgb, var(--ft-accent) 8%, white);
+		border-color: var(--ft-accent);
+		color: var(--ft-text);
 	}
 
 	.settings-nav-inactive {
-		background-color: var(--ft-frost);
+		background-color: var(--ft-surface);
 		color: var(--ft-text);
 	}
 
 	.settings-nav-inactive:hover {
-		background-color: color-mix(in srgb, var(--ft-cta) 4%, transparent);
-		border-color: color-mix(in srgb, var(--ft-cta) 15%, transparent);
-		color: var(--ft-cta);
+		background-color: var(--ft-frost);
+		border-color: var(--ft-line-strong);
+		color: var(--ft-text);
 	}
 </style>

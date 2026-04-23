@@ -22,30 +22,45 @@
 </script>
 
 {#snippet imagePlaceholder()}
-	<div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-lg bg-[--ft-frost]">
+	<div
+		class="flex h-16 w-16 shrink-0 items-center justify-center rounded-sm border border-[--ft-line] bg-[--ft-surface]"
+	>
 		<ImageSquareIcon size={32} weight="light" class="text-[--ft-text-muted]" aria-hidden="true" />
 	</div>
 {/snippet}
 
 <div class="sticky top-8">
 	<Card class="p-8">
-		<h2 class="mb-6 text-2xl font-bold text-[--ft-text]">Podsumowanie zamówienia</h2>
+		<div class="mb-6 border-b border-[--ft-line] pb-3">
+			<h2 class="text-2xl text-[--ft-text]">Podsumowanie zamówienia</h2>
+		</div>
 
 		<!-- Items -->
 		<div class="mb-6 space-y-4">
 			{#each items as item (item)}
-				<div class="flex items-center space-x-4 rounded-xl bg-[--ft-frost] p-4">
+				<div
+					class="flex items-center space-x-4 rounded-md border border-[--ft-line] bg-[--ft-surface] p-4"
+				>
 					{#if item.image}
-						<div class="h-16 w-16 shrink-0 overflow-hidden rounded-lg">
-							<img src={item.image} alt={item.name} class="h-full w-full object-cover" width="64" height="64" loading="lazy" />
+						<div
+							class="h-16 w-16 shrink-0 overflow-hidden rounded-sm border border-[--ft-line] bg-[--ft-surface]"
+						>
+							<img
+								src={item.image}
+								alt={item.name}
+								class="h-full w-full object-cover"
+								width="64"
+								height="64"
+								loading="lazy"
+							/>
 						</div>
 					{:else}
 						{@render imagePlaceholder()}
 					{/if}
 					<div class="min-w-0 flex-1">
-						<h3 class="truncate text-sm font-semibold text-[--ft-text]">{item.name}</h3>
+						<h3 class="truncate text-sm text-[--ft-text]">{item.name}</h3>
 						<p class="text-sm text-[--ft-text-muted]">Ilość: {item.quantity}</p>
-						<p class="text-money text-sm font-bold">
+						<p class="text-money text-sm">
 							{formatPrice(item.price * item.quantity)}
 						</p>
 					</div>
@@ -57,40 +72,39 @@
 		<div class="space-y-4 border-t border-[--ft-line] pt-6">
 			<div class="flex justify-between text-sm">
 				<span class="text-[--ft-text-muted]">Suma częściowa</span>
-				<span class="font-semibold text-[--ft-text]">{formatPrice(subtotal)}</span>
+				<span class="text-money text-[--ft-text]">{formatPrice(subtotal)}</span>
 			</div>
 			<div class="flex justify-between text-sm">
 				<span class="text-[--ft-text-muted]">Dostawa</span>
-				<span class="font-semibold {shippingCost === 0 ? 'text-success' : 'text-[--ft-text]'}">
+				<span class={shippingCost === 0 ? 'text-success' : 'text-money text-[--ft-text]'}>
 					{shippingCost === 0 ? 'Darmowa' : formatPrice(shippingCost)}
 				</span>
 			</div>
 			{#if paymentFee > 0}
 				<div class="flex justify-between text-sm">
 					<span class="text-[--ft-text-muted]">Opłata za płatność</span>
-					<span class="font-semibold text-[--ft-text]">{formatPrice(paymentFee)}</span>
+					<span class="text-money text-[--ft-text]">{formatPrice(paymentFee)}</span>
 				</div>
 			{/if}
 			<div class="flex justify-between text-sm">
 				<span class="text-[--ft-text-muted]">VAT (23%)</span>
-				<span class="font-semibold text-[--ft-text]">{formatPrice(tax)}</span>
+				<span class="text-money text-[--ft-text]">{formatPrice(tax)}</span>
 			</div>
-			<div class="flex justify-between border-t border-[--ft-line] pt-4 text-xl font-bold">
+			<div class="flex justify-between border-t border-[--ft-line] pt-4 text-xl">
 				<span class="text-[--ft-text]">Do zapłaty</span>
 				<span class="text-money">{formatPrice(total)}</span>
 			</div>
 		</div>
 
 		<!-- Submit Button -->
-		<Button
-			type="submit"
-			fullWidth
-			size="lg"
-			disabled={processing}
-			class="mt-8 bg-[--ft-cta] py-4 text-lg font-bold text-[--ft-cta-text] hover:bg-[--ft-cta-hover] transition-colors duration-200"
-		>
+		<Button type="submit" fullWidth size="lg" disabled={processing} class="mt-8 py-4 text-lg">
 			{#if processing}
-				<SpinnerGapIcon size={20} weight="bold" class="mr-3 -ml-1 h-5 w-5 animate-spin" aria-hidden="true" />
+				<SpinnerGapIcon
+					size={20}
+					weight="bold"
+					class="mr-3 -ml-1 h-5 w-5 animate-spin"
+					aria-hidden="true"
+				/>
 				Przetwarzanie zamówienia...
 			{:else}
 				<CheckIcon size={16} weight="bold" class="mr-2 h-5 w-5" aria-hidden="true" />
@@ -99,7 +113,7 @@
 		</Button>
 
 		<!-- Security & Legal Notes -->
-		<div class="mt-6 rounded-xl bg-[--ft-frost] p-4">
+		<div class="mt-6 rounded-md border border-[--ft-line] bg-[--ft-surface] p-4">
 			<div class="mb-3 flex items-center text-sm text-[--ft-text-muted]">
 				<LockIcon size={20} weight="light" class="text-success mr-2 h-4 w-4" aria-hidden="true" />
 				Bezpieczne szyfrowane połączenie SSL
@@ -107,9 +121,9 @@
 			<div class="space-y-1 text-xs text-[--ft-text-muted]">
 				<p>Składając zamówienie, akceptujesz nasz</p>
 				<p>
-					<a href="/regulamin" class="font-medium underline hover:text-[--ft-text]">Regulamin</a>
+					<a href="/regulamin" class="underline hover:text-[--ft-text]">Regulamin</a>
 					&nbsp;i&nbsp;
-					<a href="/polityka-prywatnosci" class="font-medium underline hover:text-[--ft-text]"
+					<a href="/polityka-prywatnosci" class="underline hover:text-[--ft-text]"
 						>Politykę prywatności</a
 					>
 				</p>

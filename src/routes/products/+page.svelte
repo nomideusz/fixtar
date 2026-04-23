@@ -1,23 +1,23 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { page } from '$app/stores';
 	import ProductCard from '$lib/components/ui/ProductCard.svelte';
-	import { ArrowDownIcon, ArrowUpIcon } from 'phosphor-svelte';
-	import type { Product, Category } from '$lib/stores/products.svelte';
+	import ProductCardSkeleton from '$lib/components/ui/ProductCardSkeleton.svelte';
+	import { ArrowDownIcon, ArrowUpIcon, MagnifyingGlassIcon, XIcon } from 'phosphor-svelte';
+	import type { Product } from '$lib/stores/products.svelte';
 
-	interface CategoryWithCount extends Category {
-		productCount: number;
+	interface Category {
+		slug: string;
+		name: string;
+		count: number;
 	}
 
 	interface Props {
 		data: {
-			categorySections: Array<{
-				category: CategoryWithCount;
-				products: Product[];
-			}>;
-			categories: CategoryWithCount[];
+			products: Product[];
+			categories: Category[];
 			searchQuery: string;
 			sortBy: string;
+			category: string;
 			totalItems: number;
 			error?: string;
 		};
@@ -25,93 +25,59 @@
 
 	let { data }: Props = $props();
 
-	let sortBy = $state('name');
-	let activeCategory = $state('');
-	let chipScrollEl: HTMLElement | undefined = $state();
-	let isScrolling = false;
-	let scrollTimer: ReturnType<typeof setTimeout> | null = null;
+	let searchInput = $state('');
+	let loading = $state(false);
 
 	$effect(() => {
-		sortBy = data.sortBy;
+		searchInput = data.searchQuery;
 	});
 
-	$effect(() => {
-		const categorySlug = $page.url.searchParams.get('category');
-		if (categorySlug) {
-			// Small delay to ensure DOM is ready and sections are rendered
-			setTimeout(() => {
-				scrollToCategory(categorySlug);
-			}, 100);
-		}
-	});
-
-	// Track which category section is in view
-	$effect(() => {
-		if (typeof IntersectionObserver === 'undefined') return;
-
-		const sections = document.querySelectorAll<HTMLElement>('[data-cat-section]');
-		if (!sections.length) return;
-
-		// Set initial active category
-		if (!activeCategory && sections.length > 0) {
-			activeCategory = sections[0].getAttribute('data-cat-section') || '';
-		}
-
-		const observer = new IntersectionObserver(
-			(entries) => {
-				if (isScrolling) return; // ignore during programmatic scroll
-				for (const entry of entries) {
-					if (entry.isIntersecting) {
-						const slug = entry.target.getAttribute('data-cat-section') || '';
-						if (slug !== activeCategory) {
-							activeCategory = slug;
-							scrollChipIntoView(slug);
-						}
-					}
-				}
-			},
-			{ rootMargin: '-30% 0px -65% 0px', threshold: 0 }
-		);
-
-		sections.forEach((s) => observer.observe(s));
-		return () => observer.disconnect();
-	});
-
-	function scrollChipIntoView(slug: string) {
-		if (!chipScrollEl) return;
-		const chip = chipScrollEl.querySelector(`[data-chip="${slug}"]`) as HTMLElement | null;
-		if (!chip) return;
-		// Scroll only the chip container horizontally — never touch page scroll
-		const containerRect = chipScrollEl.getBoundingClientRect();
-		const chipRect = chip.getBoundingClientRect();
-		const offset =
-			chipRect.left - containerRect.left - containerRect.width / 2 + chipRect.width / 2;
-		chipScrollEl.scrollBy({ left: offset, behavior: 'smooth' });
+	function buildUrl(next: { search?: string; sort?: string; category?: string }) {
+		const params = new window.URLSearchParams();
+		const search = next.search ?? data.searchQuery;
+		const sort = next.sort ?? data.sortBy;
+		const category = next.category ?? data.category;
+		if (search) params.set('search', search);
+		if (sort && sort !== 'name') params.set('sort', sort);
+		if (category) params.set('category', category);
+		const qs = params.toString();
+		return `/products${qs ? '?' + qs : ''}`;
 	}
 
-	function scrollToCategory(slug: string) {
-		const section = document.querySelector(`[data-cat-section="${slug}"]`);
-		if (!section) return;
+	function navigate(next: Parameters<typeof buildUrl>[0]) {
+		loading = true;
+		goto(buildUrl(next), { keepFocus: true }).finally(() => {
+			loading = false;
+		});
+	}
 
-		// Set active immediately and lock observer
-		activeCategory = slug;
-		isScrolling = true;
-		scrollChipIntoView(slug);
+	function setCategory(slug: string) {
+		navigate({ category: slug === data.category ? '' : slug });
+	}
 
-		// Calculate offset: navbar + chip bar height
-		const chipsBar = document.querySelector('.chips-bar') as HTMLElement | null;
-		const navHeight = window.innerWidth >= 769 ? 100 : 60;
-		const chipsHeight = chipsBar?.offsetHeight || 60;
-		const offset = navHeight + chipsHeight + 16;
+	function setSort(value: string) {
+		navigate({ sort: value });
+	}
 
-		const top = section.getBoundingClientRect().top + window.scrollY - offset;
-		window.scrollTo({ top, behavior: 'smooth' });
+	function submitSearch(e: Event) {
+		e.preventDefault();
+		navigate({ search: searchInput.trim() });
+	}
 
-		// Unlock observer after scroll settles
-		if (scrollTimer) clearTimeout(scrollTimer);
-		scrollTimer = setTimeout(() => {
-			isScrolling = false;
-		}, 800);
+	function clearSearch() {
+		searchInput = '';
+		navigate({ search: '' });
+	}
+
+	function clearFilters() {
+		searchInput = '';
+		navigate({ search: '', category: '', sort: 'name' });
+	}
+
+	function productCountLabel(n: number) {
+		if (n === 1) return 'produkt';
+		if (n > 1 && n < 5) return 'produkty';
+		return 'produktów';
 	}
 
 	const sortOptions: Array<{ value: string; label: string; icon?: 'up' | 'down' }> = [
@@ -120,14 +86,7 @@
 		{ value: 'price-high', label: 'Cena', icon: 'down' }
 	];
 
-	function setSort(value: string) {
-		sortBy = value;
-		const params = new URLSearchParams();
-		if (data.searchQuery) params.set('search', data.searchQuery);
-		if (sortBy !== 'name') params.set('sort', sortBy);
-		const qs = params.toString();
-		goto(`/products${qs ? '?' + qs : ''}`);
-	}
+	let hasFilters = $derived(!!(data.searchQuery || data.category));
 </script>
 
 <svelte:head>
@@ -140,15 +99,47 @@
 
 <div class="products-page">
 	<!-- Header -->
-	<div class="page-header">
-		<h1 class="page-title">Produkty</h1>
+	<header class="page-header">
+		<div class="page-heading">
+			<span class="ft-label">katalog</span>
+			<h1 class="page-title">Produkty</h1>
+			<p class="page-count">
+				{data.totalItems}
+				{productCountLabel(data.totalItems)}
+			</p>
+		</div>
+	</header>
+
+	<!-- Filter strip: search + sort -->
+	<div class="filters">
+		<form class="search" onsubmit={submitSearch} role="search">
+			<MagnifyingGlassIcon class="search-icon" size={16} weight="regular" aria-hidden="true" />
+			<input
+				type="search"
+				bind:value={searchInput}
+				placeholder="Szukaj produktów…"
+				class="search-input"
+				aria-label="Szukaj produktów"
+			/>
+			{#if searchInput}
+				<button
+					type="button"
+					class="search-clear"
+					onclick={clearSearch}
+					aria-label="Wyczyść wyszukiwanie"
+				>
+					<XIcon size={14} weight="bold" aria-hidden="true" />
+				</button>
+			{/if}
+		</form>
+
 		<div class="sort-bar" role="group" aria-label="Sortowanie">
 			{#each sortOptions as opt (opt.value)}
 				<button
 					class="sort-btn"
-					class:sort-btn--active={sortBy === opt.value}
+					class:sort-btn--active={data.sortBy === opt.value}
 					onclick={() => setSort(opt.value)}
-					aria-pressed={sortBy === opt.value}
+					aria-pressed={data.sortBy === opt.value}
 				>
 					{opt.label}
 					{#if opt.icon === 'up'}
@@ -161,46 +152,49 @@
 		</div>
 	</div>
 
-	<!-- Category chips — sticky nav -->
-	{#if data.categorySections.length > 1}
-		<nav class="chips-bar" aria-label="Kategorie">
-			<div class="chip-scroll" bind:this={chipScrollEl}>
-				{#each data.categorySections as section (section.category.id)}
-					<button
-						class="chip"
-						class:chip--active={activeCategory === section.category.slug}
-						data-chip={section.category.slug}
-						onclick={() => scrollToCategory(section.category.slug)}
-					>
-						{section.category.name}
-					</button>
-				{/each}
-			</div>
+	<!-- Category chips -->
+	{#if data.categories.length > 0}
+		<nav class="chips" aria-label="Filtruj po kategorii">
+			<button class="chip" class:chip--active={!data.category} onclick={() => setCategory('')}>
+				Wszystkie
+				<span class="chip-count">{data.totalItems}</span>
+			</button>
+			{#each data.categories as c (c.slug)}
+				<button
+					class="chip"
+					class:chip--active={data.category === c.slug}
+					onclick={() => setCategory(c.slug)}
+				>
+					{c.name}
+					<span class="chip-count">{c.count}</span>
+				</button>
+			{/each}
 		</nav>
 	{/if}
 
-	<!-- Category sections -->
+	<!-- Results -->
 	{#if data.error}
-		<div class="empty-state">
+		<div class="empty">
 			<p>{data.error}</p>
 		</div>
-	{:else if data.categorySections.length > 0}
-		{#each data.categorySections as section (section.category.id)}
-			<section class="cat-section" data-cat-section={section.category.slug}>
-				<div class="cat-header">
-					<h2 class="cat-title">{section.category.name}</h2>
-				</div>
-
-				<div class="cat-grid ft-stagger">
-					{#each section.products as product (product.id)}
-						<ProductCard {product} />
-					{/each}
-				</div>
-			</section>
-		{/each}
+	{:else if loading}
+		<div class="grid">
+			<ProductCardSkeleton count={8} />
+		</div>
+	{:else if data.products.length === 0}
+		<div class="empty">
+			{#if hasFilters}
+				<p>Brak wyników dla wybranych filtrów.</p>
+				<button type="button" class="btn-clear" onclick={clearFilters}> Wyczyść filtry </button>
+			{:else}
+				<p>Nie znaleziono produktów.</p>
+			{/if}
+		</div>
 	{:else}
-		<div class="empty-state">
-			<p>Nie znaleziono produktów.</p>
+		<div class="ft-stagger grid">
+			{#each data.products as product (product.id)}
+				<ProductCard {product} />
+			{/each}
 		</div>
 	{/if}
 </div>
@@ -216,29 +210,108 @@
 
 	/* ── Header ── */
 	.page-header {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 16px;
 		padding: clamp(24px, 4vh, 40px) 0 20px;
+		margin-bottom: 16px;
+		border-bottom: 1px solid var(--ft-line);
+	}
+
+	.page-heading {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
 	}
 
 	.page-title {
 		font-family: var(--font-sans);
-		font-size: clamp(1.2rem, 2.5vw, 1.6rem);
-		font-weight: 600;
-		color: var(--ft-dark);
-		letter-spacing: -0.015em;
-		
-		
-		text-transform: none;
-		line-height: 1;
+		font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+		font-weight: 400;
+		color: var(--ft-text-strong);
+		letter-spacing: -0.02em;
+		line-height: 1.1;
+	}
+
+	.page-count {
+		font-family: var(--font-mono);
+		font-size: 0.8125rem;
+		color: var(--ft-text-muted);
+		letter-spacing: 0.02em;
+		margin-top: 2px;
+	}
+
+	/* ── Filter strip ── */
+	.filters {
+		display: flex;
+		gap: 12px;
+		align-items: center;
+		flex-wrap: wrap;
+		margin-bottom: 16px;
+	}
+
+	.search {
+		position: relative;
+		flex: 1;
+		min-width: 240px;
+		max-width: 520px;
+	}
+
+	.search :global(.search-icon) {
+		position: absolute;
+		top: 50%;
+		left: 14px;
+		transform: translateY(-50%);
+		color: var(--ft-text-faint);
+		pointer-events: none;
+	}
+
+	.search-input {
+		width: 100%;
+		padding: 10px 40px;
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-sm);
+		background: var(--ft-surface);
+		color: var(--ft-text);
+		font-family: var(--font-sans);
+		font-size: 0.9375rem;
+		min-height: 44px;
+		transition: border-color var(--dur-fast) ease;
+	}
+
+	.search-input::placeholder {
+		color: var(--ft-text-faint);
+	}
+
+	.search-input:focus {
+		outline: none;
+		border-color: var(--ft-accent);
+	}
+
+	.search-clear {
+		position: absolute;
+		top: 50%;
+		right: 8px;
+		transform: translateY(-50%);
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 28px;
+		height: 28px;
+		border: none;
+		border-radius: var(--radius-sm);
+		background: transparent;
+		color: var(--ft-text-muted);
+		cursor: pointer;
+		transition: background-color var(--dur-fast) ease;
+	}
+
+	.search-clear:hover {
+		background: var(--ft-frost);
+		color: var(--ft-text);
 	}
 
 	/* ── Sort buttons ── */
 	.sort-bar {
 		display: flex;
-		gap: 2px;
+		gap: 0;
 		flex-shrink: 0;
 	}
 
@@ -249,26 +322,26 @@
 		padding: 6px 12px;
 		background: transparent;
 		border: 1px solid var(--ft-line);
-		font-family: var(--font-sans);
-		font-size: 0.7rem;
-		font-weight: 600;
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		font-weight: 400;
 		color: var(--ft-text-muted);
-		text-transform: none;
-		letter-spacing: 0;
+		text-transform: lowercase;
+		letter-spacing: 0.02em;
 		cursor: pointer;
-		min-height: 36px;
+		min-height: 44px;
 		transition:
-			color 0.15s ease,
-			background 0.15s ease,
-			border-color 0.15s ease;
+			color var(--dur-fast) ease,
+			background-color var(--dur-fast) ease,
+			border-color var(--dur-fast) ease;
 	}
 
 	.sort-btn:first-child {
-		border-radius: var(--radius-full) 0 0 var(--radius-full);
+		border-radius: var(--radius-sm) 0 0 var(--radius-sm);
 	}
 
 	.sort-btn:last-child {
-		border-radius: 0 var(--radius-full) var(--radius-full) 0;
+		border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
 	}
 
 	.sort-btn:not(:first-child) {
@@ -281,166 +354,118 @@
 	}
 
 	.sort-btn--active {
-		background: var(--ft-accent);
+		background: color-mix(in srgb, var(--ft-accent) 8%, white);
 		border-color: var(--ft-accent);
-		color: white;
+		color: var(--ft-accent-text);
 		z-index: 1;
 	}
 
-	/* ── Sticky chip bar ── */
-	.chips-bar {
-		position: sticky;
-		top: 60px; /* below navbar mobile */
-		z-index: 10;
-		background: var(--ft-bg);
-		padding: 12px 0;
-		margin-left: calc(-1 * var(--ft-gutter, clamp(24px, 5vw, 80px)));
-		margin-right: calc(-1 * var(--ft-gutter, clamp(24px, 5vw, 80px)));
-		padding-left: var(--ft-gutter, clamp(24px, 5vw, 80px));
-		margin-bottom: 8px;
-		border-bottom: 1px solid var(--ft-line);
-	}
-
-	@media (min-width: 769px) {
-		.chips-bar {
-			top: 100px; /* below navbar desktop */
-		}
-	}
-
-	.chip-scroll {
+	/* ── Category chips ── */
+	.chips {
 		display: flex;
-		gap: 8px;
-		overflow-x: auto;
-		-webkit-overflow-scrolling: touch;
-		scrollbar-width: none;
-		scroll-snap-type: x mandatory;
-	}
-
-	.chip-scroll::-webkit-scrollbar {
-		display: none;
+		flex-wrap: wrap;
+		gap: 6px;
+		margin-bottom: clamp(20px, 3vh, 32px);
 	}
 
 	.chip {
-		flex-shrink: 0;
-		scroll-snap-align: start;
 		display: inline-flex;
 		align-items: center;
-		padding: 8px 16px;
-		background: transparent;
+		gap: 8px;
+		padding: 6px 12px;
+		background: var(--ft-surface);
 		border: 1px solid var(--ft-line);
-		border-radius: var(--radius-full);
+		border-radius: var(--radius-sm);
 		font-family: var(--font-sans);
-		font-size: 0.78rem;
-		font-weight: 600;
-		color: var(--ft-text-muted);
+		font-size: 0.875rem;
+		font-weight: 400;
+		color: var(--ft-text);
 		cursor: pointer;
-		white-space: nowrap;
-		text-transform: none;
-		letter-spacing: 0;
+		min-height: 36px;
 		transition:
-			color 0.15s ease,
-			background 0.15s ease,
-			border-color 0.15s ease;
-		min-height: 44px;
+			color var(--dur-fast) ease,
+			background-color var(--dur-fast) ease,
+			border-color var(--dur-fast) ease;
 	}
 
 	.chip:hover:not(.chip--active) {
-		background: var(--ft-frost);
-		color: var(--ft-text-strong);
+		border-color: var(--ft-text-strong);
 	}
 
 	.chip--active {
-		background: var(--ft-accent);
-		border-color: var(--ft-accent);
-		color: white;
+		background: var(--ft-text-strong);
+		border-color: var(--ft-text-strong);
+		color: var(--ft-bg);
 	}
 
-	@media (min-width: 769px) {
-		.chip-scroll {
-			flex-wrap: wrap;
-			overflow: visible;
-			margin: 0;
-			padding: 0;
-		}
+	.chip-count {
+		font-family: var(--font-mono);
+		font-size: 0.6875rem;
+		color: var(--ft-text-faint);
+		letter-spacing: 0.02em;
 	}
 
-	/* ── Category sections ── */
-	.cat-section {
-		padding-bottom: clamp(32px, 4vh, 48px);
+	.chip--active .chip-count {
+		color: rgba(255, 255, 255, 0.7);
 	}
 
-	.cat-header {
-		display: flex;
-		align-items: baseline;
-		justify-content: space-between;
-		margin-bottom: 20px;
-	}
-
-	.cat-title {
-		font-family: var(--font-sans);
-		font-size: clamp(1rem, 2vw, 1.25rem);
-		font-weight: 600;
-		color: var(--ft-dark);
-		letter-spacing: -0.015em;
-		
-		
-		text-transform: none;
-		line-height: 1;
-	}
-
-	/* ── Product grid — horizontal scroll on mobile ── */
-	.cat-grid {
-		display: flex;
-		flex-wrap: nowrap;
-		gap: 16px;
-		overflow-x: auto;
-		scrollbar-width: none;
-		scroll-snap-type: x mandatory;
-		margin-right: calc(-1 * var(--ft-gutter, clamp(24px, 5vw, 80px)));
-		padding-right: var(--ft-gutter, clamp(24px, 5vw, 80px));
-		padding-bottom: 16px;
-	}
-
-	.cat-grid::-webkit-scrollbar {
-		display: none;
-	}
-
-	:global(.cat-grid > *) {
-		flex: 0 0 75%;
-		scroll-snap-align: start;
+	/* ── Product grid ── */
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 12px;
 	}
 
 	@media (min-width: 640px) {
-		.cat-grid {
-			display: grid;
-			grid-template-columns: repeat(3, 1fr);
-			margin: 0;
-			padding: 0;
-			overflow: visible;
-		}
-
-		:global(.cat-grid > *) {
-			flex: auto;
+		.grid {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: 16px;
 		}
 	}
 
 	@media (min-width: 1024px) {
-		.cat-grid {
-			grid-template-columns: repeat(4, 1fr);
+		.grid {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
 		}
 	}
 
 	@media (min-width: 1440px) {
-		.cat-grid {
-			grid-template-columns: repeat(5, 1fr);
+		.grid {
+			grid-template-columns: repeat(5, minmax(0, 1fr));
 		}
 	}
 
 	/* ── Empty state ── */
-	.empty-state {
+	.empty {
 		text-align: center;
-		padding: clamp(48px, 8vh, 80px) 0;
+		padding: clamp(48px, 8vh, 96px) 0;
 		color: var(--ft-text-muted);
-		font-size: 0.9rem;
+	}
+
+	.empty p {
+		font-size: 0.9375rem;
+		margin-bottom: 16px;
+	}
+
+	.btn-clear {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+		font-family: var(--font-sans);
+		font-size: 0.9375rem;
+		padding: 10px 20px;
+		min-height: 44px;
+		border-radius: var(--radius-sm);
+		border: 1px solid var(--ft-line);
+		background: transparent;
+		color: var(--ft-text);
+		cursor: pointer;
+		transition: border-color var(--dur-fast) ease;
+	}
+
+	.btn-clear:hover {
+		border-color: var(--ft-accent);
+		color: var(--ft-accent-text);
 	}
 </style>

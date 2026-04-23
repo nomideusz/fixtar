@@ -15,16 +15,22 @@
 
 	// Tag → icon mapping (SVG tool icons)
 	const tagIcons: Record<string, string> = {
-		'Poradnik': 'M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z',
-		'Konserwacja': 'M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.49 8.49l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.49-8.49l2.83-2.83',
-		'Porównanie': 'M9 19V6l12-3v13M9 19c0 1.1-1.3 2-3 2s-3-.9-3-2 1.3-2 3-2 3 .9 3 2zm12-3c0 1.1-1.3 2-3 2s-3-.9-3-2 1.3-2 3-2 3 .9 3 2z',
-		'Bezpieczeństwo': 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'
+		Poradnik:
+			'M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z',
+		Konserwacja:
+			'M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.49 8.49l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.49-8.49l2.83-2.83',
+		Porównanie:
+			'M9 19V6l12-3v13M9 19c0 1.1-1.3 2-3 2s-3-.9-3-2 1.3-2 3-2 3 .9 3 2zm12-3c0 1.1-1.3 2-3 2s-3-.9-3-2 1.3-2 3-2 3 .9 3 2z',
+		Bezpieczeństwo: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'
 	};
 </script>
 
 <svelte:head>
 	<title>Blog — FixTar</title>
-	<meta name="description" content="Porady, recenzje i aktualności ze świata elektronarzędzi. Blog FixTar." />
+	<meta
+		name="description"
+		content="Porady, recenzje i aktualności ze świata elektronarzędzi. Blog FixTar."
+	/>
 </svelte:head>
 
 <div class="ft-container ft-section">
@@ -32,14 +38,26 @@
 		<div class="blog-header">
 			<h4 class="ft-label">Blog</h4>
 			<h1 class="blog-title">Poradnik narzędziowy</h1>
-			<p class="blog-lead">Praktyczne porady, recenzje sprzętu i nowości ze świata profesjonalnych elektronarzędzi.</p>
+			<p class="blog-lead">
+				Praktyczne porady, recenzje sprzętu i nowości ze świata profesjonalnych elektronarzędzi.
+			</p>
 		</div>
 
 		<div class="posts-grid ft-stagger">
 			{#each data.posts as post}
 				<a href="/blog/{post.slug}" class="post-card">
 					<div class="post-img">
-						<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<svg
+							width="48"
+							height="48"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.5"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
 							<path d={tagIcons[post.tag] || tagIcons['Poradnik']} />
 						</svg>
 					</div>
@@ -103,7 +121,9 @@
 		border-radius: var(--radius-sm);
 		overflow: hidden;
 		background: var(--ft-surface);
-		transition: transform 0.2s var(--ease-out), border-color 0.2s ease;
+		transition:
+			transform 0.2s var(--ease-out),
+			border-color 0.2s ease;
 	}
 
 	.post-card:hover {
@@ -138,7 +158,7 @@
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.08em;
-		color: var(--ft-accent);
+		color: var(--ft-accent-text);
 		background: var(--ft-frost);
 		padding: 2px 8px;
 		border-radius: 2px;

@@ -4,60 +4,44 @@ import { getAllProducts, getCategories, toStoreProduct } from '$lib/server/produ
 export const load = (async ({ url }) => {
 	const searchQuery = url.searchParams.get('search') || '';
 	const sortBy = url.searchParams.get('sort') || 'name';
+	const category = url.searchParams.get('category') || '';
 
 	try {
-		const [{ products: allDbProducts }, dbCategories] = await Promise.all([
+		const [{ products: dbProducts, total }, dbCategories] = await Promise.all([
 			getAllProducts({
 				search: searchQuery || undefined,
+				category: category || undefined,
 				sort: sortBy,
 				page: 1,
-				perPage: 500 // get all products
+				perPage: 500
 			}),
 			getCategories()
 		]);
 
-		const allProducts = allDbProducts.map(toStoreProduct);
+		const products = dbProducts.map(toStoreProduct);
 
 		const categories = dbCategories.map((c) => ({
-			id: c.category_slug,
-			name: c.category,
 			slug: c.category_slug,
-			image: '',
-			productCount: Number(c.count)
+			name: c.category,
+			count: Number(c.count)
 		}));
 
-		// Group products by category
-		const productsByCategory: Record<string, typeof allProducts> = {};
-		for (const product of allProducts) {
-			const catSlug = product.categories?.[0] || 'inne';
-			if (!productsByCategory[catSlug]) {
-				productsByCategory[catSlug] = [];
-			}
-			productsByCategory[catSlug].push(product);
-		}
-
-		// Build ordered category sections
-		const categorySections = categories
-			.filter((cat) => productsByCategory[cat.slug]?.length > 0)
-			.map((cat) => ({
-				category: cat,
-				products: productsByCategory[cat.slug] || []
-			}));
-
 		return {
-			categorySections,
+			products,
 			categories,
 			searchQuery,
 			sortBy,
-			totalItems: allProducts.length
+			category,
+			totalItems: total
 		};
 	} catch (error) {
 		console.error('Failed to load products:', error);
 		return {
-			categorySections: [],
+			products: [],
 			categories: [],
 			searchQuery,
 			sortBy,
+			category,
 			totalItems: 0,
 			error: 'Wystąpił błąd podczas ładowania produktów. Spróbuj ponownie później.'
 		};

@@ -2,7 +2,6 @@
 	import { cart } from '$lib/stores';
 	import { notifications } from '$lib/stores';
 	import { enhance } from '$app/forms';
-	import Input from '$lib/components/ui/Input.svelte';
 	import OrderSummary from '$lib/components/checkout/OrderSummary.svelte';
 	import type { PageData, ActionData } from './$types';
 	import { ShoppingCartSimpleIcon, ClockIcon } from 'phosphor-svelte';
@@ -10,7 +9,6 @@
 	let { data, form }: { data: PageData; form?: ActionData } = $props();
 
 	// --- Form State ---
-
 	let formData = $state({
 		email: '',
 		firstName: '',
@@ -26,7 +24,6 @@
 		paymentMethod: '',
 		shippingMethod: '',
 		notes: '',
-		useShippingAsBilling: true,
 		saveAddress: false
 	});
 
@@ -34,14 +31,14 @@
 	let errors = $state<Record<string, string>>({});
 	let selectedShipping = $state<any>(null);
 	let selectedPayment = $state<any>(null);
+	let showCompany = $state(false);
 	let showNotes = $state(false);
 
 	// --- Initialization ---
-
 	$effect(() => {
-		if (data.user?.email) formData.email = data.user.email;
+		if (data.user?.email && !formData.email) formData.email = data.user.email;
 		const defaultAddress = data.addresses?.find((addr: any) => addr.default);
-		if (defaultAddress) {
+		if (defaultAddress && !formData.street) {
 			formData.street = defaultAddress.street || '';
 			formData.city = defaultAddress.city || '';
 			formData.postalCode = defaultAddress.postalCode || '';
@@ -49,8 +46,10 @@
 	});
 
 	$effect(() => {
-		if (!selectedShipping && data.shippingMethods?.length > 0) selectedShipping = data.shippingMethods[0];
-		if (!selectedPayment && data.paymentMethods?.length > 0) selectedPayment = data.paymentMethods[0];
+		if (!selectedShipping && data.shippingMethods?.length > 0)
+			selectedShipping = data.shippingMethods[0];
+		if (!selectedPayment && data.paymentMethods?.length > 0)
+			selectedPayment = data.paymentMethods[0];
 	});
 
 	$effect(() => {
@@ -63,47 +62,48 @@
 	});
 
 	// --- Totals ---
-
 	const VAT_RATE = 0.23;
 	let subtotal = $derived(cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0));
-
 	let shippingCost = $derived.by(() => {
 		if (!selectedShipping) return 0;
 		const { freeShippingThreshold, cost = 0 } = selectedShipping;
 		return freeShippingThreshold && subtotal >= freeShippingThreshold ? 0 : cost;
 	});
-
 	let paymentFee = $derived.by(() => {
 		if (!selectedPayment?.processingFee) return 0;
 		return selectedPayment.feeType === 'percentage'
 			? subtotal * (selectedPayment.processingFee / 100)
 			: selectedPayment.processingFee;
 	});
-
 	let tax = $derived(subtotal * VAT_RATE);
 	let total = $derived(subtotal + shippingCost + paymentFee + tax);
 
 	// --- Validation ---
-
 	function validateForm(): boolean {
 		errors = {};
-		if (cart.items.length === 0) { errors.cart = 'Koszyk jest pusty'; return false; }
-		if (!formData.email || !formData.email.includes('@')) errors.email = 'Podaj prawidłowy adres email';
+		if (cart.items.length === 0) {
+			errors.cart = 'Koszyk jest pusty';
+			return false;
+		}
+		if (!formData.email || !formData.email.includes('@'))
+			errors.email = 'Podaj prawidłowy adres email';
 		if (!formData.firstName) errors.firstName = 'Imię jest wymagane';
 		if (!formData.lastName) errors.lastName = 'Nazwisko jest wymagane';
 		if (!formData.street) errors.street = 'Ulica jest wymagana';
 		if (!formData.city) errors.city = 'Miasto jest wymagane';
 		if (!formData.voivodeship) errors.voivodeship = 'Województwo jest wymagane';
-		if (!formData.postalCode || !/^\d{2}-\d{3}$/.test(formData.postalCode)) errors.postalCode = 'Format: XX-XXX';
-		if (!formData.phone || !/^[\d\s+\-()]+$/.test(formData.phone)) errors.phone = 'Podaj numer telefonu';
-		if (formData.nip && !/^\d{10}$/.test(formData.nip.replace(/\D/g, ''))) errors.nip = 'NIP: 10 cyfr';
+		if (!formData.postalCode || !/^\d{2}-\d{3}$/.test(formData.postalCode))
+			errors.postalCode = 'Format: XX-XXX';
+		if (!formData.phone || !/^[\d\s+\-()]+$/.test(formData.phone))
+			errors.phone = 'Podaj numer telefonu';
+		if (formData.nip && !/^\d{10}$/.test(formData.nip.replace(/\D/g, '')))
+			errors.nip = 'NIP: 10 cyfr';
 		if (!formData.paymentMethod) errors.paymentMethod = 'Wybierz metodę płatności';
 		if (!formData.shippingMethod) errors.shippingMethod = 'Wybierz metodę dostawy';
 		return Object.keys(errors).length === 0;
 	}
 
 	// --- Formatters ---
-
 	function formatPostalCode(e: Event) {
 		let value = (e.currentTarget as HTMLInputElement).value.replace(/\D/g, '');
 		if (value.length >= 2) value = value.slice(0, 2) + '-' + value.slice(2, 5);
@@ -125,10 +125,6 @@
 		}
 	}
 
-	function bindField(field: keyof typeof formData) {
-		return (e: Event) => { (formData as any)[field] = (e.currentTarget as HTMLInputElement).value; };
-	}
-
 	function formatPrice(v: number): string {
 		return v.toFixed(2).replace('.', ',') + ' zł';
 	}
@@ -138,22 +134,18 @@
 	<title>Zamówienie — FixTar</title>
 </svelte:head>
 
-<div class="ft-container checkout-page">
+<section class="ft-container ft-section">
 	{#if cart.items.length === 0}
-		<div class="checkout-empty">
-			<ShoppingCartSimpleIcon size={48} weight="light" aria-hidden="true" />
+		<div class="empty">
+			<ShoppingCartSimpleIcon size={40} weight="regular" aria-hidden="true" />
 			<h2>Koszyk jest pusty</h2>
-			<a href="/products">Przeglądaj produkty</a>
+			<a href="/products" class="empty-link">Przeglądaj produkty →</a>
 		</div>
 	{:else}
-		<!-- Progress -->
-		<nav class="checkout-progress" aria-label="Postęp zamówienia">
-			<span class="step done">1. Koszyk</span>
-			<span class="step-line done"></span>
-			<span class="step active">2. Zamówienie</span>
-			<span class="step-line"></span>
-			<span class="step">3. Gotowe</span>
-		</nav>
+		<header class="page-head">
+			<p class="ft-label">krok 2 z 3</p>
+			<h1 class="page-title">Zamówienie</h1>
+		</header>
 
 		<form
 			method="POST"
@@ -161,9 +153,17 @@
 			use:enhance={({ formData: fd }) => {
 				if (!validateForm()) return async () => {};
 				processing = true;
-				fd.append('items', JSON.stringify(cart.items.map((item) => ({
-					productId: item.productId, name: item.name, price: item.price, quantity: item.quantity
-				}))));
+				fd.append(
+					'items',
+					JSON.stringify(
+						cart.items.map((item) => ({
+							productId: item.productId,
+							name: item.name,
+							price: item.price,
+							quantity: item.quantity
+						}))
+					)
+				);
 				fd.append('subtotal', subtotal.toString());
 				fd.append('shippingCost', shippingCost.toString());
 				fd.append('tax', tax.toString());
@@ -174,131 +174,270 @@
 					await update();
 				};
 			}}
-			class="checkout-grid"
+			class="grid"
 		>
-			<!-- Left: Form -->
-			<div class="checkout-form">
+			<div class="form-col">
 				<!-- Contact -->
-				<fieldset class="checkout-section">
-					<legend class="section-label">Kontakt</legend>
-					<div class="field-row">
-						<Input type="email" label="Email" name="email" value={formData.email} oninput={bindField('email')} error={errors.email} required placeholder="jan@example.com" />
-						<Input type="tel" label="Telefon" name="phone" value={formData.phone} oninput={formatPhone} error={errors.phone} required placeholder="+48 123 456 789" />
-					</div>
-				</fieldset>
+				<section class="group">
+					<p class="ft-label group-label">kontakt</p>
 
-				<!-- Address -->
-				<fieldset class="checkout-section">
-					<legend class="section-label">Adres dostawy</legend>
-					<div class="field-row">
-						<Input label="Imię" name="firstName" value={formData.firstName} oninput={bindField('firstName')} error={errors.firstName} required />
-						<Input label="Nazwisko" name="lastName" value={formData.lastName} oninput={bindField('lastName')} error={errors.lastName} required />
+					<label class="field">
+						<span class="field-label">Email</span>
+						<input
+							type="email"
+							name="email"
+							bind:value={formData.email}
+							placeholder="jan@example.com"
+							class="input"
+							class:input--error={errors.email}
+							required
+						/>
+						{#if errors.email}<span class="field-error">{errors.email}</span>{/if}
+					</label>
+
+					<label class="field">
+						<span class="field-label">Telefon</span>
+						<input
+							type="tel"
+							name="phone"
+							value={formData.phone}
+							oninput={formatPhone}
+							placeholder="+48 123 456 789"
+							class="input"
+							class:input--error={errors.phone}
+							required
+						/>
+						{#if errors.phone}<span class="field-error">{errors.phone}</span>{/if}
+					</label>
+				</section>
+
+				<!-- Shipping Address -->
+				<section class="group">
+					<p class="ft-label group-label">adres dostawy</p>
+
+					<div class="row row--2">
+						<label class="field">
+							<span class="field-label">Imię</span>
+							<input
+								name="firstName"
+								bind:value={formData.firstName}
+								class="input"
+								class:input--error={errors.firstName}
+								required
+							/>
+							{#if errors.firstName}<span class="field-error">{errors.firstName}</span>{/if}
+						</label>
+						<label class="field">
+							<span class="field-label">Nazwisko</span>
+							<input
+								name="lastName"
+								bind:value={formData.lastName}
+								class="input"
+								class:input--error={errors.lastName}
+								required
+							/>
+							{#if errors.lastName}<span class="field-error">{errors.lastName}</span>{/if}
+						</label>
 					</div>
-					<div class="field-row field-row--3">
-						<div class="col-span-2">
-							<Input label="Ulica i numer" name="street" value={formData.street} oninput={bindField('street')} error={errors.street} required placeholder="ul. Przykładowa 123" />
+
+					<div class="row row--street">
+						<label class="field">
+							<span class="field-label">Ulica i numer</span>
+							<input
+								name="street"
+								bind:value={formData.street}
+								placeholder="ul. Przykładowa 123"
+								class="input"
+								class:input--error={errors.street}
+								required
+							/>
+							{#if errors.street}<span class="field-error">{errors.street}</span>{/if}
+						</label>
+						<label class="field">
+							<span class="field-label">Lokal</span>
+							<input
+								name="apartment"
+								bind:value={formData.apartment}
+								placeholder="10"
+								class="input"
+							/>
+						</label>
+					</div>
+
+					<div class="row row--2">
+						<label class="field">
+							<span class="field-label">Kod pocztowy</span>
+							<input
+								name="postalCode"
+								value={formData.postalCode}
+								oninput={formatPostalCode}
+								placeholder="00-001"
+								maxlength={6}
+								class="input"
+								class:input--error={errors.postalCode}
+								required
+							/>
+							{#if errors.postalCode}<span class="field-error">{errors.postalCode}</span>{/if}
+						</label>
+						<label class="field">
+							<span class="field-label">Miasto</span>
+							<input
+								name="city"
+								bind:value={formData.city}
+								class="input"
+								class:input--error={errors.city}
+								required
+							/>
+							{#if errors.city}<span class="field-error">{errors.city}</span>{/if}
+						</label>
+					</div>
+
+					<label class="field">
+						<span class="field-label">Województwo</span>
+						<select
+							name="voivodeship"
+							bind:value={formData.voivodeship}
+							class="input select"
+							class:input--error={errors.voivodeship}
+							required
+						>
+							<option value="">Wybierz województwo</option>
+							{#each data.voivodeships as v (v)}
+								<option value={v}>{v}</option>
+							{/each}
+						</select>
+						{#if errors.voivodeship}<span class="field-error">{errors.voivodeship}</span>{/if}
+					</label>
+
+					<!-- Company info collapsed by default -->
+					{#if !showCompany}
+						<button type="button" class="toggle" onclick={() => (showCompany = true)}>
+							+ Kupuję na firmę (NIP, dane do faktury)
+						</button>
+					{:else}
+						<div class="row row--2">
+							<label class="field">
+								<span class="field-label">NIP</span>
+								<input
+									name="nip"
+									bind:value={formData.nip}
+									placeholder="1234567890"
+									class="input"
+									class:input--error={errors.nip}
+								/>
+								{#if errors.nip}<span class="field-error">{errors.nip}</span>{/if}
+							</label>
+							<label class="field">
+								<span class="field-label">Firma</span>
+								<input
+									name="company"
+									bind:value={formData.company}
+									placeholder="Nazwa firmy"
+									class="input"
+								/>
+							</label>
 						</div>
-						<Input label="Lokal" name="apartment" value={formData.apartment} oninput={bindField('apartment')} placeholder="10" />
-					</div>
-					<div class="field-row">
-						<Input label="Miasto" name="city" value={formData.city} oninput={bindField('city')} error={errors.city} required />
-						<div>
-							<label for="voivodeship" class="select-label">Województwo</label>
-							<select id="voivodeship" name="voivodeship" value={formData.voivodeship} onchange={bindField('voivodeship')} class="select-field" class:select-error={errors.voivodeship} required>
-								<option value="">Wybierz</option>
-								{#each data.voivodeships as v (v)}<option value={v}>{v}</option>{/each}
-							</select>
-							{#if errors.voivodeship}<p class="field-error">{errors.voivodeship}</p>{/if}
-						</div>
-					</div>
-					<div class="field-row">
-						<Input label="Kod pocztowy" name="postalCode" value={formData.postalCode} oninput={formatPostalCode} error={errors.postalCode} required placeholder="00-001" maxlength={6} />
-						<Input label="NIP (opcjonalnie)" name="nip" value={formData.nip} oninput={bindField('nip')} error={errors.nip} placeholder="1234567890" />
-					</div>
-					<Input label="Firma (opcjonalnie)" name="company" value={formData.company} oninput={bindField('company')} placeholder="Nazwa firmy" />
+					{/if}
+
 					{#if data.user}
-						<label class="checkbox-row">
+						<label class="checkbox">
 							<input type="checkbox" name="saveAddress" bind:checked={formData.saveAddress} />
 							<span>Zapisz adres na przyszłość</span>
 						</label>
 					{/if}
-				</fieldset>
+				</section>
 
-				<!-- Shipping -->
-				<fieldset class="checkout-section">
-					<legend class="section-label">Dostawa</legend>
-					{#if data.shippingMethods?.length > 0}
-						<div class="method-list">
-							{#each data.shippingMethods as method (method.id)}
-								{@const isSelected = selectedShipping?.id === method.id}
-								{@const isFree = method.freeShippingThreshold && subtotal >= method.freeShippingThreshold}
-								<label class="method-option" class:method-selected={isSelected}>
-									<input type="radio" name="shippingMethod" value={method.id} checked={isSelected} onchange={() => (selectedShipping = method)} class="sr-only" />
-									<div class="method-radio" class:checked={isSelected}>{#if isSelected}<div class="method-dot"></div>{/if}</div>
-									<div class="method-info">
-										<span class="method-name">{method.name}</span>
-										{#if method.estimatedDeliveryDays}
-											<span class="method-meta"><ClockIcon size={12} aria-hidden="true" /> {method.estimatedDeliveryDays} dni</span>
-										{/if}
-									</div>
-									<span class="method-price" class:method-free={isFree}>
-										{isFree ? 'Darmowa' : formatPrice(method.cost)}
-									</span>
-								</label>
-							{/each}
-						</div>
-					{:else}
-						<p class="text-sm text-[--ft-text-muted]">Brak dostępnych metod dostawy.</p>
-					{/if}
-					{#if errors.shippingMethod}<p class="field-error">{errors.shippingMethod}</p>{/if}
-				</fieldset>
-
-				<!-- Payment -->
-				<fieldset class="checkout-section">
-					<legend class="section-label">Płatność</legend>
-					{#if data.paymentMethods?.length > 0}
-						<div class="method-list">
-							{#each data.paymentMethods as method (method.id)}
-								{@const isSelected = selectedPayment?.id === method.id}
-								<label class="method-option" class:method-selected={isSelected}>
-									<input type="radio" name="paymentMethod" value={method.code || method.id} checked={isSelected} onchange={() => (selectedPayment = method)} class="sr-only" />
-									<div class="method-radio" class:checked={isSelected}>{#if isSelected}<div class="method-dot"></div>{/if}</div>
-									<div class="method-info">
-										<span class="method-name">{method.name}</span>
-										<span class="method-desc">{method.description}</span>
-									</div>
-									{#if method.processingFee}
-										<span class="method-fee">+{(method as any).feeType === 'percentage' ? `${method.processingFee}%` : `${method.processingFee} zł`}</span>
+				<!-- Shipping method -->
+				<section class="group">
+					<p class="ft-label group-label">dostawa</p>
+					<div class="methods">
+						{#each data.shippingMethods ?? [] as method (method.id)}
+							{@const isSelected = selectedShipping?.id === method.id}
+							{@const isFree =
+								method.freeShippingThreshold && subtotal >= method.freeShippingThreshold}
+							<label class="method" class:method--active={isSelected}>
+								<input
+									type="radio"
+									name="shippingMethod"
+									value={method.id}
+									checked={isSelected}
+									onchange={() => (selectedShipping = method)}
+									class="method-radio"
+								/>
+								<span class="method-body">
+									<span class="method-name">{method.name}</span>
+									{#if method.estimatedDeliveryDays}
+										<span class="method-meta">
+											<ClockIcon size={12} aria-hidden="true" />
+											{method.estimatedDeliveryDays} dni
+										</span>
 									{/if}
-								</label>
-							{/each}
-						</div>
-					{:else}
-						<p class="text-sm text-[--ft-text-muted]">Brak dostępnych metod płatności.</p>
-					{/if}
-					{#if errors.paymentMethod}<p class="field-error">{errors.paymentMethod}</p>{/if}
-				</fieldset>
+								</span>
+								<span class="method-price" class:method-free={isFree}>
+									{isFree ? 'gratis' : formatPrice(method.cost)}
+								</span>
+							</label>
+						{/each}
+					</div>
+					{#if errors.shippingMethod}<span class="field-error">{errors.shippingMethod}</span>{/if}
+				</section>
 
-				<!-- Notes toggle -->
-				<div class="notes-toggle">
-					<button type="button" onclick={() => (showNotes = !showNotes)} class="notes-btn">
-						{showNotes ? '− Ukryj uwagi' : '+ Dodaj uwagi do zamówienia'}
-					</button>
-					{#if showNotes}
-						<textarea
-							name="notes"
-							value={formData.notes}
-							oninput={bindField('notes')}
-							placeholder="Uwagi do zamówienia (opcjonalnie)"
-							rows="3"
-							class="notes-textarea"
-						></textarea>
+				<!-- Payment method -->
+				<section class="group">
+					<p class="ft-label group-label">płatność</p>
+					<div class="methods">
+						{#each data.paymentMethods ?? [] as method (method.id)}
+							{@const isSelected = selectedPayment?.id === method.id}
+							<label class="method" class:method--active={isSelected}>
+								<input
+									type="radio"
+									name="paymentMethod"
+									value={method.code || method.id}
+									checked={isSelected}
+									onchange={() => (selectedPayment = method)}
+									class="method-radio"
+								/>
+								<span class="method-body">
+									<span class="method-name">{method.name}</span>
+									{#if method.description}
+										<span class="method-meta">{method.description}</span>
+									{/if}
+								</span>
+								{#if method.processingFee}
+									<span class="method-price">
+										+{(method as any).feeType === 'percentage'
+											? `${method.processingFee}%`
+											: `${method.processingFee} zł`}
+									</span>
+								{/if}
+							</label>
+						{/each}
+					</div>
+					{#if errors.paymentMethod}<span class="field-error">{errors.paymentMethod}</span>{/if}
+				</section>
+
+				<!-- Notes -->
+				<section class="group">
+					{#if !showNotes}
+						<button type="button" class="toggle" onclick={() => (showNotes = true)}>
+							+ Dodaj uwagi do zamówienia
+						</button>
+					{:else}
+						<label class="field">
+							<span class="field-label">Uwagi</span>
+							<textarea
+								name="notes"
+								bind:value={formData.notes}
+								rows="3"
+								placeholder="np. dzwonić przed doręczeniem"
+								class="input textarea"
+							></textarea>
+						</label>
 					{/if}
-				</div>
+				</section>
 			</div>
 
-			<!-- Right: Summary -->
-			<div class="checkout-summary">
+			<aside class="summary-col">
 				<OrderSummary
 					items={cart.items}
 					{subtotal}
@@ -308,310 +447,280 @@
 					{total}
 					{processing}
 				/>
-			</div>
+			</aside>
 		</form>
 	{/if}
-</div>
+</section>
 
 <style>
-	.checkout-page {
-		padding-top: clamp(24px, 3vh, 40px);
-		padding-bottom: clamp(48px, 6vh, 80px);
+	/* ── Page head ── */
+	.page-head {
+		margin-bottom: clamp(24px, 4vh, 40px);
 	}
 
-	/* ── Empty state ── */
-	.checkout-empty {
+	.page-title {
+		margin-top: 6px;
+		font-family: var(--font-sans);
+		font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+		font-weight: 400;
+		color: var(--ft-text-strong);
+		letter-spacing: -0.02em;
+		line-height: 1.1;
+	}
+
+	/* ── Empty ── */
+	.empty {
 		text-align: center;
 		padding: clamp(48px, 8vh, 96px) 0;
 		color: var(--ft-text-muted);
 	}
 
-	.checkout-empty :global(svg) {
+	.empty :global(svg) {
 		color: var(--ft-text-faint);
 		margin: 0 auto 16px;
+		display: block;
 	}
 
-	.checkout-empty h2 {
-		font-family: var(--font-display);
-		font-size: 1.4rem;
-		font-weight: 700;
-		color: var(--ft-dark);
+	.empty h2 {
+		font-family: var(--font-sans);
+		font-size: 1.25rem;
+		font-weight: 400;
+		color: var(--ft-text-strong);
 		margin-bottom: 12px;
+		letter-spacing: -0.01em;
 	}
 
-	.checkout-empty a {
-		color: var(--ft-accent);
-		font-weight: 600;
-		font-size: 0.88rem;
+	.empty-link {
+		color: var(--ft-text);
+		text-decoration: none;
+		font-size: 0.9375rem;
 	}
 
-	/* ── Progress ── */
-	.checkout-progress {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: 0;
-		margin-bottom: clamp(24px, 3vh, 36px);
-		font-family: var(--font-display);
-		font-size: 0.75rem;
-		font-weight: 600;
-		letter-spacing: 0.03em;
-		text-transform: uppercase;
+	.empty-link:hover {
+		color: var(--ft-text-strong);
 	}
 
-	.step {
-		color: var(--ft-text-faint);
-		padding: 0 8px;
-	}
-
-	.step.done { color: var(--ft-accent); }
-	.step.active { color: var(--ft-dark); }
-
-	.step-line {
-		width: 32px;
-		height: 1px;
-		background: var(--ft-line);
-	}
-
-	.step-line.done { background: var(--ft-accent); }
-
-	/* ── Grid ── */
-	.checkout-grid {
+	/* ── Grid: form + summary ── */
+	.grid {
 		display: grid;
 		grid-template-columns: 1fr;
-		gap: 32px;
+		gap: 48px;
+		align-items: start;
 	}
 
-	@media (min-width: 1024px) {
-		.checkout-grid {
-			grid-template-columns: 1fr 380px;
-			gap: 40px;
+	@media (min-width: 960px) {
+		.grid {
+			grid-template-columns: minmax(0, 560px) minmax(0, 400px);
+			gap: 64px;
+			justify-content: space-between;
 		}
 	}
 
-	/* ── Form sections ── */
-	.checkout-form {
+	.form-col {
 		display: flex;
 		flex-direction: column;
-		gap: 0;
+		gap: clamp(32px, 5vh, 48px);
 	}
 
-	.checkout-section {
-		border: none;
-		padding: 0;
-		margin: 0;
-		padding-bottom: 24px;
-		margin-bottom: 24px;
-		border-bottom: 1px solid var(--ft-line);
-	}
-
-	.section-label {
-		font-family: var(--font-display);
-		font-size: 0.82rem;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.06em;
-		color: var(--ft-dark);
+	/* ── Groups ── */
+	.group-label {
 		margin-bottom: 16px;
 	}
 
-	/* ── Field rows ── */
-	.field-row {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: 12px;
-		margin-bottom: 12px;
-	}
-
-	@media (min-width: 640px) {
-		.field-row { grid-template-columns: 1fr 1fr; }
-		.field-row--3 { grid-template-columns: 2fr 1fr; }
-	}
-
-	.col-span-2 { grid-column: span 1; }
-	@media (min-width: 640px) { .col-span-2 { grid-column: span 1; } }
-
-	.select-label {
-		display: block;
-		margin-bottom: 6px;
-		font-size: 0.8rem;
-		font-weight: 600;
-		color: var(--ft-dark);
-	}
-
-	.select-field {
-		width: 100%;
-		border: 1px solid var(--ft-line);
-		border-radius: var(--radius-sm, 6px);
-		background: var(--ft-surface);
-		color: var(--ft-dark);
-		font-family: var(--font-sans);
-		padding: 10px 14px;
-		font-size: 0.95rem;
-		transition: border-color 0.15s;
-	}
-
-	.select-field:focus {
-		outline: none;
-		border-color: var(--ft-cta);
-		box-shadow: 0 0 0 3px var(--ft-cta-light);
-	}
-
-	.select-error { border-color: var(--color-danger); }
-
-	.field-error {
-		margin-top: 4px;
-		font-size: 0.78rem;
-		color: var(--color-danger);
-	}
-
-	.checkbox-row {
+	.group {
 		display: flex;
-		align-items: center;
-		gap: 8px;
-		margin-top: 8px;
-		font-size: 0.85rem;
-		color: var(--ft-text);
-		cursor: pointer;
+		flex-direction: column;
+		gap: 12px;
 	}
 
-	.checkbox-row input {
-		width: 16px;
-		height: 16px;
-		border-radius: 3px;
-		border: 1px solid var(--ft-line);
-		accent-color: var(--ft-accent);
-	}
-
-	/* ── Method cards (compact) ── */
-	.method-list {
+	/* ── Fields ── */
+	.field {
 		display: flex;
 		flex-direction: column;
 		gap: 6px;
 	}
 
-	.method-option {
+	.field-label {
+		font-size: 0.8125rem;
+		color: var(--ft-text-muted);
+	}
+
+	.field-error {
+		margin-top: 2px;
+		font-size: 0.8125rem;
+		color: var(--color-danger);
+	}
+
+	.input {
+		width: 100%;
+		padding: 10px 14px;
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-sm);
+		background: var(--ft-surface);
+		color: var(--ft-text);
+		font-family: var(--font-sans);
+		font-size: 0.9375rem;
+		min-height: 44px;
+		transition: border-color var(--dur-fast) ease;
+	}
+
+	.input::placeholder {
+		color: var(--ft-text-faint);
+	}
+
+	.input:focus {
+		outline: none;
+		border-color: var(--ft-text-strong);
+	}
+
+	.input--error {
+		border-color: var(--color-danger);
+	}
+
+	.textarea {
+		resize: vertical;
+		min-height: 88px;
+	}
+
+	.select {
+		appearance: none;
+		background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%236b7276'%3E%3Cpath d='M5.23 7.21a.75.75 0 011.06.02L10 11.06l3.71-3.83a.75.75 0 111.08 1.04l-4.25 4.39a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z'/%3E%3C/svg%3E");
+		background-repeat: no-repeat;
+		background-position: right 10px center;
+		background-size: 16px;
+		padding-right: 36px;
+	}
+
+	/* ── Rows ── */
+	.row {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 12px;
+	}
+
+	@media (min-width: 560px) {
+		.row--2 {
+			grid-template-columns: 1fr 1fr;
+		}
+		.row--street {
+			grid-template-columns: 1fr 100px;
+		}
+	}
+
+	/* ── Checkbox ── */
+	.checkbox {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		margin-top: 4px;
+		font-size: 0.875rem;
+		color: var(--ft-text);
+		cursor: pointer;
+	}
+
+	.checkbox input {
+		width: 16px;
+		height: 16px;
+		accent-color: var(--ft-text-strong);
+	}
+
+	/* ── Toggle link ── */
+	.toggle {
+		align-self: flex-start;
+		background: none;
+		border: none;
+		padding: 4px 0;
+		font-family: var(--font-sans);
+		font-size: 0.875rem;
+		color: var(--ft-text-muted);
+		cursor: pointer;
+		transition: color var(--dur-fast) ease;
+	}
+
+	.toggle:hover {
+		color: var(--ft-text-strong);
+	}
+
+	/* ── Methods (radio list) ── */
+	.methods {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	.method {
 		display: flex;
 		align-items: center;
 		gap: 12px;
-		padding: 12px 16px;
+		padding: 14px 16px;
 		border: 1px solid var(--ft-line);
 		border-radius: var(--radius-sm);
-		cursor: pointer;
-		transition: border-color 0.15s, background-color 0.15s;
 		background: var(--ft-surface);
+		cursor: pointer;
+		transition:
+			border-color var(--dur-fast) ease,
+			background-color var(--dur-fast) ease;
 	}
 
-	.method-option:hover { border-color: var(--ft-accent); }
+	.method:hover:not(.method--active) {
+		border-color: var(--ft-text-muted);
+	}
 
-	.method-selected {
-		border-color: var(--ft-accent);
+	.method--active {
+		border-color: var(--ft-text-strong);
 		background: var(--ft-frost);
 	}
 
 	.method-radio {
-		position: relative;
 		width: 16px;
 		height: 16px;
-		border-radius: 50%;
-		border: 2px solid var(--ft-line);
+		margin: 0;
+		accent-color: var(--ft-text-strong);
 		flex-shrink: 0;
-		transition: border-color 0.15s;
 	}
 
-	.method-radio.checked { border-color: var(--ft-accent); }
-
-	.method-dot {
-		position: absolute;
-		top: 2px;
-		left: 2px;
-		width: 8px;
-		height: 8px;
-		border-radius: 50%;
-		background: var(--ft-accent);
-	}
-
-	.method-info {
+	.method-body {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
 		flex: 1;
 		min-width: 0;
 	}
 
 	.method-name {
-		display: block;
-		font-size: 0.88rem;
-		font-weight: 600;
-		color: var(--ft-dark);
-	}
-
-	.method-desc {
-		display: block;
-		font-size: 0.75rem;
-		color: var(--ft-text-muted);
+		font-size: 0.9375rem;
+		color: var(--ft-text);
 	}
 
 	.method-meta {
 		display: inline-flex;
 		align-items: center;
-		gap: 3px;
-		font-size: 0.72rem;
+		gap: 4px;
+		font-size: 0.8125rem;
 		color: var(--ft-text-muted);
 	}
 
 	.method-price {
-		font-family: var(--font-display);
-		font-size: 0.88rem;
-		font-weight: 700;
-		color: var(--ft-dark);
+		font-family: var(--font-mono);
+		font-size: 0.9375rem;
+		font-variant-numeric: tabular-nums;
+		color: var(--ft-text);
 		flex-shrink: 0;
 	}
 
-	.method-free { color: var(--color-success); }
-
-	.method-fee {
-		font-size: 0.75rem;
-		color: var(--ft-text-muted);
-		flex-shrink: 0;
+	.method-free {
+		color: var(--color-success);
 	}
 
-	/* ── Notes ── */
-	.notes-toggle {
-		padding-top: 8px;
+	/* ── Summary column sticky on desktop ── */
+	.summary-col {
+		position: relative;
 	}
 
-	.notes-btn {
-		background: none;
-		border: none;
-		font-size: 0.82rem;
-		font-weight: 500;
-		color: var(--ft-text-muted);
-		cursor: pointer;
-		padding: 0;
-		transition: color 0.15s;
-	}
-
-	.notes-btn:hover { color: var(--ft-dark); }
-
-	.notes-textarea {
-		width: 100%;
-		margin-top: 10px;
-		border: 1px solid var(--ft-line);
-		border-radius: var(--radius-sm);
-		padding: 10px 14px;
-		font-size: 0.88rem;
-		font-family: var(--font-sans);
-		resize: none;
-		color: var(--ft-dark);
-		transition: border-color 0.15s;
-	}
-
-	.notes-textarea:focus {
-		outline: none;
-		border-color: var(--ft-cta);
-		box-shadow: 0 0 0 3px var(--ft-cta-light);
-	}
-
-	/* ── Summary column ── */
-	.checkout-summary {
-		/* Handled by OrderSummary sticky */
+	@media (min-width: 960px) {
+		.summary-col {
+			position: sticky;
+			top: 96px;
+		}
 	}
 </style>

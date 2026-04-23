@@ -6,7 +6,6 @@
 		error?: string;
 		helperText?: string;
 		value?: string;
-		variant?: 'default' | 'glass' | 'outline' | 'filled';
 		size?: 'sm' | 'md' | 'lg';
 	}
 
@@ -14,7 +13,6 @@
 		label,
 		error,
 		helperText,
-		variant = 'default',
 		size = 'md',
 		class: className = '',
 		id,
@@ -54,19 +52,20 @@
 	.input-label {
 		display: block;
 		margin-bottom: 6px;
+		font-family: var(--font-sans);
 		font-size: 0.8rem;
-		font-weight: 600;
-		color: var(--ft-dark);
+		font-weight: 400;
+		color: var(--ft-text);
 	}
 
 	.input-field {
 		width: 100%;
 		border: 1px solid var(--ft-line);
-		border-radius: var(--radius-sm, 6px);
+		border-radius: var(--radius-sm);
 		background: var(--ft-surface);
-		color: var(--ft-dark);
+		color: var(--ft-text);
 		font-family: var(--font-sans);
-		transition: border-color 0.15s ease, box-shadow 0.15s ease;
+		transition: border-color var(--dur-fast) ease;
 	}
 
 	.input-field::placeholder {
@@ -75,19 +74,32 @@
 
 	.input-field:focus {
 		outline: none;
-		border-color: var(--ft-cta);
-		box-shadow: 0 0 0 3px var(--ft-cta-light);
+		border-color: var(--ft-dark);
+		box-shadow: none;
 	}
 
 	.input-field:hover {
-		border-color: var(--ft-text-faint);
+		border-color: var(--ft-line-strong, var(--ft-dark));
 	}
 
-	.input--sm { padding: 8px 12px; font-size: 0.85rem; }
-	.input--md { padding: 10px 14px; font-size: 0.95rem; }
-	.input--lg { padding: 14px 18px; font-size: 1rem; }
+	.input--sm {
+		padding: 8px 12px;
+		font-size: 0.85rem;
+	}
+	.input--md {
+		padding: 10px 14px;
+		font-size: 0.9375rem;
+	}
+	.input--lg {
+		padding: 14px 18px;
+		font-size: 1rem;
+	}
 
 	.input--error {
+		border-color: var(--color-danger);
+	}
+
+	.input--error:focus {
 		border-color: var(--color-danger);
 	}
 

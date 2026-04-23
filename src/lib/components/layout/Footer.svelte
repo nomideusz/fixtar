@@ -62,7 +62,7 @@
 			<div class="footer-col">
 				<h4 class="footer-col-title">Sklep</h4>
 				<nav class="footer-nav" aria-label="Sklep">
-					{#each FOOTER_SHOP as link}
+					{#each FOOTER_SHOP as link (link.href)}
 						<a href={link.href}>{link.label}</a>
 					{/each}
 				</nav>
@@ -84,7 +84,7 @@
 			<div class="footer-col">
 				<h4 class="footer-col-title">Informacje</h4>
 				<nav class="footer-nav" aria-label="Informacje">
-					{#each FOOTER_LEGAL as link}
+					{#each FOOTER_LEGAL as link (link.href)}
 						<a href={link.href}>{link.label}</a>
 					{/each}
 				</nav>
@@ -92,7 +92,6 @@
 		</div>
 	</div>
 
-	<!-- Bottom bar -->
 	<div class="footer-bottom">
 		<div class="footer-bottom-inner">
 			<span class="footer-copy">&copy; {year} FixTar. Wszelkie prawa zastrzeżone.</span>
@@ -120,107 +119,125 @@
 
 <style>
 	.footer {
-		border-top: 1px solid var(--ft-line);
 		margin-top: auto;
+		border-top: 1px solid var(--ft-line);
+		background: var(--ft-surface);
 	}
 
 	.footer-inner {
 		max-width: var(--ft-container);
-		margin: 0 auto;
-		padding: clamp(32px, 4vh, 48px) var(--ft-gutter);
+		margin-inline: auto;
+		padding: clamp(40px, 5vh, 56px) var(--ft-gutter);
 	}
 
 	.footer-grid {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 32px 24px;
+		grid-template-columns: 1fr;
+		gap: 32px;
 	}
 
 	@media (min-width: 768px) {
 		.footer-grid {
-			grid-template-columns: 2fr 1fr 1fr 1fr;
-			gap: 48px;
+			grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(0, 1fr));
+			gap: 40px;
 		}
 	}
 
-	/* ── Brand ── */
+	.footer-brand-col {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+	}
+
 	.footer-brand {
 		display: inline-block;
 		font-family: var(--font-sans);
 		font-size: 1rem;
-		font-weight: 600;
-		color: var(--ft-dark);
+		font-weight: 400;
+		letter-spacing: -0.02em;
+		color: var(--ft-text-strong);
 		text-decoration: none;
-		margin-bottom: 8px;
 	}
 
 	.footer-brand:hover {
-		color: var(--ft-cta);
+		color: var(--ft-accent-text);
 	}
 
 	.footer-desc {
-		font-size: 0.78rem;
+		max-width: 28ch;
+		font-size: 0.875rem;
 		line-height: 1.6;
 		color: var(--ft-text-muted);
-		margin-bottom: 14px;
-		max-width: 260px;
 	}
 
 	.footer-social {
 		display: flex;
-		gap: 16px;
+		flex-wrap: wrap;
+		gap: 12px;
+		padding-top: 4px;
 	}
 
 	.social-link {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 40px;
+		height: 40px;
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-sm);
 		color: var(--ft-text-muted);
 		transition:
+			border-color var(--dur-fast) ease,
 			color var(--dur-fast) ease,
-			transform var(--dur-fast) ease;
+			background-color var(--dur-fast) ease;
 	}
 
 	.social-link:hover {
+		border-color: var(--ft-dark);
 		color: var(--ft-dark);
-		transform: translateY(-2px);
+		background: var(--ft-frost);
 	}
 
-	/* ── Columns ── */
+	.footer-col {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+	}
+
 	.footer-col-title {
-		font-family: var(--font-sans);
-		font-size: 0.95rem;
-		font-weight: 600;
-		text-transform: none;
-		letter-spacing: 0;
-		color: var(--ft-dark);
-		margin-bottom: 12px;
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		font-weight: 500;
+		letter-spacing: 0.02em;
+		text-transform: lowercase;
+		color: var(--ft-text-muted);
 	}
 
 	.footer-nav {
 		display: flex;
 		flex-direction: column;
-		gap: 6px;
+		gap: 8px;
 	}
 
 	.footer-nav a {
-		font-size: 0.82rem;
-		color: var(--ft-text-muted);
+		font-size: 0.9375rem;
+		color: var(--ft-text);
 		text-decoration: none;
 		transition: color var(--dur-fast) ease;
 	}
 
 	.footer-nav a:hover {
-		color: var(--ft-dark);
+		color: var(--ft-accent-text);
 	}
 
-	/* ── Bottom bar ── */
 	.footer-bottom {
 		border-top: 1px solid var(--ft-line);
-		padding: 14px 0;
 	}
 
 	.footer-bottom-inner {
 		max-width: var(--ft-container);
-		margin: 0 auto;
-		padding: 0 var(--ft-gutter);
+		margin-inline: auto;
+		padding: 16px var(--ft-gutter);
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
@@ -236,29 +253,33 @@
 	}
 
 	.footer-copy {
-		font-size: 0.68rem;
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		font-weight: 400;
+		letter-spacing: 0.02em;
 		color: var(--ft-text-faint);
 	}
 
 	.footer-payments {
 		display: flex;
+		flex-wrap: wrap;
 		align-items: center;
-		gap: 16px;
+		gap: 14px;
 	}
 
 	.pay-chip {
-		display: flex;
+		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		height: 36px;
+		min-height: 32px;
 		color: var(--ft-text-muted);
 	}
 
 	.pay-text-logo {
-		font-family: var(--font-sans);
-		font-size: 0.95rem;
-		font-weight: 600;
-		letter-spacing: 0.04em;
+		font-family: var(--font-mono);
+		font-size: 0.8125rem;
+		font-weight: 500;
+		letter-spacing: 0.02em;
 		color: var(--ft-text-muted);
 	}
 </style>

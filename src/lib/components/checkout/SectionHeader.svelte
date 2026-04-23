@@ -8,15 +8,19 @@
 		icon: Snippet;
 	}
 
-	let { title, iconBgClass = 'bg-[--ft-frost]', iconColorClass = 'text-[--ft-text-muted]', icon }: Props =
-		$props();
+	let {
+		title,
+		iconBgClass = 'border border-[--ft-line] bg-[--ft-surface]',
+		iconColorClass = 'text-[--ft-text-muted]',
+		icon
+	}: Props = $props();
 </script>
 
-<div class="mb-6 flex items-center">
-	<div class="mr-3 flex h-8 w-8 items-center justify-center rounded-lg {iconBgClass}">
+<div class="mb-6 flex items-center border-b border-[--ft-line] pb-3">
+	<div class="mr-3 flex h-8 w-8 items-center justify-center rounded-md {iconBgClass}">
 		<span class="{iconColorClass} h-4 w-4">
 			{@render icon()}
 		</span>
 	</div>
-	<h2 class="text-2xl font-bold text-[--ft-text]">{title}</h2>
+	<h2 class="text-2xl text-[--ft-text]">{title}</h2>
 </div>

@@ -7,21 +7,20 @@
 
 	let { status }: Props = $props();
 
-	const config: Record<string, { label: string; bgClass: string; textClass: string }> = {
+	const config: Record<string, { label: string; style: string }> = {
 		active: {
 			label: 'Active',
-			bgClass: 'bg-success/10',
-			textClass: 'text-success-dark'
+			style:
+				'border-color: color-mix(in srgb, var(--color-success) 30%, transparent); background: color-mix(in srgb, var(--color-success) 10%, white); color: var(--color-success);'
 		},
 		draft: {
 			label: 'Draft',
-			bgClass: 'bg-[--ft-frost]',
-			textClass: 'text-[--ft-accent-hover]'
+			style:
+				'border-color: color-mix(in srgb, var(--color-warning) 32%, transparent); background: color-mix(in srgb, var(--color-warning) 10%, white); color: var(--color-warning);'
 		},
 		inactive: {
 			label: 'Inactive',
-			bgClass: 'bg-[--ft-frost]',
-			textClass: 'text-[--ft-text-strong]'
+			style: 'border-color: var(--ft-line); background: var(--ft-surface); color: var(--ft-text-muted);'
 		}
 	};
 
@@ -29,7 +28,8 @@
 </script>
 
 <span
-	class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium {badge.bgClass} {badge.textClass}"
+	class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-normal"
+	style={badge.style}
 >
 	{#if status === 'active'}
 		<CheckCircleIcon class="mr-1 h-3 w-3" weight="fill" aria-hidden="true" />

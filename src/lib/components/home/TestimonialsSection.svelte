@@ -4,275 +4,242 @@
 	import avatar2 from '$lib/images/avatars/avatar2.png';
 	import avatar3 from '$lib/images/avatars/avatar3.png';
 
-	const stats = [
-		{ value: '2 500+', label: 'Produktów w ofercie' },
-		{ value: '15 000+', label: 'Zrealizowanych zamówień' },
-		{ value: '4.8/5', label: 'Ocena klientów' },
-		{ value: '98%', label: 'Pozytywnych opinii' }
-	];
-
 	const testimonials = [
 		{
 			name: 'Marek K.',
 			role: 'Elektryk',
 			text: 'Zamówiłem szlifierkę Bavaria — świetna jakość w rozsądnej cenie. Dostawa następnego dnia, paczka solidnie zabezpieczona.',
 			rating: 5,
-			// avatar: avatar1
-			avatar: avatar1 // Replace with imported avatar
+			avatar: avatar1
 		},
 		{
 			name: 'Anna W.',
 			role: 'Właścicielka warsztatu',
 			text: 'Korzystam z FixTar od roku. Konkurencyjne ceny, szybka wysyłka i profesjonalna obsługa klienta. Polecam każdemu rzemieślnikowi.',
 			rating: 5,
-			// avatar: avatar2
-			avatar: avatar2 // Replace with imported avatar
+			avatar: avatar2
 		},
 		{
 			name: 'Tomasz P.',
 			role: 'Majsterkowicz',
 			text: 'Wiertarka Eurotec, którą kupiłem, działa bez zarzutu od 6 miesięcy. Gwarancja daje spokój ducha. Na pewno wrócę po więcej.',
 			rating: 5,
-			// avatar: avatar3
-			avatar: avatar3 // Replace with imported avatar
+			avatar: avatar3
 		}
+	];
+
+	const stats = [
+		{ value: '2 500+', label: 'produktów' },
+		{ value: '15 000+', label: 'zamówień' },
+		{ value: '4.8 / 5', label: 'ocena klientów' },
+		{ value: '98%', label: 'pozytywnych opinii' }
 	];
 </script>
 
-<section class="social-proof ft-section">
+<section class="testimonials ft-section">
 	<div class="ft-container">
-		<!-- Stats strip -->
-		<div class="stats-strip">
-			{#each stats as stat, i}
-				<div class="stat" style="animation-delay: {i * 80}ms">
-					<span class="stat-value">{stat.value}</span>
-					<span class="stat-label">{stat.label}</span>
-				</div>
-			{/each}
+		<div class="t-header">
+			<span class="ft-label">opinie klientów</span>
+			<h2 class="t-title">Zaufały nam tysiące profesjonalistów</h2>
 		</div>
 
-		<!-- Testimonials -->
-		<div class="testimonials-header">
-			<h4 class="ft-label">Opinie klientów</h4>
-			<h2 class="testimonials-title">Dołącz do tysięcy zadowolonych klientów</h2>
-		</div>
-
-		<div class="testimonials-grid">
-			{#each testimonials as t, i}
-				<div class="testimonial-card ft-card" style="animation-delay: {i * 100}ms">
-					<!-- Stars -->
-					<div class="stars" aria-label="Ocena {t.rating} z 5">
-						{#each Array(5) as _, s}
-							<span style="color: {s < t.rating ? 'var(--ft-cta)' : 'var(--ft-line)'}">
+		<div class="t-grid ft-stagger">
+			{#each testimonials as t (t.name)}
+				<article class="t-card">
+					<div class="t-stars" aria-label="Ocena {t.rating} z 5">
+						{#each Array(5) as _, s (s)}
+							<span class="t-star" class:is-filled={s < t.rating}>
 								<StarIcon size={14} weight="fill" aria-hidden="true" />
 							</span>
 						{/each}
 					</div>
 
-					<blockquote class="testimonial-text">
-						"{t.text}"
-					</blockquote>
+					<blockquote class="t-quote">{t.text}</blockquote>
 
-					<div class="testimonial-author">
-						<div class="author-avatar" aria-hidden="true">
-							{#if t.avatar}
-								<img
-									src={t.avatar}
-									alt=""
-									class="avatar-img"
-									width="40"
-									height="40"
-									loading="lazy"
-								/>
-							{:else}
-								{t.name.charAt(0)}
-							{/if}
+					<footer class="t-author">
+						<div class="t-avatar" aria-hidden="true">
+							<img
+								src={t.avatar}
+								alt=""
+								width="40"
+								height="40"
+								loading="lazy"
+							/>
 						</div>
-						<div>
-							<span class="author-name">{t.name}</span>
-							<span class="author-role">{t.role}</span>
+						<div class="t-author-meta">
+							<span class="t-name">{t.name}</span>
+							<span class="t-role">{t.role}</span>
 						</div>
-					</div>
-				</div>
+					</footer>
+				</article>
 			{/each}
 		</div>
+
+		<dl class="t-stats">
+			{#each stats as s (s.label)}
+				<div class="t-stat">
+					<dt class="t-stat-value">{s.value}</dt>
+					<dd class="t-stat-label">{s.label}</dd>
+				</div>
+			{/each}
+		</dl>
 	</div>
 </section>
 
 <style>
-	/* ── Stats strip ── */
-	.stats-strip {
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: 16px;
-		margin-bottom: clamp(40px, 5vh, 56px);
-		padding-bottom: clamp(40px, 5vh, 56px);
-		border-bottom: 1px solid var(--ft-line);
-	}
-
-	@media (min-width: 640px) {
-		.stats-strip {
-			grid-template-columns: repeat(4, 1fr);
-		}
-	}
-
-	.stat {
-		text-align: center;
-		animation: ft-fade-up 0.4s var(--ease-out) both;
-	}
-
-	.stat-value {
-		display: block;
-		font-family: var(--font-sans);
-		font-size: clamp(1.8rem, 4vw, 2.5rem);
-		font-weight: 600;
-		color: var(--ft-text-strong);
-		letter-spacing: -0.01em;
-		line-height: 1;
-		font-variant-numeric: tabular-nums;
-	}
-
-	.stat-label {
-		display: block;
-		font-size: 0.72rem;
-		font-family: var(--font-mono);
-		text-transform: none;
-		letter-spacing: 0;
-		color: var(--ft-text-muted);
-		margin-top: 8px;
-		font-weight: 600;
-	}
-
-	/* ── Header ── */
-	.testimonials-header {
-		text-align: center;
+	.t-header {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
 		margin-bottom: 32px;
 	}
 
-	.testimonials-title {
+	.t-title {
 		font-family: var(--font-sans);
-		font-size: clamp(1.4rem, 3vw, 1.8rem);
-		font-weight: 600;
+		font-size: clamp(1.5rem, 3vw, 2rem);
+		font-weight: 400;
 		color: var(--ft-text-strong);
-		letter-spacing: -0.01em;
-		margin-top: 8px;
-		text-transform: none;
-		line-height: 1.1;
+		letter-spacing: -0.02em;
+		line-height: 1.15;
+		max-width: 22ch;
 	}
 
 	/* ── Grid ── */
-	.testimonials-grid {
-		display: flex;
-		flex-wrap: nowrap;
-		gap: 16px;
-		overflow-x: auto;
-		scrollbar-width: none;
-		scroll-snap-type: x mandatory;
-		margin-right: calc(-1 * var(--ft-gutter, clamp(24px, 5vw, 80px)));
-		padding-right: var(--ft-gutter, clamp(24px, 5vw, 80px));
-		padding-bottom: 16px;
+	.t-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 12px;
 	}
 
-	.testimonials-grid::-webkit-scrollbar {
-		display: none;
-	}
-
-	@media (min-width: 768px) {
-		.testimonials-grid {
-			display: grid;
+	@media (min-width: 640px) {
+		.t-grid {
 			grid-template-columns: repeat(2, 1fr);
-			margin: 0;
-			padding: 0;
-			overflow: visible;
-		}
-
-		.testimonial-card {
-			flex: auto;
+			gap: 16px;
 		}
 	}
 
 	@media (min-width: 1024px) {
-		.testimonials-grid {
+		.t-grid {
 			grid-template-columns: repeat(3, 1fr);
 		}
 	}
 
 	/* ── Card ── */
-	.testimonial-card {
-		flex: 0 0 85%;
-		scroll-snap-align: center;
-		padding: clamp(24px, 4vw, 32px);
-		animation: ft-fade-up 0.4s var(--ease-out) both;
-		border: 1px solid var(--ft-line);
+	.t-card {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+		padding: 24px;
 		background: var(--ft-surface);
-		border-radius: var(--radius-full);
-		transition:
-			border-color 0.2s ease,
-			box-shadow 0.2s ease;
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-sm);
+		transition: border-color var(--dur-fast) ease;
 	}
 
-	.testimonial-card:hover {
-		border-color: var(--ft-dark);
+	.t-card:hover {
+		border-color: var(--ft-text-strong);
 	}
 
-	.stars {
+	.t-stars {
 		display: flex;
 		gap: 2px;
-		margin-bottom: 14px;
 	}
 
-	.testimonial-text {
-		font-size: 0.9rem;
-		line-height: 1.6;
+	.t-star {
+		color: var(--ft-line);
+		display: inline-flex;
+	}
+
+	.t-star.is-filled {
 		color: var(--ft-text-strong);
-		margin-bottom: 24px;
-		font-style: normal;
-		font-weight: 500;
 	}
 
-	.testimonial-author {
-		display: flex;
-		align-items: center;
-		gap: 10px;
-	}
-
-	.author-avatar {
-		width: 40px;
-		height: 40px;
-		border-radius: var(--radius-full);
-		background: var(--ft-text-strong);
-		color: var(--ft-surface);
+	.t-quote {
 		font-family: var(--font-sans);
-		font-size: 1rem;
-		font-weight: 600;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		flex-shrink: 0;
-		overflow: hidden;
+		font-size: 0.9375rem;
+		line-height: 1.55;
+		color: var(--ft-text);
+		margin: 0;
 	}
 
-	.avatar-img {
+	.t-author {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		margin-top: auto;
+		padding-top: 4px;
+	}
+
+	.t-avatar {
+		width: 36px;
+		height: 36px;
+		border-radius: var(--radius-full);
+		background: var(--ft-frost);
+		overflow: hidden;
+		flex-shrink: 0;
+	}
+
+	.t-avatar img {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
 	}
 
-	.author-name {
-		display: block;
-		font-size: 0.85rem;
-		font-family: var(--font-sans);
-		font-weight: 600;
-		color: var(--ft-text-strong);
-		text-transform: none;
+	.t-author-meta {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
 	}
 
-	.author-role {
-		display: block;
-		font-size: 0.7rem;
+	.t-name {
+		font-family: var(--font-sans);
+		font-size: 0.875rem;
+		color: var(--ft-text-strong);
+	}
+
+	.t-role {
 		font-family: var(--font-mono);
-		text-transform: none;
-		letter-spacing: 0;
-		color: var(--ft-text-muted);
+		font-size: 0.6875rem;
+		color: var(--ft-text-faint);
+		letter-spacing: 0.02em;
+	}
+
+	/* ── Stats strip ── */
+	.t-stats {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 0;
+		margin: clamp(32px, 5vh, 48px) 0 0;
+		padding: 20px 0 0;
+		border-top: 1px solid var(--ft-line);
+	}
+
+	@media (min-width: 640px) {
+		.t-stats {
+			grid-template-columns: repeat(4, 1fr);
+		}
+	}
+
+	.t-stat {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		padding: 8px 4px;
+	}
+
+	.t-stat-value {
+		font-family: var(--font-mono);
+		font-size: 1rem;
+		font-variant-numeric: tabular-nums;
+		color: var(--ft-text-strong);
+		letter-spacing: 0.01em;
+	}
+
+	.t-stat-label {
+		font-family: var(--font-mono);
+		font-size: 0.6875rem;
+		color: var(--ft-text-faint);
+		letter-spacing: 0.02em;
+		text-transform: lowercase;
 	}
 </style>

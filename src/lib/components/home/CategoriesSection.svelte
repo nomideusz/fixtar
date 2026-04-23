@@ -1,16 +1,4 @@
 <script lang="ts">
-	import imgDrill from '$lib/images/banners/banner-workshop-cordless-drill-1.webp';
-	import imgGrinder from '$lib/images/banners/banner-grinder-sparks-1.webp';
-	import imgHammer from '$lib/images/banners/banner-construction-hammer-drill-1.webp';
-	import imgGarden from '$lib/images/banners/banner-garden-trimmer.webp';
-	import imgSaw from '$lib/images/banners/banner-dramatic-workshop-1.webp';
-	import imgAccessories from '$lib/images/banners/banner-extreme-closeup-1.webp';
-	import imgFlatlay from '$lib/images/banners/banner-topdown-flatlay-1.webp';
-	import imgImpact from '$lib/images/banners/banner-impact-wrench-wheel.webp';
-	import imgProfessional from '$lib/images/banners/banner-professional-1.webp';
-	import imgWomanDrill from '$lib/images/banners/banner-woman-drill-shelf-1.webp';
-	import { WrenchIcon } from 'phosphor-svelte';
-
 	interface Category {
 		id: string;
 		name: string;
@@ -24,186 +12,95 @@
 
 	let { categories = [] }: Props = $props();
 
-	const categoryImages: Record<string, { src: string; alt: string }> = {
-		'wiertarki-i-wkretarki': { src: imgDrill, alt: 'Wiertarka akumulatorowa w warsztacie' },
-		'mlotowiertarki-i-mloty': { src: imgHammer, alt: 'Młoty i młotowiertarki' },
-		'szlifierki-i-polerki': { src: imgGrinder, alt: 'Szlifierka kątowa z iskrami' },
-		'pily-i-pilarki': { src: imgSaw, alt: 'Pilarki i piły — warsztat profesjonalny' },
-		'pneumatyczne-i-budowlane': { src: imgProfessional, alt: 'Narzędzia dla profesjonalistów' },
-		'ogrod-i-akcesoria': { src: imgGarden, alt: 'Narzędzia ogrodowe i akcesoria' }
-	};
+	function displayName(c: Category) {
+		return c.slug === 'pneumatyczne-i-budowlane' ? 'Narzędzia budowlane' : c.name;
+	}
 </script>
 
-<section class="categories ft-section">
-	<div class="ft-container">
-		<div class="categories-header">
-			<h2 class="categories-title">Kategorie</h2>
-		</div>
+{#if categories.length > 0}
+	<section class="categories ft-section">
+		<div class="ft-container">
+			<div class="categories-header">
+				<span class="ft-label">kategorie</span>
+				<h2 class="categories-title">Przeglądaj kategorie</h2>
+			</div>
 
-		<div class="categories-grid ft-stagger">
-			{#each categories as category (category.id)}
-				{@const img = categoryImages[category.slug]}
-				<a href="/products?category={category.slug}" class="cat-card">
-					<div class="cat-image">
-						{#if img}
-							<img
-								src={img.src}
-								alt={img.alt}
-								width="480"
-								height="360"
-								loading="lazy"
-								class="cat-photo"
-							/>
-						{:else}
-							<!-- Fallback icon for unmapped categories -->
-							<div class="cat-fallback" aria-hidden="true">
-								<WrenchIcon size={32} weight="light" />
-							</div>
-						{/if}
-					</div>
-					<div class="cat-info">
-						<span class="cat-name"
-							>{category.slug === 'pneumatyczne-i-budowlane'
-								? 'Narzędzia Budowlane'
-								: category.name}</span
-						>
-						<!-- Product count removed for minimal design -->
-					</div>
-				</a>
-			{/each}
+			<div class="categories-grid ft-stagger">
+				{#each categories as category (category.id)}
+					<a href="/products?category={category.slug}" class="cat-card">
+						<span class="cat-name">{displayName(category)}</span>
+						<span class="cat-count">{category.count}</span>
+					</a>
+				{/each}
+			</div>
 		</div>
-	</div>
-</section>
+	</section>
+{/if}
 
 <style>
 	.categories-header {
-		margin-bottom: 32px;
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		margin-bottom: 24px;
 	}
 
 	.categories-title {
 		font-family: var(--font-sans);
-		font-size: clamp(1.2rem, 2.5vw, 1.6rem);
-		font-weight: 600;
-		color: var(--ft-dark);
-		letter-spacing: -0.015em;
-		margin-top: 6px;
-		
-		
-		text-transform: none;
-		line-height: 1;
+		font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+		font-weight: 400;
+		color: var(--ft-text);
+		letter-spacing: -0.02em;
+		line-height: 1.12;
 	}
 
-	/* Mobile: 2-column grid of text blocks */
 	.categories-grid {
 		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		grid-auto-rows: 1fr;
-		gap: 12px;
-		margin: 0;
-		padding: 0 0 16px 0;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 8px;
 	}
 
 	@media (min-width: 640px) {
 		.categories-grid {
-			grid-template-columns: repeat(3, 1fr);
-		}
-	}
-
-	@media (min-width: 1024px) {
-		.categories-grid {
-			grid-template-columns: repeat(6, 1fr);
+			grid-template-columns: repeat(3, minmax(0, 1fr));
 		}
 	}
 
 	.cat-card {
 		display: flex;
-		flex-direction: column;
+		align-items: center;
+		justify-content: space-between;
+		gap: 12px;
+		padding: 18px;
+		background: color-mix(in srgb, var(--ft-surface) 96%, var(--ft-frost));
+		border: 1px solid color-mix(in srgb, var(--ft-line) 82%, white);
+		border-radius: var(--radius-sm);
+		color: var(--ft-text);
 		text-decoration: none;
-		overflow: hidden;
-		background: var(--ft-surface);
-		transition: transform 0.2s ease;
-		border: 1px solid var(--ft-line); border-radius: var(--radius-2xl);
+		transition:
+			border-color var(--dur-fast) ease,
+			background-color var(--dur-fast) ease,
+			color var(--dur-fast) ease;
 	}
 
 	.cat-card:hover {
-		transform: translateY(-2px);
-	}
-
-	/* Hide image on mobile, show on tablet+ */
-	.cat-image {
-		display: none;
-	}
-
-	@media (min-width: 640px) {
-		.cat-image {
-			display: block;
-			position: relative;
-			aspect-ratio: 4 / 3;
-			background: var(--ft-frost);
-			overflow: hidden;
-			
-		}
-	}
-
-	.cat-photo {
-		position: absolute;
-		inset: 0;
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		transition: transform 350ms ease;
-	}
-
-	.cat-card:hover .cat-photo {
-		transform: scale(1.04);
-	}
-
-	/* Fallback for categories without images */
-	.cat-fallback {
-		position: absolute;
-		inset: 0;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		color: var(--ft-text-faint);
-	}
-
-	.cat-info {
-		padding: 16px 12px 16px 16px;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		flex: 1;
 		background: var(--ft-surface);
-		position: relative;
+		border-color: var(--ft-line-strong);
+		color: var(--ft-text-strong);
 	}
-
-	
-
-	.cat-card:hover 
 
 	.cat-name {
 		font-family: var(--font-sans);
-		font-size: 0.875rem;
-		font-weight: 600;
-		color: var(--ft-text-strong);
-		letter-spacing: 0.02em;
-		line-height: 1.25;
-		text-transform: none;
-		transition: color 0.2s ease;
+		font-size: 0.9rem;
+		font-weight: 400;
+		line-height: 1.3;
+		letter-spacing: -0.01em;
 	}
 
-	@media (min-width: 640px) {
-		.cat-name {
-			font-size: 1rem;
-		}
-
-		.cat-info {
-			padding: 16px 16px 16px 20px;
-		}
-	}
-
-	.cat-card:hover .cat-name {
-		color: var(--ft-accent);
+	.cat-count {
+		font-family: var(--font-mono);
+		font-size: 0.72rem;
+		color: var(--ft-text-muted);
+		font-variant-numeric: tabular-nums;
 	}
 </style>

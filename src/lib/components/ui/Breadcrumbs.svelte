@@ -122,7 +122,7 @@
 	}
 
 	.breadcrumb-link:hover {
-		color: var(--ft-accent);
+		color: var(--ft-accent-text);
 	}
 
 	.breadcrumb-home-icon {
@@ -152,7 +152,7 @@
 	.breadcrumb-current {
 		font-size: 0.875rem;
 		font-weight: 500;
-		color: var(--ft-accent);
+		color: var(--ft-accent-text);
 		white-space: nowrap;
 	}
 </style>

@@ -14,10 +14,10 @@
 		type="checkbox"
 		{name}
 		bind:checked
-		class="text-[--ft-accent] focus:ring-[--ft-accent] h-4 w-4 rounded border-[--ft-line] bg-[--ft-frost] focus:ring-2"
+		class="h-4 w-4 rounded border-[--ft-line] bg-[--ft-surface] text-[--ft-accent] focus:ring-2 focus:ring-[--ft-accent]/20"
 	/>
 	<div class="ml-3">
-		<div class="font-medium text-[--ft-text]">{title}</div>
+		<div class="text-[--ft-text]">{title}</div>
 		<div class="text-sm text-[--ft-text-muted]">{description}</div>
 	</div>
 </label>

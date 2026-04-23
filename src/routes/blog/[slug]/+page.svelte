@@ -93,7 +93,7 @@
 	}
 
 	.breadcrumb a:hover {
-		color: var(--ft-accent);
+		color: var(--ft-accent-text);
 	}
 
 	/* ── Header ── */
@@ -115,7 +115,7 @@
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.08em;
-		color: var(--ft-accent);
+		color: var(--ft-accent-text);
 		background: var(--ft-frost);
 		padding: 2px 8px;
 		border-radius: 2px;
@@ -200,7 +200,7 @@
 	.cta-links a {
 		font-size: 0.85rem;
 		font-weight: 600;
-		color: var(--ft-accent);
+		color: var(--ft-accent-text);
 		text-decoration: none;
 		transition: opacity 0.15s;
 	}
@@ -226,6 +226,6 @@
 	}
 
 	.article-back a:hover {
-		color: var(--ft-accent);
+		color: var(--ft-accent-text);
 	}
 </style>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { EnvelopeIcon, CheckCircleIcon, ArrowRightIcon } from 'phosphor-svelte';
+	import { CheckCircleIcon, ArrowRightIcon } from 'phosphor-svelte';
 
 	let email = $state('');
 	let status = $state<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -26,207 +26,163 @@
 		}
 
 		status = 'loading';
-
-		// Simulate API call — replace with real endpoint later
-		await new Promise((resolve) => setTimeout(resolve, 800));
+		await new Promise((resolve) => setTimeout(resolve, 600));
 		status = 'success';
 	}
 </script>
 
 <section class="newsletter ft-section">
-	<div class="ft-container">
-		<div class="newsletter-inner">
-			<!-- Icon -->
-			<div class="newsletter-icon" aria-hidden="true">
-				<EnvelopeIcon size={28} weight="light" />
+	<div class="newsletter-inner ft-container">
+		<span class="ft-label">newsletter</span>
+		<h2 class="newsletter-title">
+			Zyskaj <span class="discount-chip">5% rabatu</span> na start.
+		</h2>
+		<p class="newsletter-desc">
+			Nowości, promocje i sprzęt dla profesjonalistów. Raz na dwa tygodnie. Zero spamu.
+		</p>
+
+		{#if status === 'success'}
+			<div class="success" role="status">
+				<CheckCircleIcon size={20} weight="regular" aria-hidden="true" />
+				<span>Dziękujemy! Kod rabatowy wysłaliśmy na Twój e-mail.</span>
 			</div>
+		{:else}
+			<form class="form" onsubmit={handleSubmit} novalidate>
+				<label for="newsletter-email" class="sr-only">Adres e-mail</label>
+				<input
+					id="newsletter-email"
+					type="email"
+					placeholder="ty@poczta.pl"
+					bind:value={email}
+					class="input"
+					class:has-error={status === 'error'}
+					aria-invalid={status === 'error'}
+					aria-describedby={status === 'error' ? 'newsletter-error' : undefined}
+					disabled={status === 'loading'}
+				/>
+				<button type="submit" class="submit" disabled={status === 'loading'}>
+					{#if status === 'loading'}
+						<span class="spinner" aria-hidden="true"></span>
+					{:else}
+						Zapisz
+						<ArrowRightIcon size={14} weight="bold" aria-hidden="true" />
+					{/if}
+				</button>
+			</form>
 
-			<h2 class="newsletter-title">Zyskaj <span class="highlight">5% rabatu</span> na start</h2>
-			<p class="newsletter-desc">
-				Dołącz do newslettera FixTar. Bądź na bieżąco z nowościami, promocjami i sprzętem dla
-				profesjonalistów.
-			</p>
-
-			{#if status === 'success'}
-				<div class="newsletter-success" role="status">
-					<CheckCircleIcon size={20} weight="fill" aria-hidden="true" />
-					<div>
-						<p class="success-title">Dziękujemy za zapisanie się!</p>
-						<p class="success-desc">Kod rabatowy został wysłany na Twój adres e-mail.</p>
-					</div>
-				</div>
-			{:else}
-				<form class="newsletter-form" onsubmit={handleSubmit} novalidate>
-					<div class="form-row">
-						<label for="newsletter-email-section" class="sr-only">Adres e-mail</label>
-						<div class="input-wrap">
-							<input
-								id="newsletter-email-section"
-								type="email"
-								placeholder="Wpisz swój adres e-mail"
-								bind:value={email}
-								class="newsletter-input"
-								class:has-error={status === 'error'}
-								aria-describedby={status === 'error' ? 'newsletter-error' : undefined}
-								aria-invalid={status === 'error'}
-								disabled={status === 'loading'}
-							/>
-							<button type="submit" class="newsletter-btn" disabled={status === 'loading'}>
-								{#if status === 'loading'}
-									<span class="spinner" aria-hidden="true"></span>
-									Wysyłanie…
-								{:else}
-									Zapisz się
-									<ArrowRightIcon size={14} weight="bold" aria-hidden="true" />
-								{/if}
-							</button>
-						</div>
-						{#if status === 'error' && errorMsg}
-							<p id="newsletter-error" class="error-msg" role="alert">{errorMsg}</p>
-						{/if}
-					</div>
-				</form>
-
-				<p class="newsletter-fine">
-					Tylko konkrety, zero spamu. Możesz wypisać się w dowolnym momencie.
-				</p>
+			{#if status === 'error' && errorMsg}
+				<p id="newsletter-error" class="error-msg" role="alert">{errorMsg}</p>
 			{/if}
-		</div>
+		{/if}
 	</div>
 </section>
 
 <style>
 	.newsletter {
-		background: var(--ft-frost);
 		border-top: 1px solid var(--ft-line);
-		border-bottom: 1px solid var(--ft-line);
+		background: var(--ft-frost);
 	}
 
 	.newsletter-inner {
-		max-width: 540px;
-		margin: 0 auto;
-		text-align: center;
-	}
-
-	.newsletter-icon {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		width: 56px;
-		height: 56px;
-		border-radius: var(--radius-full);
-		background: var(--ft-surface);
-		border: 1px solid var(--ft-text-strong);
-		color: var(--ft-text-strong);
-		margin-bottom: 24px;
+		max-width: 640px;
 	}
 
 	.newsletter-title {
+		margin-top: 6px;
+		max-width: 520px;
 		font-family: var(--font-sans);
-		font-size: clamp(1.4rem, 3vw, 2rem);
-		font-weight: 600;
+		font-size: clamp(1.5rem, 3vw, 2rem);
+		font-weight: 400;
 		color: var(--ft-text-strong);
-		letter-spacing: -0.015em;
-		text-transform: none;
-		line-height: 1.1;
-		margin-bottom: 12px;
+		letter-spacing: -0.02em;
+		line-height: 1.15;
 	}
 
-	.highlight {
-		color: var(--ft-cta);
+	.discount-chip {
+		display: inline-block;
+		padding: 0 8px;
+		background: var(--ft-cta);
+		color: var(--ft-cta-text);
+		border-radius: var(--radius-sm);
+		line-height: 1.2;
 	}
 
 	.newsletter-desc {
-		font-size: 0.88rem;
-		line-height: 1.6;
+		margin-top: 12px;
+		font-size: 0.9375rem;
+		line-height: 1.55;
 		color: var(--ft-text-muted);
-		margin-bottom: 24px;
+		max-width: 480px;
 	}
 
-	/* ── Form ── */
-	.form-row {
+	.form {
 		display: flex;
-		flex-direction: column;
 		gap: 8px;
+		margin-top: 24px;
+		max-width: 480px;
 	}
 
-	.input-wrap {
-		display: flex;
-		gap: 0;
-		border-radius: var(--radius-full);
-		overflow: hidden;
-		border: 1px solid var(--ft-line);
-		background: var(--ft-surface);
-		transition: border-color 0.2s ease;
-	}
-
-	.input-wrap:focus-within {
-		border-color: var(--ft-cta);
-	}
-
-	.newsletter-input {
+	.input {
 		flex: 1;
 		min-width: 0;
-		padding: 12px 16px;
+		padding: 12px 14px;
 		font-family: var(--font-sans);
-		font-size: 0.88rem;
+		font-size: 0.9375rem;
 		color: var(--ft-text);
-		background: transparent;
-		border: none;
-		outline: none;
+		background: var(--ft-surface);
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-sm);
+		transition: border-color var(--dur-fast) ease;
 	}
 
-	.newsletter-input::placeholder {
+	.input::placeholder {
 		color: var(--ft-text-faint);
 	}
 
-	.newsletter-input.has-error {
-		color: var(--color-danger);
+	.input:focus {
+		outline: none;
+		border-color: var(--ft-text-strong);
 	}
 
-	.newsletter-input:disabled {
-		opacity: 0.6;
+	.input.has-error {
+		border-color: var(--color-danger);
 	}
 
-	.newsletter-btn {
+	.submit {
 		display: inline-flex;
 		align-items: center;
-		gap: 8px;
-		padding: 12px 32px;
-		min-height: 48px;
+		justify-content: center;
+		gap: 6px;
+		padding: 12px 20px;
 		font-family: var(--font-sans);
-		font-size: 0.85rem;
-		font-weight: 600;
-		text-transform: none;
-		letter-spacing: 0;
-		color: var(--ft-surface);
+		font-size: 0.9375rem;
+		color: var(--ft-bg);
 		background: var(--ft-text-strong);
-		border: none;
+		border: 1px solid var(--ft-text-strong);
+		border-radius: var(--radius-sm);
 		cursor: pointer;
 		white-space: nowrap;
 		transition:
-			background-color 0.2s ease,
-			transform 0.1s ease;
-		flex-shrink: 0;
+			background-color var(--dur-fast) ease,
+			border-color var(--dur-fast) ease,
+			color var(--dur-fast) ease;
 	}
 
-	.newsletter-btn:hover:not(:disabled) {
+	.submit:hover:not(:disabled) {
 		background: var(--ft-cta);
+		border-color: var(--ft-cta);
+		color: var(--ft-cta-text);
 	}
 
-	.newsletter-btn:active:not(:disabled) {
-		transform: scale(0.98);
-	}
-
-	.newsletter-btn:disabled {
-		opacity: 0.7;
+	.submit:disabled {
+		opacity: 0.6;
 		cursor: not-allowed;
 	}
 
 	.spinner {
 		width: 14px;
 		height: 14px;
-		border: 2px solid rgba(255, 255, 255, 0.3);
+		border: 2px solid rgba(255, 255, 255, 0.4);
 		border-top-color: white;
 		border-radius: 50%;
 		animation: spin 0.6s linear infinite;
@@ -239,46 +195,27 @@
 	}
 
 	.error-msg {
-		font-size: 0.78rem;
+		margin-top: 8px;
+		font-size: 0.8125rem;
 		color: var(--color-danger);
-		text-align: left;
 	}
 
-	.newsletter-fine {
-		font-size: 0.72rem;
-		color: var(--ft-text-faint);
-		margin-top: 12px;
-	}
-
-	/* ── Success ── */
-	.newsletter-success {
-		display: flex;
-		align-items: flex-start;
-		gap: 12px;
-		text-align: left;
-		padding: clamp(16px, 4vw, 24px);
+	.success {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		margin-top: 24px;
+		padding: 12px 16px;
 		background: var(--ft-surface);
-		border: 1px solid var(--color-success);
-		border-radius: var(--radius-full);
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-sm);
+		font-size: 0.9375rem;
+		color: var(--ft-text);
+	}
+
+	.success :global(svg) {
 		color: var(--color-success);
-		animation: ft-fade-up 0.35s var(--ease-out) both;
-	}
-
-	.newsletter-success :global(svg) {
 		flex-shrink: 0;
-		margin-top: 2px;
-	}
-
-	.success-title {
-		font-size: 0.88rem;
-		font-weight: 600;
-		color: var(--ft-dark);
-	}
-
-	.success-desc {
-		font-size: 0.78rem;
-		color: var(--ft-text-muted);
-		margin-top: 2px;
 	}
 
 	.sr-only {
@@ -293,26 +230,12 @@
 		border: 0;
 	}
 
-	@media (max-width: 480px) {
-		.input-wrap {
+	@media (max-width: 560px) {
+		.form {
 			flex-direction: column;
-			border: none;
-			background: transparent;
-			gap: 12px;
 		}
 
-		.newsletter-input {
-			border: 1px solid var(--ft-line);
-			background: var(--ft-surface);
-			width: 100%;
-		}
-
-		.newsletter-input:focus {
-			border-color: var(--ft-cta);
-		}
-
-		.newsletter-btn {
-			width: 100%;
+		.submit {
 			justify-content: center;
 		}
 	}

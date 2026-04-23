@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { cart, notifications, wishlist } from '$lib/stores';
 	import { afterNavigate } from '$app/navigation';
-	import Button from '$lib/components/ui/Button.svelte';
+
 	import Breadcrumbs from '$lib/components/ui/Breadcrumbs.svelte';
 	import ProductGallery from '$lib/components/products/ProductGallery.svelte';
 	import ImageZoomModal from '$lib/components/products/ImageZoomModal.svelte';
@@ -34,9 +34,21 @@
 	);
 	const imageBadges = $derived.by(() => {
 		const badges: Array<{ label: string; class: string }> = [];
-		if (product.featured) badges.push({ label: 'Polecany', class: 'bg-[--ft-accent]' });
-		if (hasDiscount) badges.push({ label: `-${discountPercent}%`, class: 'bg-[--ft-danger]' });
-		if (!stock.inStock) badges.push({ label: 'Wyprzedane', class: 'bg-[--ft-text-muted]' });
+		if (product.featured)
+			badges.push({
+				label: 'Polecany',
+				class: 'border border-[--ft-line] bg-[--ft-surface] text-[--ft-accent]'
+			});
+		if (hasDiscount)
+			badges.push({
+				label: `-${discountPercent}%`,
+				class: 'border border-[--color-danger]/20 bg-[--ft-surface] text-[--color-danger]'
+			});
+		if (!stock.inStock)
+			badges.push({
+				label: 'Wyprzedane',
+				class: 'border border-[--ft-line] bg-[--ft-surface] text-[--ft-text-muted]'
+			});
 		return badges;
 	});
 	const maxQuantity = $derived(product.inventory?.trackQuantity ? product.inventory.quantity : 99);
@@ -96,14 +108,6 @@
 			quantity
 		);
 		notifications.success(`Dodano ${product.name} do koszyka`);
-	}
-
-	function buyNow() {
-		cart.addItem(
-			{ productId: product.id, name: product.name, price: product.price, image: product.mainImage },
-			quantity
-		);
-		window.location.href = '/checkout';
 	}
 
 	function toggleWishlist() {
@@ -183,6 +187,8 @@
 			<!-- Description -->
 			{#if descriptionHtml}
 				<div class="pdp-description" class:collapsed={descIsLong && !descExpanded}>
+					<!-- Safe by construction: parseProductDescription strips source HTML, escapes text,
+					     and rebuilds a limited internal markup subset (<h3>, <ul>, <li>, <p>). -->
 					{@html descriptionHtml}
 				</div>
 				{#if descIsLong}
@@ -293,11 +299,11 @@
 	/* ── Name ── */
 	.pdp-name {
 		font-family: var(--font-display);
-		font-size: clamp(1.2rem, 3vw, 1.6rem);
-		font-weight: 500;
-		color: var(--ft-dark);
-		letter-spacing: -0.015em;
-		line-height: 1.25;
+		font-size: clamp(1.5rem, 3vw, 2rem);
+		font-weight: 400;
+		color: var(--ft-text-strong);
+		letter-spacing: -0.02em;
+		line-height: 1.15;
 		overflow-wrap: anywhere;
 		word-break: break-word;
 	}
@@ -312,11 +318,12 @@
 	}
 
 	.pdp-price {
-		font-family: var(--font-display);
+		font-family: var(--font-mono);
 		font-size: clamp(1.4rem, 3vw, 1.8rem);
-		font-weight: 600;
-		color: var(--ft-cta);
-		letter-spacing: -0.015em;
+		font-weight: 500;
+		color: var(--ft-accent-text);
+		letter-spacing: -0.01em;
+		font-variant-numeric: tabular-nums;
 	}
 
 	.pdp-compare {
@@ -326,13 +333,16 @@
 	}
 
 	.pdp-discount {
-		font-family: var(--font-display);
+		font-family: var(--font-mono);
 		font-size: 0.75rem;
-		font-weight: 500;
-		color: white;
-		background: var(--color-danger);
+		font-weight: 400;
+		color: var(--color-danger);
+		background: var(--ft-surface);
+		border: 1px solid color-mix(in srgb, var(--color-danger) 20%, transparent);
 		padding: 2px 8px;
-		border-radius: var(--radius-sm);
+		border-radius: var(--radius-full);
+		letter-spacing: 0.02em;
+		text-transform: lowercase;
 	}
 
 	/* ── Meta ── */
@@ -350,8 +360,11 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 5px;
-		font-size: 0.78rem;
-		font-weight: 600;
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		font-weight: 400;
+		letter-spacing: 0.02em;
+		text-transform: lowercase;
 	}
 
 	.pdp-stock.in-stock {
@@ -372,15 +385,23 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 4px;
+		padding: 4px 10px;
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-full);
+		font-family: var(--font-mono);
 		font-size: 0.75rem;
-		font-weight: 600;
+		font-weight: 400;
+		letter-spacing: 0.02em;
 		color: var(--ft-text-muted);
 		text-decoration: none;
-		transition: color 0.15s;
+		transition:
+			color var(--dur-fast) ease,
+			border-color var(--dur-fast) ease,
+			background-color var(--dur-fast) ease;
 	}
 
 	.pdp-category:hover {
-		color: var(--ft-accent);
+		color: var(--ft-accent-text);
 	}
 
 	/* ── Specs ── */
@@ -391,8 +412,8 @@
 	/* ── Description ── */
 	.pdp-description {
 		margin-top: 16px;
-		font-size: 0.88rem;
-		line-height: 1.7;
+		font-size: 0.9375rem;
+		line-height: 1.65;
 		color: var(--ft-text);
 		overflow-wrap: anywhere;
 		word-break: break-word;
@@ -407,11 +428,13 @@
 	}
 
 	.pdp-description :global(h3) {
-		font-family: var(--font-display);
-		font-size: 0.92rem;
-		font-weight: 500;
-		color: var(--ft-dark);
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		font-weight: 400;
+		color: var(--ft-text-muted);
 		margin: 20px 0 8px;
+		letter-spacing: 0.02em;
+		text-transform: lowercase;
 	}
 
 	.pdp-description :global(h3:first-child) {
@@ -472,16 +495,19 @@
 		margin-top: 8px;
 		background: none;
 		border: none;
-		font-size: 0.82rem;
-		font-weight: 600;
-		color: var(--ft-accent);
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		font-weight: 400;
+		letter-spacing: 0.02em;
+		text-transform: lowercase;
+		color: var(--ft-accent-text);
 		cursor: pointer;
 		padding: 0;
-		transition: opacity 0.15s;
+		transition: color var(--dur-fast) ease;
 	}
 
 	.pdp-expand-btn:hover {
-		opacity: 0.7;
+		color: var(--ft-text);
 	}
 
 	/* ── Sticky action bar ── */
@@ -493,7 +519,6 @@
 		z-index: 40;
 		background: var(--ft-surface);
 		border-top: 1px solid var(--ft-line);
-		box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.06);
 		padding: 10px 0;
 		padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
 	}
@@ -509,8 +534,8 @@
 	.action-qty {
 		display: flex;
 		align-items: center;
-		border: 2px solid var(--ft-line);
-		border-radius: 0;
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-sm);
 		background: var(--ft-surface);
 	}
 
@@ -529,7 +554,7 @@
 
 	.qty-btn:hover:not(:disabled) {
 		background: var(--ft-frost);
-		color: var(--ft-cta);
+		color: var(--ft-accent-text);
 	}
 
 	.qty-btn:disabled {
@@ -540,23 +565,26 @@
 	.qty-value {
 		min-width: 36px;
 		text-align: center;
+		font-family: var(--font-mono);
 		font-size: 0.95rem;
-		font-weight: 500;
-		color: var(--ft-dark);
-		border-left: 2px solid var(--ft-line);
-		border-right: 2px solid var(--ft-line);
+		font-weight: 400;
+		color: var(--ft-text);
+		border-left: 1px solid var(--ft-line);
+		border-right: 1px solid var(--ft-line);
 		height: 40px;
 		line-height: 40px;
+		font-variant-numeric: tabular-nums;
 	}
 
 	/* Price */
 	.action-price {
-		font-family: var(--font-display);
+		font-family: var(--font-mono);
 		font-size: 1.1rem;
-		font-weight: 600;
-		color: var(--ft-cta);
-		letter-spacing: -0.015em;
+		font-weight: 500;
+		color: var(--ft-accent-text);
+		letter-spacing: -0.01em;
 		margin-right: auto;
+		font-variant-numeric: tabular-nums;
 	}
 
 	/* Cart button */
@@ -567,30 +595,30 @@
 		padding: 0 24px;
 		height: 44px;
 		background: var(--ft-cta);
-		color: #ffffff;
-		border: 2px solid var(--ft-cta);
-		border-radius: 0;
-		font-family: var(--font-display);
-		font-size: 0.85rem;
-		font-weight: 600;
+		color: var(--ft-cta-text);
+		border: 1px solid var(--ft-cta);
+		border-radius: var(--radius-sm);
+		font-family: var(--font-sans);
+		font-size: 0.9375rem;
+		font-weight: 400;
 		text-transform: none;
 		letter-spacing: 0;
 		cursor: pointer;
-		transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+		transition:
+			background-color var(--dur-fast) ease,
+			color var(--dur-fast) ease,
+			border-color var(--dur-fast) ease;
 		white-space: nowrap;
-		box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.1);
 	}
 
 	.action-cart:hover {
-		background: #ffffff;
-		color: var(--ft-cta);
-		transform: scale(1.02) translateY(-2px);
-		box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.15);
+		background: var(--ft-cta-hover);
+		color: var(--ft-cta-text);
+		border-color: var(--ft-cta-hover);
 	}
 
 	.action-cart:active {
-		transform: scale(0.98) translateY(0);
-		box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.1);
+		background: var(--ft-cta-hover);
 	}
 
 	.action-cart-label {
@@ -611,26 +639,31 @@
 		width: 44px;
 		height: 44px;
 		background: var(--ft-surface);
-		border: 2px solid var(--ft-line);
-		border-radius: 0;
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-sm);
 		color: var(--ft-text-muted);
 		cursor: pointer;
-		transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+		transition:
+			color var(--dur-fast) ease,
+			border-color var(--dur-fast) ease,
+			background-color var(--dur-fast) ease;
 		flex-shrink: 0;
 	}
 
 	.action-heart:hover,
 	.action-heart.is-active {
-		color: var(--ft-cta);
-		border-color: var(--ft-cta);
-		transform: scale(1.05);
-		box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.1);
+		color: var(--ft-accent);
+		border-color: var(--ft-accent);
+		background: color-mix(in srgb, var(--ft-accent) 8%, white);
 	}
 
 	/* Out of stock */
 	.action-oos {
-		font-size: 0.82rem;
-		font-weight: 600;
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		font-weight: 400;
+		letter-spacing: 0.02em;
+		text-transform: lowercase;
 		color: var(--ft-text-muted);
 	}
 </style>

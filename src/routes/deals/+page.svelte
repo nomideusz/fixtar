@@ -30,10 +30,12 @@
 	}
 
 	function getTomorrowMidnight(): string {
-		const d = new Date();
-		d.setDate(d.getDate() + 1);
-		d.setHours(0, 0, 0, 0);
-		return d.toISOString();
+		const now = Date.now();
+		const tomorrow = new Date(now + 24 * 60 * 60 * 1000);
+		const year = tomorrow.getFullYear();
+		const month = tomorrow.getMonth();
+		const day = tomorrow.getDate();
+		return new Date(year, month, day, 0, 0, 0, 0).toISOString();
 	}
 
 	const flashDeals = $derived(data.deals?.slice(0, 2) || []);
@@ -64,7 +66,10 @@
 
 <div class="ft-container ft-section">
 	<div class="page-header">
-		<h1 class="page-title">Oferty specjalne</h1>
+		<div class="page-heading">
+			<span class="ft-label">promocje</span>
+			<h1 class="page-title">Oferty specjalne</h1>
+		</div>
 		<p class="page-desc">
 			Produkty z obniżoną ceną — promocje zarządzane bezpośrednio przez nasz magazyn.
 		</p>
@@ -89,9 +94,9 @@
 		<!-- Tier 1: Flash Deals -->
 		{#if flashDeals.length > 0}
 			<section class="tier-section">
-				<h2 class="tier-title">Oferty Błyskawiczne</h2>
+				<h2 class="tier-title">Oferty błyskawiczne</h2>
 				<div class="flash-grid ft-stagger">
-					{#each flashDeals as deal}
+					{#each flashDeals as deal (deal.id)}
 						<div class="flash-card ft-card">
 							<a href="/products/{deal.slug}" class="flash-img-link">
 								<div class="flash-img-wrap">
@@ -137,11 +142,11 @@
 		<!-- Tier 2: Seasonal Deals -->
 		{#if seasonalDeals.length > 0}
 			<section class="tier-section">
-				<h2 class="tier-title">Wszystkie Promocje</h2>
+				<h2 class="tier-title">Wszystkie promocje</h2>
 				<p class="deals-count">{seasonalDeals.length} produktów</p>
 
 				<div class="seasonal-grid ft-stagger">
-					{#each seasonalDeals as deal}
+					{#each seasonalDeals as deal (deal.id)}
 						<div class="seasonal-card ft-card">
 							<a href="/products/{deal.slug}" class="seasonal-img-link">
 								<div class="seasonal-img-wrap">
@@ -183,25 +188,31 @@
 	/* ── Header ── */
 	.page-header {
 		margin-bottom: clamp(32px, 5vh, 48px);
-		border-bottom: 2px solid var(--ft-dark);
 		padding-bottom: 16px;
+		border-bottom: 1px solid var(--ft-line);
+	}
+
+	.page-heading {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
 	}
 
 	.page-title {
 		font-family: var(--font-display);
-		font-size: clamp(2rem, 5vw, 3rem);
-		font-weight: 800;
-		color: var(--ft-dark);
-		text-transform: uppercase;
+		font-size: clamp(1.75rem, 4vw, 2.5rem);
+		font-weight: 400;
+		color: var(--ft-text-strong);
 		letter-spacing: -0.02em;
-		line-height: 1;
+		line-height: 1.15;
 	}
 
 	.page-desc {
-		font-size: 0.95rem;
+		font-size: 0.9375rem;
+		line-height: 1.65;
 		color: var(--ft-text-muted);
 		margin-top: 12px;
-		max-width: 600px;
+		max-width: 60ch;
 	}
 
 	.tier-section {
@@ -210,11 +221,11 @@
 
 	.tier-title {
 		font-family: var(--font-display);
-		font-size: 1.5rem;
-		font-weight: 800;
-		text-transform: uppercase;
-		border-left: 4px solid var(--ft-cta);
-		padding-left: 12px;
+		font-size: 1.25rem;
+		font-weight: 400;
+		color: var(--ft-text-strong);
+		letter-spacing: -0.02em;
+		line-height: 1.15;
 		margin-bottom: 24px;
 	}
 
@@ -236,10 +247,11 @@
 	.empty-title {
 		font-family: var(--font-display);
 		font-size: 1.4rem;
-		font-weight: 800;
-		color: var(--ft-dark);
+		font-weight: 400;
+		color: var(--ft-text-strong);
 		margin: 16px 0 8px;
-		text-transform: uppercase;
+		letter-spacing: -0.02em;
+		line-height: 1.15;
 	}
 
 	.empty-actions {
@@ -266,8 +278,9 @@
 		display: flex;
 		flex-direction: column;
 		border: 1px solid var(--ft-line);
-		border-radius: 0;
+		border-radius: var(--radius-md);
 		overflow: hidden;
+		background: var(--ft-surface);
 	}
 
 	@media (min-width: 600px) {
@@ -279,7 +292,7 @@
 	.flash-img-link {
 		flex: 0 0 45%;
 		display: block;
-		background: #fff;
+		background: var(--ft-surface);
 		border-right: 1px solid var(--ft-line);
 	}
 
@@ -293,22 +306,26 @@
 		width: 100%;
 		height: 100%;
 		object-fit: contain;
-		transition: transform 0.4s ease;
+		transition: transform 240ms var(--ease-out);
 	}
 
 	.flash-card:hover .flash-img-wrap img {
-		transform: scale(1.05);
+		transform: scale(1.03);
 	}
 
 	.hud-badge {
 		position: absolute;
 		top: 12px;
 		right: 12px;
-		background: var(--ft-cta);
-		color: #fff;
+		background: var(--ft-surface);
+		color: var(--ft-accent-text);
+		border: 1px solid var(--ft-accent-text);
+		border-radius: var(--radius-full);
 		font-family: var(--font-mono);
-		font-weight: 800;
-		font-size: 0.8rem;
+		font-weight: 400;
+		font-size: 0.75rem;
+		letter-spacing: 0.02em;
+		text-transform: lowercase;
 		padding: 4px 8px;
 	}
 
@@ -321,18 +338,20 @@
 
 	.deal-category {
 		font-family: var(--font-mono);
-		font-size: 0.7rem;
-		font-weight: 700;
-		text-transform: uppercase;
+		font-size: 0.75rem;
+		font-weight: 400;
+		text-transform: lowercase;
+		letter-spacing: 0.02em;
 		color: var(--ft-text-muted);
 		margin-bottom: 8px;
 	}
 
 	.deal-name {
 		font-family: var(--font-display);
-		font-size: 1.2rem;
-		font-weight: 800;
+		font-size: 1.125rem;
+		font-weight: 400;
 		line-height: 1.2;
+		letter-spacing: -0.01em;
 		margin-bottom: 12px;
 	}
 
@@ -341,7 +360,7 @@
 	}
 
 	.deal-name a:hover {
-		color: var(--ft-accent);
+		color: var(--ft-accent-text);
 	}
 
 	.deal-desc {
@@ -363,18 +382,20 @@
 	}
 
 	.price-sale {
-		font-family: var(--font-display);
-		font-size: 1.6rem;
-		font-weight: 800;
-		color: var(--ft-cta);
+		font-family: var(--font-mono);
+		font-size: 1.5rem;
+		font-weight: 500;
+		color: var(--ft-accent-text);
+		font-variant-numeric: tabular-nums;
 	}
 
 	.price-old {
-		font-family: var(--font-sans);
-		font-size: 1rem;
+		font-family: var(--font-mono);
+		font-size: 0.875rem;
 		color: var(--ft-text-faint);
 		text-decoration: line-through;
-		font-weight: 600;
+		font-weight: 400;
+		font-variant-numeric: tabular-nums;
 	}
 
 	.flash-timer-wrap {
@@ -415,13 +436,15 @@
 		display: flex;
 		flex-direction: column;
 		border: 1px solid var(--ft-line);
-		border-radius: 0;
+		border-radius: var(--radius-md);
+		background: var(--ft-surface);
+		overflow: hidden;
 	}
 
 	.seasonal-img-link {
 		display: block;
 		border-bottom: 1px solid var(--ft-line);
-		background: #fff;
+		background: var(--ft-surface);
 	}
 
 	.seasonal-img-wrap {
@@ -434,11 +457,11 @@
 		width: 100%;
 		height: 100%;
 		object-fit: contain;
-		transition: transform 0.4s ease;
+		transition: transform 240ms var(--ease-out);
 	}
 
 	.seasonal-card:hover .seasonal-img-wrap img {
-		transform: scale(1.06);
+		transform: scale(1.03);
 	}
 
 	.seasonal-body {
@@ -462,12 +485,16 @@
 	}
 
 	.seasonal-date {
-		font-size: 0.7rem;
-		font-weight: 700;
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		font-weight: 400;
+		letter-spacing: 0.02em;
+		text-transform: lowercase;
 		color: var(--ft-text-muted);
-		background: var(--ft-frost);
+		background: var(--ft-surface);
+		border: 1px solid var(--ft-line);
 		padding: 4px 8px;
-		border-radius: var(--radius-sm);
+		border-radius: var(--radius-full);
 		align-self: flex-start;
 		margin-top: auto;
 		margin-bottom: 12px;
@@ -479,9 +506,10 @@
 		gap: 6px;
 		font-family: var(--font-mono);
 		font-size: 0.75rem;
-		font-weight: 800;
-		text-transform: uppercase;
-		color: var(--ft-accent);
+		font-weight: 400;
+		letter-spacing: 0.02em;
+		text-transform: lowercase;
+		color: var(--ft-accent-text);
 	}
 
 	.seasonal-link :global(svg) {
@@ -489,7 +517,7 @@
 	}
 
 	.seasonal-link:hover {
-		color: var(--ft-cta);
+		color: var(--ft-text);
 	}
 
 	.seasonal-link:hover :global(svg) {

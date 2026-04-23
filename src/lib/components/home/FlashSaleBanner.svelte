@@ -12,6 +12,8 @@
 <section class="flash-banner" aria-label="Promocje">
 	<div class="ft-container">
 		<a {href} class="flash-inner">
+			<span class="flash-label">promocje</span>
+
 			<span class="flash-dot" aria-hidden="true">
 				<span class="flash-dot-ping"></span>
 				<span class="flash-dot-core"></span>
@@ -29,27 +31,38 @@
 <style>
 	.flash-banner {
 		background: var(--ft-dark);
-		border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+		border-bottom: 1px solid color-mix(in srgb, var(--ft-accent) 18%, transparent);
 	}
 
 	.flash-inner {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		gap: 12px;
+		gap: 10px;
+		min-height: 44px;
 		padding: 10px 0;
 		text-decoration: none;
-		min-height: 44px;
 	}
 
 	.flash-inner:hover .flash-headline,
-	.flash-inner:hover .flash-arrow {
-		color: var(--ft-cta);
+	.flash-inner:hover .flash-arrow,
+	.flash-inner:hover .flash-label {
+		color: var(--ft-accent-text);
 	}
 
 	.flash-headline,
-	.flash-arrow {
+	.flash-arrow,
+	.flash-label {
 		transition: color var(--dur-fast) ease;
+	}
+
+	.flash-label {
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		font-weight: 400;
+		letter-spacing: 0.02em;
+		text-transform: lowercase;
+		color: rgba(255, 255, 255, 0.62);
 	}
 
 	.flash-dot {
@@ -63,14 +76,14 @@
 		position: absolute;
 		inset: 0;
 		border-radius: 50%;
-		background: var(--ft-cta);
+		background: var(--ft-accent);
 	}
 
 	.flash-dot-ping {
 		position: absolute;
 		inset: -3px;
 		border-radius: 50%;
-		background: var(--ft-cta);
+		background: var(--ft-accent);
 		animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
 	}
 
@@ -83,12 +96,11 @@
 	}
 
 	.flash-headline {
-		font-family: var(--font-display);
-		font-size: 0.78rem;
-		font-weight: 700;
+		font-family: var(--font-sans);
+		font-size: 0.9375rem;
+		font-weight: 400;
 		color: white;
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
+		letter-spacing: -0.01em;
 	}
 
 	.flash-arrow {
@@ -101,9 +113,12 @@
 			gap: 6px;
 		}
 
+		.flash-label {
+			display: none;
+		}
+
 		.flash-headline {
-			font-size: 0.65rem;
-			letter-spacing: 0.05em;
+			font-size: 0.8125rem;
 			white-space: nowrap;
 			overflow: hidden;
 			text-overflow: ellipsis;

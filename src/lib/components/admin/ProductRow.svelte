@@ -1,6 +1,5 @@
 <script lang="ts">
 	import StatusBadge from './StatusBadge.svelte';
-	import LoadingSpinner from '$lib/components/ui/LoadingSpinner.svelte';
 	import { ImageSquareIcon, SpinnerGapIcon } from 'phosphor-svelte';
 
 	interface Props {
@@ -9,95 +8,205 @@
 		isLoading: boolean;
 		onToggleSelect: () => void;
 		onStatusChange: (productId: string, newStatus: string) => void;
+		onManageImages: (product: any) => void;
 	}
 
-	let { product, selected, isLoading, onToggleSelect, onStatusChange }: Props = $props();
+	let { product, selected, isLoading, onToggleSelect, onStatusChange, onManageImages }: Props =
+		$props();
 
-	const statusDescriptions: Record<string, string> = {
-		active: 'Visible to customers',
-		draft: 'Hidden, needs review',
-		inactive: 'Disabled and hidden'
-	};
+	const gallery = $derived((product.gallery ?? []) as string[]);
+	const extraCount = $derived(
+		gallery.filter((img: string) => img && img !== product.mainImage).length
+	);
 </script>
 
-<tr class="border-b hover:bg-[--ft-frost]">
-	<td class="px-4 py-3">
+<tr class="border-b border-[--ft-line] align-middle hover:bg-[--ft-frost]">
+	<td class="px-3 py-2 w-8">
 		<input
 			type="checkbox"
 			checked={selected}
 			onchange={onToggleSelect}
-			class="rounded border-[--ft-line]"
+			class="rounded border border-[--ft-line]"
 		/>
 	</td>
-	<td class="px-4 py-3">
-		<div class="flex items-center">
-			{#if product.mainImage}
-				<img
-					src={product.mainImage}
-					alt={product.name}
-					class="mr-3 h-12 w-12 rounded object-cover"
-				/>
-			{:else}
-				<div class="mr-3 flex h-12 w-12 items-center justify-center rounded bg-[--ft-frost]">
-					<ImageSquareIcon class="h-6 w-6 text-[--ft-text-muted]" aria-hidden="true" />
-				</div>
-			{/if}
-			<div>
-				<p class="max-w-xs truncate font-medium text-[--ft-text-strong]">{product.name}</p>
+
+	<td class="px-3 py-2">
+		<div class="flex items-center gap-3">
+			<button
+				type="button"
+				class="thumb-btn"
+				onclick={() => onManageImages(product)}
+				aria-label="Zarządzaj zdjęciami — {product.name}"
+				title={extraCount > 0 ? `Zarządzaj zdjęciami (${extraCount + 1})` : 'Zarządzaj zdjęciami'}
+			>
+				{#if product.mainImage}
+					<img src={product.mainImage} alt="" loading="lazy" />
+				{:else}
+					<span class="thumb-empty" aria-hidden="true">
+						<ImageSquareIcon class="h-5 w-5" />
+					</span>
+				{/if}
+				{#if extraCount > 0}
+					<span class="thumb-count" aria-hidden="true">+{extraCount}</span>
+				{/if}
+			</button>
+
+			<div class="min-w-0">
+				<p class="truncate text-sm text-[--ft-text-strong]" style="max-width: 260px;">
+					{product.name}
+				</p>
 				{#if product.shortDescription}
-					<p class="max-w-xs truncate text-sm text-[--ft-text-muted]">{product.shortDescription}</p>
+					<p class="truncate text-xs text-[--ft-text-muted]" style="max-width: 260px;">
+						{product.shortDescription}
+					</p>
 				{/if}
 			</div>
 		</div>
 	</td>
-	<td class="px-4 py-3 font-mono text-sm text-[--ft-text-muted]">
-		{product.sku || '-'}
+
+	<td class="px-3 py-2 font-mono text-xs whitespace-nowrap text-[--ft-text-muted]">
+		{product.sku || '—'}
 	</td>
-	<td class="px-4 py-3 font-medium">
+
+	<td class="px-3 py-2 font-mono text-sm whitespace-nowrap text-[--ft-text]">
 		{product.price.toFixed(2)} zł
 	</td>
-	<td class="px-4 py-3">
+
+	<td class="px-3 py-2">
 		{#if product.expand?.categories?.length > 0}
 			<div class="flex flex-wrap gap-1">
-				{#each product.expand.categories.slice(0, 2) as category (category)}
-					<span class="rounded bg-[--ft-frost] px-2 py-1 text-xs text-[--ft-text]">
+				{#each product.expand.categories.slice(0, 2) as category (category.id ?? category.slug ?? category.name)}
+					<span
+						class="rounded-full border border-[--ft-line] bg-[--ft-surface] px-2 py-0.5 text-xs text-[--ft-text]"
+					>
 						{category.name}
 					</span>
 				{/each}
 				{#if product.expand.categories.length > 2}
 					<span class="text-xs text-[--ft-text-muted]">
-						+{product.expand.categories.length - 2} more
+						+{product.expand.categories.length - 2}
 					</span>
 				{/if}
 			</div>
 		{:else}
-			<span class="text-[--ft-text-muted]">No categories</span>
+			<span class="text-xs text-[--ft-text-faint]">—</span>
 		{/if}
 	</td>
-	<td class="whitespace-nowrap px-6 py-4">
-		<div class="space-y-2">
-			<div class="flex items-center">
-				<StatusBadge status={product.status} />
-				{#if isLoading}
-					<SpinnerGapIcon class="ml-2 h-4 w-4 animate-spin text-[--ft-text-muted]" aria-hidden="true" />
-				{/if}
-			</div>
 
+	<td class="px-3 py-2 whitespace-nowrap">
+		<div class="flex items-center gap-2">
+			<StatusBadge status={product.status} />
+			{#if isLoading}
+				<SpinnerGapIcon
+					class="h-3.5 w-3.5 animate-spin text-[--ft-text-muted]"
+					aria-hidden="true"
+				/>
+			{/if}
 			<select
 				value={product.status}
 				onchange={(e) => onStatusChange(product.id, e.currentTarget.value)}
-				class="focus:ring-[--ft-accent] focus:border-[--ft-accent] w-full rounded-md border-[--ft-line] text-xs disabled:opacity-50"
+				class="status-select disabled:opacity-50"
 				disabled={isLoading}
-				title="Change product status"
+				title="Change status"
+				aria-label="Change status"
 			>
-				<option value="active">✅ Set as Active</option>
-				<option value="draft">⚠️ Set as Draft</option>
-				<option value="inactive">❌ Set as Inactive</option>
+				<option value="active">Active</option>
+				<option value="draft">Draft</option>
+				<option value="inactive">Inactive</option>
 			</select>
-		</div>
-
-		<div class="mt-1 text-xs text-[--ft-text-muted]">
-			{statusDescriptions[product.status] || 'Unknown status'}
 		</div>
 	</td>
 </tr>
+
+<style>
+	.thumb-btn {
+		position: relative;
+		flex-shrink: 0;
+		width: 48px;
+		height: 48px;
+		padding: 0;
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-sm);
+		background: var(--ft-surface);
+		overflow: hidden;
+		cursor: pointer;
+		transition:
+			border-color var(--dur-fast) ease,
+			box-shadow var(--dur-fast) ease;
+	}
+
+	.thumb-btn:hover {
+		border-color: var(--ft-text-strong);
+	}
+
+	.thumb-btn:focus-visible {
+		outline: none;
+		border-color: var(--ft-text-strong);
+		box-shadow: 0 0 0 2px color-mix(in srgb, var(--ft-accent) 70%, transparent);
+	}
+
+	.thumb-btn img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.thumb-empty {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		height: 100%;
+		background: var(--ft-frost);
+		color: var(--ft-text-muted);
+	}
+
+	.thumb-count {
+		position: absolute;
+		right: 2px;
+		bottom: 2px;
+		min-width: 20px;
+		height: 16px;
+		padding: 0 4px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: var(--radius-sm);
+		background: var(--ft-accent);
+		color: var(--ft-cta-text);
+		font-family: var(--font-mono);
+		font-size: 0.625rem;
+		font-weight: 500;
+		letter-spacing: 0.02em;
+		line-height: 1;
+		pointer-events: none;
+	}
+
+	.status-select {
+		padding: 4px 24px 4px 8px;
+		border: 1px solid var(--ft-line);
+		border-radius: var(--radius-sm);
+		background: var(--ft-surface);
+		color: var(--ft-text-muted);
+		font-family: var(--font-sans);
+		font-size: 0.75rem;
+		min-height: 28px;
+		appearance: none;
+		background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%236b7276'%3E%3Cpath d='M5.23 7.21a.75.75 0 011.06.02L10 11.06l3.71-3.83a.75.75 0 111.08 1.04l-4.25 4.39a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z'/%3E%3C/svg%3E");
+		background-repeat: no-repeat;
+		background-position: right 6px center;
+		background-size: 12px;
+		cursor: pointer;
+		transition: border-color var(--dur-fast) ease;
+	}
+
+	.status-select:hover {
+		border-color: var(--ft-text-muted);
+	}
+
+	.status-select:focus {
+		outline: none;
+		border-color: var(--ft-text-strong);
+		color: var(--ft-text);
+	}
+</style>

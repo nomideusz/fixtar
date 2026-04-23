@@ -29,12 +29,18 @@
 </svelte:head>
 
 <div class="ft-container ft-section">
-	<h1 class="mb-6 text-2xl font-bold text-[--ft-text] sm:mb-8 sm:text-3xl">Koszyk</h1>
+	<div class="mb-6 border-b border-[--ft-line] pb-3 sm:mb-8">
+		<h1 class="text-2xl text-[--ft-text] sm:text-3xl">Koszyk</h1>
+	</div>
 
 	{#if cart.items.length === 0}
 		<div class="py-16 text-center">
-			<ShoppingCartSimpleIcon class="mx-auto h-24 w-24 text-[--ft-text-muted]" weight="thin" aria-hidden="true" />
-			<h2 class="mt-4 text-xl font-semibold text-[--ft-text]">Twój koszyk jest pusty</h2>
+			<ShoppingCartSimpleIcon
+				class="mx-auto h-24 w-24 text-[--ft-text-muted]"
+				weight="thin"
+				aria-hidden="true"
+			/>
+			<h2 class="mt-4 text-xl text-[--ft-text]">Twój koszyk jest pusty</h2>
 			<p class="mt-2 text-[--ft-text-muted]">Dodaj produkty do koszyka, aby rozpocząć zakupy</p>
 			<Button href="/products" class="mt-6">Przeglądaj produkty</Button>
 		</div>
@@ -42,23 +48,34 @@
 		<div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
 			<!-- Cart Items -->
 			<div class="lg:col-span-2">
-				<div class="border border-[--ft-line] bg-[--ft-frost] p-4 sm:p-6">
-					<h2 class="mb-4 text-lg font-semibold sm:text-xl">Produkty ({cart.items.length})</h2>
+				<div class="border border-[--ft-line] bg-[--ft-surface] p-4 sm:p-6">
+					<h2 class="mb-4 text-lg text-[--ft-text] sm:text-xl">Produkty ({cart.items.length})</h2>
 					<div class="space-y-4">
 						{#each cart.items as item (item)}
-							<div class="flex flex-col gap-3 border-b py-4 last:border-0 sm:flex-row sm:items-center sm:gap-4">
+							<div
+								class="flex flex-col gap-3 border-b border-[--ft-line] py-4 last:border-0 sm:flex-row sm:items-center sm:gap-4"
+							>
 								<div class="flex items-center gap-3 sm:gap-4">
 									{#if item.image}
-										<img src={item.image} alt={item.name} class="h-16 w-16 rounded object-cover sm:h-20 sm:w-20" width="80" height="80" loading="lazy" />
+										<img
+											src={item.image}
+											alt={item.name}
+											class="h-16 w-16 rounded-sm border border-[--ft-line] object-cover sm:h-20 sm:w-20"
+											width="80"
+											height="80"
+											loading="lazy"
+										/>
 									{:else}
-										<div class="flex h-16 w-16 items-center justify-center rounded bg-[--ft-frost] sm:h-20 sm:w-20">
+										<div
+											class="flex h-16 w-16 items-center justify-center rounded-sm border border-[--ft-line] bg-[--ft-surface] sm:h-20 sm:w-20"
+										>
 											<ImageSquareIcon class="h-8 w-8 text-[--ft-text-muted]" aria-hidden="true" />
 										</div>
 									{/if}
 
 									<div class="min-w-0 flex-1">
-										<h3 class="font-medium text-[--ft-text] truncate">{item.name}</h3>
-										<p class="text-[--ft-text-muted]">{item.price.toFixed(2)} zł</p>
+										<h3 class="truncate text-[--ft-text]">{item.name}</h3>
+										<p class="font-mono text-[--ft-text-muted]">{item.price.toFixed(2)} zł</p>
 									</div>
 								</div>
 
@@ -66,15 +83,15 @@
 									<div class="flex items-center gap-2">
 										<button
 											onclick={() => cart.updateQuantity(item.productId, item.quantity - 1)}
-											class="flex h-10 w-10 items-center justify-center rounded border border-[--ft-line] hover:bg-[--ft-frost]"
+											class="flex h-10 w-10 items-center justify-center rounded-sm border border-[--ft-line] bg-[--ft-surface] hover:bg-[--ft-frost]"
 											aria-label="Zmniejsz ilość"
 										>
 											<MinusIcon class="h-4 w-4" aria-hidden="true" />
 										</button>
-										<span class="w-10 text-center font-medium">{item.quantity}</span>
+										<span class="w-10 text-center font-mono text-[--ft-text]">{item.quantity}</span>
 										<button
 											onclick={() => cart.updateQuantity(item.productId, item.quantity + 1)}
-											class="flex h-10 w-10 items-center justify-center rounded border border-[--ft-line] hover:bg-[--ft-frost]"
+											class="flex h-10 w-10 items-center justify-center rounded-sm border border-[--ft-line] bg-[--ft-surface] hover:bg-[--ft-frost]"
 											aria-label="Zwiększ ilość"
 										>
 											<PlusIcon class="h-4 w-4" aria-hidden="true" />
@@ -82,12 +99,12 @@
 									</div>
 
 									<div class="text-right">
-										<p class="font-medium text-[--ft-text]">
+										<p class="font-mono text-[--ft-text]">
 											{(item.price * item.quantity).toFixed(2)} zł
 										</p>
 										<button
 											onclick={() => cart.removeItem(item.productId)}
-											class="text-danger hover:text-danger text-sm"
+											class="text-sm text-[--ft-text-muted] hover:text-[--ft-text]"
 										>
 											Usuń
 										</button>
@@ -101,8 +118,8 @@
 
 			<!-- Order Summary -->
 			<div class="lg:col-span-1">
-				<div class="border border-[--ft-line] bg-[--ft-frost] p-4 sm:p-6">
-					<h2 class="mb-4 text-lg font-semibold sm:text-xl">Podsumowanie</h2>
+				<div class="border border-[--ft-line] bg-[--ft-surface] p-4 sm:p-6">
+					<h2 class="mb-4 text-lg text-[--ft-text] sm:text-xl">Podsumowanie</h2>
 
 					<!-- Coupon Code -->
 					<div class="mb-4">
@@ -118,7 +135,9 @@
 							<Button onclick={applyCoupon} variant="secondary">Zastosuj</Button>
 						</div>
 						{#if discount > 0}
-							<p class="text-success mt-2 text-sm">Kod zastosowany! {discount * 100}% zniżki</p>
+							<p class="text-success mt-2 font-mono text-sm">
+								Kod zastosowany! {discount * 100}% zniżki
+							</p>
 						{/if}
 					</div>
 
@@ -126,24 +145,24 @@
 					<div class="space-y-2 border-t py-4">
 						<div class="flex justify-between">
 							<span class="text-[--ft-text-muted]">Suma częściowa</span>
-							<span class="font-medium">{subtotal.toFixed(2)} zł</span>
+							<span class="font-mono text-[--ft-text]">{subtotal.toFixed(2)} zł</span>
 						</div>
 						{#if discount > 0}
 							<div class="text-success flex justify-between">
 								<span>Rabat</span>
-								<span>-{discountAmount.toFixed(2)} zł</span>
+								<span class="font-mono">-{discountAmount.toFixed(2)} zł</span>
 							</div>
 						{/if}
 						<div class="flex justify-between">
 							<span class="text-[--ft-text-muted]">Dostawa</span>
-							<span class="font-medium">Darmowa</span>
+							<span class="font-mono text-[--ft-text]">Darmowa</span>
 						</div>
 					</div>
 
 					<!-- Total -->
-					<div class="flex justify-between border-t py-4 text-lg font-semibold">
-						<span>Razem</span>
-						<span>{total.toFixed(2)} zł</span>
+					<div class="flex justify-between border-t border-[--ft-line] py-4 text-lg">
+						<span class="text-[--ft-text]">Razem</span>
+						<span class="font-mono text-[--ft-accent]">{total.toFixed(2)} zł</span>
 					</div>
 
 					<!-- Checkout Button -->
@@ -151,7 +170,10 @@
 
 					<!-- Continue Shopping -->
 					<div class="mt-4 text-center">
-						<a href="/products" class="text-[--ft-accent] hover:text-[--ft-accent] text-sm">
+						<a
+							href="/products"
+							class="font-mono text-sm text-[--ft-text-muted] hover:text-[--ft-text]"
+						>
 							Kontynuuj zakupy
 						</a>
 					</div>

@@ -13,8 +13,11 @@
 <section class="featured ft-section">
 	<div class="ft-container">
 		<div class="featured-header">
-			<h2 class="featured-title">Polecane</h2>
-			<a href="/products" class="featured-link">Wszystkie produkty</a>
+			<div class="featured-heading-group">
+				<span class="ft-label">polecane</span>
+				<h2 class="featured-title">Nowe i wybrane</h2>
+			</div>
+			<a href="/products" class="featured-link">Zobacz wszystkie</a>
 		</div>
 
 		{#if error}
@@ -23,7 +26,7 @@
 			<p class="featured-empty">Brak polecanych produktów.</p>
 		{:else}
 			<div class="ft-stagger grid">
-				{#each products.slice(0, 12) as product (product.id)}
+				{#each products.slice(0, 8) as product (product.id)}
 					<ProductCard {product} />
 				{/each}
 			</div>
@@ -34,95 +37,70 @@
 <style>
 	.featured-header {
 		display: flex;
-		align-items: baseline;
+		align-items: end;
 		justify-content: space-between;
-		margin-bottom: 32px;
+		gap: 12px;
+		margin-bottom: 24px;
+		flex-wrap: wrap;
+	}
+
+	.featured-heading-group {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
 	}
 
 	.featured-title {
 		font-family: var(--font-sans);
-		font-size: clamp(1.2rem, 2.5vw, 1.6rem);
-		font-weight: 600;
-		color: var(--ft-dark);
-		letter-spacing: -0.015em;
-		margin-top: 6px;
-		
-		
-		text-transform: none;
-		line-height: 1;
+		font-size: clamp(1.35rem, 2.6vw, 1.8rem);
+		font-weight: 400;
+		color: var(--ft-text-strong);
+		letter-spacing: -0.02em;
+		line-height: 1.12;
 	}
 
 	.featured-link {
 		font-family: var(--font-sans);
-		font-size: 0.95rem;
-		font-weight: 600;
-		color: var(--ft-text-strong);
-		text-transform: none;
-		letter-spacing: 0;
+		font-size: 0.875rem;
+		color: var(--ft-text-muted);
 		text-decoration: none;
-		
-		padding-bottom: 2px;
-		transition:
-			color 0.15s ease,
-			border-color 0.15s ease;
+		transition: color var(--dur-fast) ease;
 	}
 
 	.featured-link:hover {
-		color: var(--ft-accent);
-		border-color: var(--ft-dark);
+		color: var(--ft-accent-text);
 	}
 
 	.grid {
-		display: flex;
-		flex-wrap: nowrap;
-		gap: 16px;
-		overflow-x: auto;
-		scrollbar-width: none;
-		scroll-snap-type: x mandatory;
-		margin-right: calc(-1 * var(--ft-gutter, clamp(24px, 5vw, 80px)));
-		padding-right: var(--ft-gutter, clamp(24px, 5vw, 80px));
-		padding-bottom: 16px;
-	}
-
-	.grid::-webkit-scrollbar {
-		display: none;
-	}
-
-	:global(.grid > *) {
-		flex: 0 0 75%;
-		scroll-snap-align: start;
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 10px;
 	}
 
 	@media (min-width: 640px) {
 		.grid {
-			display: grid;
-			grid-template-columns: repeat(3, 1fr);
-			margin: 0;
-			padding: 0;
-			overflow: visible;
-		}
-
-		:global(.grid > *) {
-			flex: auto;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: 14px;
 		}
 	}
 
 	@media (min-width: 1024px) {
 		.grid {
-			grid-template-columns: repeat(4, 1fr);
-		}
-	}
-
-	@media (min-width: 1440px) {
-		.grid {
-			grid-template-columns: repeat(6, 1fr);
+			grid-template-columns: repeat(4, minmax(0, 1fr));
 		}
 	}
 
 	.featured-empty {
-		text-align: center;
 		padding: 48px 0;
+		text-align: center;
+		font-size: 0.9375rem;
 		color: var(--ft-text-muted);
-		font-size: 0.88rem;
+	}
+
+	@media (max-width: 639px) {
+		.featured-header {
+			align-items: start;
+			flex-direction: column;
+		}
 	}
 </style>
