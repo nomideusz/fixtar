@@ -27,6 +27,9 @@
 		gallery.filter((img: string) => img && img !== product.mainImage).length
 	);
 	const isFeatured = $derived(Boolean(product.featured));
+	const inStock = $derived(
+		product.inventory?.trackQuantity === false || (product.inventory?.quantity ?? 0) > 0
+	);
 </script>
 
 <tr class="border-b border-[--ft-line] align-middle hover:bg-[--ft-frost]">
@@ -64,11 +67,10 @@
 				<p class="truncate text-sm text-[--ft-text-strong]" style="max-width: 260px;">
 					{product.name}
 				</p>
-				{#if product.shortDescription}
-					<p class="truncate text-xs text-[--ft-text-muted]" style="max-width: 260px;">
-						{product.shortDescription}
-					</p>
-				{/if}
+				<p class="stock-line" class:is-out={!inStock}>
+					<span class="stock-dot" aria-hidden="true"></span>
+					{inStock ? 'w magazynie' : 'brak w magazynie'}
+				</p>
 			</div>
 		</div>
 	</td>
@@ -262,5 +264,33 @@
 	.featured-btn:disabled {
 		opacity: 0.4;
 		cursor: not-allowed;
+	}
+
+	.stock-line {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		margin-top: 2px;
+		font-family: var(--font-mono);
+		font-size: 0.6875rem;
+		letter-spacing: 0.02em;
+		color: var(--ft-text-muted);
+		line-height: 1;
+	}
+
+	.stock-dot {
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		background: var(--color-success);
+		flex-shrink: 0;
+	}
+
+	.stock-line.is-out {
+		color: var(--color-danger);
+	}
+
+	.stock-line.is-out .stock-dot {
+		background: var(--color-danger);
 	}
 </style>
