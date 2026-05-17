@@ -1,8 +1,5 @@
 <script lang="ts">
-	import { StarIcon } from 'phosphor-svelte';
-	import avatar1 from '$lib/images/avatars/avatar1.png';
-	import avatar2 from '$lib/images/avatars/avatar2.png';
-	import avatar3 from '$lib/images/avatars/avatar3.png';
+	import { StarIcon, CaretLeftIcon, CaretRightIcon } from 'phosphor-svelte';
 
 	const testimonials = [
 		{
@@ -10,236 +7,218 @@
 			role: 'Elektryk',
 			text: 'Zamówiłem szlifierkę Bavaria — świetna jakość w rozsądnej cenie. Dostawa następnego dnia, paczka solidnie zabezpieczona.',
 			rating: 5,
-			avatar: avatar1
+			initials: 'MK',
+			gradient: 'linear-gradient(135deg, #378A92 0%, #1D2228 100%)'
 		},
 		{
 			name: 'Anna W.',
 			role: 'Właścicielka warsztatu',
-			text: 'Korzystam z FixTar od roku. Konkurencyjne ceny, szybka wysyłka i profesjonalna obsługa klienta. Polecam każdemu rzemieślnikowi.',
+			text: 'Korzystam z FixTar od roku. Konkurencyjne ceny, szybka wysyłka i <strong>profesjonalna obsługa klienta</strong>. Polecam każdemu rzemieślnikowi.',
 			rating: 5,
-			avatar: avatar2
+			initials: 'AW',
+			gradient: 'linear-gradient(135deg, #FF8A1F, #1D2228)'
 		},
 		{
 			name: 'Tomasz P.',
 			role: 'Majsterkowicz',
 			text: 'Wiertarka Eurotec, którą kupiłem, działa bez zarzutu od 6 miesięcy. Gwarancja daje spokój ducha. Na pewno wrócę po więcej.',
 			rating: 5,
-			avatar: avatar3
+			initials: 'TP',
+			gradient: 'linear-gradient(135deg, #378A92 0%, #1D2228 100%)'
 		}
-	];
-
-	const stats = [
-		{ value: '2 500+', label: 'produktów' },
-		{ value: '15 000+', label: 'zamówień' },
-		{ value: '4.8 / 5', label: 'ocena klientów' },
-		{ value: '98%', label: 'pozytywnych opinii' }
 	];
 </script>
 
-<section class="testimonials ft-section">
+<section class="testimonials ft-section" aria-label="Opinie klientów">
 	<div class="ft-container">
-		<div class="t-header">
-			<span class="ft-label">opinie klientów</span>
-			<h2 class="t-title">Zaufały nam tysiące profesjonalistów</h2>
+		<div class="section-head">
+			<div>
+				<p class="kicker">Opinie klientów</p>
+				<h2>
+					Zaufali nam tysiące <span class="accent">profesjonalistów</span>
+				</h2>
+			</div>
+			<div class="test-arrows">
+				<button class="test-arrow" aria-label="Poprzednia">
+					<CaretLeftIcon size={16} weight="bold" aria-hidden="true" />
+				</button>
+				<button class="test-arrow" aria-label="Następna">
+					<CaretRightIcon size={16} weight="bold" aria-hidden="true" />
+				</button>
+			</div>
 		</div>
 
-		<div class="t-grid ft-stagger">
+		<div class="tests ft-stagger">
 			{#each testimonials as t (t.name)}
-				<article class="t-card">
-					<div class="t-stars" aria-label="Ocena {t.rating} z 5">
-						{#each Array(5) as _, s (s)}
-							<span class="t-star" class:is-filled={s < t.rating}>
-								<StarIcon size={14} weight="fill" aria-hidden="true" />
-							</span>
+				<article class="test">
+					<span class="test-stars" aria-label="Ocena {t.rating} z 5">
+						{#each Array(5) as _, i (i)}
+							<StarIcon size={16} weight="fill" />
 						{/each}
-					</div>
+					</span>
 
-					<blockquote class="t-quote">{t.text}</blockquote>
+					<blockquote class="test-quote">{@html t.text}</blockquote>
 
-					<footer class="t-author">
-						<div class="t-avatar" aria-hidden="true">
-							<img
-								src={t.avatar}
-								alt=""
-								width="40"
-								height="40"
-								loading="lazy"
-							/>
-						</div>
-						<div class="t-author-meta">
-							<span class="t-name">{t.name}</span>
-							<span class="t-role">{t.role}</span>
-						</div>
+					<footer class="test-user">
+						<span class="avatar" style="background: {t.gradient};" aria-hidden="true">
+							{t.initials}
+						</span>
+						<span class="who">
+							<span class="name">{t.name}</span>
+							<span class="role">{t.role}</span>
+						</span>
 					</footer>
 				</article>
 			{/each}
 		</div>
-
-		<dl class="t-stats">
-			{#each stats as s (s.label)}
-				<div class="t-stat">
-					<dt class="t-stat-value">{s.value}</dt>
-					<dd class="t-stat-label">{s.label}</dd>
-				</div>
-			{/each}
-		</dl>
 	</div>
 </section>
 
 <style>
-	.t-header {
-		display: flex;
-		flex-direction: column;
-		gap: 8px;
-		margin-bottom: 32px;
+	.testimonials {
+		background: var(--ft-frost);
 	}
 
-	.t-title {
-		font-family: var(--font-sans);
-		font-size: clamp(1.5rem, 3vw, 2rem);
-		font-weight: 400;
-		color: var(--ft-text-strong);
-		letter-spacing: -0.02em;
-		line-height: 1.15;
+	.section-head {
+		display: flex;
+		align-items: end;
+		justify-content: space-between;
+		margin-bottom: 28px;
+		gap: 24px;
+		flex-wrap: wrap;
+	}
+
+	.kicker {
+		font-size: 11px;
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+		color: var(--ft-text-faint);
+		font-weight: 600;
+		margin: 0 0 8px;
+	}
+
+	.section-head h2 {
+		font-family: var(--font-display);
+		font-weight: 700;
+		font-size: clamp(30px, 3.2vw, 40px);
+		letter-spacing: 0.01em;
+		text-transform: uppercase;
+		margin: 0;
+		line-height: 1;
 		max-width: 22ch;
 	}
 
-	/* ── Grid ── */
-	.t-grid {
+	.section-head h2 .accent {
+		color: var(--ft-cyan);
+	}
+
+	.test-arrows {
+		display: flex;
+		gap: 8px;
+	}
+
+	.test-arrow {
+		width: 40px;
+		height: 40px;
+		border-radius: 8px;
+		background: #fff;
+		border: 1px solid var(--ft-line);
 		display: grid;
-		grid-template-columns: 1fr;
-		gap: 12px;
+		place-items: center;
+		color: var(--ft-text);
+		cursor: pointer;
+		transition:
+			background-color var(--dur-fast) ease,
+			color var(--dur-fast) ease,
+			border-color var(--dur-fast) ease;
 	}
 
-	@media (min-width: 640px) {
-		.t-grid {
-			grid-template-columns: repeat(2, 1fr);
-			gap: 16px;
-		}
+	.test-arrow:hover {
+		background: var(--ft-text);
+		color: #fff;
+		border-color: var(--ft-text);
 	}
 
-	@media (min-width: 1024px) {
-		.t-grid {
-			grid-template-columns: repeat(3, 1fr);
-		}
+	.tests {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 18px;
 	}
 
-	/* ── Card ── */
-	.t-card {
+	.test {
+		background: #fff;
+		border-radius: var(--radius-lg);
+		padding: 28px;
+		border: 1px solid var(--ft-line-2);
 		display: flex;
 		flex-direction: column;
-		gap: 16px;
-		padding: 24px;
-		background: var(--ft-surface);
-		border: 1px solid var(--ft-line);
-		border-radius: var(--radius-sm);
-		transition: border-color var(--dur-fast) ease;
+		gap: 18px;
 	}
 
-	.t-card:hover {
-		border-color: var(--ft-text-strong);
-	}
-
-	.t-stars {
-		display: flex;
-		gap: 2px;
-	}
-
-	.t-star {
-		color: var(--ft-line);
+	.test-stars {
 		display: inline-flex;
+		gap: 2px;
+		color: var(--ft-cta);
 	}
 
-	.t-star.is-filled {
-		color: var(--ft-text-strong);
-	}
-
-	.t-quote {
-		font-family: var(--font-sans);
-		font-size: 0.9375rem;
-		line-height: 1.55;
-		color: var(--ft-text);
+	.test-quote {
 		margin: 0;
+		font-size: 14px;
+		color: var(--ft-text-muted);
+		font-family: var(--font-sans);
+		line-height: 1.55;
+		font-style: normal;
 	}
 
-	.t-author {
+	.test-quote :global(strong) {
+		color: var(--ft-text);
+		font-weight: 600;
+	}
+
+	.test-user {
 		display: flex;
 		align-items: center;
 		gap: 12px;
 		margin-top: auto;
-		padding-top: 4px;
+		padding-top: 14px;
+		border-top: 1px solid var(--ft-line-2);
 	}
 
-	.t-avatar {
-		width: 36px;
-		height: 36px;
-		border-radius: var(--radius-full);
-		background: var(--ft-frost);
-		overflow: hidden;
+	.avatar {
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		color: #fff;
+		display: grid;
+		place-items: center;
+		font-family: var(--font-display);
+		font-weight: 700;
+		font-size: 14px;
 		flex-shrink: 0;
 	}
 
-	.t-avatar img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-	}
-
-	.t-author-meta {
+	.who {
 		display: flex;
 		flex-direction: column;
-		gap: 2px;
 	}
 
-	.t-name {
+	.name {
 		font-family: var(--font-sans);
-		font-size: 0.875rem;
-		color: var(--ft-text-strong);
+		font-size: 14px;
+		font-weight: 700;
+		color: var(--ft-text);
 	}
 
-	.t-role {
-		font-family: var(--font-mono);
-		font-size: 0.6875rem;
+	.role {
+		font-family: var(--font-sans);
+		font-size: 12px;
 		color: var(--ft-text-faint);
-		letter-spacing: 0.02em;
 	}
 
-	/* ── Stats strip ── */
-	.t-stats {
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: 0;
-		margin: clamp(32px, 5vh, 48px) 0 0;
-		padding: 20px 0 0;
-		border-top: 1px solid var(--ft-line);
-	}
-
-	@media (min-width: 640px) {
-		.t-stats {
-			grid-template-columns: repeat(4, 1fr);
+	@media (max-width: 900px) {
+		.tests {
+			grid-template-columns: 1fr;
+			gap: 14px;
 		}
-	}
-
-	.t-stat {
-		display: flex;
-		flex-direction: column;
-		gap: 4px;
-		padding: 8px 4px;
-	}
-
-	.t-stat-value {
-		font-family: var(--font-mono);
-		font-size: 1rem;
-		font-variant-numeric: tabular-nums;
-		color: var(--ft-text-strong);
-		letter-spacing: 0.01em;
-	}
-
-	.t-stat-label {
-		font-family: var(--font-mono);
-		font-size: 0.6875rem;
-		color: var(--ft-text-faint);
-		letter-spacing: 0.02em;
-		text-transform: lowercase;
 	}
 </style>

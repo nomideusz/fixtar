@@ -1,69 +1,48 @@
 /* ==========================================================================
-   FixTar — Design System
-   Precision minimalism for a professional tools shop.
-   Questrial (400, only weight) + Ioskeley Mono. One bright yellow-green accent.
+   FIXTAR — Design System
+   Industrial premium aesthetic. Turquoise / Dark / Orange.
+   Oxanium (display) + Inter (UI) + Teko (condensed display).
    ========================================================================== */
 
 @import 'tailwindcss';
-
-/* ==========================================================================
-   0. LOCAL FONTS
-   ========================================================================== */
-
-@font-face {
-	font-family: 'IoskeleyMono';
-	src: url('/IoskeleyMono-Web/WOFF2/IoskeleyMono-Regular.woff2') format('woff2');
-	font-weight: 400;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'IoskeleyMono';
-	src: url('/IoskeleyMono-Web/WOFF2/IoskeleyMono-Medium.woff2') format('woff2');
-	font-weight: 500;
-	font-style: normal;
-	font-display: swap;
-}
 
 /* ==========================================================================
    1. THEME TOKENS (Tailwind v4 @theme — single source of truth)
    ========================================================================== */
 
 @theme {
-	/* Brand palette:
-	 *   --color-text     #272D2E  near-black with slight warmth
-	 *   --color-accent   #B8F200  bright yellow-green for tools and electro tools
-	 *   --color-info     #0778C1  secondary blue
-	 *   --color-surface-subtle #E8EEEF  cool industrial surface
-	 */
+	/* Brand palette (from Brand Book) */
 	--color-bg: #ffffff;
 	--color-surface: #ffffff;
-	--color-surface-subtle: #e8eeef;
-	--color-border: #dfe4e6;
+	--color-surface-subtle: #f4f5f7;
+	--color-border: #e4e7eb;
 	--color-border-strong: #c3ccd0;
-	--color-text: #272d2e;
-	--color-text-muted: #6b7276;
-	--color-text-faint: #9ba3a6;
-	--color-accent: #b8f200;
-	--color-accent-hover: #a4d900;
-	--color-accent-ink: #272d2e;
-	--color-accent-text: #5f7a00;
-	--color-accent-text-hover: #4f6600;
-	--color-info: #0778c1;
-	--color-info-hover: #0560a0;
+	--color-text: #1d2228;
+	--color-text-muted: #4a5360;
+	--color-text-faint: #7a828e;
+	--color-accent: #378a92;
+	--color-accent-hover: #2d737a;
+	--color-accent-ink: #ffffff;
+	--color-accent-text: #2d737a;
+	--color-accent-text-hover: #1d2228;
+	--color-info: #378a92;
+	--color-info-hover: #2d737a;
 	--color-success: #16a34a;
-	--color-warning: #f59e0b;
+	--color-warning: #ff8a1f;
 	--color-danger: #dc2626;
+	--color-cta: #ff8a1f;
+	--color-cta-hover: #f07706;
 
 	/* Typography */
-	--font-sans: Questrial, system-ui, -apple-system, sans-serif;
-	--font-display: Questrial, system-ui, -apple-system, sans-serif;
-	--font-mono: 'IoskeleyMono', ui-monospace, SFMono-Regular, Menlo, monospace;
+	--font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+	--font-display: 'Oxanium', 'Inter', system-ui, sans-serif;
+	--font-display-condensed: 'Teko', 'Oxanium', system-ui, sans-serif;
+	--font-mono: 'Inter', ui-monospace, SFMono-Regular, Menlo, monospace;
 
-	/* Radii — only three */
-	--radius-sm: 4px;
-	--radius-md: 8px;
+	/* Radii */
+	--radius-sm: 6px;
+	--radius-md: 10px;
+	--radius-lg: 14px;
 	--radius-full: 9999px;
 }
 
@@ -72,52 +51,64 @@
    ========================================================================== */
 
 :root {
+	/* Brand palette references */
+	--ft-cyan: #378a92;
+	--ft-cyan-600: #2d737a;
+	--ft-cyan-200: #93cdd2;
+	--ft-dark: #1d2228;
+	--ft-dark-2: #262c33;
+	--ft-dark-3: #343b43;
+	--ft-orange: #ff8a1f;
+	--ft-orange-600: #f07706;
+
 	/* Core palette */
 	--ft-bg: var(--color-bg);
 	--ft-surface: var(--color-surface);
 	--ft-frost: var(--color-surface-subtle);
 	--ft-line: var(--color-border);
+	--ft-line-2: #eef0f3;
 	--ft-line-strong: var(--color-border-strong);
 	--ft-text: var(--color-text);
 	--ft-text-strong: var(--color-text);
 	--ft-text-muted: var(--color-text-muted);
 	--ft-text-faint: var(--color-text-faint);
-	--ft-dark: var(--color-text);
 
-	/* Single accent */
-	--ft-accent: var(--color-accent);
-	--ft-accent-hover: var(--color-accent-hover);
-	--ft-accent-text: var(--color-accent-text);
-	--ft-accent-text-hover: var(--color-accent-text-hover);
-	--ft-cta: var(--color-accent);
-	--ft-cta-hover: var(--color-accent-hover);
-	--ft-cta-light: rgba(184, 242, 0, 0.18);
-	--ft-cta-text: var(--color-accent-ink);
+	/* Accents */
+	--ft-accent: var(--ft-cyan);
+	--ft-accent-hover: var(--ft-cyan-600);
+	--ft-accent-text: var(--ft-cyan-600);
+	--ft-accent-text-hover: var(--ft-dark);
 
-	/* Supporting semantic colors */
-	--ft-warm: var(--color-text-muted);
-	--ft-warm-bg: var(--color-surface-subtle);
+	/* Call to action — Orange */
+	--ft-cta: var(--ft-orange);
+	--ft-cta-hover: var(--ft-orange-600);
+	--ft-cta-light: rgba(255, 138, 31, 0.18);
+	--ft-cta-text: #ffffff;
+
+	/* Supporting semantic */
+	--ft-warm: var(--ft-text-muted);
+	--ft-warm-bg: var(--ft-frost);
 
 	/* Layout */
-	--ft-container: 1680px;
-	--ft-gutter: clamp(20px, 4vw, 64px);
+	--ft-container: 1440px;
+	--ft-gutter: clamp(20px, 4vw, 32px);
 
 	/* Motion */
 	--dur-fast: 120ms;
 	--dur-med: 180ms;
 	--ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 
-	/* Legacy aliases — preserve compatibility, no circular refs */
-	--ft-primary: var(--ft-cta);
-	--ft-primary-hover: var(--ft-cta-hover);
-	--ft-primary-light: var(--ft-cta-light);
-	--ft-primary-active: var(--ft-cta-hover);
-	--ft-primary-ring: var(--ft-cta);
+	/* Legacy aliases */
+	--ft-primary: var(--ft-accent);
+	--ft-primary-hover: var(--ft-accent-hover);
+	--ft-primary-light: rgba(55, 138, 146, 0.12);
+	--ft-primary-active: var(--ft-accent-hover);
+	--ft-primary-ring: var(--ft-accent);
 
 	--ft-border: var(--ft-line);
 	--ft-border-hover: var(--ft-dark);
-	--ft-border-subtle: var(--ft-frost);
-	--ft-border-focus: var(--ft-cta);
+	--ft-border-subtle: var(--ft-line-2);
+	--ft-border-focus: var(--ft-accent);
 
 	--ft-card: var(--ft-surface);
 	--ft-card-hover: var(--ft-frost);
@@ -127,48 +118,46 @@
 	--ft-surface-secondary: var(--ft-frost);
 	--ft-surface-tertiary: var(--ft-frost);
 	--ft-surface-elevated: var(--ft-surface);
-	--ft-surface-overlay: rgba(0, 0, 0, 0.4);
+	--ft-surface-overlay: rgba(29, 34, 40, 0.5);
 
 	--ft-text-secondary: var(--ft-text-muted);
-	--ft-text-inverse: var(--ft-bg);
+	--ft-text-inverse: #ffffff;
 	--ft-text-brand: var(--ft-accent-text);
 
-	--ft-focus-ring: var(--ft-cta);
+	--ft-focus-ring: var(--ft-accent);
 	--ft-focus-offset: 2px;
 
 	/* Brand overlay tokens */
-	--ft-brand-subtle: rgba(39, 45, 46, 0.03);
-	--ft-brand-muted: rgba(39, 45, 46, 0.08);
-	--ft-brand-light: rgba(39, 45, 46, 0.12);
-	--ft-brand-medium: rgba(39, 45, 46, 0.15);
-	--ft-brand-border: rgba(39, 45, 46, 0.15);
-	--ft-brand-glow: rgba(39, 45, 46, 0.1);
-	--ft-grid-line: rgba(39, 45, 46, 0.05);
-	--ft-grid-line-subtle: rgba(39, 45, 46, 0.02);
-	--ft-divider: rgba(39, 45, 46, 0.15);
+	--ft-brand-subtle: rgba(29, 34, 40, 0.03);
+	--ft-brand-muted: rgba(29, 34, 40, 0.08);
+	--ft-brand-light: rgba(29, 34, 40, 0.12);
+	--ft-brand-medium: rgba(29, 34, 40, 0.15);
+	--ft-brand-border: rgba(29, 34, 40, 0.15);
+	--ft-brand-glow: rgba(55, 138, 146, 0.18);
+	--ft-grid-line: rgba(29, 34, 40, 0.05);
+	--ft-grid-line-subtle: rgba(29, 34, 40, 0.02);
+	--ft-divider: rgba(29, 34, 40, 0.15);
 
-	/* Shadow aliases retained for compatibility, but flattened */
-	--ft-shadow-sm: none;
-	--ft-shadow-md: none;
-	--ft-shadow-lg: none;
-	--ft-shadow: rgba(39, 45, 46, 0.08);
-	--ft-shadow-heavy: rgba(39, 45, 46, 0.15);
+	/* Shadows */
+	--ft-shadow-sm: 0 1px 2px rgba(29, 34, 40, 0.06), 0 1px 1px rgba(29, 34, 40, 0.04);
+	--ft-shadow-md: 0 8px 24px -10px rgba(29, 34, 40, 0.18), 0 2px 6px rgba(29, 34, 40, 0.06);
+	--ft-shadow-lg: 0 24px 50px -20px rgba(29, 34, 40, 0.25);
+	--ft-shadow: rgba(29, 34, 40, 0.08);
+	--ft-shadow-heavy: rgba(29, 34, 40, 0.15);
 
-	/* Old dark theme aliases */
-	--ft-dark-deeper: var(--ft-bg);
-	--ft-dark-card: var(--ft-surface);
-	--ft-dark-card-hover: var(--ft-frost);
-	--ft-dark-border: var(--ft-line);
-	--ft-dark-border-hover: var(--ft-dark);
-	--ft-dark-text: var(--ft-text-strong);
-	--ft-dark-text-secondary: var(--ft-text-muted);
-	--ft-dark-text-muted: var(--ft-text-faint);
+	/* Dark theme aliases (preserved for legacy markup) */
+	--ft-dark-deeper: var(--ft-dark);
+	--ft-dark-card: var(--ft-dark-2);
+	--ft-dark-card-hover: var(--ft-dark-3);
+	--ft-dark-border: rgba(255, 255, 255, 0.1);
+	--ft-dark-border-hover: rgba(255, 255, 255, 0.2);
+	--ft-dark-text: #ffffff;
+	--ft-dark-text-secondary: rgba(255, 255, 255, 0.7);
+	--ft-dark-text-muted: rgba(255, 255, 255, 0.5);
 
-	/* Old footer tokens */
-	--ft-footer-bg: var(--ft-bg);
-	--ft-footer-text: var(--ft-text-muted);
+	--ft-footer-bg: var(--ft-dark);
+	--ft-footer-text: rgba(255, 255, 255, 0.7);
 
-	/* Old font alias */
 	--font-heading: var(--font-display);
 }
 
@@ -194,20 +183,21 @@
 		font-family: var(--font-sans);
 		background: var(--ft-bg);
 		color: var(--ft-text);
-		line-height: 1.6;
-		font-size: 16px;
+		line-height: 1.5;
+		font-size: 15px;
 		overflow-x: clip;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
+		text-rendering: optimizeLegibility;
 	}
 
 	::selection {
-		background: color-mix(in srgb, var(--color-accent) 30%, transparent);
+		background: color-mix(in srgb, var(--ft-accent) 30%, transparent);
 		color: var(--ft-text);
 	}
 
 	:focus-visible {
-		outline: 2px solid var(--ft-cta);
+		outline: 2px solid var(--ft-accent);
 		outline-offset: 2px;
 	}
 
@@ -224,10 +214,9 @@
 	}
 
 	a:hover {
-		color: var(--ft-accent-text);
+		color: var(--ft-accent);
 	}
 
-	/* Questrial has a single weight (400). Hierarchy comes from size + color. */
 	h1,
 	h2,
 	h3,
@@ -235,23 +224,25 @@
 	h5,
 	h6 {
 		font-family: var(--font-display);
-		font-weight: 400;
+		font-weight: 700;
 		color: var(--ft-text-strong);
-		letter-spacing: -0.02em;
-		line-height: 1.15;
+		letter-spacing: 0.01em;
+		line-height: 1.1;
 	}
 
 	h1 {
 		font-size: clamp(2.25rem, 5vw, 3.5rem);
+		text-transform: uppercase;
 	}
 
 	h2 {
-		font-size: clamp(1.5rem, 3vw, 2rem);
+		font-size: clamp(1.875rem, 3.2vw, 2.5rem);
+		text-transform: uppercase;
 	}
 
 	h3 {
-		font-size: 1.125rem;
-		letter-spacing: -0.01em;
+		font-size: 1.25rem;
+		text-transform: uppercase;
 	}
 
 	h4,
@@ -266,35 +257,40 @@
    ========================================================================== */
 
 @layer components {
-	/* Monospace kicker above a section heading */
 	.ft-label {
-		font-family: var(--font-mono);
-		font-size: 0.75rem;
-		letter-spacing: 0.02em;
-		color: var(--ft-text-muted);
-		text-transform: lowercase;
+		font-family: var(--font-sans);
+		font-size: 0.6875rem;
+		letter-spacing: 0.15em;
+		color: var(--ft-text-faint);
+		text-transform: uppercase;
+		font-weight: 600;
 	}
 
-	/* Monospace tabular — prices, SKUs, order numbers */
 	.ft-mono,
 	.text-money {
-		font-family: var(--font-mono);
+		font-family: var(--font-display);
 		font-variant-numeric: tabular-nums;
+		font-weight: 700;
 	}
 
 	.text-money {
-		color: var(--ft-accent-text);
+		color: var(--ft-text-strong);
 	}
 
 	.ft-card {
 		background: var(--ft-surface);
 		border: 1px solid var(--ft-line);
-		border-radius: var(--radius-md);
-		transition: border-color var(--dur-med) ease;
+		border-radius: var(--radius-lg);
+		transition:
+			border-color var(--dur-med) ease,
+			box-shadow var(--dur-med) ease,
+			transform var(--dur-med) ease;
 	}
 
 	.ft-card:hover {
-		border-color: var(--ft-dark);
+		border-color: transparent;
+		box-shadow: var(--ft-shadow-md);
+		transform: translateY(-3px);
 	}
 
 	.btn-primary,
@@ -303,31 +299,34 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		gap: 8px;
+		gap: 10px;
 		font-family: var(--font-sans);
-		font-size: 0.9375rem;
-		font-weight: 400;
-		padding: 12px 24px;
+		font-size: 0.8125rem;
+		font-weight: 600;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		padding: 12px 18px;
 		border-radius: var(--radius-sm);
 		cursor: pointer;
 		transition:
 			background-color var(--dur-fast) ease,
 			border-color var(--dur-fast) ease,
-			color var(--dur-fast) ease;
+			color var(--dur-fast) ease,
+			transform var(--dur-fast) ease;
 		border: 1px solid transparent;
 		min-height: 44px;
 	}
 
 	.btn-primary {
-		background: var(--ft-dark);
-		color: var(--ft-bg);
-		border-color: var(--ft-dark);
+		background: var(--ft-accent);
+		color: #fff;
+		border-color: var(--ft-accent);
 	}
 
 	.btn-primary:hover {
-		background: var(--ft-accent);
-		border-color: var(--ft-accent);
-		color: var(--ft-cta-text);
+		background: var(--ft-accent-hover);
+		border-color: var(--ft-accent-hover);
+		color: #fff;
 	}
 
 	.btn-cta {
@@ -344,12 +343,13 @@
 	.btn-secondary {
 		background: transparent;
 		color: var(--ft-text);
-		border-color: var(--ft-line);
+		border-color: var(--ft-text);
+		border-width: 1.5px;
 	}
 
 	.btn-secondary:hover {
-		border-color: var(--ft-dark);
-		color: var(--ft-text);
+		background: var(--ft-text);
+		color: #fff;
 	}
 
 	.input {
@@ -365,7 +365,7 @@
 	}
 
 	.input:focus {
-		border-color: var(--ft-dark);
+		border-color: var(--ft-accent);
 		box-shadow: none;
 	}
 }
@@ -381,15 +381,15 @@
 }
 
 .ft-section {
-	padding-block: clamp(36px, 4.5vh, 52px);
+	padding-block: clamp(48px, 6vh, 72px);
 }
 
 .ft-section-lg {
-	padding-block: clamp(52px, 6.5vh, 80px);
+	padding-block: clamp(64px, 8vh, 96px);
 }
 
 .ft-section-sm {
-	padding-block: clamp(24px, 3vh, 32px);
+	padding-block: clamp(24px, 3vh, 40px);
 }
 
 .ft-section-no-pt {

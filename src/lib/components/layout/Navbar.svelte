@@ -2,9 +2,12 @@
 	import { page } from '$app/stores';
 	import { cart } from '$lib/stores';
 	import { MAIN_NAV } from '$lib/config/navigation';
-	import FixTarLogo from '$lib/images/logo/fixtar-logo-black-trimmed.png';
-	import FixTarIcon from '$lib/images/logo/fixtar-icon-black.png';
-	import { ShoppingCartSimpleIcon } from 'phosphor-svelte';
+	import {
+		ShoppingCartSimpleIcon,
+		CaretDownIcon,
+		DownloadSimpleIcon
+	} from 'phosphor-svelte';
+	import FixtarLogo from './FixtarLogo.svelte';
 
 	interface Props {
 		onCartOpen?: () => void;
@@ -13,6 +16,7 @@
 	let { onCartOpen }: Props = $props();
 
 	const cartCount = $derived(cart.count);
+	const cartTotal = $derived(cart.total);
 	let prevCartCount = cart.count;
 	let cartBouncing = $state(false);
 
@@ -26,134 +30,112 @@
 		}
 		prevCartCount = cartCount;
 	});
+
+	function formatPrice(value: number): string {
+		return value.toFixed(2).replace('.', ',') + ' zł';
+	}
 </script>
 
-<nav class="nav" aria-label="Nawigacja główna">
-	<div class="nav-inner">
-		<a href="/" class="nav-logo" aria-label="FixTar — Strona główna">
-			<img src={FixTarLogo} alt="" class="logo-img logo-full" />
-			<img src={FixTarIcon} alt="" class="logo-img logo-icon" />
-		</a>
+<header class="header">
+	<div class="ft-container">
+		<nav class="nav" aria-label="Nawigacja główna">
+			<a href="/" class="brand-mark" aria-label="FIXTAR — Strona główna">
+				<FixtarLogo />
+			</a>
 
-		<div class="nav-links" role="menubar">
-			{#each MAIN_NAV as link (link.href)}
-				{@const isActive = $page.url.pathname.startsWith(link.href)}
-				<a
-					href={link.href}
-					class="nav-link"
-					class:is-active={isActive}
-					aria-current={isActive ? 'page' : undefined}
-				>
-					{link.label}
-					{#if link.badge}
-						<span class="promo-dot" aria-hidden="true"></span>
-					{/if}
+			<div class="nav-links" role="menubar">
+				{#each MAIN_NAV as link (link.href + link.label)}
+					{@const isActive = $page.url.pathname.startsWith(link.href)}
+					<a
+						href={link.href}
+						class="nav-link"
+						class:has-caret={link.hasCaret}
+						class:is-active={isActive}
+						aria-current={isActive ? 'page' : undefined}
+					>
+						{link.label}
+						{#if link.hasCaret}
+							<CaretDownIcon size={10} weight="bold" aria-hidden="true" />
+						{/if}
+						{#if link.badge}
+							<span class="promo-dot" aria-hidden="true"></span>
+						{/if}
+					</a>
+				{/each}
+			</div>
+
+			<div class="nav-right">
+				<a href="/catalog-2026.pdf" class="btn-katalog" target="_blank" rel="noopener">
+					Katalog 2026
+					<DownloadSimpleIcon size={14} weight="bold" aria-hidden="true" />
 				</a>
-			{/each}
-		</div>
 
-		<div class="nav-actions">
-			<button
-				onclick={() => onCartOpen?.()}
-				class="nav-icon-btn nav-action-btn cart-btn"
-				aria-label="Koszyk{cartCount > 0 ? ` (${cartCount})` : ''}"
-				title="Koszyk"
-				data-cart-toggle
-			>
-				<div class="nav-action-icon-wrap" class:is-bouncing={cartBouncing}>
-					<ShoppingCartSimpleIcon size={20} weight="regular" aria-hidden="true" />
+				<button
+					onclick={() => onCartOpen?.()}
+					class="cart-btn"
+					aria-label="Koszyk{cartCount > 0 ? ` (${cartCount})` : ''}"
+					title="Koszyk"
+					data-cart-toggle
+				>
+					<span class="cart-icon" class:is-bouncing={cartBouncing}>
+						<ShoppingCartSimpleIcon size={18} weight="regular" aria-hidden="true" />
+						{#if cartCount > 0}
+							<span class="cart-badge" aria-hidden="true">{cartCount > 99 ? '99+' : cartCount}</span>
+						{/if}
+					</span>
 					{#if cartCount > 0}
-						<span class="cart-badge" aria-hidden="true">{cartCount > 99 ? '99+' : cartCount}</span>
+						<span class="cart-total">{formatPrice(cartTotal)}</span>
 					{/if}
-				</div>
-			</button>
-		</div>
+				</button>
+			</div>
+		</nav>
 	</div>
-</nav>
+</header>
 
 <style>
-	.nav {
+	.header {
 		position: sticky;
 		top: 0;
 		z-index: 50;
-		background: color-mix(in srgb, var(--ft-surface) 92%, white);
-		border-bottom: 1px solid color-mix(in srgb, var(--ft-line) 78%, white);
-		backdrop-filter: saturate(1.1) blur(10px);
+		background: #fff;
+		border-bottom: 1px solid var(--ft-line);
 		view-transition-name: navbar;
 	}
 
-	.nav-inner {
-		max-width: var(--ft-container);
-		margin-inline: auto;
-		padding-inline: 12px;
-		height: 64px;
+	.nav {
 		display: flex;
 		align-items: center;
-		gap: 16px;
+		justify-content: space-between;
+		padding: 18px 0;
 	}
 
-	@media (min-width: 768px) {
-		.nav-inner {
-			padding-inline: var(--ft-gutter);
-			height: 78px;
-			gap: 32px;
-		}
-	}
-
-	.nav-logo {
+	.brand-mark {
+		flex: 1;
 		display: flex;
 		align-items: center;
-		text-decoration: none;
-		flex-shrink: 0;
 		transition: opacity var(--dur-fast) ease;
 	}
 
-	.nav-logo:hover {
-		opacity: 0.78;
+	.brand-mark:hover {
+		opacity: 0.82;
+		color: inherit;
 	}
 
-	.nav-logo:focus-visible {
+	.brand-mark:focus-visible {
 		outline: 2px solid var(--ft-accent);
-		outline-offset: 2px;
-	}
-
-	.logo-img {
-		width: auto;
-		display: block;
-		object-fit: contain;
-	}
-
-	.logo-full {
-		display: none;
-	}
-
-	.logo-icon {
-		display: block;
-		height: 34px;
-	}
-
-	@media (min-width: 768px) {
-		.logo-full {
-			display: block;
-			height: 46px;
-		}
-
-		.logo-icon {
-			display: none;
-		}
+		outline-offset: 4px;
+		border-radius: 4px;
 	}
 
 	.nav-links {
+		flex: none;
 		display: flex;
 		align-items: center;
-		gap: 4px;
-		margin-left: auto;
-	}
-
-	@media (min-width: 768px) {
-		.nav-links {
-			gap: 8px;
-		}
+		gap: 36px;
+		font-size: 14px;
+		font-weight: 600;
+		letter-spacing: 0.03em;
+		text-transform: uppercase;
 	}
 
 	.nav-link {
@@ -161,107 +143,112 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 6px;
-		font-family: var(--font-sans);
-		font-size: 0.9375rem;
-		font-weight: 400;
 		color: var(--ft-text);
-		padding: 8px 12px;
-		border-radius: var(--radius-sm);
-		cursor: pointer;
+		padding: 8px 0;
 		text-decoration: none;
-		transition:
-			color var(--dur-fast) ease,
-			background-color var(--dur-fast) ease;
+		transition: color var(--dur-fast) ease;
 	}
 
 	.nav-link:hover {
-		color: var(--ft-text-strong);
-		background: color-mix(in srgb, var(--ft-frost) 72%, white);
+		color: var(--ft-cyan);
 	}
 
 	.nav-link.is-active {
-		color: var(--ft-text-strong);
-	}
-
-	.nav-link.is-active::after {
-		content: '';
-		position: absolute;
-		left: 12px;
-		right: 12px;
-		bottom: -1px;
-		height: 2px;
-		background: var(--ft-accent);
+		color: var(--ft-cyan);
 	}
 
 	.nav-link:focus-visible {
 		outline: 2px solid var(--ft-accent);
-		outline-offset: 2px;
+		outline-offset: 4px;
+		border-radius: 2px;
 	}
 
 	.promo-dot {
 		display: inline-block;
-		width: 5px;
-		height: 5px;
+		width: 6px;
+		height: 6px;
 		border-radius: 50%;
-		background: var(--ft-accent);
+		background: var(--ft-cta);
+		margin-left: 4px;
 		flex-shrink: 0;
 	}
 
-	.nav-actions {
+	.nav-right {
+		flex: 1;
 		display: flex;
+		justify-content: flex-end;
 		align-items: center;
-		gap: 4px;
+		gap: 20px;
 	}
 
-	@media (min-width: 768px) {
-		.nav-actions {
-			gap: 6px;
-		}
-	}
-
-	.nav-icon-btn {
+	.btn-katalog {
 		display: inline-flex;
-		flex-direction: column;
 		align-items: center;
-		justify-content: center;
-		gap: 3px;
-		min-width: 42px;
-		min-height: 42px;
-		padding: 0 10px;
+		gap: 10px;
+		padding: 12px 18px;
 		border-radius: var(--radius-sm);
-		color: var(--ft-text);
-		background: transparent;
-		border: 1px solid transparent;
-		cursor: pointer;
+		font-family: var(--font-sans);
+		font-weight: 600;
+		font-size: 13px;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		background: var(--ft-cyan);
+		color: #fff;
 		text-decoration: none;
-		position: relative;
 		transition:
-			color var(--dur-fast) ease,
 			background-color var(--dur-fast) ease,
-			border-color var(--dur-fast) ease;
+			color var(--dur-fast) ease;
 	}
 
-	@media (min-width: 768px) {
-		.nav-icon-btn {
-			min-width: 46px;
-			min-height: 46px;
-		}
+	.btn-katalog:hover {
+		background: var(--ft-cyan-600);
+		color: #fff;
 	}
 
-	.nav-action-btn:hover {
-		color: var(--ft-text-strong);
-		background: color-mix(in srgb, var(--ft-frost) 72%, white);
-		border-color: color-mix(in srgb, var(--ft-line) 72%, white);
+	.btn-katalog :global(svg) {
+		transition: transform var(--dur-fast) ease;
 	}
 
-	.nav-action-icon-wrap {
-		position: relative;
+	.btn-katalog:hover :global(svg) {
+		transform: translateY(2px);
+	}
+
+	.btn-katalog:focus-visible {
+		outline: 2px solid var(--ft-accent);
+		outline-offset: 2px;
+	}
+
+	.cart-btn {
 		display: flex;
 		align-items: center;
-		justify-content: center;
+		gap: 10px;
+		font-weight: 700;
+		font-size: 14px;
+		background: transparent;
+		border: 0;
+		padding: 0;
+		cursor: pointer;
+		color: var(--ft-text);
 	}
 
-	.nav-action-icon-wrap.is-bouncing {
+	.cart-icon {
+		position: relative;
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		display: grid;
+		place-items: center;
+		background: var(--ft-frost);
+		color: var(--ft-text);
+		transition: background-color var(--dur-fast) ease;
+	}
+
+	.cart-btn:hover .cart-icon {
+		background: var(--ft-dark);
+		color: #fff;
+	}
+
+	.cart-icon.is-bouncing {
 		animation: cartBounce 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 	}
 
@@ -270,50 +257,76 @@
 			transform: scale(1);
 		}
 		50% {
-			transform: scale(1.25);
+			transform: scale(1.18);
 		}
 		100% {
 			transform: scale(1);
 		}
 	}
 
-	.nav-icon-btn:focus-visible {
+	.cart-badge {
+		position: absolute;
+		top: -3px;
+		right: -3px;
+		min-width: 18px;
+		height: 18px;
+		display: grid;
+		place-items: center;
+		background: var(--ft-cta);
+		color: #fff;
+		font-size: 11px;
+		font-weight: 700;
+		border-radius: 9px;
+		padding: 0 4px;
+		border: 2px solid #fff;
+		line-height: 1;
+	}
+
+	.cart-total {
+		font-family: var(--font-display);
+		font-weight: 700;
+		font-size: 14px;
+		letter-spacing: 0.01em;
+	}
+
+	.cart-btn:focus-visible {
 		outline: 2px solid var(--ft-accent);
 		outline-offset: 2px;
+		border-radius: 4px;
 	}
 
-	.cart-btn {
-		width: 44px;
-		min-width: 44px;
-		padding: 0;
-		margin-left: 2px;
-	}
+	@media (max-width: 1024px) {
+		.nav {
+			gap: 24px;
+		}
 
-	@media (min-width: 768px) {
-		.cart-btn {
-			width: 46px;
-			min-width: 46px;
+		.nav-links {
+			gap: 24px;
+			font-size: 13px;
+		}
+
+		.btn-katalog {
+			padding: 10px 14px;
 		}
 	}
 
-	.cart-badge {
-		position: absolute;
-		top: -8px;
-		right: -12px;
-		min-width: 20px;
-		height: 20px;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		background: var(--ft-accent);
-		color: var(--ft-cta-text);
-		font-size: 0.625rem;
-		font-weight: 500;
-		font-family: var(--font-mono);
-		border-radius: var(--radius-full);
-		padding: 0 6px;
-		line-height: 1;
-		pointer-events: none;
-		border: 2px solid var(--ft-surface);
+	@media (max-width: 860px) {
+		.nav-links {
+			display: none;
+		}
+
+		.btn-katalog {
+			display: none;
+		}
+
+		.nav {
+			padding: 14px 0;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.cart-total {
+			display: none;
+		}
 	}
 </style>

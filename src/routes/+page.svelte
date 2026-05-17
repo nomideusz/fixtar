@@ -1,12 +1,11 @@
 <script lang="ts">
 	import type { Product } from '$lib/stores/products.svelte';
 	import HeroSection from '$lib/components/home/HeroSection.svelte';
-
-	import FeaturedProducts from '$lib/components/home/FeaturedProducts.svelte';
+	import TrustBar from '$lib/components/home/TrustBar.svelte';
 	import CategoriesSection from '$lib/components/home/CategoriesSection.svelte';
-	import BrandLogos from '$lib/components/home/BrandLogos.svelte';
+	import FeaturedProducts from '$lib/components/home/FeaturedProducts.svelte';
+	import ClubSection from '$lib/components/home/ClubSection.svelte';
 	import TestimonialsSection from '$lib/components/home/TestimonialsSection.svelte';
-	import NewsletterSection from '$lib/components/home/NewsletterSection.svelte';
 	import { lazyReveal } from '$lib/utils/lazy';
 
 	interface Props {
@@ -23,7 +22,7 @@
 </script>
 
 <svelte:head>
-	<title>FixTar — Profesjonalne Elektronarzędzia</title>
+	<title>FIXTAR — Profesjonalne Elektronarzędzia</title>
 	<meta
 		name="description"
 		content="Sklep z profesjonalnymi elektronarzędziami — szlifierki, wiertarki, młotowiertarki, piły. Bavaria, Magnum, Eurotec, Sterling. Dostawa 24h."
@@ -32,20 +31,18 @@
 
 <HeroSection />
 
+<TrustBar />
+
 <CategoriesSection categories={data.categories} />
 
 <div class="ft-lazy" use:lazyReveal>
 	<FeaturedProducts products={data.featuredProducts} error={data.error} />
 </div>
 
-<div class="ft-lazy" use:lazyReveal>
-	<BrandLogos />
+<div id="club" class="ft-lazy" use:lazyReveal>
+	<ClubSection />
 </div>
 
 <div class="ft-lazy" use:lazyReveal>
 	<TestimonialsSection />
-</div>
-
-<div id="newsletter" class="ft-lazy" use:lazyReveal>
-	<NewsletterSection />
 </div>

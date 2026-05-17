@@ -5,6 +5,7 @@
 	import type { Snippet } from 'svelte';
 	import { userStore, languageStore } from '$lib/stores';
 	import Navbar from '$lib/components/layout/Navbar.svelte';
+	import UtilityBar from '$lib/components/layout/UtilityBar.svelte';
 	import CartDrawer from '$lib/components/layout/CartDrawer.svelte';
 	import Footer from '$lib/components/layout/Footer.svelte';
 	import Notifications from '$lib/components/ui/Notifications.svelte';
@@ -67,6 +68,7 @@
 
 <a href="#main-content" class="skip-link">Przejdź do treści</a>
 <Notifications />
+<UtilityBar />
 <Navbar onCartOpen={() => (cartOpen = true)} />
 <CartDrawer bind:this={cartDrawerRef} toggleCart={() => (cartOpen = false)} t={layoutT} />
 
