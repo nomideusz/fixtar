@@ -15,12 +15,6 @@
 	<!-- Subtle cyan radial accent far right -->
 	<div class="hero-glow" aria-hidden="true"></div>
 
-	<!-- "Stamp" chip floats free on the photo -->
-	<div class="stamp" aria-hidden="true">
-		<span class="stamp-dot"></span>
-		<span class="stamp-label">Młotowiertarka · 20V</span>
-	</div>
-
 	<div class="ft-container hero-inner">
 		<div class="hero-content">
 			<h1 class="hero-headline">
@@ -108,40 +102,6 @@
 			rgba(63, 152, 162, 0.1) 0%,
 			transparent 50%
 		);
-	}
-
-	/* Stamp chip — bottom right of viewport */
-	.stamp {
-		position: absolute;
-		right: clamp(24px, 4vw, 48px);
-		bottom: clamp(24px, 4vh, 40px);
-		z-index: 3;
-		display: inline-flex;
-		align-items: center;
-		gap: 10px;
-		padding: 10px 14px;
-		background: rgba(255, 255, 255, 0.92);
-		backdrop-filter: blur(8px);
-		border: 1px solid rgba(255, 255, 255, 0.6);
-		border-radius: var(--radius-sm);
-		box-shadow: 0 4px 12px rgba(29, 34, 40, 0.08);
-	}
-
-	.stamp-dot {
-		width: 6px;
-		height: 6px;
-		border-radius: 999px;
-		background: var(--ft-cyan);
-		box-shadow: 0 0 8px var(--ft-cyan);
-	}
-
-	.stamp-label {
-		font-family: var(--font-mono);
-		font-size: 11px;
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
-		color: var(--ft-ink-700);
-		font-weight: 500;
 	}
 
 	/* Content overlay — sits left, on top of the photo+veil */
@@ -304,20 +264,11 @@
 		.hero-content {
 			padding-top: 48px;
 		}
-
-		.stamp {
-			right: 20px;
-			bottom: 20px;
-		}
 	}
 
 	@media (max-width: 480px) {
 		.btn {
 			flex: 1 1 auto;
-		}
-
-		.stamp {
-			display: none;
 		}
 	}
 </style>

@@ -35,10 +35,12 @@
 	}
 
 	.trust-row {
-		display: grid;
-		grid-template-columns: repeat(4, 1fr);
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 		gap: 24px;
 		padding: 28px 0;
+		flex-wrap: wrap;
 	}
 
 	.feature {
@@ -82,16 +84,23 @@
 
 	@media (max-width: 900px) {
 		.trust-row {
-			grid-template-columns: repeat(2, 1fr);
-			gap: 20px;
+			justify-content: flex-start;
+			gap: 24px 32px;
 			padding: 22px 0;
+		}
+
+		.feature {
+			flex: 1 1 calc(50% - 32px);
 		}
 	}
 
 	@media (max-width: 480px) {
 		.trust-row {
-			grid-template-columns: 1fr;
 			gap: 16px;
+		}
+
+		.feature {
+			flex: 1 1 100%;
 		}
 	}
 </style>
