@@ -40,9 +40,9 @@
 		'narzedzia-reczne': hammerImg
 	};
 
-	function displayName(c: Category) {
-		if (c.slug === 'pneumatyczne-i-budowlane') return 'Narzędzia\nbudowlane';
-		return c.name.replace(/\s+i\s+/i, '\nI ');
+	function displayName(c: Category): string {
+		if (c.slug === 'pneumatyczne-i-budowlane') return 'Narzędzia<br/>budowlane';
+		return c.name.replace(/\s+i\s+/i, '<br/>I ');
 	}
 
 	function imageFor(slug: string): string | undefined {
@@ -57,15 +57,6 @@
 		return `${count} produktów`;
 	}
 
-	const SPARK_POSITIONS = [
-		'80% 50%',
-		'50% 40%',
-		'70% 60%',
-		'30% 30%',
-		'40% 70%',
-		'60% 50%'
-	];
-
 	const shown = $derived(categories.slice(0, 6));
 </script>
 
@@ -74,7 +65,7 @@
 		<div class="ft-container">
 			<div class="section-head">
 				<div>
-					<p class="kicker">Kategorie</p>
+					<p class="ft-eyebrow">Kategorie</p>
 					<h2>Przeglądaj kategorie</h2>
 				</div>
 				<a href="/products" class="see-all">
@@ -83,31 +74,32 @@
 				</a>
 			</div>
 
-			<div class="cats ft-stagger">
-				{#each shown as category, i (category.id)}
+			<div class="cat-grid ft-stagger">
+				{#each shown as category (category.id)}
 					{@const img = imageFor(category.slug)}
-					{@const spark = SPARK_POSITIONS[i % SPARK_POSITIONS.length]}
-					<a class="cat-wrap" href="/products?category={category.slug}">
-						<div class="cat-tile">
-							<div class="cat-inner">
-								{#if img}
-									<img src={img} alt="" class="cat-img" loading="lazy" />
-								{/if}
-								<span class="cat-dim" aria-hidden="true"></span>
-								<span class="cat-bg" style="--spark: {spark};" aria-hidden="true"></span>
-							</div>
+					<div class="cat-cell">
+						<a class="cat-card" href="/products?category={category.slug}" aria-label={category.name}>
+							<div class="cat-tile">
+								<div class="cat-inner">
+									{#if img}
+										<img src={img} alt="" class="cat-img" loading="lazy" />
+									{/if}
+									<span class="cat-dim" aria-hidden="true"></span>
+									<span class="cat-bg" aria-hidden="true"></span>
+								</div>
 
-							<span class="cat-body">
-								<span class="cat-text">
-									<h3 class="cat-name">{@html displayName(category).replace('\n', '<br/>')}</h3>
-									<span class="cat-count">{plural(category.count)}</span>
+								<span class="cat-body">
+									<span class="cat-text">
+										<h3 class="cat-name">{@html displayName(category)}</h3>
+										<span class="cat-count">{plural(category.count)}</span>
+									</span>
+									<span class="cat-arrow" aria-hidden="true">
+										<ArrowRightIcon size={18} weight="bold" />
+									</span>
 								</span>
-								<span class="cat-arrow" aria-hidden="true">
-									<ArrowRightIcon size={18} weight="bold" />
-								</span>
-							</span>
-						</div>
-					</a>
+							</div>
+						</a>
+					</div>
 				{/each}
 			</div>
 		</div>
@@ -124,26 +116,19 @@
 		flex-wrap: wrap;
 	}
 
-	.kicker {
-		font-size: 11px;
-		letter-spacing: 0.15em;
-		text-transform: uppercase;
-		color: var(--ft-text-faint);
-		font-weight: 600;
-		margin: 0 0 8px;
-	}
-
 	.section-head h2 {
 		font-family: var(--font-display);
-		font-weight: 700;
+		font-weight: 500;
 		font-size: clamp(30px, 3.2vw, 40px);
-		letter-spacing: 0.01em;
+		letter-spacing: -0.005em;
 		text-transform: uppercase;
-		margin: 0;
+		margin: 6px 0 0;
 		line-height: 1;
+		color: var(--ft-text);
 	}
 
 	.see-all {
+		font-family: var(--font-sans);
 		font-size: 12px;
 		font-weight: 700;
 		letter-spacing: 0.12em;
@@ -152,25 +137,32 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 8px;
-		border-bottom: 2px solid var(--ft-cta);
 		padding-bottom: 4px;
+		border-bottom: 2px solid var(--ft-cta);
 		text-decoration: none;
-		transition: color var(--dur-fast) ease;
+		transition:
+			color var(--dur-fast) ease,
+			border-color var(--dur-fast) ease;
 	}
 
 	.see-all:hover {
 		color: var(--ft-cta-hover);
+		border-bottom-color: var(--ft-cta-hover);
 	}
 
-	.cats {
+	.cat-grid {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
 		gap: 12px;
-		border-radius: var(--radius-lg);
+		border-radius: var(--radius-md);
 		overflow: hidden;
 	}
 
-	.cat-wrap {
+	.cat-cell {
+		min-width: 0;
+	}
+
+	.cat-card {
 		position: relative;
 		height: 200px;
 		display: block;
@@ -180,32 +172,34 @@
 		isolation: isolate;
 	}
 
+	/* Sheared tile — the parallelogram outline */
 	.cat-tile {
 		position: absolute;
 		inset: 0;
 		border-radius: 6px;
 		overflow: hidden;
-		background: var(--ft-dark);
+		background: var(--ft-ink-900);
 		transform: skewX(-14deg);
 		transition:
 			transform var(--dur-med) ease,
 			filter var(--dur-med) ease;
 	}
 
-	.cat-wrap:nth-child(3n + 1) .cat-tile {
+	/* Push outer columns past the grid bounds so the OUTER edges of row 1 and 3 look straight */
+	.cat-cell:nth-child(3n + 1) .cat-tile {
 		left: -40px;
 	}
 
-	.cat-wrap:nth-child(3n + 3) .cat-tile {
+	.cat-cell:nth-child(3n + 3) .cat-tile {
 		right: -40px;
 	}
 
-	.cat-wrap:hover .cat-tile {
-		transform: skewX(-14deg) translateY(-2px);
+	.cat-card:hover .cat-tile {
 		filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.2));
 		z-index: 10;
 	}
 
+	/* Counter-skewed inner — holds image and overlay, upright */
 	.cat-inner {
 		position: absolute;
 		inset: 0 -40px;
@@ -219,30 +213,37 @@
 		height: 100%;
 		object-fit: cover;
 		z-index: 0;
+		transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
 	}
 
+	.cat-card:hover .cat-img {
+		transform: scale(1.04);
+	}
+
+	/* Gradient overlay — dark on left, fading to transparent toward right */
 	.cat-dim {
 		position: absolute;
 		inset: 0;
 		background: linear-gradient(
 			100deg,
-			rgba(13, 16, 20, 0.82) 0%,
-			rgba(29, 34, 40, 0.55) 35%,
-			rgba(29, 34, 40, 0.18) 70%,
-			rgba(29, 34, 40, 0.35) 100%
+			rgba(13, 16, 20, 0.88) 0%,
+			rgba(29, 34, 40, 0.7) 30%,
+			rgba(29, 34, 40, 0.35) 55%,
+			rgba(29, 34, 40, 0.15) 80%,
+			rgba(29, 34, 40, 0.3) 100%
 		);
 		z-index: 1;
 		pointer-events: none;
 	}
 
+	/* Subtle cyan accent + sparks */
 	.cat-bg {
 		position: absolute;
 		inset: 0;
 		background:
-			radial-gradient(60% 80% at var(--spark, 80% 50%), rgba(55, 138, 146, 0.32), transparent 60%),
+			radial-gradient(60% 80% at 80% 50%, rgba(63, 152, 162, 0.22), transparent 60%),
 			radial-gradient(1px 1px at 22% 70%, rgba(255, 255, 255, 0.35), transparent 50%),
-			radial-gradient(1px 1px at 65% 28%, rgba(255, 255, 255, 0.4), transparent 50%),
-			radial-gradient(2px 2px at 80% 80%, rgba(255, 138, 31, 0.5), transparent 50%);
+			radial-gradient(1px 1px at 65% 28%, rgba(255, 255, 255, 0.4), transparent 50%);
 		z-index: 1;
 		pointer-events: none;
 	}
@@ -256,9 +257,10 @@
 		height: 1px;
 		background: linear-gradient(90deg, transparent, var(--ft-cyan) 50%, transparent);
 		transform: rotate(-15deg);
-		opacity: 0.3;
+		opacity: 0.35;
 	}
 
+	/* Content body — counter-skewed back so text stays upright */
 	.cat-body {
 		position: absolute;
 		inset: 0;
@@ -272,12 +274,12 @@
 		transform: skewX(14deg);
 	}
 
-	.cat-wrap:nth-child(3n + 1) .cat-body {
-		padding-left: 64px;
+	.cat-cell:nth-child(3n + 1) .cat-body {
+		padding-left: 56px;
 	}
 
-	.cat-wrap:nth-child(3n + 3) .cat-body {
-		padding-right: 64px;
+	.cat-cell:nth-child(3n + 3) .cat-body {
+		padding-right: 56px;
 	}
 
 	.cat-text {
@@ -289,11 +291,11 @@
 	.cat-name {
 		font-family: var(--font-display);
 		font-weight: 700;
+		font-style: italic;
 		font-size: 26px;
 		line-height: 1;
-		letter-spacing: 0.01em;
+		letter-spacing: 0.005em;
 		text-transform: uppercase;
-		font-style: italic;
 		margin: 0;
 		color: #fff;
 	}
@@ -308,7 +310,7 @@
 
 	.cat-arrow {
 		position: absolute;
-		right: 44px;
+		right: 24px;
 		bottom: 20px;
 		width: 44px;
 		height: 44px;
@@ -322,66 +324,82 @@
 			transform var(--dur-fast) ease;
 	}
 
-	.cat-wrap:nth-child(3n + 3) .cat-arrow {
-		right: 60px;
+	.cat-cell:nth-child(3n + 3) .cat-arrow {
+		right: 56px;
 	}
 
-	.cat-wrap:hover .cat-arrow {
+	.cat-card:hover .cat-arrow {
 		background: var(--ft-cta-hover);
 		transform: translateX(3px);
 	}
 
+	/* ---------- Responsive ---------- */
 	@media (max-width: 900px) {
-		.cats {
+		.cat-grid {
 			grid-template-columns: repeat(2, 1fr);
 		}
 
-		/* Re-apply overrides for 2 columns */
-		.cat-wrap:nth-child(3n + 1) .cat-tile,
-		.cat-wrap:nth-child(3n + 3) .cat-tile {
+		/* Reset 3-col shifts */
+		.cat-cell:nth-child(3n + 1) .cat-tile,
+		.cat-cell:nth-child(3n + 3) .cat-tile {
 			left: 0;
 			right: 0;
 		}
 
-		.cat-wrap:nth-child(3n + 1) .cat-body,
-		.cat-wrap:nth-child(3n + 3) .cat-body {
+		.cat-cell:nth-child(3n + 1) .cat-body,
+		.cat-cell:nth-child(3n + 3) .cat-body {
 			padding: 24px;
 		}
-		.cat-wrap:nth-child(3n + 3) .cat-arrow {
-			right: 44px;
+
+		.cat-cell:nth-child(3n + 3) .cat-arrow {
+			right: 24px;
 		}
 
-		/* Col 1 */
-		.cat-wrap:nth-child(2n + 1) .cat-tile {
+		/* Apply 2-col shifts */
+		.cat-cell:nth-child(2n + 1) .cat-tile {
 			left: -40px;
 		}
-		.cat-wrap:nth-child(2n + 1) .cat-body {
-			padding-left: 64px;
+		.cat-cell:nth-child(2n + 1) .cat-body {
+			padding-left: 56px;
 		}
 
-		/* Col 2 */
-		.cat-wrap:nth-child(2n + 2) .cat-tile {
+		.cat-cell:nth-child(2n) .cat-tile {
 			right: -40px;
 		}
-		.cat-wrap:nth-child(2n + 2) .cat-body {
-			padding-right: 64px;
+		.cat-cell:nth-child(2n) .cat-body {
+			padding-right: 56px;
 		}
-		.cat-wrap:nth-child(2n + 2) .cat-arrow {
-			right: 60px;
+		.cat-cell:nth-child(2n) .cat-arrow {
+			right: 56px;
 		}
 	}
 
 	@media (max-width: 560px) {
-		.cats {
+		.cat-grid {
 			grid-template-columns: 1fr;
 		}
 
-		.cat-wrap {
+		.cat-card {
 			height: 180px;
 		}
 
 		.cat-name {
 			font-size: 22px;
+		}
+
+		/* Reset 2-col shifts */
+		.cat-cell:nth-child(2n + 1) .cat-tile,
+		.cat-cell:nth-child(2n) .cat-tile {
+			left: -30px;
+			right: -30px;
+		}
+		.cat-cell:nth-child(2n + 1) .cat-body,
+		.cat-cell:nth-child(2n) .cat-body {
+			padding-left: 48px;
+			padding-right: 24px;
+		}
+		.cat-cell:nth-child(2n) .cat-arrow {
+			right: 24px;
 		}
 	}
 </style>

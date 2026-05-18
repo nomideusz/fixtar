@@ -111,7 +111,7 @@
 		<div class="mb-8">
 			<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 				<div>
-					<h1 class="text-xl font-bold text-[--ft-text] sm:text-3xl">
+					<h1 class="order-title">
 						Zamówienie {order.orderNumber}
 					</h1>
 					<p class="mt-1 text-[--ft-text-muted]">
@@ -313,3 +313,16 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	.order-title {
+		font-family: var(--font-display);
+		font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+		font-weight: 500;
+		color: var(--ft-text);
+		letter-spacing: -0.005em;
+		line-height: 1;
+		text-transform: uppercase;
+		margin: 0;
+	}
+</style>

@@ -4,35 +4,50 @@
 </script>
 
 <section class="hero" aria-label="Baner główny">
-	<div class="hero-bg" aria-hidden="true">
+	<!-- Full-bleed photo across the entire viewport -->
+	<div class="hero-photo" aria-hidden="true">
 		<img src={heroConstruction} alt="" loading="eager" fetchpriority="high" decoding="async" />
-		<div class="hero-bg-overlay"></div>
 	</div>
 
-	<div class="ft-container">
+	<!-- Left-side fade gradient: opaque surface on the left, transparent on the right -->
+	<div class="hero-veil" aria-hidden="true"></div>
+
+	<!-- Subtle cyan radial accent far right -->
+	<div class="hero-glow" aria-hidden="true"></div>
+
+	<!-- "Stamp" chip floats free on the photo -->
+	<div class="stamp" aria-hidden="true">
+		<span class="stamp-dot"></span>
+		<span class="stamp-label">Młotowiertarka · 20V</span>
+	</div>
+
+	<div class="ft-container hero-inner">
 		<div class="hero-content">
 			<h1 class="hero-headline">
 				<span class="headline-line">Twój dom.</span>
-				<span class="headline-line is-teal">Twoja moc.</span>
+				<span class="headline-line is-accent">Twoja moc.</span>
 			</h1>
-			<p class="hero-lede">Profesjonalne narzędzia stworzone do ciężkiej pracy.</p>
+			<p class="hero-lede">
+				Profesjonalne narzędzia stworzone do ciężkiej pracy — projektowane w Europie, objęte 2-letnią gwarancją.
+			</p>
 
 			<div class="hero-cta">
-				<a href="/products" class="btn-cta-teal">
+				<a href="/products" class="btn btn-teal">
 					Zobacz produkty
 					<ArrowRightIcon size={14} weight="bold" aria-hidden="true" />
 				</a>
-				<a href="/about" class="btn-outline">O marce</a>
+				<a href="/about" class="btn btn-outline">O marce</a>
 			</div>
 
 			<div class="hero-rating">
 				<span class="stars" aria-hidden="true">
 					{#each Array(5) as _, i (i)}
-						<StarIcon size={15} weight="fill" />
+						<StarIcon size={16} weight="fill" />
 					{/each}
 				</span>
-				<span class="score">4.8/5</span>
-				<span class="basis">na podstawie 2 500+ opinii</span>
+				<span class="score-text">
+					<b>4.8/5</b><span>na podstawie 2 500+ opinii</span>
+				</span>
 			</div>
 		</div>
 	</div>
@@ -42,144 +57,201 @@
 	.hero {
 		position: relative;
 		overflow: hidden;
-		background:
-			radial-gradient(80% 70% at 70% 50%, rgba(55, 138, 146, 0.15), transparent 60%),
-			linear-gradient(110deg, #d8dde2 0%, #c2cad1 45%, #a7b1ba 100%);
-		min-height: 540px;
+		isolation: isolate;
+		background: #edf0f3;
+		min-height: clamp(480px, 70vh, 640px);
 	}
 
-	.hero-bg {
+	/* Full-width photo (100vw) */
+	.hero-photo {
 		position: absolute;
 		inset: 0;
 		z-index: 0;
-		overflow: hidden;
 	}
 
-	.hero-bg img {
+	.hero-photo img {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-		object-position: 70% center;
-		display: block;
+		object-position: 65% center;
 	}
 
-	.hero-bg-overlay {
+	/* Left-side veil — opaque surface fading to transparent so photo reads on the right */
+	.hero-veil {
 		position: absolute;
 		inset: 0;
+		z-index: 1;
+		pointer-events: none;
 		background:
 			linear-gradient(
 				90deg,
-				rgba(244, 245, 247, 0.88) 0%,
-				rgba(244, 245, 247, 0.45) 40%,
-				rgba(244, 245, 247, 0) 65%,
-				rgba(244, 245, 247, 0) 100%
-			);
+				#fafbfc 0%,
+				#fafbfc 22%,
+				rgba(250, 251, 252, 0.96) 32%,
+				rgba(250, 251, 252, 0.85) 42%,
+				rgba(250, 251, 252, 0.6) 52%,
+				rgba(250, 251, 252, 0.32) 64%,
+				rgba(250, 251, 252, 0.1) 76%,
+				transparent 88%
+			),
+			linear-gradient(180deg, transparent 65%, rgba(237, 240, 243, 0.5) 100%);
+	}
+
+	/* Subtle cyan accent on the right side */
+	.hero-glow {
+		position: absolute;
+		inset: 0;
+		z-index: 1;
 		pointer-events: none;
+		background: radial-gradient(
+			ellipse at 92% 50%,
+			rgba(63, 152, 162, 0.1) 0%,
+			transparent 50%
+		);
+	}
+
+	/* Stamp chip — bottom right of viewport */
+	.stamp {
+		position: absolute;
+		right: clamp(24px, 4vw, 48px);
+		bottom: clamp(24px, 4vh, 40px);
+		z-index: 3;
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		padding: 10px 14px;
+		background: rgba(255, 255, 255, 0.92);
+		backdrop-filter: blur(8px);
+		border: 1px solid rgba(255, 255, 255, 0.6);
+		border-radius: var(--radius-sm);
+		box-shadow: 0 4px 12px rgba(29, 34, 40, 0.08);
+	}
+
+	.stamp-dot {
+		width: 6px;
+		height: 6px;
+		border-radius: 999px;
+		background: var(--ft-cyan);
+		box-shadow: 0 0 8px var(--ft-cyan);
+	}
+
+	.stamp-label {
+		font-family: var(--font-mono);
+		font-size: 11px;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--ft-ink-700);
+		font-weight: 500;
+	}
+
+	/* Content overlay — sits left, on top of the photo+veil */
+	.hero-inner {
+		position: relative;
+		z-index: 2;
+		display: flex;
+		align-items: center;
+		min-height: clamp(480px, 70vh, 640px);
 	}
 
 	.hero-content {
-		position: relative;
-		z-index: 2;
-		padding: 90px 0 88px;
-		max-width: 600px;
+		max-width: 540px;
+		padding: 64px 0;
 	}
 
 	.hero-headline {
-		font-family: var(--font-display-condensed);
+		font-family: var(--font-display);
 		font-weight: 500;
 		font-style: italic;
-		font-size: clamp(56px, 6.8vw, 92px);
-		line-height: 0.9;
-		letter-spacing: 0.005em;
-		margin: 0 0 22px;
+		font-size: clamp(48px, 6.4vw, 84px);
+		line-height: 0.95;
+		letter-spacing: -0.02em;
 		text-transform: uppercase;
-		color: var(--ft-text);
+		margin: 0 0 24px;
+		color: var(--ft-ink-900);
 	}
 
 	.headline-line {
 		display: block;
 	}
 
-	.headline-line.is-teal {
+	.headline-line.is-accent {
 		color: var(--ft-cyan);
 	}
 
 	.hero-lede {
 		font-family: var(--font-sans);
-		font-size: 16px;
-		color: var(--ft-dark);
-		max-width: 360px;
-		margin: 0 0 30px;
-		line-height: 1.55;
-		font-weight: 500;
+		font-size: 17px;
+		line-height: 1.5;
+		color: var(--ft-ink-600);
+		max-width: 380px;
+		margin: 0 0 32px;
 	}
 
 	.hero-cta {
 		display: flex;
 		gap: 12px;
-		margin-bottom: 28px;
+		margin-bottom: 36px;
 		flex-wrap: wrap;
 	}
 
-	.btn-cta-teal,
-	.btn-outline {
+	.btn {
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
 		gap: 10px;
 		font-family: var(--font-sans);
 		font-weight: 600;
-		font-size: 13px;
-		letter-spacing: 0.06em;
+		font-size: 14px;
+		letter-spacing: 0.04em;
 		text-transform: uppercase;
-		padding: 14px 22px;
+		padding: 16px 24px;
 		border-radius: var(--radius-sm);
-		min-height: 48px;
+		min-height: 52px;
+		border: 1px solid transparent;
 		text-decoration: none;
 		transition:
 			background-color var(--dur-fast) ease,
 			border-color var(--dur-fast) ease,
 			color var(--dur-fast) ease;
-		border: 1.5px solid transparent;
 	}
 
-	.btn-cta-teal {
+	.btn-teal {
 		background: var(--ft-cyan);
 		color: #fff;
 		border-color: var(--ft-cyan);
 	}
 
-	.btn-cta-teal:hover {
+	.btn-teal:hover {
 		background: var(--ft-cyan-600);
 		border-color: var(--ft-cyan-600);
 		color: #fff;
 	}
 
-	.btn-cta-teal :global(svg) {
+	.btn-teal :global(svg) {
 		transition: transform var(--dur-fast) ease;
 	}
 
-	.btn-cta-teal:hover :global(svg) {
+	.btn-teal:hover :global(svg) {
 		transform: translateX(3px);
 	}
 
 	.btn-outline {
-		background: transparent;
-		color: var(--ft-text);
-		border-color: var(--ft-text);
+		background: rgba(255, 255, 255, 0.95);
+		backdrop-filter: blur(6px);
+		color: var(--ft-ink-900);
+		border-color: var(--ft-ink-300);
 	}
 
 	.btn-outline:hover {
-		background: var(--ft-text);
-		color: #fff;
+		background: #fff;
+		border-color: var(--ft-ink-900);
+		color: var(--ft-ink-900);
 	}
 
 	.hero-rating {
 		display: flex;
 		align-items: center;
-		gap: 12px;
-		font-size: 13px;
-		color: var(--ft-text-muted);
+		gap: 14px;
 		flex-wrap: wrap;
 	}
 
@@ -189,41 +261,63 @@
 		color: var(--ft-cta);
 	}
 
-	.hero-rating .score {
-		color: var(--ft-text);
-		font-weight: 700;
-		font-family: var(--font-display);
+	.score-text {
+		display: inline-flex;
+		align-items: baseline;
+		gap: 8px;
+		font-size: 14px;
+		color: var(--ft-ink-600);
 	}
 
-	@media (max-width: 768px) {
-		.hero-content {
-			padding: 60px 0 64px;
+	.score-text b {
+		color: var(--ft-ink-900);
+		font-weight: 700;
+	}
+
+	/* Responsive — at smaller widths the veil becomes top-to-bottom instead of left-to-right */
+	@media (max-width: 760px) {
+		.hero {
+			min-height: clamp(560px, 80vh, 720px);
 		}
 
-		.hero-headline {
-			font-size: clamp(56px, 14vw, 80px);
+		.hero-photo img {
+			object-position: 60% 30%;
 		}
 
-		.hero-lede {
-			max-width: 100%;
-		}
-
-		.hero-bg-overlay {
+		.hero-veil {
 			background:
 				linear-gradient(
 					180deg,
-					rgba(244, 245, 247, 0.7) 0%,
-					rgba(244, 245, 247, 0.55) 40%,
-					rgba(244, 245, 247, 0.85) 100%
+					#fafbfc 0%,
+					rgba(250, 251, 252, 0.94) 25%,
+					rgba(250, 251, 252, 0.65) 42%,
+					rgba(250, 251, 252, 0.2) 58%,
+					transparent 75%
 				);
+		}
+
+		.hero-inner {
+			min-height: clamp(560px, 80vh, 720px);
+			align-items: flex-start;
+		}
+
+		.hero-content {
+			padding-top: 48px;
+		}
+
+		.stamp {
+			right: 20px;
+			bottom: 20px;
 		}
 	}
 
 	@media (max-width: 480px) {
-		.btn-cta-teal,
-		.btn-outline {
+		.btn {
 			flex: 1 1 auto;
-			justify-content: center;
+		}
+
+		.stamp {
+			display: none;
 		}
 	}
 </style>

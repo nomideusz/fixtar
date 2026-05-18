@@ -79,10 +79,12 @@
 <style>
 	.legal-title {
 		font-family: var(--font-display);
-		font-size: clamp(1.6rem, 3vw, 2.2rem);
-		font-weight: 800;
-		color: var(--ft-dark);
-		letter-spacing: -0.03em;
+		font-size: clamp(2rem, 4vw, 3rem);
+		font-weight: 500;
+		color: var(--ft-text);
+		letter-spacing: -0.005em;
+		line-height: 1;
+		text-transform: uppercase;
 	}
 
 	.legal-updated {
@@ -102,10 +104,12 @@
 
 	.legal-body h2 {
 		font-family: var(--font-display);
-		font-size: 1rem;
-		font-weight: 700;
-		color: var(--ft-dark);
-		margin-bottom: 10px;
+		font-size: 1.25rem;
+		font-weight: 500;
+		color: var(--ft-text);
+		letter-spacing: -0.005em;
+		text-transform: uppercase;
+		margin-bottom: 12px;
 	}
 
 	.legal-body p {

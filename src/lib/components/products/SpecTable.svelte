@@ -11,7 +11,7 @@
 
 {#if specs.length > 0}
 	<div class="spec-section">
-		<h3 class="spec-heading">specyfikacja</h3>
+		<h3 class="ft-eyebrow spec-heading">Specyfikacja</h3>
 		<div class="spec-table">
 			{#each specs as spec, i (spec.key + i)}
 				<div class="spec-row" class:is-alt={i % 2 === 0}>
@@ -25,9 +25,9 @@
 
 {#if contents.length > 0}
 	<div class="contents-section">
-		<h3 class="spec-heading">
+		<h3 class="ft-eyebrow spec-heading">
 			<PackageIcon size={14} weight="bold" aria-hidden="true" />
-			w zestawie
+			W zestawie
 		</h3>
 		<ul class="contents-list">
 			{#each contents as item, i (item + i)}
@@ -54,12 +54,6 @@
 		align-items: center;
 		gap: 6px;
 		margin-bottom: 14px;
-		font-family: var(--font-mono);
-		font-size: 0.75rem;
-		font-weight: 400;
-		letter-spacing: 0.02em;
-		text-transform: lowercase;
-		color: var(--ft-text-muted);
 	}
 
 	.spec-table {
@@ -136,7 +130,7 @@
 		width: 5px;
 		height: 5px;
 		border-radius: 50%;
-		background: var(--ft-accent);
+		background: var(--ft-cyan);
 	}
 
 	@media (max-width: 640px) {

@@ -14,7 +14,7 @@
 	<section class="related ft-section-sm">
 		<div class="related-header">
 			<div class="related-heading-group">
-				<span class="ft-label">podobne produkty</span>
+				<span class="ft-eyebrow">Podobne produkty</span>
 				<h2 class="related-title">Zobacz też</h2>
 			</div>
 			<a href="/products?category={categorySlug}" class="related-link">Wszystkie w kategorii</a>
@@ -102,26 +102,32 @@
 
 	.related-title {
 		font-family: var(--font-display);
-		font-size: clamp(1.5rem, 3vw, 2rem);
-		font-weight: 400;
-		color: var(--ft-text-strong);
-		letter-spacing: -0.02em;
-		line-height: 1.15;
+		font-size: clamp(1.75rem, 3vw, 2.25rem);
+		font-weight: 500;
+		color: var(--ft-text);
+		letter-spacing: -0.005em;
+		line-height: 1;
+		text-transform: uppercase;
 	}
 
 	.related-link {
-		font-family: var(--font-mono);
-		font-size: 0.75rem;
-		font-weight: 400;
-		color: var(--ft-text-muted);
-		text-transform: lowercase;
-		letter-spacing: 0.02em;
+		font-family: var(--font-sans);
+		font-size: 12px;
+		font-weight: 700;
+		color: var(--ft-cta);
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
 		text-decoration: none;
-		transition: color var(--dur-fast) ease;
+		border-bottom: 2px solid var(--ft-cta);
+		padding-bottom: 4px;
+		transition:
+			color var(--dur-fast) ease,
+			border-color var(--dur-fast) ease;
 	}
 
 	.related-link:hover {
-		color: var(--ft-accent-text);
+		color: var(--ft-cta-hover);
+		border-bottom-color: var(--ft-cta-hover);
 	}
 
 	@media (max-width: 639px) {

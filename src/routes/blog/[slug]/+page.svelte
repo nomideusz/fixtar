@@ -123,11 +123,12 @@
 
 	.article-title {
 		font-family: var(--font-display);
-		font-size: clamp(1.5rem, 3vw, 2rem);
-		font-weight: 800;
-		color: var(--ft-dark);
-		letter-spacing: -0.03em;
-		line-height: 1.25;
+		font-size: clamp(2rem, 4vw, 3rem);
+		font-weight: 500;
+		color: var(--ft-text);
+		letter-spacing: -0.005em;
+		line-height: 1.05;
+		text-transform: uppercase;
 	}
 
 	.article-lead {
@@ -146,21 +147,22 @@
 
 	.article-body h2 {
 		font-family: var(--font-display);
-		font-size: 1.15rem;
-		font-weight: 700;
-		color: var(--ft-dark);
-		letter-spacing: -0.02em;
-		margin-top: 32px;
-		margin-bottom: 12px;
+		font-size: 1.5rem;
+		font-weight: 500;
+		color: var(--ft-text);
+		letter-spacing: -0.005em;
+		text-transform: uppercase;
+		margin-top: 36px;
+		margin-bottom: 14px;
 	}
 
 	.article-body h3 {
-		font-family: var(--font-display);
-		font-size: 0.95rem;
+		font-family: var(--font-sans);
+		font-size: 1.125rem;
 		font-weight: 700;
-		color: var(--ft-dark);
-		margin-top: 24px;
-		margin-bottom: 6px;
+		color: var(--ft-text);
+		margin-top: 28px;
+		margin-bottom: 8px;
 	}
 
 	.article-body p {

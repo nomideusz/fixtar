@@ -1,77 +1,153 @@
 /* ==========================================================================
-   FIXTAR — Design System
-   Industrial premium aesthetic. Turquoise / Dark / Orange.
-   Oxanium (display) + Inter (UI) + Teko (condensed display).
+   FIXTAR — Design System v1.2
+   Industrial premium. Cyan brand · Orange action · Dark cinematic surfaces.
+   Teko (display) + Inter (UI) + Iosevka Mono (SKUs, eyebrows, micro-labels).
+   Source of truth: apps/fixtar/.claude/design_handoff_fixtar_v1.2/
    ========================================================================== */
 
 @import 'tailwindcss';
+
+/* ==========================================================================
+   0. FONTS — self-hosted mono (Google-hosted display/sans loaded in app.html)
+   ========================================================================== */
+
+@font-face {
+	font-family: 'Iosevka Mono';
+	src: url('/IoskeleyMono-Web/WOFF2/IoskeleyMono-Regular.woff2') format('woff2');
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Iosevka Mono';
+	src: url('/IoskeleyMono-Web/WOFF2/IoskeleyMono-Medium.woff2') format('woff2');
+	font-weight: 500;
+	font-style: normal;
+	font-display: swap;
+}
 
 /* ==========================================================================
    1. THEME TOKENS (Tailwind v4 @theme — single source of truth)
    ========================================================================== */
 
 @theme {
-	/* Brand palette (from Brand Book) */
+	/* Ink (neutrals — 10-stop ramp from brandbook #1D2228 / #F4F5F7) */
+	--color-ink-050: #f4f5f7;
+	--color-ink-100: #e8eaee;
+	--color-ink-200: #d8dce1;
+	--color-ink-300: #b7bdc4;
+	--color-ink-400: #8e97a2;
+	--color-ink-500: #6b7682;
+	--color-ink-600: #4a5560;
+	--color-ink-700: #333a42;
+	--color-ink-800: #262c33;
+	--color-ink-900: #1d2228;
+
+	/* Teal / Cyan (brand — 6-stop scale, #3F98A2 anchor) */
+	--color-teal-050: #e8f2f3;
+	--color-teal-200: #b4d9de;
+	--color-teal-400: #5fb1bb;
+	--color-teal-500: #3f98a2;
+	--color-teal-600: #2f7a82;
+	--color-teal-700: #1f5e66;
+
+	/* Orange (action — 6-stop scale, #FF8A1F anchor) */
+	--color-orange-050: #ffefdd;
+	--color-orange-200: #ffd3a8;
+	--color-orange-400: #ffa552;
+	--color-orange-500: #ff8a1f;
+	--color-orange-600: #e47514;
+	--color-orange-700: #c25d08;
+
+	/* Status */
+	--color-green-500: #2e9e63;
+	--color-yellow-500: #f0a732;
+	--color-red-500: #d63333;
+
+	/* Semantic color aliases (Tailwind class generation: bg-bg, text-text, etc.) */
 	--color-bg: #ffffff;
 	--color-surface: #ffffff;
-	--color-surface-subtle: #f4f5f7;
-	--color-border: #e4e7eb;
-	--color-border-strong: #c3ccd0;
-	--color-text: #1d2228;
-	--color-text-muted: #4a5360;
-	--color-text-faint: #7a828e;
-	--color-accent: #378a92;
-	--color-accent-hover: #2d737a;
+	--color-surface-subtle: var(--color-ink-050);
+	--color-border: var(--color-ink-200);
+	--color-border-strong: var(--color-ink-300);
+	--color-text: var(--color-ink-900);
+	--color-text-muted: var(--color-ink-500);
+	--color-text-faint: var(--color-ink-400);
+	--color-accent: var(--color-teal-500);
+	--color-accent-hover: var(--color-teal-600);
 	--color-accent-ink: #ffffff;
-	--color-accent-text: #2d737a;
-	--color-accent-text-hover: #1d2228;
-	--color-info: #378a92;
-	--color-info-hover: #2d737a;
-	--color-success: #16a34a;
-	--color-warning: #ff8a1f;
-	--color-danger: #dc2626;
-	--color-cta: #ff8a1f;
-	--color-cta-hover: #f07706;
+	--color-accent-text: var(--color-teal-600);
+	--color-accent-text-hover: var(--color-ink-900);
+	--color-info: var(--color-teal-500);
+	--color-info-hover: var(--color-teal-600);
+	--color-success: var(--color-green-500);
+	--color-warning: var(--color-orange-500);
+	--color-danger: var(--color-red-500);
+	--color-cta: var(--color-orange-500);
+	--color-cta-hover: var(--color-orange-600);
 
 	/* Typography */
 	--font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-	--font-display: 'Oxanium', 'Inter', system-ui, sans-serif;
+	--font-display: 'Teko', 'Oxanium', sans-serif;
+	--font-display-alt: 'Oxanium', sans-serif;
 	--font-display-condensed: 'Teko', 'Oxanium', system-ui, sans-serif;
-	--font-mono: 'Inter', ui-monospace, SFMono-Regular, Menlo, monospace;
+	--font-mono: 'Iosevka Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
 	/* Radii */
+	--radius-xs: 3px;
 	--radius-sm: 6px;
 	--radius-md: 10px;
-	--radius-lg: 14px;
+	--radius-lg: 16px;
 	--radius-full: 9999px;
 }
 
 /* ==========================================================================
-   2. SEMANTIC ALIASES (kept under --ft-* so existing markup keeps working)
+   2. SEMANTIC ALIASES (under --ft-* so existing markup keeps working)
    ========================================================================== */
 
 :root {
-	/* Brand palette references */
-	--ft-cyan: #378a92;
-	--ft-cyan-600: #2d737a;
-	--ft-cyan-200: #93cdd2;
-	--ft-dark: #1d2228;
-	--ft-dark-2: #262c33;
-	--ft-dark-3: #343b43;
-	--ft-orange: #ff8a1f;
-	--ft-orange-600: #f07706;
+	/* Direct brand palette references (used in component styles) */
+	--ft-cyan-050: var(--color-teal-050);
+	--ft-cyan-200: var(--color-teal-200);
+	--ft-cyan-400: var(--color-teal-400);
+	--ft-cyan: var(--color-teal-500);
+	--ft-cyan-600: var(--color-teal-600);
+	--ft-cyan-700: var(--color-teal-700);
+
+	--ft-orange-050: var(--color-orange-050);
+	--ft-orange-200: var(--color-orange-200);
+	--ft-orange-400: var(--color-orange-400);
+	--ft-orange: var(--color-orange-500);
+	--ft-orange-600: var(--color-orange-600);
+	--ft-orange-700: var(--color-orange-700);
+
+	--ft-ink-050: var(--color-ink-050);
+	--ft-ink-100: var(--color-ink-100);
+	--ft-ink-200: var(--color-ink-200);
+	--ft-ink-300: var(--color-ink-300);
+	--ft-ink-400: var(--color-ink-400);
+	--ft-ink-500: var(--color-ink-500);
+	--ft-ink-600: var(--color-ink-600);
+	--ft-ink-700: var(--color-ink-700);
+	--ft-ink-800: var(--color-ink-800);
+	--ft-ink-900: var(--color-ink-900);
+
+	--ft-dark: var(--color-ink-900);
+	--ft-dark-2: var(--color-ink-800);
+	--ft-dark-3: var(--color-ink-700);
 
 	/* Core palette */
 	--ft-bg: var(--color-bg);
 	--ft-surface: var(--color-surface);
-	--ft-frost: var(--color-surface-subtle);
-	--ft-line: var(--color-border);
-	--ft-line-2: #eef0f3;
-	--ft-line-strong: var(--color-border-strong);
-	--ft-text: var(--color-text);
-	--ft-text-strong: var(--color-text);
-	--ft-text-muted: var(--color-text-muted);
-	--ft-text-faint: var(--color-text-faint);
+	--ft-frost: var(--color-ink-050);
+	--ft-line: var(--color-ink-200);
+	--ft-line-2: var(--color-ink-100);
+	--ft-line-strong: var(--color-ink-300);
+	--ft-text: var(--color-ink-900);
+	--ft-text-strong: var(--color-ink-900);
+	--ft-text-muted: var(--color-ink-500);
+	--ft-text-faint: var(--color-ink-400);
 
 	/* Accents */
 	--ft-accent: var(--ft-cyan);
@@ -84,6 +160,11 @@
 	--ft-cta-hover: var(--ft-orange-600);
 	--ft-cta-light: rgba(255, 138, 31, 0.18);
 	--ft-cta-text: #ffffff;
+
+	/* Status */
+	--ft-success: var(--color-green-500);
+	--ft-warning: var(--color-yellow-500);
+	--ft-danger: var(--color-red-500);
 
 	/* Supporting semantic */
 	--ft-warm: var(--ft-text-muted);
@@ -101,7 +182,7 @@
 	/* Legacy aliases */
 	--ft-primary: var(--ft-accent);
 	--ft-primary-hover: var(--ft-accent-hover);
-	--ft-primary-light: rgba(55, 138, 146, 0.12);
+	--ft-primary-light: rgba(63, 152, 162, 0.12);
 	--ft-primary-active: var(--ft-accent-hover);
 	--ft-primary-ring: var(--ft-accent);
 
@@ -133,14 +214,19 @@
 	--ft-brand-light: rgba(29, 34, 40, 0.12);
 	--ft-brand-medium: rgba(29, 34, 40, 0.15);
 	--ft-brand-border: rgba(29, 34, 40, 0.15);
-	--ft-brand-glow: rgba(55, 138, 146, 0.18);
+	--ft-brand-glow: rgba(63, 152, 162, 0.18);
 	--ft-grid-line: rgba(29, 34, 40, 0.05);
 	--ft-grid-line-subtle: rgba(29, 34, 40, 0.02);
 	--ft-divider: rgba(29, 34, 40, 0.15);
 
-	/* Shadows */
-	--ft-shadow-sm: 0 1px 2px rgba(29, 34, 40, 0.06), 0 1px 1px rgba(29, 34, 40, 0.04);
-	--ft-shadow-md: 0 8px 24px -10px rgba(29, 34, 40, 0.18), 0 2px 6px rgba(29, 34, 40, 0.06);
+	/* Shadows — spec: card (resting) + lift (hover/focused) */
+	--ft-shadow-card: 0 1px 2px rgba(29, 34, 40, 0.05), 0 1px 1px rgba(29, 34, 40, 0.03);
+	--ft-shadow-lift: 0 12px 32px -12px rgba(29, 34, 40, 0.18),
+		0 4px 10px -4px rgba(29, 34, 40, 0.08);
+
+	/* Legacy shadow aliases */
+	--ft-shadow-sm: var(--ft-shadow-card);
+	--ft-shadow-md: var(--ft-shadow-lift);
 	--ft-shadow-lg: 0 24px 50px -20px rgba(29, 34, 40, 0.25);
 	--ft-shadow: rgba(29, 34, 40, 0.08);
 	--ft-shadow-heavy: rgba(29, 34, 40, 0.15);
@@ -183,7 +269,7 @@
 		font-family: var(--font-sans);
 		background: var(--ft-bg);
 		color: var(--ft-text);
-		line-height: 1.5;
+		line-height: 1.6;
 		font-size: 15px;
 		overflow-x: clip;
 		-webkit-font-smoothing: antialiased;
@@ -217,6 +303,8 @@
 		color: var(--ft-accent);
 	}
 
+	/* Display type scale — Teko 500 upright by default.
+	   Italic + uppercase are opt-in via component-level styles (hero, club, categories). */
 	h1,
 	h2,
 	h3,
@@ -224,31 +312,38 @@
 	h5,
 	h6 {
 		font-family: var(--font-display);
-		font-weight: 700;
+		font-weight: 500;
 		color: var(--ft-text-strong);
-		letter-spacing: 0.01em;
+		letter-spacing: -0.005em;
 		line-height: 1.1;
 	}
 
 	h1 {
-		font-size: clamp(2.25rem, 5vw, 3.5rem);
-		text-transform: uppercase;
+		font-size: clamp(2.25rem, 5vw, 3rem); /* 36–48px */
+		line-height: 1;
 	}
 
 	h2 {
-		font-size: clamp(1.875rem, 3.2vw, 2.5rem);
-		text-transform: uppercase;
+		font-size: clamp(1.875rem, 3.2vw, 2.25rem); /* 30–36px */
+		line-height: 1.1;
 	}
 
 	h3 {
-		font-size: 1.25rem;
-		text-transform: uppercase;
+		/* H3 / UI heading uses Inter per spec table */
+		font-family: var(--font-sans);
+		font-weight: 700;
+		font-size: 1.375rem; /* 22px */
+		line-height: 1.2;
+		letter-spacing: 0;
 	}
 
 	h4,
 	h5,
 	h6 {
+		font-family: var(--font-sans);
+		font-weight: 700;
 		font-size: 0.9375rem;
+		letter-spacing: 0;
 	}
 }
 
@@ -257,30 +352,47 @@
    ========================================================================== */
 
 @layer components {
-	.ft-label {
-		font-family: var(--font-sans);
-		font-size: 0.6875rem;
-		letter-spacing: 0.15em;
-		color: var(--ft-text-faint);
+	/* Mono eyebrow — section kickers, "FEATURED · BESTSELLERS" */
+	.ft-label,
+	.ft-eyebrow {
+		font-family: var(--font-mono);
+		font-size: 0.6875rem; /* 11px */
+		letter-spacing: 0.12em;
+		color: var(--ft-cyan-600);
 		text-transform: uppercase;
-		font-weight: 600;
+		font-weight: 500;
+	}
+
+	/* Page title — Teko 500 uppercase, used on all account/checkout/listing pages */
+	.ft-page-title {
+		font-family: var(--font-display);
+		font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+		font-weight: 500;
+		color: var(--ft-text);
+		letter-spacing: -0.005em;
+		line-height: 1;
+		text-transform: uppercase;
+		margin: 0;
 	}
 
 	.ft-mono,
 	.text-money {
-		font-family: var(--font-display);
+		font-family: var(--font-mono);
 		font-variant-numeric: tabular-nums;
-		font-weight: 700;
+		font-weight: 500;
 	}
 
 	.text-money {
+		font-family: var(--font-sans);
+		font-weight: 700;
 		color: var(--ft-text-strong);
 	}
 
 	.ft-card {
 		background: var(--ft-surface);
 		border: 1px solid var(--ft-line);
-		border-radius: var(--radius-lg);
+		border-radius: var(--radius-md);
+		box-shadow: var(--ft-shadow-card);
 		transition:
 			border-color var(--dur-med) ease,
 			box-shadow var(--dur-med) ease,
@@ -289,7 +401,7 @@
 
 	.ft-card:hover {
 		border-color: transparent;
-		box-shadow: var(--ft-shadow-md);
+		box-shadow: var(--ft-shadow-lift);
 		transform: translateY(-3px);
 	}
 
@@ -303,9 +415,9 @@
 		font-family: var(--font-sans);
 		font-size: 0.8125rem;
 		font-weight: 600;
-		letter-spacing: 0.06em;
+		letter-spacing: 0.04em;
 		text-transform: uppercase;
-		padding: 12px 18px;
+		padding: 12px 20px;
 		border-radius: var(--radius-sm);
 		cursor: pointer;
 		transition:
@@ -354,19 +466,23 @@
 
 	.input {
 		width: 100%;
-		padding: 10px 14px;
+		padding: 0 14px;
+		height: 44px;
 		border: 1px solid var(--ft-line);
 		border-radius: var(--radius-sm);
 		background: var(--ft-surface);
 		color: var(--ft-text);
 		font-family: var(--font-sans);
 		font-size: 0.9375rem;
-		transition: border-color var(--dur-fast) ease;
+		transition:
+			border-color var(--dur-fast) ease,
+			box-shadow var(--dur-fast) ease;
 	}
 
 	.input:focus {
 		border-color: var(--ft-accent);
-		box-shadow: none;
+		box-shadow: 0 0 0 3px var(--ft-cyan-050);
+		outline: none;
 	}
 }
 

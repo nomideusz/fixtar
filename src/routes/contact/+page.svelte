@@ -176,12 +176,13 @@
 	/* ── Header ── */
 	.contact-title {
 		font-family: var(--font-display);
-		font-size: clamp(1.5rem, 3vw, 2rem);
-		font-weight: 400;
-		color: var(--ft-text-strong);
-		letter-spacing: -0.02em;
+		font-size: clamp(2rem, 4vw, 3rem);
+		font-weight: 500;
+		color: var(--ft-text);
+		letter-spacing: -0.005em;
 		margin-top: 6px;
-		line-height: 1.15;
+		line-height: 1;
+		text-transform: uppercase;
 	}
 
 	.contact-lead {
@@ -229,27 +230,38 @@
 	.field-label {
 		display: block;
 		margin-bottom: 6px;
-		font-size: 0.8rem;
-		font-weight: 400;
-		color: var(--ft-text);
+		font-family: var(--font-sans);
+		font-size: 12px;
+		font-weight: 600;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--ft-ink-700);
 	}
 
 	.field-textarea {
 		width: 100%;
 		border: 1px solid var(--ft-line);
 		border-radius: var(--radius-sm);
-		padding: 10px 14px;
-		font-size: 0.9375rem;
+		padding: 12px 14px;
+		font-size: 15px;
 		font-family: var(--font-sans);
 		color: var(--ft-text);
-		resize: none;
-		transition: border-color var(--dur-fast) ease;
+		resize: vertical;
+		min-height: 110px;
+		line-height: 1.5;
+		transition:
+			border-color var(--dur-fast) ease,
+			box-shadow var(--dur-fast) ease;
+	}
+
+	.field-textarea::placeholder {
+		color: var(--ft-ink-400);
 	}
 
 	.field-textarea:focus {
 		outline: none;
-		border-color: var(--ft-dark);
-		box-shadow: none;
+		border-color: var(--ft-cyan);
+		box-shadow: 0 0 0 3px var(--ft-cyan-050);
 	}
 
 	.field-textarea:disabled {

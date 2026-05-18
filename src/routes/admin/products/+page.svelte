@@ -352,8 +352,8 @@
 	<!-- Header -->
 	<div class="mb-8 flex flex-wrap items-end justify-between gap-4">
 		<div>
-			<p class="admin-kicker">admin</p>
-			<h1 class="mt-1 text-2xl font-normal tracking-tight text-[--ft-text-strong]">Products</h1>
+			<p class="ft-eyebrow">Admin</p>
+			<h1 class="ft-page-title mt-1">Products</h1>
 			<p class="mt-2 text-sm text-[--ft-text-muted]">
 				{data.pagination.totalItems} products · change status, filter, manage images
 			</p>
@@ -706,14 +706,6 @@
 {/if}
 
 <style>
-	.admin-kicker {
-		font-family: var(--font-mono);
-		font-size: 0.72rem;
-		letter-spacing: 0.05em;
-		text-transform: uppercase;
-		color: var(--ft-text-muted);
-	}
-
 	/* Selects shared across admin filters */
 	:global(.admin-select) {
 		width: 100%;

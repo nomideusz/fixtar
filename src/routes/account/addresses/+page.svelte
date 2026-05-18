@@ -2,6 +2,7 @@
 	import Card from '$lib/components/ui/Card.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import { WarningCircleIcon, MapPinIcon, PencilSimpleIcon, TrashIcon } from 'phosphor-svelte';
+	import EmptyState from '$lib/components/ui/EmptyState.svelte';
 	import { notifications } from '$lib/stores';
 	import { enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
@@ -74,28 +75,22 @@
 
 <div>
 	<div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-		<h1 class="text-xl font-bold text-[--ft-text] sm:text-2xl">Moje adresy</h1>
+		<h1 class="addr-title">Moje adresy</h1>
 		<Button href="/account/addresses/new">Dodaj nowy adres</Button>
 	</div>
 
 	{#if hasError}
-		<Card>
-			<div class="py-12 text-center">
-				<WarningCircleIcon class="text-danger mx-auto mb-4 h-16 w-16" aria-hidden="true" />
-				<h3 class="mb-2 text-lg font-medium text-[--ft-text]">Błąd ładowania adresów</h3>
-				<p class="mb-6 text-[--ft-text-muted]">{errorMessage}</p>
-				<Button onclick={() => window.location.reload()}>Spróbuj ponownie</Button>
-			</div>
-		</Card>
+		<EmptyState icon={WarningCircleIcon} title="Błąd ładowania adresów" description={errorMessage}>
+			<Button onclick={() => window.location.reload()}>Spróbuj ponownie</Button>
+		</EmptyState>
 	{:else if addresses.length === 0}
-		<Card>
-			<div class="py-12 text-center">
-				<MapPinIcon class="mx-auto mb-4 h-16 w-16 text-[--ft-text-muted]" aria-hidden="true" />
-				<h3 class="mb-2 text-lg font-medium text-[--ft-text]">Brak zapisanych adresów</h3>
-				<p class="mb-6 text-[--ft-text-muted]">Dodaj adres, aby przyspieszyć składanie zamówień.</p>
-				<Button href="/account/addresses/new">Dodaj pierwszy adres</Button>
-			</div>
-		</Card>
+		<EmptyState
+			icon={MapPinIcon}
+			title="Brak zapisanych adresów"
+			description="Dodaj adres, aby przyspieszyć składanie zamówień."
+		>
+			<Button href="/account/addresses/new" variant="teal">Dodaj pierwszy adres</Button>
+		</EmptyState>
 	{:else}
 		<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 			{#each addresses as address (address)}
@@ -106,7 +101,7 @@
 								{address.type || 'Adres'}
 								{#if address.default}
 									<span
-										class="rounded-full bg-[--ft-frost] px-2 py-1 text-xs font-medium text-[--ft-accent]"
+										class="rounded-full bg-[--ft-cyan-050] px-2.5 py-1 text-xs font-semibold uppercase tracking-wide text-[--ft-cyan-700]"
 									>
 										Domyślny
 									</span>
@@ -170,3 +165,16 @@
 		</div>
 	{/if}
 </div>
+
+<style>
+	.addr-title {
+		font-family: var(--font-display);
+		font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+		font-weight: 500;
+		color: var(--ft-text);
+		letter-spacing: -0.005em;
+		line-height: 1;
+		text-transform: uppercase;
+		margin: 0;
+	}
+</style>

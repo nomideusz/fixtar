@@ -125,8 +125,8 @@
 									<UserIcon class="h-8 w-8 text-[--ft-accent]" aria-hidden="true" />
 								</div>
 								<div>
-									<h1 class="text-xl text-[--ft-text] sm:text-3xl">
-										Witaj ponownie, {userStore.current?.username || 'Użytkowniku'}!
+									<h1 class="account-welcome">
+										Witaj, {userStore.current?.username || 'Użytkowniku'}
 									</h1>
 									<p class="mt-1 text-lg text-[--ft-text-muted]">
 										Zarządzaj swoim kontem i śledź zamówienia
@@ -302,3 +302,16 @@
 		</div>
 	{/if}
 </div>
+
+<style>
+	.account-welcome {
+		font-family: var(--font-display);
+		font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+		font-weight: 500;
+		color: var(--ft-text);
+		letter-spacing: -0.005em;
+		line-height: 1;
+		text-transform: uppercase;
+		margin: 0;
+	}
+</style>

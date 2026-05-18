@@ -97,7 +97,7 @@
 		</div>
 
 		<!-- Submit Button -->
-		<Button type="submit" fullWidth size="lg" disabled={processing} class="mt-8 py-4 text-lg">
+		<Button type="submit" variant="cta" fullWidth size="lg" disabled={processing} class="mt-8">
 			{#if processing}
 				<SpinnerGapIcon
 					size={20}

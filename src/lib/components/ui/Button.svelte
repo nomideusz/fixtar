@@ -2,8 +2,22 @@
 	import type { HTMLButtonAttributes, HTMLAnchorAttributes } from 'svelte/elements';
 	import type { Snippet } from 'svelte';
 
+	/**
+	 * Button variants — aligned with Fixtar v1.2 design system.
+	 *
+	 * - `cta`        — orange conversion button (Add to cart, Buy now, Subscribe). Use sparingly.
+	 * - `teal`       — cyan brand button (View products, Catalog, content navigation).
+	 * - `dark`       — solid ink-900 button (View all, neutral primary action).
+	 * - `primary`    — alias for `dark` (legacy back-compat — prefer `dark` or a more specific variant).
+	 * - `outline`    — white background + ink-300 border on light surfaces.
+	 * - `secondary`  — alias for `outline` (legacy back-compat).
+	 * - `ghost`      — text-only, no background or border. Quiet inline action.
+	 * - `ghost-dark` — transparent + white border, for use on dark surfaces.
+	 */
+	type Variant = 'cta' | 'teal' | 'dark' | 'primary' | 'outline' | 'secondary' | 'ghost' | 'ghost-dark';
+
 	interface CommonProps {
-		variant?: 'primary' | 'secondary' | 'ghost' | 'outline';
+		variant?: Variant;
 		size?: 'sm' | 'md' | 'lg';
 		fullWidth?: boolean;
 		loading?: boolean;
@@ -15,7 +29,7 @@
 	type Props = ButtonProps | AnchorProps;
 
 	let {
-		variant = 'primary',
+		variant = 'dark',
 		size = 'md',
 		fullWidth = false,
 		loading = false,
@@ -51,20 +65,24 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		gap: 8px;
+		gap: 10px;
 		font-family: var(--font-sans);
-		font-size: 0.9375rem;
-		font-weight: 400;
-		padding: 12px 24px;
+		font-size: 13px;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		line-height: 1;
+		white-space: nowrap;
+		padding: 12px 20px;
 		border-radius: var(--radius-sm);
 		cursor: pointer;
+		text-decoration: none;
+		border: 1px solid transparent;
+		min-height: 44px;
 		transition:
 			background-color var(--dur-fast) ease,
 			border-color var(--dur-fast) ease,
 			color var(--dur-fast) ease;
-		text-decoration: none;
-		border: 1px solid transparent;
-		min-height: 44px;
 	}
 
 	.btn:disabled {
@@ -73,69 +91,93 @@
 	}
 
 	.btn--sm {
-		padding: 10px 16px;
-		font-size: 0.875rem;
-		min-height: 40px;
+		padding: 8px 14px;
+		font-size: 11px;
+		min-height: 36px;
 	}
 
 	.btn--md {
-		padding: 12px 24px;
+		padding: 12px 20px;
 		min-height: 44px;
 	}
 
 	.btn--lg {
-		padding: 14px 32px;
-		font-size: 1rem;
-		min-height: 48px;
+		padding: 16px 24px;
+		font-size: 14px;
+		min-height: 52px;
 	}
 
 	.btn--full {
 		width: 100%;
 	}
 
+	/* CTA — orange (conversion only) */
+	.btn--cta {
+		background: var(--ft-cta);
+		color: #fff;
+		border-color: var(--ft-cta);
+	}
+	.btn--cta:hover:not(:disabled) {
+		background: var(--ft-cta-hover);
+		border-color: var(--ft-cta-hover);
+	}
+
+	/* Teal — cyan brand button */
+	.btn--teal {
+		background: var(--ft-cyan);
+		color: #fff;
+		border-color: var(--ft-cyan);
+	}
+	.btn--teal:hover:not(:disabled) {
+		background: var(--ft-cyan-600);
+		border-color: var(--ft-cyan-600);
+	}
+
+	/* Dark / Primary (alias) — ink-900 */
+	.btn--dark,
 	.btn--primary {
-		background: var(--ft-dark);
-		color: var(--ft-bg);
-		border-color: var(--ft-dark);
+		background: var(--ft-ink-900);
+		color: #fff;
+		border-color: var(--ft-ink-900);
 	}
-
+	.btn--dark:hover:not(:disabled),
 	.btn--primary:hover:not(:disabled) {
-		background: var(--ft-accent);
-		border-color: var(--ft-accent);
-		color: var(--ft-cta-text);
+		background: var(--ft-ink-800);
+		border-color: var(--ft-ink-800);
 	}
 
+	/* Outline / Secondary (alias) — white + ink-300 border */
+	.btn--outline,
 	.btn--secondary {
-		background: transparent;
-		color: var(--ft-text);
-		border-color: var(--ft-line);
+		background: #fff;
+		color: var(--ft-ink-900);
+		border-color: var(--ft-ink-300);
 	}
-
+	.btn--outline:hover:not(:disabled),
 	.btn--secondary:hover:not(:disabled) {
-		border-color: var(--ft-dark);
-		color: var(--ft-text);
+		border-color: var(--ft-ink-900);
 	}
 
-	.btn--outline {
-		background: transparent;
-		color: var(--ft-accent-text);
-		border-color: var(--ft-accent-text);
-	}
-
-	.btn--outline:hover:not(:disabled) {
-		background: var(--ft-accent-text);
-		border-color: var(--ft-accent-text);
-		color: var(--ft-surface);
-	}
-
+	/* Ghost — text only */
 	.btn--ghost {
 		background: transparent;
-		color: var(--ft-text-muted);
+		color: var(--ft-ink-700);
 		border-color: transparent;
 	}
-
 	.btn--ghost:hover:not(:disabled) {
-		color: var(--ft-text);
+		color: var(--ft-ink-900);
+		background: var(--ft-frost);
+	}
+
+	/* Ghost on dark surfaces */
+	.btn--ghost-dark {
+		background: transparent;
+		color: #fff;
+		border-color: rgba(255, 255, 255, 0.4);
+	}
+	.btn--ghost-dark:hover:not(:disabled) {
+		background: rgba(255, 255, 255, 0.08);
+		border-color: #fff;
 	}
 
 	.spinner {

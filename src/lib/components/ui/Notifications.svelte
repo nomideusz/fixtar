@@ -13,19 +13,19 @@
 
 	const typeClasses: Record<string, string> = {
 		success:
-			'border-l-[4px] border-l-[--color-success] bg-white border-y border-r border-[--ft-line] text-[--ft-dark] shadow-[0_4px_24px_rgba(0,0,0,0.08)]',
+			'border-l-[4px] border-l-[--ft-success] bg-white border-y border-r border-[--ft-line] text-[--ft-ink-900] shadow-[0_4px_24px_rgba(0,0,0,0.08)]',
 		error:
-			'border-l-[4px] border-l-[--color-danger] bg-white border-y border-r border-[--ft-line] text-[--ft-dark] shadow-[0_4px_24px_rgba(0,0,0,0.08)]',
-		info: 'border-l-[4px] border-l-[--color-brand-500] bg-white border-y border-r border-[--ft-line] text-[--ft-dark] shadow-[0_4px_24px_rgba(0,0,0,0.08)]',
+			'border-l-[4px] border-l-[--ft-danger] bg-white border-y border-r border-[--ft-line] text-[--ft-ink-900] shadow-[0_4px_24px_rgba(0,0,0,0.08)]',
+		info: 'border-l-[4px] border-l-[--ft-cyan] bg-white border-y border-r border-[--ft-line] text-[--ft-ink-900] shadow-[0_4px_24px_rgba(0,0,0,0.08)]',
 		warning:
-			'border-l-[4px] border-l-[--color-warning] bg-white border-y border-r border-[--ft-line] text-[--ft-dark] shadow-[0_4px_24px_rgba(0,0,0,0.08)]'
+			'border-l-[4px] border-l-[--ft-warning] bg-white border-y border-r border-[--ft-line] text-[--ft-ink-900] shadow-[0_4px_24px_rgba(0,0,0,0.08)]'
 	};
 
 	const iconColorClasses: Record<string, string> = {
-		success: 'text-[--color-success]',
-		error: 'text-[--color-danger]',
-		info: 'text-[--color-brand-500]',
-		warning: 'text-[--color-warning]'
+		success: 'text-[--ft-success]',
+		error: 'text-[--ft-danger]',
+		info: 'text-[--ft-cyan]',
+		warning: 'text-[--ft-warning]'
 	};
 
 	// Auto-dismiss timer
@@ -278,12 +278,11 @@
 	}
 
 	.notification-title {
-		font-family: var(--font-display);
-		font-size: 0.8rem;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		color: var(--ft-dark);
+		font-family: var(--font-sans);
+		font-size: 13px;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		color: var(--ft-ink-900);
 		margin-bottom: 0.25rem;
 	}
 
@@ -305,7 +304,7 @@
 	}
 
 	.notification-close:hover {
-		color: var(--ft-dark);
+		color: var(--ft-ink-900);
 	}
 
 	/* --- Progress bar --- */
@@ -322,7 +321,7 @@
 
 	.notification-progress-bar {
 		height: 100%;
-		background-color: var(--ft-dark);
+		background-color: var(--ft-ink-900);
 	}
 
 	/* --- Mobile-specific --- */

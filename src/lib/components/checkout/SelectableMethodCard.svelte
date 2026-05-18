@@ -35,32 +35,32 @@
 		border: 1px solid var(--ft-line);
 		border-radius: var(--radius-md);
 		cursor: pointer;
+		background: var(--ft-surface);
 		transition:
 			border-color var(--dur-fast) ease,
 			background-color var(--dur-fast) ease,
-			color var(--dur-fast) ease;
-		background: var(--ft-surface);
+			box-shadow var(--dur-fast) ease;
 	}
 
 	.method-card.accent:hover,
 	.method-card.brand:hover {
-		border-color: var(--ft-line-strong);
-		background: var(--ft-frost);
+		border-color: var(--ft-ink-500);
 	}
 
 	.method-card.accent.selected,
 	.method-card.brand.selected {
-		border-color: var(--ft-accent);
-		background: color-mix(in srgb, var(--ft-accent) 8%, white);
+		border-color: var(--ft-cyan);
+		background: var(--ft-cyan-050);
+		box-shadow: 0 0 0 3px var(--ft-cyan-050);
 	}
 
 	.radio-dot {
 		position: relative;
-		height: 1rem;
-		width: 1rem;
-		border-radius: 9999px;
-		border: 1px solid var(--ft-line);
-		background: var(--ft-surface);
+		height: 18px;
+		width: 18px;
+		border-radius: 999px;
+		border: 1.5px solid var(--ft-ink-300);
+		background: #fff;
 		transition:
 			border-color var(--dur-fast) ease,
 			background-color var(--dur-fast) ease;
@@ -68,17 +68,17 @@
 
 	.method-card.accent .radio-dot.checked,
 	.method-card.brand .radio-dot.checked {
-		border-color: var(--ft-accent);
-		background: color-mix(in srgb, var(--ft-accent) 10%, white);
+		border-color: var(--ft-cyan);
+		background: var(--ft-cyan);
 	}
 
 	.dot {
 		position: absolute;
-		top: 3px;
-		left: 3px;
-		height: 0.375rem;
-		width: 0.375rem;
-		border-radius: 9999px;
-		background-color: var(--ft-accent);
+		top: 4px;
+		left: 4px;
+		height: 8px;
+		width: 8px;
+		border-radius: 999px;
+		background-color: #fff;
 	}
 </style>

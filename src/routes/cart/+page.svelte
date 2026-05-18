@@ -2,7 +2,9 @@
 	import { cart } from '$lib/stores';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
-	import { ShoppingCartSimpleIcon, ImageSquareIcon, MinusIcon, PlusIcon } from 'phosphor-svelte';
+	import QuantityStepper from '$lib/components/ui/QuantityStepper.svelte';
+	import EmptyState from '$lib/components/ui/EmptyState.svelte';
+	import { ShoppingCartSimpleIcon, ImageSquareIcon } from 'phosphor-svelte';
 
 	let couponCode = $state('');
 	let discount = $state(0);
@@ -30,19 +32,18 @@
 
 <div class="ft-container ft-section">
 	<div class="mb-6 border-b border-[--ft-line] pb-3 sm:mb-8">
-		<h1 class="text-2xl text-[--ft-text] sm:text-3xl">Koszyk</h1>
+		<h1 class="ft-page-title">Koszyk</h1>
 	</div>
 
 	{#if cart.items.length === 0}
-		<div class="py-16 text-center">
-			<ShoppingCartSimpleIcon
-				class="mx-auto h-24 w-24 text-[--ft-text-muted]"
-				weight="thin"
-				aria-hidden="true"
-			/>
-			<h2 class="mt-4 text-xl text-[--ft-text]">Twój koszyk jest pusty</h2>
-			<p class="mt-2 text-[--ft-text-muted]">Dodaj produkty do koszyka, aby rozpocząć zakupy</p>
-			<Button href="/products" class="mt-6">Przeglądaj produkty</Button>
+		<div class="py-8">
+			<EmptyState
+				icon={ShoppingCartSimpleIcon}
+				title="Twój koszyk jest pusty"
+				description="Dodaj produkty do koszyka, aby rozpocząć zakupy."
+			>
+				<Button href="/products" variant="teal">Przeglądaj produkty</Button>
+			</EmptyState>
 		</div>
 	{:else}
 		<div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
@@ -80,23 +81,10 @@
 								</div>
 
 								<div class="flex items-center justify-between gap-4 sm:justify-end">
-									<div class="flex items-center gap-2">
-										<button
-											onclick={() => cart.updateQuantity(item.productId, item.quantity - 1)}
-											class="flex h-10 w-10 items-center justify-center rounded-sm border border-[--ft-line] bg-[--ft-surface] hover:bg-[--ft-frost]"
-											aria-label="Zmniejsz ilość"
-										>
-											<MinusIcon class="h-4 w-4" aria-hidden="true" />
-										</button>
-										<span class="w-10 text-center font-mono text-[--ft-text]">{item.quantity}</span>
-										<button
-											onclick={() => cart.updateQuantity(item.productId, item.quantity + 1)}
-											class="flex h-10 w-10 items-center justify-center rounded-sm border border-[--ft-line] bg-[--ft-surface] hover:bg-[--ft-frost]"
-											aria-label="Zwiększ ilość"
-										>
-											<PlusIcon class="h-4 w-4" aria-hidden="true" />
-										</button>
-									</div>
+									<QuantityStepper
+										value={item.quantity}
+										onChange={(next) => cart.updateQuantity(item.productId, next)}
+									/>
 
 									<div class="text-right">
 										<p class="font-mono text-[--ft-text]">

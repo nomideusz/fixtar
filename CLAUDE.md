@@ -1,362 +1,177 @@
 # FixTar — Development Guide
 
 ## Project
-SvelteKit e-commerce for professional power tools (Polish language).  
-**Stack:** SvelteKit, Tailwind CSS v4, Turso (DB), BaseLinker API (product sync), Drizzle ORM  
-**Language:** Polish (all customer-facing UI)
+SvelteKit 2 + Svelte 5 (runes) e-commerce for professional power tools (Polish language).
+**Stack:** SvelteKit, Tailwind CSS v4 (`@theme`), Turso (libSQL) + Drizzle ORM, Better Auth, BaseLinker API (product sync), `@nomideusz/svelte-search` (FTS5 + trigram fuzzy), Phosphor icons.
+**Language:** Polish (all customer-facing UI).
 
 ---
 
-## Design Direction
+## Design Direction — Industrial Premium (v1.2)
 
-**Inspiration:** [scheppach.co.uk](https://www.scheppach.co.uk/en-GB) — minimal, photography-driven, no clutter.
+**Source of truth:** `apps/fixtar/.claude/design_handoff_fixtar_v1.2/` — design system HTML + asset bundle. Hex values, font weights, and pixel measurements transfer exactly. Refer to it before any visual decision.
 
-**Core principles:**
-- **No CTA buttons.** Links are text. Products sell themselves through photography and clean layout.
-- **Simplicity over decoration.** White space is the design. Remove, don't add.
-- **Photography-first.** Full-bleed hero images, lifestyle product photography carries the page.
-- **Quiet typography.** Headlines inform, don't shout. No gradient backgrounds, no colored section blocks.
-- **Flat hierarchy.** Minimal visual weight differences between elements. Let content breathe.
+### Identity in one line
+Cinematic, industrial, premium — Bosch Professional rigor + Makita XGT precision + DJI ecommerce confidence. Never generic Shopify.
 
-**What this means concretely:**
-- Hero = full-bleed photo with minimal text overlay, no buttons
-- Categories = clean image grid, clickable cards, no arrows/icons/CTAs
-- Product cards = image + name + price, nothing else
-- Footer = simple, light, minimal columns
-- No trust bars, no stats strips, no feature icon grids, no brand logo sections
-- No mega-menus — navigation is plain text links
-- Products page = single column, horizontal category pills, no sidebar
+### Brand palette (use tokens, never raw hex)
+
+| Role | Token | Hex |
+|---|---|---|
+| Cyan / Turquoise (brand) | `--ft-cyan` / `--color-teal-500` | `#3F98A2` |
+| Orange (action, sparingly) | `--ft-cta` / `--color-orange-500` | `#FF8A1F` |
+| Dark surface | `--ft-ink-900` | `#1D2228` |
+| Page background | `--ft-bg` | `#FFFFFF` |
+| Soft surface | `--ft-frost` / `--color-ink-050` | `#F4F5F7` |
+
+Full 10-stop `ink-*` ramp + 6-stop `teal-*` and `orange-*` scales available in `app.css`. **Cyan carries brand identity** (logo, highlights, hover, active). **Orange is conversion-only** (CTAs, add-to-cart, sale labels) — sparingly, always meaningful.
+
+### Typography
+
+| Style | Family | Weight | Use |
+|---|---|---|---|
+| Display / XL hero | Teko | 500 italic | Hero headline, club lockup — identity moments only |
+| H1 / page title | Teko | 500 upright | Page titles |
+| H2 section title | Teko | 500 upright | Section headings |
+| H2 alt | Oxanium | 500 | Technical/futuristic alternate (rare) |
+| H3 / UI heading | Inter | 700 | Component headings |
+| Eyebrow / kicker | Iosevka Mono | 500 | Section kickers ("FEATURED · BESTSELLERS") |
+| Body | Inter | 400 | Default copy |
+| Small / helper | Inter | 400 | 13px helper text |
+| Mono / SKU | Iosevka Mono | 400 | SKUs, micro-labels, tabular numerics |
+
+**Italic Teko is reserved for hero and identity moments.** Default headings are upright. Body type never competes with the headline.
+
+### Signature visual moves
+1. **Category cards** — entire card sheared `skewX(-7°)`, photo & content counter-skewed `+7°` to stay upright. Dark slab on left (58% wide). 4px cyan stripe with glow on diagonal edge. Orange 44×44 CTA arrow free on photo. See `home/CategoriesSection.svelte`.
+2. **Hero** — light premium surface (`#FAFBFC → #EDF0F3`) + far-right cyan radial glow. Italic Teko headline (ink + cyan accent). Photo column right with left-edge fade into surface. Frosted "stamp" chip bottom-right with cyan status dot.
+3. **Club** — dark `ink-900` slab. Photo left with diagonal right edge (`clip-path` 110px slope). 4px cyan stripe rotated 11.1° along the slope. Right column: kicker + logo+Teko-italic word lockup + 5 perks with vertical hairline dividers + flush 56px email/CTA form. Promo note left-aligned.
+
+### Principles
+1. **Cinematic, not decorated.** Real industrial environments, real grit. No gradients-as-decoration, no glass, no glow effects.
+2. **Cyan is brand. Orange is action.** Used together, never confused.
+3. **Italic display, calm body.** Italic Teko ONLY in hero/identity moments. Inter for everything that has to be read.
+4. **European, premium, reliable.** Reference Bosch Pro / Makita XGT / DJI — never generic Shopify.
 
 ---
 
 ## Design Tokens (`src/app.css`)
 
-| Token | Value | Usage |
+Tailwind v4 `@theme` block defines the full token system. Use semantic aliases (`--ft-*`) in component styles; theme tokens (`--color-*`, `--font-*`, `--radius-*`) generate Tailwind classes.
+
+### Key semantic aliases
+| Token | Value | Use |
 |---|---|---|
-| `--ft-bg` | `#ffffff` | Page background |
-| `--ft-surface` | `#ffffff` | Cards, panels |
-| `--ft-frost` | `#f1f5f9` | Subtle fills, hover states |
-| `--ft-line` | `#e2e8f0` | Borders, dividers |
-| `--ft-text` | `#374151` | Body text |
-| --ft-text-strong | #111827 | Headings (Black) |
-| --ft-text-muted | #6b7280 | Secondary text |
-| --ft-text-faint | #9ca3af | Hints, placeholders |
-| --ft-cta | #D92727 | Prices, active states, buttons |
-| --ft-accent | #0050A0 | Labels, status, links |
+| `--ft-bg` | `#fff` | Page background |
+| `--ft-surface` | `#fff` | Cards, panels |
+| `--ft-frost` | `--ink-050` | Subtle fills, hover states, empty placeholders |
+| `--ft-line` | `--ink-200` | Borders, dividers |
+| `--ft-text` | `--ink-900` | Body text, headings |
+| `--ft-text-muted` | `--ink-500` | Secondary text |
+| `--ft-text-faint` | `--ink-400` | Hints, placeholders |
+| `--ft-accent` | `--teal-500` | Brand cyan |
+| `--ft-cta` | `--orange-500` | Conversion orange |
+| `--ft-shadow-card` | (resting) | Default card shadow |
+| `--ft-shadow-lift` | (hover) | Hover/focused card shadow |
+
+### Radii
+| Token | Value | Use |
+|---|---|---|
+| `--radius-xs` | 3px | Badges, chips |
+| `--radius-sm` | 6px | Buttons, inputs |
+| `--radius-md` | 10px | Cards, panels |
+| `--radius-lg` | 16px | Hero, club, large compositions |
 
 ### Spacing
-
 | Class | Padding | Use case |
 |---|---|---|
-| `.ft-section-sm` | `clamp(32px, 4vh, 40px)` | Compact sections |
-| `.ft-section` | `clamp(48px, 6vh, 64px)` | Standard pages |
-| `.ft-section-lg` | `clamp(64px, 8vh, 96px)` | Spacious pages |
+| `.ft-section-sm` | `clamp(24px, 3vh, 40px)` | Compact sections |
+| `.ft-section` | `clamp(48px, 6vh, 72px)` | Standard sections |
+| `.ft-section-lg` | `clamp(64px, 8vh, 96px)` | Spacious sections |
 | `.ft-container` | `max-width: 1440px` + responsive padding | Horizontal containment |
+
+### Typography utilities
+| Class | Use |
+|---|---|
+| `.ft-page-title` | Teko 500 uppercase, ~28-40px, page headings on account/checkout/listing routes |
+| `.ft-eyebrow` / `.ft-label` | Mono uppercase 11px cyan-600 kicker above section titles |
+| `.ft-mono` | Iosevka Mono 500 with tabular-nums, for SKUs and numeric data |
+| `.text-money` | Inter 700 tabular for prices |
+
+---
+
+## UI Component Inventory (`src/lib/components/ui/`)
+
+| Component | Purpose |
+|---|---|
+| `Button.svelte` | Variants: `cta` (orange), `teal` (cyan), `dark`/`primary` (ink-900), `outline`/`secondary` (white + ink-300 border), `ghost`, `ghost-dark`. Sizes: `sm`/`md`/`lg`. Use `cta` for conversion only. |
+| `Input.svelte` | 44px height, 6px radius, cyan focus ring (3px teal-050). |
+| `Textarea.svelte` | Resize vertical, min-height 110px, cyan focus ring. |
+| `Select.svelte` | 44px height, custom caret SVG, cyan focus ring. |
+| `Checkbox.svelte` | 18×18 box, 3px radius, cyan checked. |
+| `Radio.svelte` | 18×18 circle, cyan checked. |
+| `Switch.svelte` | 40×22 track, cyan checked. |
+| `FieldGroup.svelte` | Wraps label (mono uppercase 12px) + input + helper/error. |
+| `QuantityStepper.svelte` | Minus / number / plus, all 44px height. |
+| `FilterChip.svelte` | Pill-shaped, optional removable, active inverts to ink-900. |
+| `Tabs.svelte` | Underline tabs, cyan-500 active indicator, optional count badges. |
+| `Pagination.svelte` | Prev/Next + numbered pages + gap "…" + active state (ink-900 bg). |
+| `Breadcrumbs.svelte` | Inline mono "/" separators, ink-500 links → teal-600 hover, ink-900 current. |
+| `PageHeader.svelte` | Eyebrow + Teko 500 title + ink-500 description. `align: left | center`. |
+| `StarRating.svelte` | 5-star SVG, score + count, `-lg` variant. |
+| `AvatarGroup.svelte` | Overlapping circular avatars + "+N more". |
+| `Alert.svelte` | 4 variants (success/info/warning/danger) with icon, bold lead, body, optional close. |
+| `Tooltip.svelte` | Dark ink-900 bubble, mono uppercase, triangle pointer (top/bottom). |
+| `EmptyState.svelte` | Icon circle + Teko 28px title + ink-500 description + CTA slot. |
+| `Skeleton.svelte` | Animated shimmer. |
+| `Card.svelte` | Generic card primitive with hover lift. |
+| `ProductCard.svelte` | Catalog workhorse: 1:1 image, badge + heart top strip, name, rating, price, add-to-cart. |
+| `CountdownTimer.svelte` | Reusable timer with full/compact modes. |
+| `Modal.svelte` | Generic modal. |
+| `Notifications.svelte` | Toast surface (consider migrating to `Alert` variants). |
 
 ---
 
 ## Architecture
 
 ```
-src/routes/**/+page.svelte          — Pages (31 total)
+src/routes/**/+page.svelte          — Pages
 src/routes/**/+layout.svelte        — Layouts (root, account, admin)
-src/lib/components/{domain}/        — Components by domain
+src/lib/components/{domain}/        — Domain components (home, products, checkout, account, layout, ui)
 src/lib/stores/*.svelte.ts          — Svelte 5 runes stores
 src/lib/utils/*.ts                  — Shared utilities
-src/lib/images/                     — All image assets
+src/lib/images/                     — Image assets
+src/lib/fonts/                      — Self-hosted fonts (Iosevka Mono in /static/IoskeleyMono-Web/)
 ```
 
 ### Key Rules
-- **Spacing:** Use `.ft-section-*` + `.ft-container`. Never `px-*` on ft-container.
-- **Colors:** Only `--ft-*` tokens. Never raw hex or Tailwind neutrals.
+- **Spacing:** Use `.ft-section-*` + `.ft-container`. Never `px-*` on `.ft-container`.
+- **Colors:** Only `--ft-*` or `--color-*` tokens. Never raw hex or Tailwind neutrals (`bg-neutral-*`, `text-gray-*`).
 - **Borders:** `border-[--ft-line]`. Never `border-white/*` or `border-neutral-*`.
-- **Icons:** SVG only, never emoji. `aria-hidden="true"` on decorative.
+- **Icons:** Phosphor SVG only, never emoji. `aria-hidden="true"` on decorative icons.
 - **Touch targets:** ≥44px on all interactive elements.
 - **CSS layers:** Resets in `@layer base`. Never unlayered resets.
 - **No circular vars:** `--ft-surface: var(--ft-surface)` = broken. Use literals for aliases.
+- **Italic Teko ONLY for hero/identity moments** — never in general headings.
 
 ### Validation
 ```bash
-npx svelte-check --threshold error
+cd apps/fixtar && npx svelte-check
 ```
+Target: 0 errors, 0 warnings (excluding pre-existing `polityka-prywatnosci` unused-CSS warning).
 
 ---
 
-## Completed Work
-
-### Session 12 — Scheppach-Inspired Minimal Redesign
-
-#### Hero Section
-- [x] Full-bleed lifestyle photography from `src/lib/images/hero/`
-- [x] 3-slide auto-advancing carousel with real photos (workshop drill, construction hammer, forest axe)
-- [x] Minimal text overlay: headline + one-line description, no CTA buttons
-- [x] Image itself is a clickable link (wraps `<a>`)
-- [x] Dot indicators (not progress bars), 6s auto-advance, pause on hover
-- [x] Clean 1s fade transitions, `aspect-ratio: 1920/1072` (native photo proportions)
-- [x] Subtle bottom-only gradient scrim for text legibility
-
-#### Homepage Simplification
-- [x] Removed `TrustBar.svelte` from layout
-- [x] Removed `BrandLogos.svelte` from homepage
-- [x] Removed `FeaturesSection.svelte` from homepage
-- [x] Section order: Hero → Featured Products → Categories
-- [x] `FeaturedProducts` — quiet header ("Polecane"), plain text link, no arrows
-- [x] `CategoriesSection` — removed SVG icons, clean image placeholders (4:3), name only
-
-#### Products Page — Single Column Rewrite
-- [x] Removed 2-column sidebar layout → single column, full width
-- [x] Category pills: horizontal scrollable row (mobile), wrapping (desktop)
-- [x] Yoga-inspired pill pattern: `chip-scroll` with `overflow-x: auto`, `scroll-snap-type`, hidden scrollbar
-- [x] Selected pill auto-scrolls into center view on mobile
-- [x] Removed: sidebar filters, view mode toggle, ActiveFilters, MobileFilterPanel, QuickViewModal, Card wrappers
-- [x] Kept: search, sort, pagination — minimal and clean
-- [x] Removed "Wszystkie" pill — no category selected = all products shown
-- [x] Imports reduced from 12 components to 2 (ProductCard, ProductCardSkeleton)
-
-#### Navbar Cleanup
-- [x] Removed MegaMenu component and all hover/timer logic
-- [x] Removed `categories` prop from Navbar (no longer needed)
-- [x] Plain text links for all nav items (Produkty, Promocje, O Nas, Kontakt)
-- [x] Navbar is now a simple sticky bar: logo + links + search + cart + account
-
-All passing `svelte-check` with **0 errors, 0 warnings** ✅
-
-### Session 13 — Token Cleanup & Emoji Sweep
-
-- [x] **SelectableMethodCard** — replaced 4× `--color-accent-*` with `--ft-accent`/`--ft-frost`/rgba
-- [x] **About page** — 6 emoji icons (🎯⚡👥🏆🚀🔧) → SVG icons, removed unused gradient `color` field
-- [x] **Product detail** — `bg-neutral-600` out-of-stock badge → `bg-[--ft-text-muted]`
-- [x] **Contact page** — `from-neutral-100 to-neutral-200` map placeholder → `from-[--ft-frost] to-[--ft-frost]`
-- [x] **Account favorites** — complete rewrite: dark cyberpunk theme → light Scandinavian, English→Polish, proper tokens
-- [x] **order-status.ts** — `bg-neutral-100 text-neutral-200` → `bg-[--ft-frost] text-[--ft-text-muted]`
-
-All passing `svelte-check` with **0 errors, 0 warnings** ✅
-
-### Session 14 — Deep Audit: Dead Code, Translations, Accessibility, Token Sweep
-
-#### Dead Component Cleanup (11 files deleted, 45→34 components)
-- [x] Deleted: `BrandLogos`, `FeaturesSection`, `TrustBar`, `MegaMenu`, `AccountMobileNav`, `MobileFilterPanel`, `QuickViewModal`, `ProductListItem`, `ActiveFilters`, `CategoryFilter`, `AnnouncementBanner`
-- [x] Deleted `Hero.svelte` — replaced with inline section headers on all 6 pages
-
-#### Hero → Inline Section Headers (6 pages)
-- [x] `about`, `auth/logout`, `checkout`, `checkout/success`, `contact`, `search` — all replaced with lightweight inline `<section>` headers
-
-#### Account Addresses — English→Polish (3 pages)
-- [x] Full translation: titles, labels, placeholders, buttons, notifications, error states
-- [x] Address type options: Home→Dom, Work→Praca, Other→Inny
-- [x] Country names: Poland→Polska, Germany→Niemcy, etc.
-- [x] Replaced `bg-brand-100 text-brand-800` Default badge → `bg-[--ft-frost] text-[--ft-accent]`
-
-#### Accessibility Fixes
-- [x] Added `aria-label` to social login buttons (Google, GitHub) on login + register pages
-- [x] Added `aria-label="Szukaj produktów"` to error page search input
-- [x] Added `aria-hidden="true"` on social login SVG icons
-
-#### Image CLS Prevention (6 files)
-- [x] Added `width`/`height` to auth logos, cart items, checkout success items, CartDrawer items
-- [x] Added `loading="lazy"` to product thumbnails (not logos — above fold)
-
-#### Complete `brand-*` → Token Sweep (~130 replacements across 23 files)
-- [x] `text-brand-*` → `text-[--ft-accent]`
-- [x] `bg-brand-600/500` → `bg-[--ft-accent]`, `bg-brand-100/50` → `bg-[--ft-frost]`
-- [x] `hover:text-brand-*` → `hover:text-[--ft-accent]`
-- [x] `hover:bg-brand-700` → `hover:bg-[--ft-accent-hover]`
-- [x] `focus:ring-brand-500` → `focus:ring-[--ft-accent]`
-- [x] `group-hover:text-brand-*` → `group-hover:text-[--ft-accent]`
-- [x] All account, checkout, contact, about, search, auth, error, orders, cart pages + 8 components
-
-**Result: zero `brand-*` classes, zero `neutral-*` classes, zero stale tokens, zero emoji in all non-admin code.**
-
-All passing `svelte-check` with **0 errors, 0 warnings** ✅
+## What NOT to change (preserve)
+- BaseLinker integration (`src/lib/services/baselinker.ts`, `src/routes/api/baselinker/`).
+- Search infrastructure (`packages/svelte-search/`, `src/lib/server/search/`).
+- Auth (`better-auth` config, `src/lib/server/schema.ts`).
+- Database schema and Drizzle migrations.
+- Cart state management (`src/lib/stores/`).
+- Routing structure or page hierarchies.
 
 ---
 
-## Session 14 — Phase 4: Conversion & Trust
+## Migration history
 
-### New Components Created
-- **`BrandLogos.svelte`** (`src/lib/components/home/`) — 6 brand names (Bavaria, Magnum, Eurotec, Sterling, Graphite, Yato) as text links. Faint→teal hover. Border-separated strip with "Zaufane marki" label.
-- **`TestimonialsSection.svelte`** (`src/lib/components/home/`) — Stats strip (2,500+ products, 15,000+ orders, 4.8/5 rating, 98% positive reviews) with staggered fade-in. 3 customer testimonial cards: star ratings (orange SVG), blockquote text, avatar initials (frost circle), name + role. Responsive grid 1→2→3 cols.
-- **`NewsletterSection.svelte`** (`src/lib/components/home/`) — Standalone email signup CTA with "5% rabatu" incentive. Envelope icon in circle. Custom email validation, loading spinner, success state with checkmark. Frost bg with border. Input+button inline (stacks on mobile ≤480px). `novalidate` + custom error messages. `aria-invalid`, `aria-describedby` for a11y.
-- **`CountdownTimer.svelte`** (`src/lib/components/ui/`) — Reusable countdown timer. Two modes: full (block layout with day/hour/min/sec boxes + labels) and compact (inline `02h:15m:30s`). `font-variant-numeric: tabular-nums` for stable layout. `role="timer"` + `aria-label`. Expired state text. `onExpired` callback. Cleans up interval on unmount.
-- **`FlashSaleBanner.svelte`** (`src/lib/components/home/`) — Dark navy banner bar above hero. Pulsing orange dot (CSS ping animation), headline text, compact countdown timer, arrow CTA. Auto-hides when countdown expires. Links to /deals. Responsive (dot hidden on mobile). `prefers-reduced-motion` disables ping.
-
-### Redesigned Pages
-- **Deals page** (`/deals`) — Two-tier layout:
-  - **Flash deals**: 2-column grid with product image (badge + discount overlay), title, description, original→sale price with strikethrough, full countdown timer, "Kup teraz" CTA button.
-  - **Seasonal promotions**: 3-column card grid with image zoom on hover, discount badge, title/description, date label, "Sprawdź →" link with arrow animation.
-  - Newsletter CTA bar at bottom linking to homepage `#newsletter` anchor.
-
-### Updated Pages
-- **Homepage** (`+page.svelte`) — New section order:
-  ```
-  [FlashSaleBanner]       ← NEW (dark bar with countdown)
-  [HeroSection]           ← existing
-  [CategoriesSection]     ← existing (image cards)
-  [FeaturedProducts]      ← existing
-  [BrandLogos]            ← NEW (trust logos strip)
-  [TestimonialsSection]   ← NEW (stats + reviews)
-  [NewsletterSection]     ← NEW (email signup with 5% incentive)
-  ```
-
-All passing `svelte-check` with **0 errors, 0 warnings** ✅
-
----
-
-## Session 15 — Phase 5.1: Animations & Micro-interactions
-
-### View Transitions
-- **`+layout.svelte`** — Added `onNavigate` hook using the View Transitions API (`document.startViewTransition`). Pages cross-fade with subtle vertical slide (4px) on navigation. Falls back gracefully in unsupported browsers.
-- **`app.css`** — Added `::view-transition-old(root)` / `::view-transition-new(root)` keyframes. Old page fades out + slides up, new page fades in + slides down. 150ms out, 200ms in.
-- **`Navbar.svelte`** — Added `view-transition-name: navbar` so navbar stays fixed during page transitions (no flash).
-- **`app.d.ts`** — Added `Document.startViewTransition` type declaration.
-
-### Staggered Card Entry
-- **`app.css`** — New `.ft-stagger` utility class. Children animate in with `ft-card-enter` (opacity 0→1, translateY 12px→0) with 40ms delay increments per child (up to 13+). Uses `--ease-out` cubic-bezier.
-- Applied `.ft-stagger` to:
-  - Product grid (`/products`)
-  - Featured products (homepage)
-  - Categories grid (homepage)
-  - Deals grids (flash + seasonal)
-  - Search results grid
-
-### Button Hover Enhancement
-- **`Button.svelte`** — Added `transform` to transition property list. All button variants now lift on hover:
-  - Primary: `translateY(-1px)` + orange shadow
-  - Secondary: `translateY(-1px)`
-  - Outline: `translateY(-1px)` + orange shadow
-  - All hovers gated with `:not(:disabled)`
-
-### Card Hover Enhancement
-- **`Card.svelte`** — Added `transform` to transition. Hover cards lift `translateY(-2px)`.
-- **`ProductCard.svelte`** — Increased hover lift to `-3px`, uses `--ease-out` easing.
-
-### Footer Icons (Simple Icons integration)
-- **`Footer.svelte`** — Replaced hand-drawn social SVGs with official Simple Icons (CC0):
-  - Facebook: proper filled `f` logo
-  - Instagram: official camera glyph (filled, not stroke)
-  - YouTube: official play button shape (filled)
-- Payment icons: replaced plain text `<span>` with SVG logos in styled `.pay-chip` containers:
-  - Visa, Mastercard, PayPal: Simple Icons SVGs
-  - BLIK, Przelew: kept as styled text logos (no standard SVG exists)
-- Payment chips now have `border + frost bg + border-radius + aria-label`
-
-### Reduced Motion
-- All view transition animations disabled via `prefers-reduced-motion: reduce`
-- Stagger animations respect existing global reduced-motion rule
-
-All passing `svelte-check` with **0 errors, 0 warnings** ✅
-
----
-
-## Session 16 — Product Experience Polish
-
-### Product Listing Page
-- **Breadcrumbs** — Added `Breadcrumbs` component to `/products` page. Shows "Strona główna → Produkty → {Category}" when a category filter or search is active. Hidden when viewing all products (no redundant crumb).
-
-### Product Card View Transitions
-- **`ProductCard.svelte`** — Each card's image container gets a unique `view-transition-name` via CSS custom property (`--vt-name: product-img-{id}`). When navigating to a product detail page, the image morphs smoothly from card to gallery.
-- **Product detail page** — Gallery wrapper matches the same `view-transition-name` so the View Transitions API creates a seamless morph animation between list and detail views.
-- **`app.css`** — Added `::view-transition-group(*)` with 250ms ease-out timing for all view transition groups.
-
-### Related Products
-- Added `.ft-stagger` to related products carousel for staggered entry animation.
-
-### Cleanup
-- Confirmed spec table, related products carousel, and breadcrumb hierarchy were already implemented in Session 12. Removed from TODO.
-
-All passing `svelte-check` with **0 errors, 0 warnings** ✅
-
----
-
-## Session 19 — Scheppach Industrial Redesign & Image Optimization
-
-### Utilitarian Aesthetic 
-- **Typography**: Swapped Inter/Plus Jakarta Sans for the strict brand fonts `Chakra Petch` (structured Sci-Fi display) and `Barlow` (legible body).
-- **Color Hierarchy**: Adopted a rigid 3-color palette:
-  - **Black**: text and structure.
-  - **Honda Blue (#0050A0)**: interactive brand elements, structural borders, hovers.
-  - **Signal Red (#D92727)**: hard conversion actions (buy buttons, pricing alerts).
-- **Rigid Geometry**: Stripped global border-radii (`0px-2px`) and flattened shadow overlays for sharp 1px borders to mimic machined hardware (inspired heavily by Scheppach.com).
-
-### Components Polish
-- **ProductCard**: Removed gray internal bounds, letting white-background product shots float. Implemented 'Ghost/Target' style CTA button that instantly fills solid Red on hover for maximum friction-less buying interaction.
-- **Navbar**: Cleaned header spacing, pushing Search bar prominently to the left (`max-width: 720px`) and organizing navigation text links tightly alongside cart/account icons on the far right. Hover states changed to Brand Teal instead of Red to preserve semantic clarity. Logo transparent pixels automatically trimmed using Sharp to maximize header footprint.
-- **Hero/Categories**: Added direct Call to Action inside Hero block. Transformed Category blocks from soft gradients into solid white structural blocks with 4px left-hand Teal border stripes.
-- **Toast Notifications**: Rebuilt from 16px soft-bubbles into rigid left-bordered hardware panels using precise typography and squared progress bars. Backgrounds forced to solid white for separation.
-- **Dark Mode**: Synchronized dark mode tokens with light mode; swapped old orange for a visibility-optimized Signal Red (`#EB3B3B`) and updated accent colors to Honda Blue (`#3b95ff`).
-
-### Image Engineering
-- **Production Stills**: Generated high-fidelity Bavaria, Magnum, and Graphite product shots in e-commerce style (front-facing, pure white #ffffff background).
-- **Automation**: Processed ~150MB of raw `.png` imagery with `sharp`, converting them into highly compressed `.webp` files and trimming transparent margins from the logo for maximum footprint.
-- **DB Injection**: Wrote a custom script (`scripts/update-images.ts`) that mapped locally generated WebP images directly into the SQLite database based on name/category logic, serving them via `/static/img/products/`.
-
-All passing `svelte-check` with **0 errors, 0 warnings** ✅
-
----
-
-## Session 17 — Homepage & Navigation Polish
-
-### CategoriesSection Redesign
-- **Section header** — Added "Przeglądaj" label (ft-label) above "Kategorie" title for hierarchy.
-- **Product count** — Each category card now shows product count below the name (e.g., "42 produktów"). Uses Polish plural rules (1 produkt, 2-4 produkty, 5+ produktów).
-- **Overlay redesign** — Name + count in a flex column. Gradient refined to 50% opacity for better legibility.
-- **Fallback icon** — Categories without mapped images now show a wrench SVG icon (was blank frost). Dark text mode for fallback cards (no gradient needed).
-- **More image mappings** — Added `frezarki`, `odkurzacze`, `kompresory`, `narzedzia-reczne` slugs mapped to existing banner images.
-
-### Navbar — Promocje Badge
-- **`Navbar.svelte`** — "Promocje" nav link now has a small orange dot (`promo-dot`) indicating active deals. 6px circle, `bg-[--ft-cta]`, `vertical-align: super`. Desktop only (hidden in mobile menu).
-
-### NavSearch UX Improvements
-- **Popular categories** — When search input is focused with empty query, shows "Popularne kategorie" section with chip links (Szlifierki, Wiertarki, Młotowiertarki, Pilarki). Clicking navigates to filtered products page.
-- **Combined empty state** — Recent searches (if any) shown above popular categories with a border separator between sections.
-- **Category chips** — Frost bg, border, rounded-full pills. Hover: orange border + text + light bg.
-
-All passing `svelte-check` with **0 errors, 0 warnings** ✅
-
----
-
-## Session 18 — Optimization & Nice-to-Haves
-
-### Dark Mode
-- **`app.css`** — Full token inversion via `@media (prefers-color-scheme: dark)` and manual `.dark` class. Dark palette: bg `#0f1419`, surface `#1a2028`, text `#c8d1db`, headings `#e2e8f0`, line `#2a3444`, frost `#1e2630`. CTA brightened to `#FF7A1A`, accent to `#56a8a8`. Shadows darkened. Uses `html:not(.light-forced)` to allow manual override.
-- **`app.html`** — Inline `<script>` reads `ft-theme` from `localStorage` and applies `.dark` or `.light-forced` before first paint (prevents FOUC). Dual `<meta name="theme-color">` for light/dark schemes. Trimmed font weights (removed unused 300/400 from Plus Jakarta Sans).
-- **`Navbar.svelte`** — Dark mode toggle button (sun/moon icons). Desktop: icon button in actions bar. Mobile: text button in mobile menu ("Tryb ciemny"/"Tryb jasny"). Reads initial state from `localStorage` → falls back to `prefers-color-scheme`. Saves preference to `localStorage`.
-
-### Lazy-Loading (Intersection Observer)
-- **`src/lib/utils/lazy.ts`** — `lazyReveal` Svelte action. Observes element with configurable threshold/rootMargin. Adds `.is-visible` class when entering viewport. Unobserves after first intersection. Respects `prefers-reduced-motion`.
-- **`app.css`** — `.ft-lazy` class: starts at `opacity: 0; translateY(16px)`, transitions to visible on `.is-visible`. 500ms ease-out. Disabled for reduced motion.
-- **Homepage** — Applied `ft-lazy` + `use:lazyReveal` to below-fold sections: FeaturedProducts, BrandLogos, TestimonialsSection, NewsletterSection. Hero and Categories stay eager (above fold).
-
-### Print Styles
-- **`app.css`** — `@media print` rules: hides nav, footer, buttons, search, filters, pagination, cart, flash banner, newsletter. Resets all backgrounds to white, text to black. Shows URLs after links. Avoids page breaks after headings. Product grid forced to 2 columns. Container padding removed.
-
-### Typography Optimization
-- **`app.html`** — Trimmed Google Fonts request: Plus Jakarta Sans now loads only weights 500–800 (was 300–800). Saves ~20KB of font data. `font-display: swap` already set via URL parameter.
-
-All passing `svelte-check` with **0 errors, 0 warnings** ✅
-
----
-
-## TODO — Remaining Work
-
----
-
-### 🟢 Conversion & Trust (Phase 4 — remaining)
-
-- [ ] Google Reviews integration (needs API key)
-- [ ] Exit-intent newsletter popup
-- [ ] Discount percentage filter on deals page (needs real DB data)
-- [ ] Connect newsletter form to real backend/email service
-
----
-
-### 🔵 Future (Low Priority)
-
-- [x] ~~Dark mode~~ ✅
-- [ ] Image `srcset`/`sizes` for responsive images (product images are external URLs — needs image proxy)
-- [x] ~~Lazy-loading below-fold sections (Intersection Observer)~~ ✅
-- [ ] Virtualized product grid for 50+ items (deferred — current pagination handles scale)
-- [x] ~~Bundle splitting audit~~ ✅ (SvelteKit auto-splits well, largest client chunk 96KB = Svelte runtime)
-- [x] ~~Print styles~~ ✅
-- [ ] Admin pages token cleanup (73 stale `neutral-*` references — internal only)
-- [x] ~~Typography review~~ ✅ (trimmed font weights, `font-display: swap` confirmed)
+The site evolved through several design phases — Scheppach minimal (Sessions 12-18), brief Chakra Petch / Honda Blue industrial experiment (Session 19), and now **v1.2 Industrial Premium** (current). Earlier session notes have been removed; visual decisions are now governed by the design handoff bundle and the tokens in `app.css`.

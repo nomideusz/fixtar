@@ -2,6 +2,8 @@
 	import { goto } from '$app/navigation';
 	import ProductCard from '$lib/components/ui/ProductCard.svelte';
 	import ProductCardSkeleton from '$lib/components/ui/ProductCardSkeleton.svelte';
+	import EmptyState from '$lib/components/ui/EmptyState.svelte';
+	import Button from '$lib/components/ui/Button.svelte';
 	import { ArrowDownIcon, ArrowUpIcon, MagnifyingGlassIcon, XIcon } from 'phosphor-svelte';
 	import type { Product } from '$lib/stores/products.svelte';
 
@@ -174,20 +176,27 @@
 
 	<!-- Results -->
 	{#if data.error}
-		<div class="empty">
-			<p>{data.error}</p>
+		<div class="empty-wrap">
+			<EmptyState title="Błąd ładowania" description={data.error} />
 		</div>
 	{:else if loading}
 		<div class="grid">
 			<ProductCardSkeleton count={8} />
 		</div>
 	{:else if data.products.length === 0}
-		<div class="empty">
+		<div class="empty-wrap">
 			{#if hasFilters}
-				<p>Brak wyników dla wybranych filtrów.</p>
-				<button type="button" class="btn-clear" onclick={clearFilters}> Wyczyść filtry </button>
+				<EmptyState
+					title="Brak wyników"
+					description="Żadne produkty nie pasują do wybranych filtrów. Spróbuj zmienić wyszukiwanie lub usunąć filtry."
+				>
+					<Button variant="teal" onclick={clearFilters}>Wyczyść filtry</Button>
+				</EmptyState>
 			{:else}
-				<p>Nie znaleziono produktów.</p>
+				<EmptyState
+					title="Brak produktów"
+					description="Nie znaleziono żadnych produktów do wyświetlenia."
+				/>
 			{/if}
 		</div>
 	{:else}
@@ -222,12 +231,14 @@
 	}
 
 	.page-title {
-		font-family: var(--font-sans);
-		font-size: clamp(1.75rem, 3.5vw, 2.5rem);
-		font-weight: 400;
-		color: var(--ft-text-strong);
-		letter-spacing: -0.02em;
-		line-height: 1.1;
+		font-family: var(--font-display);
+		font-size: clamp(2rem, 4vw, 3rem);
+		font-weight: 500;
+		color: var(--ft-text);
+		text-transform: uppercase;
+		letter-spacing: -0.005em;
+		line-height: 1;
+		margin: 0;
 	}
 
 	.page-count {
@@ -282,7 +293,8 @@
 
 	.search-input:focus {
 		outline: none;
-		border-color: var(--ft-accent);
+		border-color: var(--ft-cyan);
+		box-shadow: 0 0 0 3px var(--ft-cyan-050);
 	}
 
 	.search-clear {
@@ -360,11 +372,11 @@
 		z-index: 1;
 	}
 
-	/* ── Category chips ── */
+	/* ── Category chips · pill style per design system ── */
 	.chips {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 6px;
+		gap: 8px;
 		margin-bottom: clamp(20px, 3vh, 32px);
 	}
 
@@ -372,14 +384,14 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 8px;
-		padding: 6px 12px;
-		background: var(--ft-surface);
+		padding: 7px 14px;
+		background: #fff;
 		border: 1px solid var(--ft-line);
-		border-radius: var(--radius-sm);
+		border-radius: var(--radius-full);
 		font-family: var(--font-sans);
-		font-size: 0.875rem;
-		font-weight: 400;
-		color: var(--ft-text);
+		font-size: 13px;
+		font-weight: 500;
+		color: var(--ft-ink-700);
 		cursor: pointer;
 		min-height: 36px;
 		transition:
@@ -389,20 +401,22 @@
 	}
 
 	.chip:hover:not(.chip--active) {
-		border-color: var(--ft-text-strong);
+		border-color: var(--ft-ink-900);
+		color: var(--ft-ink-900);
 	}
 
 	.chip--active {
-		background: var(--ft-text-strong);
-		border-color: var(--ft-text-strong);
-		color: var(--ft-bg);
+		background: var(--ft-ink-900);
+		border-color: var(--ft-ink-900);
+		color: #fff;
 	}
 
 	.chip-count {
 		font-family: var(--font-mono);
-		font-size: 0.6875rem;
-		color: var(--ft-text-faint);
+		font-size: 11px;
+		color: var(--ft-ink-400);
 		letter-spacing: 0.02em;
+		font-weight: 500;
 	}
 
 	.chip--active .chip-count {
@@ -435,37 +449,8 @@
 		}
 	}
 
-	/* ── Empty state ── */
-	.empty {
-		text-align: center;
-		padding: clamp(48px, 8vh, 96px) 0;
-		color: var(--ft-text-muted);
-	}
-
-	.empty p {
-		font-size: 0.9375rem;
-		margin-bottom: 16px;
-	}
-
-	.btn-clear {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		gap: 8px;
-		font-family: var(--font-sans);
-		font-size: 0.9375rem;
-		padding: 10px 20px;
-		min-height: 44px;
-		border-radius: var(--radius-sm);
-		border: 1px solid var(--ft-line);
-		background: transparent;
-		color: var(--ft-text);
-		cursor: pointer;
-		transition: border-color var(--dur-fast) ease;
-	}
-
-	.btn-clear:hover {
-		border-color: var(--ft-accent);
-		color: var(--ft-accent-text);
+	/* ── Empty state wrapper ── */
+	.empty-wrap {
+		padding: clamp(32px, 5vh, 64px) 0;
 	}
 </style>

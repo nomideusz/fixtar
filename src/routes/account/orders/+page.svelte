@@ -1,5 +1,7 @@
 <script lang="ts">
 	import StatCard from '$lib/components/account/StatCard.svelte';
+	import EmptyState from '$lib/components/ui/EmptyState.svelte';
+	import Button from '$lib/components/ui/Button.svelte';
 	import { getOrderStatus } from '$lib/utils/order-status';
 	import { WarningIcon, ShoppingBagIcon, CheckIcon, ClockIcon, CurrencyDollarIcon } from 'phosphor-svelte';
 	import type { PageData } from './$types';
@@ -83,23 +85,16 @@
 <div class="space-y-8">
 	<!-- Page Header -->
 	<section>
-		<h1 class="text-2xl font-bold text-[--ft-text-strong]" style="font-family:var(--font-display);letter-spacing:-0.02em">Moje Zamówienia</h1>
+		<h1 class="orders-title">Moje zamówienia</h1>
 		<p class="mt-1 text-[--ft-text-muted]">Przeglądaj historię zamówień, śledź status dostaw i zarządzaj swoimi zakupami</p>
 	</section>
 
 	<div class="space-y-8">
 	{#if data.error}
 		<!-- Error State -->
-		<div class="py-8 text-center">
-			<div
-				class="bg-danger/10 mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl"
-			>
-				<WarningIcon class="text-danger h-8 w-8" aria-hidden="true" />
-			</div>
-			<h3 class="mb-2 text-xl font-bold text-[--ft-text]">Wystąpił błąd</h3>
-			<p class="mb-6 text-[--ft-text-muted]">{data.error}</p>
-			<a href="/account" class="text-[--ft-accent] font-medium hover:underline">Wróć do konta</a>
-		</div>
+		<EmptyState icon={WarningIcon} title="Wystąpił błąd" description={data.error}>
+			<Button href="/account" variant="outline">Wróć do konta</Button>
+		</EmptyState>
 	{:else}
 		<!-- Stats -->
 		<section>
@@ -167,28 +162,19 @@
 		<!-- Orders ListIcon -->
 		<section>
 			{#if filteredOrders.length === 0}
-				<div class="py-12 text-center">
-					<div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-[--ft-frost]">
-						<ShoppingBagIcon class="h-8 w-8 text-[--ft-text-muted]" aria-hidden="true" />
-					</div>
-					<h3 class="mb-2 text-xl font-bold text-[--ft-text]">
-						{statusFilter === 'all' ? 'Brak zamówień' : 'Brak zamówień z wybranym statusem'}
-					</h3>
-					<p class="mb-6 text-[--ft-text-muted]">
-						{statusFilter === 'all'
-							? 'Rozpocznij zakupy i zobacz swoje zamówienia tutaj'
-							: 'Spróbuj zmienić filtr lub dodać nowe zamówienia'}
-					</p>
-					<div class="flex flex-col justify-center gap-4 sm:flex-row">
-						{#if statusFilter !== 'all'}
-							<button
-								onclick={() => (statusFilter = 'all')}
-								class="text-[--ft-text-muted] hover:text-[--ft-text] font-medium"
-							>Pokaż wszystkie</button>
-						{/if}
-						<a href="/products" class="text-[--ft-accent] font-medium hover:underline">Rozpocznij zakupy</a>
-					</div>
-				</div>
+				<EmptyState
+					icon={ShoppingBagIcon}
+					title={statusFilter === 'all' ? 'Brak zamówień' : 'Brak zamówień z wybranym statusem'}
+					description={statusFilter === 'all'
+						? 'Rozpocznij zakupy i zobacz swoje zamówienia tutaj.'
+						: 'Spróbuj zmienić filtr lub dodać nowe zamówienia.'}
+				>
+					{#if statusFilter !== 'all'}
+						<Button variant="outline" onclick={() => (statusFilter = 'all')}>Pokaż wszystkie</Button>
+					{:else}
+						<Button href="/products" variant="teal">Rozpocznij zakupy</Button>
+					{/if}
+				</EmptyState>
 			{:else}
 				<div class="space-y-0 divide-y divide-[--ft-line]">
 					{#each filteredOrders as order (order)}
@@ -259,3 +245,16 @@
 	{/if}
 </div>
 </div>
+
+<style>
+	.orders-title {
+		font-family: var(--font-display);
+		font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+		font-weight: 500;
+		color: var(--ft-text);
+		letter-spacing: -0.005em;
+		line-height: 1;
+		text-transform: uppercase;
+		margin: 0;
+	}
+</style>

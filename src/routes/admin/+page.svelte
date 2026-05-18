@@ -61,8 +61,8 @@
 <div class="ft-container ft-section-sm">
 	<!-- Page header -->
 	<header class="mb-8">
-		<p class="admin-kicker">admin</p>
-		<h1 class="mt-1 text-2xl font-normal tracking-tight text-[--ft-text-strong]">Dashboard</h1>
+		<p class="ft-eyebrow">Admin</p>
+		<h1 class="ft-page-title mt-1">Dashboard</h1>
 		<p class="mt-2 text-sm text-[--ft-text-muted]">Overview of your store.</p>
 	</header>
 
@@ -239,14 +239,6 @@
 </div>
 
 <style>
-	.admin-kicker {
-		font-family: var(--font-mono);
-		font-size: 0.72rem;
-		letter-spacing: 0.05em;
-		text-transform: uppercase;
-		color: var(--ft-text-muted);
-	}
-
 	.stat-icon {
 		display: inline-flex;
 		align-items: center;

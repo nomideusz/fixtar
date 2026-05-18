@@ -5,18 +5,19 @@
 		SquaresFourIcon,
 		TagIcon,
 		GiftIcon,
-		EnvelopeIcon,
 		ArrowRightIcon,
-		CheckIcon
+		CheckIcon,
+		EnvelopeIcon
 	} from 'phosphor-svelte';
 	import clubBg from '$lib/images/banners/banner-grinder-sparks-2.webp';
+	import logoWhite from '$lib/images/logo/fixtar-logo-white.webp';
 
 	const perks = [
-		{ icon: ClockIcon, label: 'Wcześniejszy dostęp do promocji' },
-		{ icon: GearIcon, label: 'Testy i poradniki narzędzi' },
-		{ icon: SquaresFourIcon, label: 'Limitowane oferty' },
-		{ icon: TagIcon, label: 'Specjalne ceny dla klubowiczów' },
-		{ icon: GiftIcon, label: 'Prezent powitalny na start' }
+		{ icon: ClockIcon, label: 'Wcześniejszy<br/>dostęp' },
+		{ icon: GearIcon, label: 'Testy<br/>i poradniki' },
+		{ icon: SquaresFourIcon, label: 'Limitowane<br/>oferty' },
+		{ icon: TagIcon, label: 'Specjalne<br/>ceny' },
+		{ icon: GiftIcon, label: 'Prezent<br/>powitalny' }
 	];
 
 	let email = $state('');
@@ -36,61 +37,60 @@
 <section class="club-wrap" aria-label="FIXTAR Club">
 	<div class="ft-container">
 		<div class="club">
-			<div class="club-photo">
+			<div class="photo" aria-hidden="true">
 				<img src={clubBg} alt="" loading="lazy" />
-				<div class="club-photo-overlay" aria-hidden="true"></div>
+				<div class="photo-shade"></div>
 			</div>
 
-			<div class="club-body">
-				<p class="club-kicker">Dołącz do</p>
-				<h2 class="club-title">F<span class="accent">i</span>XTAR Club</h2>
-				<p class="club-desc">
-					Dołącz do społeczności profesjonalistów i bądź zawsze o krok przed innymi. Otrzymuj
-					ekskluzywne korzyści i specjalne oferty.
+			<div class="content">
+				<p class="kicker">Dołącz do</p>
+				<div class="lockup">
+					<img src={logoWhite} alt="FIXTAR" class="lockup-logo" />
+					<span class="lockup-word">Club</span>
+				</div>
+				<p class="lead">
+					Społeczność profesjonalistów. Ekskluzywne korzyści, oferty członkowskie i ceny tylko dla
+					klubowiczów.
 				</p>
 
-				<div class="club-perks">
+				<div class="perks" role="list">
 					{#each perks as perk (perk.label)}
 						{@const Icon = perk.icon}
-						<div class="perk">
-							<span class="perk-ico">
-								<Icon size={18} weight="regular" aria-hidden="true" />
+						<div class="perk" role="listitem">
+							<span class="perk-ico" aria-hidden="true">
+								<Icon size={26} weight="regular" />
 							</span>
-							<span class="perk-label">{perk.label}</span>
+							<span class="perk-label">{@html perk.label}</span>
 						</div>
 					{/each}
 				</div>
 
 				{#if submitted}
-					<div class="club-success" role="status">
+					<div class="success" role="status">
 						<CheckIcon size={20} weight="bold" aria-hidden="true" />
 						<span>Dziękujemy! Sprawdź swój e-mail.</span>
 					</div>
 				{:else}
-					<form class="club-form" onsubmit={handleSubmit}>
-						<span class="mail-ico" aria-hidden="true">
-							<EnvelopeIcon size={18} weight="regular" />
-						</span>
-						<input
-							class="mail"
-							type="email"
-							required
-							bind:value={email}
-							placeholder="Twój adres e-mail"
-							aria-label="Adres e-mail"
-						/>
-						<button type="submit" class="club-cta" disabled={loading}>
-							{loading ? 'Wysyłanie...' : 'Dołącz do klubu'}
+					<form class="form" onsubmit={handleSubmit}>
+						<label class="form-field" aria-label="Adres e-mail">
+							<EnvelopeIcon size={18} weight="regular" aria-hidden="true" />
+							<input
+								type="email"
+								required
+								bind:value={email}
+								placeholder="Twój adres e-mail"
+							/>
+						</label>
+						<button type="submit" class="form-btn" disabled={loading}>
+							{loading ? 'Wysyłanie…' : 'Dołącz do klubu'}
 							<ArrowRightIcon size={14} weight="bold" aria-hidden="true" />
 						</button>
 					</form>
 				{/if}
 
-				<div class="club-discount">
-					<span class="gift" aria-hidden="true">
-						<GiftIcon size={16} weight="regular" />
-					</span>
-					<span>Na start otrzymasz kod rabatowy <strong>-5%</strong> na pierwsze zakupy.</span>
+				<div class="promo">
+					<GiftIcon size={16} weight="regular" aria-hidden="true" />
+					<span><b>-5% kod powitalny</b> na pierwsze zakupy.</span>
 				</div>
 			</div>
 		</div>
@@ -105,86 +105,121 @@
 
 	.club {
 		position: relative;
-		background: var(--ft-dark);
+		background: var(--ft-ink-900);
 		color: #fff;
 		border-radius: var(--radius-lg);
 		overflow: hidden;
 		display: grid;
-		grid-template-columns: 1fr 1.4fr;
-		min-height: 380px;
+		grid-template-columns: 1.05fr 1.3fr;
+		gap: 32px;
+		align-items: stretch;
+		min-height: 560px;
+		padding: 0 64px 0 0;
 		margin-top: 40px;
 	}
 
-	.club-photo {
+	/* ---------- Photo with diagonal right edge + cyan accent stripe ---------- */
+	.photo {
 		position: relative;
-		background:
-			radial-gradient(80% 100% at 30% 60%, rgba(255, 138, 31, 0.35), transparent 60%),
-			linear-gradient(135deg, #2c343d 0%, #1d2228 100%);
+		margin: 0;
 		overflow: hidden;
+		background: var(--ft-ink-800);
+		/* Diagonal cut: 110px slope from top-right to bottom-right */
+		clip-path: polygon(0 0, 100% 0, calc(100% - 110px) 100%, 0 100%);
 	}
 
-	.club-photo img {
+	.photo img {
 		position: absolute;
 		inset: 0;
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-		opacity: 0.7;
+		object-position: 55% center;
+		opacity: 0.85;
 	}
 
-	.club-photo-overlay {
+	.photo-shade {
 		position: absolute;
 		inset: 0;
 		background:
-			radial-gradient(60% 100% at 30% 60%, rgba(255, 138, 31, 0.28), transparent 60%),
-			linear-gradient(135deg, rgba(29, 34, 40, 0.5) 0%, rgba(29, 34, 40, 0.85) 100%);
+			radial-gradient(60% 100% at 30% 60%, rgba(255, 138, 31, 0.16), transparent 60%),
+			linear-gradient(135deg, rgba(29, 34, 40, 0.35) 0%, rgba(29, 34, 40, 0.7) 100%);
+		pointer-events: none;
 	}
 
-	.club-body {
-		padding: 48px 56px;
+	/* Cyan stripe along the diagonal edge — rotated 11.1° to follow the slope */
+	.photo::after {
+		content: '';
+		position: absolute;
+		top: -8px;
+		right: 0;
+		width: 4px;
+		height: 580px;
+		background: var(--ft-cyan);
+		box-shadow:
+			0 0 28px rgba(63, 152, 162, 0.9),
+			0 0 8px rgba(63, 152, 162, 1);
+		transform: rotate(11.1deg);
+		transform-origin: top right;
+		pointer-events: none;
+	}
+
+	/* ---------- Right column content ---------- */
+	.content {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
+		gap: 24px;
+		padding: 56px 0;
 	}
 
-	.club-kicker {
+	.kicker {
 		font-family: var(--font-sans);
-		font-size: 12px;
-		letter-spacing: 0.15em;
-		text-transform: uppercase;
-		color: rgba(255, 255, 255, 0.7);
-		margin: 0 0 4px;
+		font-size: 13px;
 		font-weight: 600;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: var(--ft-ink-300);
+		margin: 0 0 -16px;
 	}
 
-	.club-title {
+	.lockup {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+	}
+
+	.lockup-logo {
+		height: 64px;
+		width: auto;
+		display: block;
+	}
+
+	.lockup-word {
 		font-family: var(--font-display);
-		font-weight: 700;
-		font-size: 52px;
-		text-transform: uppercase;
-		margin: 0 0 12px;
-		letter-spacing: 0.005em;
+		font-weight: 500;
+		font-style: italic;
+		font-size: clamp(48px, 5.6vw, 72px);
 		line-height: 1;
+		text-transform: uppercase;
+		letter-spacing: -0.005em;
 		color: #fff;
 	}
 
-	.club-title .accent {
-		color: var(--ft-cyan);
+	.lead {
+		color: var(--ft-ink-300);
+		max-width: 560px;
+		margin: 0;
+		font-size: 15px;
+		line-height: 1.65;
 	}
 
-	.club-desc {
-		color: rgba(255, 255, 255, 0.7);
-		max-width: 460px;
-		margin: 0 0 28px;
-		font-size: 14px;
-		line-height: 1.55;
-	}
-
-	.club-perks {
+	/* ---------- 5 perks · vertical hairline dividers, no boxes ---------- */
+	.perks {
 		display: grid;
 		grid-template-columns: repeat(5, 1fr);
-		gap: 12px;
-		margin-bottom: 24px;
+		gap: 0;
+		padding: 4px 0;
 	}
 
 	.perk {
@@ -192,167 +227,209 @@
 		flex-direction: column;
 		align-items: center;
 		text-align: center;
-		gap: 8px;
-		font-size: 11px;
-		color: rgba(255, 255, 255, 0.75);
-		line-height: 1.3;
+		gap: 12px;
+		padding: 4px 12px;
+		border-right: 1px solid rgba(255, 255, 255, 0.1);
+	}
+
+	.perk:last-child {
+		border-right: 0;
 	}
 
 	.perk-ico {
-		width: 42px;
-		height: 42px;
-		border-radius: 50%;
-		background: rgba(255, 255, 255, 0.06);
-		border: 1px solid rgba(255, 255, 255, 0.1);
+		width: 40px;
+		height: 40px;
 		display: grid;
 		place-items: center;
-		color: var(--ft-cyan);
+		color: var(--ft-cyan-400);
 	}
 
-	.club-form {
+	.perk-label {
+		font-size: 12px;
+		line-height: 1.4;
+		color: var(--ft-ink-300);
+	}
+
+	/* ---------- Email capture · flush input + button, 56px tall ---------- */
+	.form {
 		display: flex;
-		background: rgba(255, 255, 255, 0.07);
-		border: 1px solid rgba(255, 255, 255, 0.12);
-		border-radius: 8px;
-		padding: 6px;
-		gap: 8px;
-		align-items: center;
+		gap: 0;
+		height: 56px;
+		max-width: 480px;
 	}
 
-	.mail-ico {
-		display: inline-flex;
-		color: rgba(255, 255, 255, 0.45);
-		margin-left: 8px;
-	}
-
-	.mail {
+	.form-field {
 		flex: 1;
-		background: transparent;
-		border: 0;
-		padding: 10px 14px;
-		color: #fff;
-		font-size: 14px;
-		font-family: var(--font-sans);
-		outline: none;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		padding: 0 18px;
+		background: #fff;
+		border: 1px solid #fff;
+		border-right: 0;
+		border-radius: var(--radius-sm) 0 0 var(--radius-sm);
 		min-width: 0;
 	}
 
-	.mail::placeholder {
-		color: rgba(255, 255, 255, 0.45);
+	.form-field :global(svg) {
+		color: var(--ft-ink-500);
+		flex-shrink: 0;
 	}
 
-	.club-cta {
+	.form-field input {
+		flex: 1;
+		min-width: 0;
+		border: 0;
+		outline: 0;
+		background: transparent;
+		font-family: var(--font-sans);
+		font-size: 15px;
+		color: var(--ft-ink-900);
+	}
+
+	.form-field input::placeholder {
+		color: var(--ft-ink-400);
+	}
+
+	.form-btn {
 		display: inline-flex;
 		align-items: center;
+		justify-content: center;
 		gap: 10px;
-		background: var(--ft-cta);
+		height: 100%;
+		padding: 0 28px;
+		background: var(--ft-orange);
 		color: #fff;
 		font-family: var(--font-sans);
-		font-size: 13px;
-		font-weight: 600;
-		letter-spacing: 0.06em;
+		font-size: 14px;
+		font-weight: 700;
+		letter-spacing: 0.04em;
 		text-transform: uppercase;
-		padding: 12px 18px;
-		border-radius: var(--radius-sm);
 		border: 0;
+		border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
 		cursor: pointer;
 		white-space: nowrap;
 		transition: background-color var(--dur-fast) ease;
 	}
 
-	.club-cta:hover:not(:disabled) {
-		background: var(--ft-cta-hover);
+	.form-btn:hover:not(:disabled) {
+		background: var(--ft-orange-600);
 	}
 
-	.club-cta:disabled {
+	.form-btn:disabled {
 		opacity: 0.7;
 		cursor: wait;
 	}
 
-	.club-cta :global(svg) {
+	.form-btn :global(svg) {
 		transition: transform var(--dur-fast) ease;
 	}
 
-	.club-cta:hover :global(svg) {
+	.form-btn:hover:not(:disabled) :global(svg) {
 		transform: translateX(2px);
 	}
 
-	.club-success {
+	.success {
 		display: inline-flex;
 		align-items: center;
 		gap: 10px;
-		padding: 14px 18px;
-		background: rgba(55, 138, 146, 0.15);
+		padding: 16px 20px;
+		max-width: 480px;
+		background: rgba(63, 152, 162, 0.15);
 		border: 1px solid var(--ft-cyan);
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
 		color: #fff;
 		font-size: 14px;
-		font-weight: 500;
 	}
 
-	.club-success :global(svg) {
-		color: var(--ft-cyan);
+	.success :global(svg) {
+		color: var(--ft-cyan-400);
 	}
 
-	.club-discount {
-		margin-top: 14px;
-		font-size: 12px;
-		color: rgba(255, 255, 255, 0.55);
+	.promo {
 		display: flex;
 		align-items: center;
 		gap: 8px;
+		font-size: 13px;
+		color: var(--ft-ink-300);
+		margin-top: -4px;
 	}
 
-	.club-discount strong {
+	.promo :global(svg) {
+		color: var(--ft-orange-400);
+	}
+
+	.promo b {
 		color: #fff;
+		font-weight: 600;
 	}
 
-	.club-discount .gift {
-		display: inline-flex;
-		color: var(--ft-cta);
-	}
-
+	/* ---------- Responsive ---------- */
 	@media (max-width: 900px) {
 		.club {
 			grid-template-columns: 1fr;
 			min-height: auto;
+			padding: 0;
 		}
 
-		.club-photo {
-			height: 180px;
+		.photo {
+			height: 220px;
+			clip-path: polygon(0 0, 100% 0, 100% calc(100% - 60px), 0 100%);
 		}
 
-		.club-body {
+		.photo::after {
+			top: auto;
+			bottom: 0;
+			right: 0;
+			width: 100%;
+			height: 4px;
+			transform: rotate(-6.4deg);
+			transform-origin: bottom right;
+		}
+
+		.content {
 			padding: 36px 28px;
+			gap: 20px;
 		}
 
-		.club-title {
-			font-size: 40px;
+		.perks {
+			grid-template-columns: repeat(5, 1fr);
+			gap: 0;
 		}
 
-		.club-perks {
-			grid-template-columns: repeat(3, 1fr);
-			gap: 16px;
+		.perk {
+			padding: 4px 6px;
+		}
+
+		.perk-label {
+			font-size: 11px;
 		}
 	}
 
-	@media (max-width: 560px) {
-		.club-perks {
-			grid-template-columns: repeat(2, 1fr);
+	@media (max-width: 600px) {
+		.perks {
+			grid-template-columns: repeat(3, 1fr);
+			row-gap: 16px;
 		}
 
-		.club-form {
+		.perk:nth-child(3) {
+			border-right: 0;
+		}
+
+		.form {
 			flex-direction: column;
-			align-items: stretch;
-			padding: 8px;
+			height: auto;
 		}
 
-		.mail-ico {
-			display: none;
+		.form-field {
+			height: 56px;
+			border-right: 1px solid #fff;
+			border-radius: var(--radius-sm) var(--radius-sm) 0 0;
 		}
 
-		.club-cta {
-			justify-content: center;
+		.form-btn {
+			height: 56px;
+			border-radius: 0 0 var(--radius-sm) var(--radius-sm);
 		}
 	}
 </style>

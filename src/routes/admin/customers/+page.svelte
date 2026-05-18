@@ -7,6 +7,7 @@
 	import LoadingSpinner from '$lib/components/ui/LoadingSpinner.svelte';
 	import { formatDate } from '$lib/utils/date';
 	import { MagnifyingGlassIcon, UsersIcon, CaretLeftIcon, CaretRightIcon } from 'phosphor-svelte';
+	import EmptyState from '$lib/components/ui/EmptyState.svelte';
 
 	// CheckIcon if user is admin
 	$effect(() => {
@@ -87,7 +88,8 @@
 
 <div class="ft-container ft-section-sm">
 	<div class="mb-8">
-		<h1 class="text-3xl font-bold text-[--ft-text-strong]">Customers</h1>
+		<p class="ft-eyebrow">Admin</p>
+		<h1 class="ft-page-title mt-1">Customers</h1>
 		<p class="mt-2 text-[--ft-text-muted]">Manage your customer base</p>
 		{#if error}
 			<div class="bg-danger/5 border-danger/10 mt-4 rounded-md border p-4">
@@ -141,13 +143,13 @@
 				<LoadingSpinner visible={true} />
 			</div>
 		{:else if customers.length === 0}
-			<div class="py-12 text-center">
-				<UsersIcon class="mx-auto h-12 w-12 text-[--ft-text-muted]" aria-hidden="true" />
-				<h3 class="mt-2 text-sm font-medium text-[--ft-text-strong]">No customers found</h3>
-				<p class="mt-1 text-sm text-[--ft-text-muted]">
-					{searchTerm ? 'Try adjusting your search criteria.' : 'No customers have registered yet.'}
-				</p>
-			</div>
+			<EmptyState
+				icon={UsersIcon}
+				title="No customers found"
+				description={searchTerm
+					? 'Try adjusting your search criteria.'
+					: 'No customers have registered yet.'}
+			/>
 		{:else}
 			<div class="overflow-x-auto">
 				<table class="min-w-full divide-y divide-[--ft-line]">

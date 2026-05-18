@@ -322,6 +322,10 @@
 		.nav {
 			padding: 14px 0;
 		}
+
+		.brand-mark :global(.logo-img) {
+			height: 36px;
+		}
 	}
 
 	@media (max-width: 480px) {

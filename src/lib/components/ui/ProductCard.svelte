@@ -202,12 +202,12 @@
 		top: 12px;
 		left: 12px;
 		padding: 5px 10px;
-		border-radius: 4px;
+		border-radius: var(--radius-xs);
 		background: var(--ft-cta);
 		color: #fff;
-		font-size: 10px;
+		font-size: 11px;
 		font-weight: 700;
-		letter-spacing: 0.12em;
+		letter-spacing: 0.06em;
 		text-transform: uppercase;
 		display: inline-flex;
 		align-items: center;
@@ -220,9 +220,10 @@
 	}
 
 	.product-tag.discount span {
-		background: rgba(255, 255, 255, 0.22);
-		padding: 1px 5px;
-		border-radius: 3px;
+		background: rgba(0, 0, 0, 0.18);
+		padding: 3px 6px;
+		border-radius: 2px;
+		font-weight: 700;
 	}
 
 	.product-heart {
@@ -298,7 +299,7 @@
 	.stars {
 		display: inline-flex;
 		gap: 1px;
-		color: var(--ft-cta);
+		color: var(--ft-warning);
 	}
 
 	.rating-count {

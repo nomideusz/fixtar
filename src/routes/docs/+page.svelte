@@ -47,10 +47,12 @@
 
 	.docs-title {
 		font-family: var(--font-display);
-		font-size: clamp(1.4rem, 3vw, 1.8rem);
-		font-weight: 800;
-		color: var(--ft-dark);
-		letter-spacing: -0.03em;
+		font-size: clamp(2rem, 4vw, 3rem);
+		font-weight: 500;
+		color: var(--ft-text);
+		letter-spacing: -0.005em;
+		line-height: 1;
+		text-transform: uppercase;
 	}
 
 	.lang-switch {
@@ -87,11 +89,13 @@
 	/* ── Markdown content ── */
 	.docs-body :global(h1) {
 		font-family: var(--font-display);
-		font-size: 1.5rem;
-		font-weight: 800;
-		color: var(--ft-dark);
+		font-size: 1.875rem;
+		font-weight: 500;
+		color: var(--ft-text);
 		margin: 32px 0 16px;
-		letter-spacing: -0.02em;
+		letter-spacing: -0.005em;
+		text-transform: uppercase;
+		line-height: 1.05;
 	}
 
 	.docs-body :global(h1:first-child) {
@@ -100,20 +104,22 @@
 
 	.docs-body :global(h2) {
 		font-family: var(--font-display);
-		font-size: 1.15rem;
-		font-weight: 700;
-		color: var(--ft-dark);
-		margin: 28px 0 12px;
+		font-size: 1.5rem;
+		font-weight: 500;
+		color: var(--ft-text);
+		letter-spacing: -0.005em;
+		text-transform: uppercase;
+		margin: 32px 0 14px;
 		padding-top: 20px;
 		border-top: 1px solid var(--ft-line);
 	}
 
 	.docs-body :global(h3) {
-		font-family: var(--font-display);
-		font-size: 0.95rem;
+		font-family: var(--font-sans);
+		font-size: 1.125rem;
 		font-weight: 700;
-		color: var(--ft-dark);
-		margin: 20px 0 8px;
+		color: var(--ft-text);
+		margin: 24px 0 8px;
 	}
 
 	.docs-body :global(h4) {

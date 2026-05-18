@@ -87,7 +87,8 @@
 <div class="ft-container ft-section-sm">
 	<!-- Header -->
 	<div class="mb-8">
-		<h1 class="text-3xl font-bold text-[--ft-text-strong]">Manage Orders</h1>
+		<p class="ft-eyebrow">Admin</p>
+		<h1 class="ft-page-title mt-1">Manage Orders</h1>
 		<p class="mt-2 text-[--ft-text-muted]">{orders.length} total orders</p>
 	</div>
 

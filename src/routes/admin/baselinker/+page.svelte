@@ -78,7 +78,8 @@
 <div class="space-y-6">
 	<div class="flex items-center justify-between">
 		<div>
-			<h2 class="text-2xl font-bold text-[--ft-text-strong]">Integracja BaseLinker</h2>
+			<p class="ft-eyebrow">Admin</p>
+			<h2 class="ft-page-title mt-1">BaseLinker</h2>
 			<p class="mt-1 text-[--ft-text-muted]">
 				Synchronizuj produkty i zarządzaj zamówieniami przez BaseLinker
 			</p>

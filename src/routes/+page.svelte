@@ -4,6 +4,7 @@
 	import TrustBar from '$lib/components/home/TrustBar.svelte';
 	import CategoriesSection from '$lib/components/home/CategoriesSection.svelte';
 	import FeaturedProducts from '$lib/components/home/FeaturedProducts.svelte';
+	import StatsBar from '$lib/components/home/StatsBar.svelte';
 	import ClubSection from '$lib/components/home/ClubSection.svelte';
 	import TestimonialsSection from '$lib/components/home/TestimonialsSection.svelte';
 	import { lazyReveal } from '$lib/utils/lazy';
@@ -37,6 +38,10 @@
 
 <div class="ft-lazy" use:lazyReveal>
 	<FeaturedProducts products={data.featuredProducts} error={data.error} />
+</div>
+
+<div class="ft-lazy" use:lazyReveal>
+	<StatsBar />
 </div>
 
 <div id="club" class="ft-lazy" use:lazyReveal>

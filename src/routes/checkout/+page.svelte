@@ -460,12 +460,13 @@
 
 	.page-title {
 		margin-top: 6px;
-		font-family: var(--font-sans);
-		font-size: clamp(1.75rem, 3.5vw, 2.5rem);
-		font-weight: 400;
-		color: var(--ft-text-strong);
-		letter-spacing: -0.02em;
-		line-height: 1.1;
+		font-family: var(--font-display);
+		font-size: clamp(2rem, 4vw, 3rem);
+		font-weight: 500;
+		color: var(--ft-text);
+		letter-spacing: -0.005em;
+		line-height: 1;
+		text-transform: uppercase;
 	}
 
 	/* ── Empty ── */
@@ -541,40 +542,52 @@
 	}
 
 	.field-label {
-		font-size: 0.8125rem;
-		color: var(--ft-text-muted);
+		font-family: var(--font-sans);
+		font-size: 12px;
+		font-weight: 600;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--ft-ink-700);
 	}
 
 	.field-error {
 		margin-top: 2px;
-		font-size: 0.8125rem;
-		color: var(--color-danger);
+		font-size: 12px;
+		color: var(--ft-danger);
+		line-height: 1.4;
 	}
 
 	.input {
 		width: 100%;
-		padding: 10px 14px;
+		padding: 0 14px;
 		border: 1px solid var(--ft-line);
 		border-radius: var(--radius-sm);
 		background: var(--ft-surface);
 		color: var(--ft-text);
 		font-family: var(--font-sans);
-		font-size: 0.9375rem;
-		min-height: 44px;
-		transition: border-color var(--dur-fast) ease;
+		font-size: 15px;
+		height: 44px;
+		transition:
+			border-color var(--dur-fast) ease,
+			box-shadow var(--dur-fast) ease;
 	}
 
 	.input::placeholder {
-		color: var(--ft-text-faint);
+		color: var(--ft-ink-400);
 	}
 
 	.input:focus {
 		outline: none;
-		border-color: var(--ft-text-strong);
+		border-color: var(--ft-cyan);
+		box-shadow: 0 0 0 3px var(--ft-cyan-050);
 	}
 
 	.input--error {
-		border-color: var(--color-danger);
+		border-color: var(--ft-danger);
+	}
+
+	.input--error:focus {
+		box-shadow: 0 0 0 3px rgba(214, 51, 51, 0.12);
 	}
 
 	.textarea {

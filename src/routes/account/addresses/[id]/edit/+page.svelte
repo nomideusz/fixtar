@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Card from '$lib/components/ui/Card.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
+	import EmptyState from '$lib/components/ui/EmptyState.svelte';
 	import { CaretLeftIcon, WarningCircleIcon } from 'phosphor-svelte';
 	import { notifications } from '$lib/stores';
 	import { enhance } from '$app/forms';
@@ -26,7 +27,7 @@
 			<CaretLeftIcon class="mr-2 h-4 w-4" aria-hidden="true" />
 			Powrót
 		</Button>
-		<h1 class="text-xl font-bold text-[--ft-text] sm:text-2xl">Edytuj adres</h1>
+		<h1 class="addr-title">Edytuj adres</h1>
 	</div>
 
 	{#if address}
@@ -163,13 +164,25 @@
 			</Card>
 		</div>
 	{:else}
-		<Card>
-			<div class="py-12 text-center">
-				<WarningCircleIcon class="text-danger mx-auto mb-4 h-16 w-16" aria-hidden="true" />
-				<h3 class="mb-2 text-lg font-medium text-[--ft-text]">Nie znaleziono adresu</h3>
-				<p class="mb-6 text-[--ft-text-muted]">Adres, który próbujesz edytować, nie istnieje.</p>
-				<Button href="/account/addresses">Powrót do adresów</Button>
-			</div>
-		</Card>
+		<EmptyState
+			icon={WarningCircleIcon}
+			title="Nie znaleziono adresu"
+			description="Adres, który próbujesz edytować, nie istnieje."
+		>
+			<Button href="/account/addresses" variant="outline">Powrót do adresów</Button>
+		</EmptyState>
 	{/if}
 </div>
+
+<style>
+	.addr-title {
+		font-family: var(--font-display);
+		font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+		font-weight: 500;
+		color: var(--ft-text);
+		letter-spacing: -0.005em;
+		line-height: 1;
+		text-transform: uppercase;
+		margin: 0;
+	}
+</style>

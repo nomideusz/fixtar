@@ -35,7 +35,7 @@
 				Błąd {$page.status || 404}
 			</div>
 
-			<h1 class="mb-4 text-4xl text-[--ft-text-strong] md:text-5xl lg:text-6xl">
+			<h1 class="mb-4 text-4xl uppercase tracking-tight text-[--ft-text] md:text-5xl lg:text-6xl">
 				Nie znaleziono strony
 			</h1>
 

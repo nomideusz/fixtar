@@ -200,11 +200,12 @@
 
 	.page-title {
 		font-family: var(--font-display);
-		font-size: clamp(1.75rem, 4vw, 2.5rem);
-		font-weight: 400;
-		color: var(--ft-text-strong);
-		letter-spacing: -0.02em;
-		line-height: 1.15;
+		font-size: clamp(2rem, 4vw, 3rem);
+		font-weight: 500;
+		color: var(--ft-text);
+		letter-spacing: -0.005em;
+		line-height: 1;
+		text-transform: uppercase;
 	}
 
 	.page-desc {

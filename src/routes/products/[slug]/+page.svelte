@@ -3,6 +3,7 @@
 	import { afterNavigate } from '$app/navigation';
 
 	import Breadcrumbs from '$lib/components/ui/Breadcrumbs.svelte';
+	import Tabs from '$lib/components/ui/Tabs.svelte';
 	import ProductGallery from '$lib/components/products/ProductGallery.svelte';
 	import ImageZoomModal from '$lib/components/products/ImageZoomModal.svelte';
 	import SpecTable from '$lib/components/products/SpecTable.svelte';
@@ -10,7 +11,16 @@
 	import { getStockInfo } from '$lib/utils/inventory';
 	import { parseProductDescription } from '$lib/utils/html';
 	import type { Product } from '$lib/stores/products.svelte';
-	import { HeartIcon, TagIcon, ShoppingCartSimpleIcon, MinusIcon, PlusIcon } from 'phosphor-svelte';
+	import {
+		HeartIcon,
+		TagIcon,
+		ShoppingCartSimpleIcon,
+		MinusIcon,
+		PlusIcon,
+		TruckIcon,
+		ArrowCounterClockwiseIcon,
+		ShieldCheckIcon
+	} from 'phosphor-svelte';
 
 	interface Props {
 		data: {
@@ -63,13 +73,23 @@
 	let zoomIndex = $state(0);
 	let quantity = $state(1);
 	let descExpanded = $state(false);
+	let activeTab = $state<'overview' | 'specs' | 'shipping'>('overview');
 
 	// Force scroll to top when navigating between products
 	afterNavigate(() => {
 		window.scrollTo({ top: 0, behavior: 'instant' });
 		quantity = 1;
 		descExpanded = false;
+		activeTab = 'overview';
 	});
+
+	const pdpTabs = $derived([
+		{ id: 'overview', label: 'Opis' },
+		...(specTable.length > 0 || contents.length > 0
+			? [{ id: 'specs', label: 'Specyfikacja', count: specTable.length || undefined }]
+			: []),
+		{ id: 'shipping', label: 'Wysyłka i zwroty' }
+	]);
 
 	// Description is long if > 600 chars
 	const descIsLong = $derived((product.description?.length ?? 0) > 600);
@@ -177,26 +197,65 @@
 				{/if}
 			</div>
 
-			<!-- Specs + Contents (inline, above description) -->
-			{#if specTable.length > 0 || contents.length > 0}
-				<div class="pdp-specs">
-					<SpecTable specs={specTable} {contents} />
-				</div>
-			{/if}
+			<!-- Tabs -->
+			<div class="pdp-tabs-wrap">
+				<Tabs tabs={pdpTabs} active={activeTab} onSelect={(id) => (activeTab = id as typeof activeTab)} />
+			</div>
 
-			<!-- Description -->
-			{#if descriptionHtml}
-				<div class="pdp-description" class:collapsed={descIsLong && !descExpanded}>
-					<!-- Safe by construction: parseProductDescription strips source HTML, escapes text,
-					     and rebuilds a limited internal markup subset (<h3>, <ul>, <li>, <p>). -->
-					{@html descriptionHtml}
-				</div>
-				{#if descIsLong}
-					<button class="pdp-expand-btn" onclick={() => (descExpanded = !descExpanded)}>
-						{descExpanded ? '− Zwiń opis' : '+ Czytaj więcej'}
-					</button>
+			<div class="pdp-tab-panel" role="tabpanel">
+				{#if activeTab === 'overview'}
+					{#if descriptionHtml}
+						<div class="pdp-description" class:collapsed={descIsLong && !descExpanded}>
+							<!-- Safe by construction: parseProductDescription strips source HTML, escapes text,
+							     and rebuilds a limited internal markup subset (<h3>, <ul>, <li>, <p>). -->
+							{@html descriptionHtml}
+						</div>
+						{#if descIsLong}
+							<button class="pdp-expand-btn" onclick={() => (descExpanded = !descExpanded)}>
+								{descExpanded ? '− Zwiń opis' : '+ Czytaj więcej'}
+							</button>
+						{/if}
+					{:else}
+						<p class="pdp-tab-empty">Opis produktu zostanie wkrótce dodany.</p>
+					{/if}
+				{:else if activeTab === 'specs'}
+					{#if specTable.length > 0 || contents.length > 0}
+						<SpecTable specs={specTable} {contents} />
+					{:else}
+						<p class="pdp-tab-empty">Brak szczegółowych specyfikacji dla tego produktu.</p>
+					{/if}
+				{:else if activeTab === 'shipping'}
+					<ul class="pdp-shipping">
+						<li class="ship-item">
+							<span class="ship-ico" aria-hidden="true">
+								<TruckIcon size={18} weight="regular" />
+							</span>
+							<div>
+								<b>Wysyłka 24h</b>
+								<span>Dostawa kurierem w 1-3 dni robocze. Darmowa wysyłka od 299 zł.</span>
+							</div>
+						</li>
+						<li class="ship-item">
+							<span class="ship-ico" aria-hidden="true">
+								<ArrowCounterClockwiseIcon size={18} weight="regular" />
+							</span>
+							<div>
+								<b>14 dni na zwrot</b>
+								<span>Bez podania przyczyny. Produkt musi być w stanie nienaruszonym.</span>
+							</div>
+						</li>
+						<li class="ship-item">
+							<span class="ship-ico" aria-hidden="true">
+								<ShieldCheckIcon size={18} weight="regular" />
+							</span>
+							<div>
+								<b>2 lata gwarancji</b>
+								<span>Pełna gwarancja producenta na wszystkie produkty z naszego katalogu.</span>
+							</div>
+						</li>
+					</ul>
 				{/if}
-			{/if}
+			</div>
 		</div>
 	</div>
 
@@ -404,14 +463,67 @@
 		color: var(--ft-accent-text);
 	}
 
-	/* ── Specs ── */
-	.pdp-specs {
-		margin-top: 16px;
+	/* ── Tabs ── */
+	.pdp-tabs-wrap {
+		margin-top: 24px;
+	}
+
+	.pdp-tab-panel {
+		padding-top: 20px;
+	}
+
+	.pdp-tab-empty {
+		color: var(--ft-ink-500);
+		font-size: 14px;
+		margin: 0;
+	}
+
+	/* ── Shipping list ── */
+	.pdp-shipping {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 18px;
+	}
+
+	.ship-item {
+		display: flex;
+		gap: 14px;
+		align-items: flex-start;
+	}
+
+	.ship-ico {
+		width: 36px;
+		height: 36px;
+		flex-shrink: 0;
+		display: grid;
+		place-items: center;
+		background: var(--ft-cyan-050);
+		color: var(--ft-cyan-600);
+		border-radius: var(--radius-sm);
+		margin-top: 2px;
+	}
+
+	.ship-item b {
+		display: block;
+		font-family: var(--font-sans);
+		font-size: 14px;
+		font-weight: 700;
+		letter-spacing: 0.02em;
+		color: var(--ft-ink-900);
+		margin-bottom: 2px;
+	}
+
+	.ship-item span {
+		font-size: 13px;
+		color: var(--ft-ink-500);
+		line-height: 1.5;
 	}
 
 	/* ── Description ── */
 	.pdp-description {
-		margin-top: 16px;
 		font-size: 0.9375rem;
 		line-height: 1.65;
 		color: var(--ft-text);

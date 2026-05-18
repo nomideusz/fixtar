@@ -14,29 +14,14 @@
 		<div class="trust-row">
 			{#each items as item, i (i)}
 				{@const Icon = item.icon}
-				<div class="trust-item">
-					<span class="trust-icon" aria-hidden="true">
-						<svg
-							class="hex"
-							viewBox="0 0 48 54"
-							xmlns="http://www.w3.org/2000/svg"
-							preserveAspectRatio="xMidYMid meet"
-						>
-							<path
-								d="M24 1 L46 13.5 V40.5 L24 53 L2 40.5 V13.5 Z"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="1.4"
-							/>
-						</svg>
-						<span class="icon-inner">
-							<Icon size={22} weight="regular" />
-						</span>
+				<div class="feature">
+					<span class="ico" aria-hidden="true">
+						<Icon size={20} weight="regular" />
 					</span>
-					<span class="trust-text">
-						<strong>{item.label}</strong>
+					<div class="text">
+						<b>{item.label}</b>
 						<span>{item.sub}</span>
-					</span>
+					</div>
 				</div>
 			{/each}
 		</div>
@@ -50,66 +35,55 @@
 	}
 
 	.trust-row {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 24px;
 		padding: 28px 0;
 	}
 
-	.trust-item {
+	.feature {
 		display: flex;
 		align-items: center;
 		gap: 14px;
 		min-width: 0;
 	}
 
-	.trust-icon {
-		position: relative;
-		width: 48px;
-		height: 54px;
-		flex: 0 0 auto;
-		color: var(--ft-text-faint);
-	}
-
-	.trust-icon .hex {
-		width: 100%;
-		height: 100%;
-		display: block;
-	}
-
-	.trust-icon .icon-inner {
-		position: absolute;
-		inset: 0;
+	.ico {
+		width: 36px;
+		height: 36px;
+		border-radius: var(--radius-sm);
 		display: grid;
 		place-items: center;
-		color: var(--ft-text-muted);
+		background: var(--ft-cyan-050);
+		color: var(--ft-cyan-600);
+		flex: 0 0 auto;
 	}
 
-	.trust-text {
+	.text {
 		display: flex;
 		flex-direction: column;
 		min-width: 0;
+		line-height: 1.3;
 	}
 
-	.trust-text strong {
+	.text b {
 		font-family: var(--font-sans);
 		font-size: 13px;
 		font-weight: 700;
-		letter-spacing: 0.06em;
+		letter-spacing: 0.04em;
 		text-transform: uppercase;
-		color: var(--ft-text);
+		color: var(--ft-ink-900);
 	}
 
-	.trust-text span {
+	.text span {
 		font-size: 13px;
-		color: var(--ft-text-faint);
+		color: var(--ft-ink-500);
 	}
 
-	@media (max-width: 768px) {
+	@media (max-width: 900px) {
 		.trust-row {
-			display: grid;
 			grid-template-columns: repeat(2, 1fr);
-			gap: 18px;
+			gap: 20px;
 			padding: 22px 0;
 		}
 	}
@@ -117,7 +91,7 @@
 	@media (max-width: 480px) {
 		.trust-row {
 			grid-template-columns: 1fr;
-			gap: 14px;
+			gap: 16px;
 		}
 	}
 </style>

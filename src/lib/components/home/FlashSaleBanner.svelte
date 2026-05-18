@@ -30,8 +30,8 @@
 
 <style>
 	.flash-banner {
-		background: var(--ft-dark);
-		border-bottom: 1px solid color-mix(in srgb, var(--ft-accent) 18%, transparent);
+		background: var(--ft-ink-900);
+		border-bottom: 1px solid rgba(63, 152, 162, 0.18);
 	}
 
 	.flash-inner {
@@ -58,11 +58,11 @@
 
 	.flash-label {
 		font-family: var(--font-mono);
-		font-size: 0.75rem;
-		font-weight: 400;
-		letter-spacing: 0.02em;
-		text-transform: lowercase;
-		color: rgba(255, 255, 255, 0.62);
+		font-size: 11px;
+		font-weight: 500;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--ft-cyan-400);
 	}
 
 	.flash-dot {
@@ -76,14 +76,15 @@
 		position: absolute;
 		inset: 0;
 		border-radius: 50%;
-		background: var(--ft-accent);
+		background: var(--ft-cyan);
+		box-shadow: 0 0 8px var(--ft-cyan);
 	}
 
 	.flash-dot-ping {
 		position: absolute;
 		inset: -3px;
 		border-radius: 50%;
-		background: var(--ft-accent);
+		background: var(--ft-cyan);
 		animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
 	}
 

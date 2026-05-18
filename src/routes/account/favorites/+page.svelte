@@ -3,6 +3,8 @@
 	import { notifications } from '$lib/stores';
 	import type { Product } from '$lib/stores/products.svelte';
 	import { HeartIcon, ShoppingCartSimpleIcon, TrashIcon, ImageSquareIcon } from 'phosphor-svelte';
+	import EmptyState from '$lib/components/ui/EmptyState.svelte';
+	import Button from '$lib/components/ui/Button.svelte';
 	import { cart } from '$lib/stores';
 	import { onMount } from 'svelte';
 
@@ -110,13 +112,14 @@
 
 		<!-- Empty state -->
 	{:else if isEmpty}
-		<div class="fav-empty">
-			<span class="fav-empty-icon"><HeartIcon size={48} weight="light" aria-hidden="true" /></span>
-			<p class="fav-empty-title">Brak ulubionych produktów</p>
-			<p class="fav-empty-text">
-				Kliknij ikonę serca na stronie produktu,<br />aby dodać go do ulubionych.
-			</p>
-			<a href="/products" class="fav-empty-link">Przeglądaj produkty →</a>
+		<div class="fav-empty-wrap">
+			<EmptyState
+				icon={HeartIcon}
+				title="Brak ulubionych produktów"
+				description="Kliknij ikonę serca na stronie produktu, aby dodać go do ulubionych."
+			>
+				<Button href="/products" variant="teal">Przeglądaj produkty</Button>
+			</EmptyState>
 		</div>
 
 		<!-- Products -->
@@ -204,10 +207,12 @@
 
 	.fav-title {
 		font-family: var(--font-display);
-		font-size: clamp(1.3rem, 3vw, 1.6rem);
-		font-weight: 700;
-		color: var(--ft-dark);
-		letter-spacing: -0.02em;
+		font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+		font-weight: 500;
+		color: var(--ft-text);
+		letter-spacing: -0.005em;
+		line-height: 1;
+		text-transform: uppercase;
 	}
 
 	.fav-count {
@@ -344,11 +349,12 @@
 	}
 
 	.fav-item-price {
-		font-family: var(--font-display);
+		font-family: var(--font-sans);
 		font-size: 1rem;
-		font-weight: 800;
-		color: var(--ft-cta);
-		letter-spacing: -0.02em;
+		font-weight: 700;
+		color: var(--ft-ink-900);
+		letter-spacing: -0.01em;
+		font-variant-numeric: tabular-nums;
 	}
 
 	.fav-item-old-price {
@@ -437,49 +443,9 @@
 		border-color: var(--ft-cta);
 	}
 
-	/* ── Empty State ── */
-	.fav-empty {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		text-align: center;
-		padding: 64px 24px;
-		border: 1px solid var(--ft-line);
-		background: var(--ft-frost);
-	}
-
-	.fav-empty-icon {
-		color: var(--ft-text-faint);
-		margin-bottom: 16px;
-		display: flex;
-	}
-
-	.fav-empty-title {
-		font-family: var(--font-display);
-		font-size: 1.1rem;
-		font-weight: 700;
-		color: var(--ft-dark);
-		margin-bottom: 6px;
-	}
-
-	.fav-empty-text {
-		font-size: 0.85rem;
-		color: var(--ft-text-muted);
-		line-height: 1.6;
-		margin-bottom: 20px;
-	}
-
-	.fav-empty-link {
-		font-family: var(--font-display);
-		font-size: 0.82rem;
-		font-weight: 700;
-		color: var(--ft-accent-text);
-		text-decoration: none;
-		transition: opacity 0.15s;
-	}
-
-	.fav-empty-link:hover {
-		opacity: 0.7;
+	/* ── Empty State wrapper ── */
+	.fav-empty-wrap {
+		padding: 32px 0;
 	}
 
 	/* ── Skeleton ── */

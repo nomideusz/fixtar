@@ -139,12 +139,13 @@
 	/* ── Header ── */
 	.about-title {
 		font-family: var(--font-display);
-		font-size: clamp(1.5rem, 3vw, 2rem);
-		font-weight: 400;
-		color: var(--ft-text-strong);
-		letter-spacing: -0.02em;
+		font-size: clamp(2rem, 4vw, 3rem);
+		font-weight: 500;
+		color: var(--ft-text);
+		letter-spacing: -0.005em;
 		margin-top: 6px;
-		line-height: 1.15;
+		line-height: 1;
+		text-transform: uppercase;
 	}
 
 	.about-lead {
@@ -193,10 +194,12 @@
 
 	.team-name {
 		font-family: var(--font-display);
-		font-size: 1.1rem;
-		font-weight: 400;
-		color: var(--ft-text-strong);
-		letter-spacing: -0.01em;
+		font-size: 1.5rem;
+		font-weight: 500;
+		color: var(--ft-text);
+		letter-spacing: -0.005em;
+		text-transform: uppercase;
+		line-height: 1;
 	}
 
 	.team-role {

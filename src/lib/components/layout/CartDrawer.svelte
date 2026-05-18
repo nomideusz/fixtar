@@ -1,7 +1,14 @@
 <script lang="ts">
 	import { fade, fly } from 'svelte/transition';
 	import Button from '$lib/components/ui/Button.svelte';
-	import { TrashIcon, XIcon, UserIcon, UserGearIcon, SignOutIcon } from 'phosphor-svelte';
+	import {
+		TrashIcon,
+		XIcon,
+		UserIcon,
+		UserGearIcon,
+		SignOutIcon,
+		ShoppingCartSimpleIcon
+	} from 'phosphor-svelte';
 	import type { TranslationKey } from '$lib/i18n/translations';
 	import { cart, userStore } from '$lib/stores';
 	import type { CartItem } from '$lib/stores';
@@ -304,10 +311,10 @@
 					<div
 						class="bg-surface-subtle text-text-muted mb-4 flex h-16 w-16 items-center justify-center rounded-full"
 					>
-						<TrashIcon size={32} weight="light" aria-hidden="true" />
+						<ShoppingCartSimpleIcon size={28} weight="regular" aria-hidden="true" />
 					</div>
 					<p class="text-text-muted mb-6 text-lg">{t('cartEmpty')}</p>
-					<Button variant="primary" onclick={close} class="w-full sm:w-auto">
+					<Button variant="teal" onclick={close} class="w-full sm:w-auto">
 						{t('browseProducts')}
 					</Button>
 				</div>
@@ -421,14 +428,15 @@
 
 					<div class="flex flex-col gap-3">
 						<Button
-							variant="primary"
+							variant="cta"
+							size="lg"
 							href="/checkout"
 							onclick={close}
 							class="w-full justify-center"
 						>
 							{t('proceedToCheckout')}
 						</Button>
-						<Button variant="outline" onclick={close} class="bg-surface w-full justify-center">
+						<Button variant="outline" onclick={close} class="w-full justify-center">
 							{t('continueShopping')}
 						</Button>
 					</div>

@@ -20,7 +20,7 @@
 			<CaretLeftIcon class="mr-2 h-4 w-4" aria-hidden="true" />
 			Powrót
 		</Button>
-		<h1 class="text-xl font-bold text-[--ft-text] sm:text-2xl">Dodaj nowy adres</h1>
+		<h1 class="addr-title">Dodaj nowy adres</h1>
 	</div>
 
 	<div class="max-w-2xl">
@@ -148,3 +148,16 @@
 		</Card>
 	</div>
 </div>
+
+<style>
+	.addr-title {
+		font-family: var(--font-display);
+		font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+		font-weight: 500;
+		color: var(--ft-text);
+		letter-spacing: -0.005em;
+		line-height: 1;
+		text-transform: uppercase;
+		margin: 0;
+	}
+</style>

@@ -28,7 +28,7 @@
 	<div class="ft-container">
 		<div class="section-head">
 			<div>
-				<p class="kicker">Polecane</p>
+				<p class="ft-eyebrow kicker">Polecane</p>
 				<h2>Nowe i wybrane</h2>
 			</div>
 			<a href="/products" class="see-all">
@@ -92,25 +92,21 @@
 	}
 
 	.kicker {
-		font-size: 11px;
-		letter-spacing: 0.15em;
-		text-transform: uppercase;
-		color: var(--ft-text-faint);
-		font-weight: 600;
 		margin: 0 0 8px;
 	}
 
 	.section-head h2 {
 		font-family: var(--font-display);
-		font-weight: 700;
+		font-weight: 500;
 		font-size: clamp(30px, 3.2vw, 40px);
-		letter-spacing: 0.01em;
+		letter-spacing: -0.005em;
 		text-transform: uppercase;
 		margin: 0;
 		line-height: 1;
 	}
 
 	.see-all {
+		font-family: var(--font-sans);
 		font-size: 12px;
 		font-weight: 700;
 		letter-spacing: 0.12em;
@@ -122,11 +118,14 @@
 		border-bottom: 2px solid var(--ft-cta);
 		padding-bottom: 4px;
 		text-decoration: none;
-		transition: color var(--dur-fast) ease;
+		transition:
+			color var(--dur-fast) ease,
+			border-color var(--dur-fast) ease;
 	}
 
 	.see-all:hover {
 		color: var(--ft-cta-hover);
+		border-bottom-color: var(--ft-cta-hover);
 	}
 
 	.products-wrap {

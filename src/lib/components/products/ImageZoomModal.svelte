@@ -237,7 +237,7 @@
 		z-index: 100;
 		display: flex;
 		flex-direction: column;
-		background: #0a0a0a;
+		background: var(--ft-ink-900);
 		overscroll-behavior: contain;
 	}
 
@@ -250,7 +250,7 @@
 		padding: 0 16px;
 		height: 52px;
 		flex-shrink: 0;
-		background: #111;
+		background: var(--ft-ink-800);
 		border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 	}
 

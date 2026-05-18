@@ -171,7 +171,7 @@
 <div class="space-y-8">
 	<!-- Page Header -->
 	<section>
-		<h1 class="text-2xl font-bold text-[--ft-text-strong]" style="font-family:var(--font-display);letter-spacing:-0.02em">Ustawienia Konta</h1>
+		<h1 class="settings-title">Ustawienia konta</h1>
 		<p class="mt-1 text-[--ft-text-muted]">Zarządzaj swoimi danymi osobowymi, bezpieczeństwem i preferencjami zakupowymi</p>
 	</section>
 
@@ -405,3 +405,16 @@
 	</section>
 </div>
 </div>
+
+<style>
+	.settings-title {
+		font-family: var(--font-display);
+		font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+		font-weight: 500;
+		color: var(--ft-text);
+		letter-spacing: -0.005em;
+		line-height: 1;
+		text-transform: uppercase;
+		margin: 0;
+	}
+</style>

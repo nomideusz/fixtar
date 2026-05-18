@@ -11,24 +11,93 @@
 	let { steps }: Props = $props();
 </script>
 
-<div class="mb-12">
-	<div class="flex items-center justify-center gap-3">
+<div class="progress">
+	<ol class="progress-row" aria-label="Postęp zamówienia">
 		{#each steps as step, i (step.label)}
 			{#if i > 0}
-				<div class="h-px w-12 bg-[--ft-line]"></div>
+				<li class="progress-sep" aria-hidden="true"></li>
 			{/if}
-			<div class="flex items-center">
-				<div
-					class="flex h-10 w-10 items-center justify-center rounded-full border text-sm {step.active
-						? 'border-[--ft-accent] bg-[--ft-accent]/10 text-[--ft-text]'
-						: 'border-[--ft-line] bg-[--ft-surface] text-[--ft-text-muted]'}"
-				>
-					{i + 1}
-				</div>
-				<span class="ml-3 text-sm {step.active ? 'text-[--ft-text]' : 'text-[--ft-text-muted]'}">
-					{step.label}
-				</span>
-			</div>
+			<li class="progress-step" class:is-active={step.active}>
+				<span class="step-num" aria-hidden="true">{i + 1}</span>
+				<span class="step-label">{step.label}</span>
+			</li>
 		{/each}
-	</div>
+	</ol>
 </div>
+
+<style>
+	.progress {
+		margin-bottom: 48px;
+	}
+
+	.progress-row {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 12px;
+		flex-wrap: wrap;
+	}
+
+	.progress-step {
+		display: inline-flex;
+		align-items: center;
+		gap: 12px;
+	}
+
+	.step-num {
+		display: inline-grid;
+		place-items: center;
+		width: 36px;
+		height: 36px;
+		border-radius: 999px;
+		border: 1.5px solid var(--ft-line);
+		background: #fff;
+		font-family: var(--font-mono);
+		font-size: 13px;
+		font-weight: 500;
+		color: var(--ft-ink-500);
+		transition:
+			background var(--dur-fast) ease,
+			border-color var(--dur-fast) ease,
+			color var(--dur-fast) ease;
+	}
+
+	.step-label {
+		font-family: var(--font-sans);
+		font-size: 13px;
+		font-weight: 500;
+		color: var(--ft-ink-500);
+		transition: color var(--dur-fast) ease;
+	}
+
+	.progress-step.is-active .step-num {
+		background: var(--ft-cyan);
+		border-color: var(--ft-cyan);
+		color: #fff;
+	}
+
+	.progress-step.is-active .step-label {
+		color: var(--ft-ink-900);
+		font-weight: 700;
+	}
+
+	.progress-sep {
+		width: 48px;
+		height: 1px;
+		background: var(--ft-line);
+		list-style: none;
+	}
+
+	@media (max-width: 600px) {
+		.progress-sep {
+			width: 24px;
+		}
+
+		.step-label {
+			display: none;
+		}
+	}
+</style>

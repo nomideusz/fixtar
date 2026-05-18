@@ -2,40 +2,66 @@
 	interface Props {
 		title: string;
 		description?: string;
+		eyebrow?: string;
+		align?: 'left' | 'center';
 	}
 
-	let { title, description }: Props = $props();
+	let { title, description, eyebrow, align = 'center' }: Props = $props();
 </script>
 
-<section class="border-b border-[--ft-line]">
-	<div class="ft-container header-pad">
-		<div class="mx-auto max-w-3xl text-center">
-			<h1 class="header-title">{title}</h1>
+<section class="page-header header-{align}">
+	<div class="ft-container">
+		<div class="inner">
+			{#if eyebrow}
+				<p class="eyebrow ft-eyebrow">{eyebrow}</p>
+			{/if}
+			<h1 class="title">{title}</h1>
 			{#if description}
-				<p class="text-[--ft-text-muted] header-desc">{description}</p>
+				<p class="desc">{description}</p>
 			{/if}
 		</div>
 	</div>
 </section>
 
 <style>
-	.header-pad {
-		padding-top: clamp(40px, 5vh, 56px);
-		padding-bottom: clamp(40px, 5vh, 56px);
+	.page-header {
+		border-bottom: 1px solid var(--ft-line);
+		padding-block: clamp(40px, 5vh, 56px);
 	}
 
-	.header-title {
+	.inner {
+		max-width: 720px;
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	.header-center .inner {
+		margin-inline: auto;
+		text-align: center;
+		align-items: center;
+	}
+
+	.eyebrow {
+		margin: 0;
+	}
+
+	.title {
 		font-family: var(--font-display);
-		font-size: clamp(1.8rem, 4vw, 2.8rem);
-		font-weight: 700;
-		line-height: 1.1;
-		letter-spacing: -0.03em;
-		color: var(--ft-dark);
-		margin-bottom: 12px;
+		font-size: clamp(2rem, 4vw, 3rem);
+		font-weight: 500;
+		line-height: 1;
+		letter-spacing: -0.005em;
+		color: var(--ft-text);
+		text-transform: uppercase;
+		margin: 0;
 	}
 
-	.header-desc {
+	.desc {
 		font-size: 1rem;
-		line-height: 1.7;
+		line-height: 1.6;
+		color: var(--ft-ink-500);
+		max-width: 56ch;
+		margin: 4px 0 0;
 	}
 </style>

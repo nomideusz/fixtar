@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { StarIcon, CaretLeftIcon, CaretRightIcon } from 'phosphor-svelte';
+	import { StarIcon } from 'phosphor-svelte';
 
 	const testimonials = [
 		{
@@ -8,7 +8,8 @@
 			text: 'Zamówiłem szlifierkę Bavaria — świetna jakość w rozsądnej cenie. Dostawa następnego dnia, paczka solidnie zabezpieczona.',
 			rating: 5,
 			initials: 'MK',
-			gradient: 'linear-gradient(135deg, #378A92 0%, #1D2228 100%)'
+			bg: 'var(--ft-cyan-050)',
+			color: 'var(--ft-cyan-700)'
 		},
 		{
 			name: 'Anna W.',
@@ -16,7 +17,8 @@
 			text: 'Korzystam z FixTar od roku. Konkurencyjne ceny, szybka wysyłka i <strong>profesjonalna obsługa klienta</strong>. Polecam każdemu rzemieślnikowi.',
 			rating: 5,
 			initials: 'AW',
-			gradient: 'linear-gradient(135deg, #FF8A1F, #1D2228)'
+			bg: 'var(--ft-orange-050)',
+			color: 'var(--ft-orange-700)'
 		},
 		{
 			name: 'Tomasz P.',
@@ -24,7 +26,8 @@
 			text: 'Wiertarka Eurotec, którą kupiłem, działa bez zarzutu od 6 miesięcy. Gwarancja daje spokój ducha. Na pewno wrócę po więcej.',
 			rating: 5,
 			initials: 'TP',
-			gradient: 'linear-gradient(135deg, #378A92 0%, #1D2228 100%)'
+			bg: 'var(--ft-ink-100)',
+			color: 'var(--ft-ink-700)'
 		}
 	];
 </script>
@@ -33,18 +36,10 @@
 	<div class="ft-container">
 		<div class="section-head">
 			<div>
-				<p class="kicker">Opinie klientów</p>
+				<p class="ft-eyebrow head-eyebrow">Opinie klientów</p>
 				<h2>
 					Zaufali nam tysiące <span class="accent">profesjonalistów</span>
 				</h2>
-			</div>
-			<div class="test-arrows">
-				<button class="test-arrow" aria-label="Poprzednia">
-					<CaretLeftIcon size={16} weight="bold" aria-hidden="true" />
-				</button>
-				<button class="test-arrow" aria-label="Następna">
-					<CaretRightIcon size={16} weight="bold" aria-hidden="true" />
-				</button>
 			</div>
 		</div>
 
@@ -60,7 +55,7 @@
 					<blockquote class="test-quote">{@html t.text}</blockquote>
 
 					<footer class="test-user">
-						<span class="avatar" style="background: {t.gradient};" aria-hidden="true">
+						<span class="avatar" style="background: {t.bg}; color: {t.color};" aria-hidden="true">
 							{t.initials}
 						</span>
 						<span class="who">
@@ -88,20 +83,15 @@
 		flex-wrap: wrap;
 	}
 
-	.kicker {
-		font-size: 11px;
-		letter-spacing: 0.15em;
-		text-transform: uppercase;
-		color: var(--ft-text-faint);
-		font-weight: 600;
+	.head-eyebrow {
 		margin: 0 0 8px;
 	}
 
 	.section-head h2 {
 		font-family: var(--font-display);
-		font-weight: 700;
+		font-weight: 500;
 		font-size: clamp(30px, 3.2vw, 40px);
-		letter-spacing: 0.01em;
+		letter-spacing: -0.005em;
 		text-transform: uppercase;
 		margin: 0;
 		line-height: 1;
@@ -110,33 +100,6 @@
 
 	.section-head h2 .accent {
 		color: var(--ft-cyan);
-	}
-
-	.test-arrows {
-		display: flex;
-		gap: 8px;
-	}
-
-	.test-arrow {
-		width: 40px;
-		height: 40px;
-		border-radius: 8px;
-		background: #fff;
-		border: 1px solid var(--ft-line);
-		display: grid;
-		place-items: center;
-		color: var(--ft-text);
-		cursor: pointer;
-		transition:
-			background-color var(--dur-fast) ease,
-			color var(--dur-fast) ease,
-			border-color var(--dur-fast) ease;
-	}
-
-	.test-arrow:hover {
-		background: var(--ft-text);
-		color: #fff;
-		border-color: var(--ft-text);
 	}
 
 	.tests {
@@ -158,7 +121,7 @@
 	.test-stars {
 		display: inline-flex;
 		gap: 2px;
-		color: var(--ft-cta);
+		color: var(--ft-warning);
 	}
 
 	.test-quote {
@@ -188,11 +151,10 @@
 		width: 40px;
 		height: 40px;
 		border-radius: 50%;
-		color: #fff;
 		display: grid;
 		place-items: center;
-		font-family: var(--font-display);
-		font-weight: 700;
+		font-family: var(--font-sans);
+		font-weight: 600;
 		font-size: 14px;
 		flex-shrink: 0;
 	}

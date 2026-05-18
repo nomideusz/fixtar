@@ -161,8 +161,8 @@
 
 <style>
 	.footer {
-		background: var(--ft-dark);
-		color: rgba(255, 255, 255, 0.7);
+		background: var(--ft-ink-900);
+		color: var(--ft-ink-300);
 		padding: 64px 0 24px;
 		font-size: 14px;
 		margin-top: auto;
@@ -171,7 +171,7 @@
 	.footer-grid {
 		display: grid;
 		grid-template-columns: 1.4fr 1fr 1fr 1.2fr 1.2fr;
-		gap: 40px;
+		gap: 32px;
 		padding-bottom: 48px;
 		border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 	}
@@ -189,9 +189,9 @@
 
 	.footer-desc {
 		font-size: 13px;
-		color: rgba(255, 255, 255, 0.55);
-		max-width: 230px;
-		margin: 14px 0 22px;
+		color: var(--ft-ink-400);
+		max-width: 240px;
+		margin: 12px 0 16px;
 		line-height: 1.6;
 	}
 
@@ -201,13 +201,13 @@
 	}
 
 	.social a {
-		width: 34px;
-		height: 34px;
-		border-radius: 6px;
+		width: 32px;
+		height: 32px;
+		border-radius: var(--radius-sm);
 		background: rgba(255, 255, 255, 0.06);
 		display: grid;
 		place-items: center;
-		color: rgba(255, 255, 255, 0.7);
+		color: #fff;
 		transition:
 			background-color var(--dur-fast) ease,
 			color var(--dur-fast) ease;
@@ -220,12 +220,12 @@
 
 	.footer h4 {
 		font-family: var(--font-sans);
-		font-size: 11px;
-		letter-spacing: 0.15em;
+		font-size: 12px;
+		letter-spacing: 0.1em;
 		text-transform: uppercase;
-		font-weight: 700;
-		color: rgba(255, 255, 255, 0.5);
-		margin: 0 0 18px;
+		font-weight: 600;
+		color: #fff;
+		margin: 0 0 16px;
 	}
 
 	.footer ul {
@@ -234,12 +234,13 @@
 		margin: 0;
 		display: flex;
 		flex-direction: column;
-		gap: 10px;
+		gap: 8px;
+		font-size: 13px;
 	}
 
 	.footer ul a,
 	.contact-line a {
-		color: rgba(255, 255, 255, 0.7);
+		color: var(--ft-ink-300);
 		text-decoration: none;
 		transition: color var(--dur-fast) ease;
 	}
